@@ -1,0 +1,256 @@
+%YAML 1.2
+---
+- bundle: appomni-platform
+  bundle_display_name: AppOmni Platform Events
+  bundle_version: 1.0.0
+  bundle_author: Fulcrum Technology Solutions
+  bundle_description: Templates for AppOmni platform security events.
+  bundle_tags:
+    - appomni
+    - security
+    - saas
+    - events
+  file: appomni/platform/events/security_events.j2
+  name: AppOmni Security Events
+  description: AppOmni platform security events
+  log_type: security
+  template_version: 1.0.0
+- bundle: crowdstrike-falcon
+  bundle_display_name: CrowdStrike Falcon
+  bundle_version: 1.0.0
+  bundle_author: Fulcrum Technology Solutions
+  bundle_description: Templates for CrowdStrike Falcon events and alerts.
+  bundle_tags:
+    - crowdstrike
+    - falcon
+    - edr
+    - events
+    - alerts
+    - security
+  file: crowdstrike/falcon/events/general/crowdstrike_events.j2
+  name: CrowdStrike Events
+  description: CrowdStrike Falcon event logs
+  log_type: security
+  template_version: 1.0.0
+- bundle: crowdstrike-falcon
+  bundle_display_name: CrowdStrike Falcon
+  bundle_version: 1.0.0
+  bundle_author: Fulcrum Technology Solutions
+  bundle_description: Templates for CrowdStrike Falcon events and alerts.
+  bundle_tags:
+    - crowdstrike
+    - falcon
+    - edr
+    - events
+    - alerts
+    - security
+  file: crowdstrike/falcon/alerts/severity/low_alert.j2
+  name: Low Alert
+  description: CrowdStrike Falcon low severity alert events
+  log_type: security
+  template_version: 1.0.0
+- bundle: crowdstrike-falcon
+  bundle_display_name: CrowdStrike Falcon
+  bundle_version: 1.0.0
+  bundle_author: Fulcrum Technology Solutions
+  bundle_description: Templates for CrowdStrike Falcon events and alerts.
+  bundle_tags:
+    - crowdstrike
+    - falcon
+    - edr
+    - events
+    - alerts
+    - security
+  file: crowdstrike/falcon/alerts/severity/medium_alert.j2
+  name: Medium Alert
+  description: CrowdStrike Falcon medium severity alert events
+  log_type: security
+  template_version: 1.0.0
+- bundle: microsoft-windows-security
+  bundle_display_name: Microsoft Windows Security Events
+  bundle_version: 1.0.0
+  bundle_author: Fulcrum Technology Solutions
+  bundle_description: A bundle of templates for Microsoft Windows Security event logs,
+    supporting XML event formats.
+  bundle_tags:
+    - windows
+    - security
+    - eventlog
+    - microsoft
+    - xml
+  file: microsoft/windows/security/account/account_locked.j2
+  name: Account Locked
+  description: Windows Security account lockout events (EventID 4740)
+  log_type: security
+  template_version: 1.0.0
+- bundle: microsoft-windows-security
+  bundle_display_name: Microsoft Windows Security Events
+  bundle_version: 1.0.0
+  bundle_author: Fulcrum Technology Solutions
+  bundle_description: A bundle of templates for Microsoft Windows Security event logs,
+    supporting XML event formats.
+  bundle_tags:
+    - windows
+    - security
+    - eventlog
+    - microsoft
+    - xml
+  file: microsoft/windows/security/kerberos/kerberos_auth_failed_4771.j2
+  name: Kerberos Authentication Failed
+  description: Windows Security Auditing event for Kerberos Authentication Service
+    Ticket Failed (Event ID 4771)
+  log_type: security
+  template_version: 1.0.0
+- bundle: microsoft-windows-security
+  bundle_display_name: Microsoft Windows Security Events
+  bundle_version: 1.0.0
+  bundle_author: Fulcrum Technology Solutions
+  bundle_description: A bundle of templates for Microsoft Windows Security event logs,
+    supporting XML event formats.
+  bundle_tags:
+    - windows
+    - security
+    - eventlog
+    - microsoft
+    - xml
+  file: microsoft/windows/security/kerberos/kerberos_auth_4768.j2
+  name: Kerberos Authentication Ticket Request
+  description: Windows Security Auditing event for Kerberos Authentication Ticket
+    Request (Event ID 4768)
+  log_type: security
+  template_version: 1.0.0
+- bundle: microsoft-windows-security
+  bundle_display_name: Microsoft Windows Security Events
+  bundle_version: 1.0.0
+  bundle_author: Fulcrum Technology Solutions
+  bundle_description: A bundle of templates for Microsoft Windows Security event logs,
+    supporting XML event formats.
+  bundle_tags:
+    - windows
+    - security
+    - eventlog
+    - microsoft
+    - xml
+  file: microsoft/windows/security/login/login_failure.j2
+  name: Login Failure
+  description: Windows Security failed login events (EventID 4625)
+  log_type: security
+  template_version: 1.0.0
+- bundle: microsoft-windows-security
+  bundle_display_name: Microsoft Windows Security Events
+  bundle_version: 1.0.0
+  bundle_author: Fulcrum Technology Solutions
+  bundle_description: A bundle of templates for Microsoft Windows Security event logs,
+    supporting XML event formats.
+  bundle_tags:
+    - windows
+    - security
+    - eventlog
+    - microsoft
+    - xml
+  file: microsoft/windows/security/login/login_success.j2
+  name: Login Success
+  description: Windows Security successful login events (EventID 4624)
+  log_type: security
+  template_version: 1.0.0
+- bundle: microsoft-windows-security
+  bundle_display_name: Microsoft Windows Security Events
+  bundle_version: 1.0.0
+  bundle_author: Fulcrum Technology Solutions
+  bundle_description: A bundle of templates for Microsoft Windows Security event logs,
+    supporting XML event formats.
+  bundle_tags:
+    - windows
+    - security
+    - eventlog
+    - microsoft
+    - xml
+  file: microsoft/windows/security/privilege/privilege_use.j2
+  name: Privilege Use
+  description: Windows Security events for privilege use
+  log_type: security
+  template_version: 1.0.0
+- bundle: microsoft-windows-security
+  bundle_display_name: Microsoft Windows Security Events
+  bundle_version: 1.0.0
+  bundle_author: Fulcrum Technology Solutions
+  bundle_description: A bundle of templates for Microsoft Windows Security event logs,
+    supporting XML event formats.
+  bundle_tags:
+    - windows
+    - security
+    - eventlog
+    - microsoft
+    - xml
+  file: microsoft/windows/security/process/process_creation.j2
+  name: Process Creation
+  description: Windows Security events for process creation (EventID 4688)
+  log_type: security
+  template_version: 1.0.0
+- bundle: nginx-access
+  bundle_display_name: NGINX Access Logs
+  bundle_version: 1.0.0
+  bundle_author: Fulcrum Technology Solutions
+  bundle_description: Templates for NGINX access logs including security events.
+  bundle_tags:
+    - nginx
+    - webserver
+    - access
+    - log4shell
+    - security
+  file: nginx/access/vulnerabilities/log4shell_payload.j2
+  name: Log4Shell JNDI Payload Injection
+  description: NGINX access logs showing Log4Shell JNDI payload injection attempts
+    with outbound connections
+  log_type: security
+  template_version: 1.0.0
+- bundle: proofpoint-tap
+  bundle_display_name: Proofpoint TAP
+  bundle_version: 1.0.0
+  bundle_author: Fulcrum Technology Solutions
+  bundle_description: Templates for Proofpoint Targeted Attack Protection (TAP) SIEM
+    logs.
+  bundle_tags:
+    - proofpoint
+    - tap
+    - email
+    - security
+    - siem
+  file: proofpoint/tap/events/tap_siem.j2
+  name: TAP SIEM
+  description: Proofpoint TAP SIEM event logs
+  log_type: security
+  template_version: 1.0.0
+- bundle: sentinelone-channel-activities
+  bundle_display_name: SentinelOne Channel Activities
+  bundle_version: 1.0.0
+  bundle_author: Fulcrum Technology Solutions
+  bundle_description: Templates for SentinelOne channel activity events.
+  bundle_tags:
+    - sentinelone
+    - edr
+    - channel
+    - activities
+    - security
+  file: sentinelone/channel/activities/channel_activities.j2
+  name: Channel Activities
+  description: SentinelOne channel activity logs
+  log_type: security
+  template_version: 1.0.0
+- bundle: sentinelone-threats-events
+  bundle_display_name: SentinelOne Threat Events
+  bundle_version: 1.0.0
+  bundle_author: Fulcrum Technology Solutions
+  bundle_description: Templates for SentinelOne threat event logs.
+  bundle_tags:
+    - sentinelone
+    - edr
+    - threats
+    - events
+    - security
+  file: sentinelone/threats/events/threat_events.j2
+  name: Threat Events
+  description: SentinelOne threat event logs
+  log_type: security
+  template_version: 1.0.0
+...
