@@ -1,0 +1,23 @@
+vendor: NGINX
+product: Access Logs
+data_source: HTTP Access Logs
+description: NGINX access logs showing Log4Shell JNDI payload injection attempts with outbound connections
+format: Syslog
+frequency: low
+
+# Generator settings
+is_generator: true
+base_frequency: 0.01
+time_patterns:
+  - business_hours
+  - night_hours
+  - weekend
+business_hours_multiplier: 1.0
+night_hours_multiplier: 0.5
+weekend_multiplier: 0.3
+
+# Documentation
+documentation: |
+  This template generates NGINX access logs that show attempted Log4Shell JNDI payload injection attacks.
+  The logs include the JNDI payload in the User-Agent field, which is a common attack vector.
+  The template generates a random source IP, timestamp, and JNDI payload pattern.
