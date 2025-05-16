@@ -1,0 +1,1 @@
+# LogForge-Templates
