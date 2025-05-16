@@ -1,0 +1,63 @@
+vendor: Microsoft
+product: Windows
+data_source: Security Kerberos Authentication
+description: Windows Security Kerberos pre-authentication failure events (EventID 4771)
+format: XML
+frequency: medium
+
+# Generator settings
+is_generator: true
+base_frequency: 0.08          # Base rate: approximately 1 event every 12-13 seconds
+time_patterns:                # List of time patterns that affect this generator
+  - business_hours
+  - night_hours
+  - weekend
+business_hours_multiplier: 1.5    # Higher frequency during business hours
+night_hours_multiplier: 0.2       # Lower frequency after business hours
+weekend_multiplier: 0.1           # Minimal frequency on weekends
+
+# Context values for rendering
+context:
+  event_id: 4771
+  task: 14339
+  opcode: 0
+  level: 0
+  version: 0
+  keywords: "0x8010000000000000"
+  channel: Security
+  provider_name: "Microsoft-Windows-Security-Auditing"
+  provider_guid: "{54849625-5478-4994-a5ba-3e3b0328c30d}"
+  ticket_options: "0x10"
+  pre_auth_type: 2
+
+# Status codes and their meanings
+status_codes:
+  - code: "0x18"
+    description: "Pre-authentication information was invalid"
+  - code: "0x6"
+    description: "Client not found in Kerberos database"
+  - code: "0x12"
+    description: "Account locked out"
+  - code: "0xC"
+    description: "Credentials have been revoked"
+
+# Parameter definitions
+parameters:
+  - name: device
+    description: The device where the event was generated
+    required: true
+    attributes:
+      - hostname
+      - fqdn
+      - ip_address
+  - name: user
+    description: The user account that failed pre-authentication
+    required: true
+    attributes:
+      - username
+  - name: domain
+    description: The domain of the user account
+    required: true
+  - name: netbios_domain
+    description: The NetBIOS domain name
+    required: true

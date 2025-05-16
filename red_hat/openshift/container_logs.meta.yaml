@@ -1,0 +1,40 @@
+vendor: RedHat
+product: OpenShift
+data_source: Container Stats
+description: OpenShift Container Statistics
+format: JSON
+frequency: high
+
+# Generator settings
+is_generator: true
+base_frequency: 0.5          # Generate one event every 2 seconds
+time_patterns:               
+  - business_hours
+  - night_hours
+  - weekend
+business_hours_multiplier: 2.0    # Higher frequency during business hours
+night_hours_multiplier: 0.5       # Lower frequency after business hours
+weekend_multiplier: 0.3           # Lowest frequency on weekends
+
+# Context values that will be available in templates
+context:
+  cluster_name: "kubecls01"      # Default cluster name, can be overridden
+  namespace: "openshift-monitoring"
+  stats_object: "container"
+  index_name: "mc_k8s_monitor"
+  sourcetype: "openshift_stats_v2_cgroup"
+
+# Parameter definitions - these can be customized at runtime
+parameters:
+  - name: cluster_name
+    description: The OpenShift cluster name
+    required: true
+    default: "kubecls01"
+  - name: namespace
+    description: The Kubernetes namespace
+    required: true
+    default: "openshift-monitoring"
+  - name: container_name
+    description: The name of the container
+    required: false
+    default: "kube-rbac-proxy"

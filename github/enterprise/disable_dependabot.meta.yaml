@@ -1,0 +1,83 @@
+vendor: GitHub
+product: Enterprise
+data_source: Organization Audit Logs
+description: GitHub Organizations Audit Logs tracking security-related actions including disabling/enabling vulnerability alerts, repository creation/deletion, and organization membership changes
+format: JSON
+frequency: medium
+
+# Generator settings
+is_generator: true
+base_frequency: 0.1  # Base rate: 1 event every 10 seconds
+time_patterns:
+  - business_hours
+  - night_hours
+  - weekend
+business_hours_multiplier: 2.0  # Higher frequency during business hours
+night_hours_multiplier: 0.3    # Lower frequency after business hours
+weekend_multiplier: 0.5        # Medium frequency on weekends
+
+# Context values for rendering
+context:
+  action_types:
+    - repository_vulnerability_alerts.disable
+    - repository_vulnerability_alerts.enable
+    - repo.create
+    - repo.destroy
+    - org.add_member
+    - org.remove_member
+  operation_type: modify
+  user_agent_templates:
+    - "Mozilla/5.0 (Windows NT 10.0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/{version}.0.0.0 Safari/537.36"
+    - "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/{version}.0.0.0 Safari/537.36"
+    - "Mozilla/5.0 (Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/{version}.0.0.0 Safari/537.36"
+    - "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Edge/{version}.0.0.0 Safari/537.36"
+  country_codes:
+    - US
+    - DE
+    - GB
+    - CA
+    - FR
+    - AU
+    - JP
+    - BR
+    - IN
+    - SG
+
+# Parameter definitions
+parameters:
+  - name: action
+    description: The GitHub action being performed
+    required: true
+    example: "repository_vulnerability_alerts.disable"
+  - name: actor
+    description: The username of the actor performing the action
+    required: true
+    example: "jsmith"
+  - name: actor_ip
+    description: The IP address of the actor
+    required: true
+    example: "192.168.1.100"
+  - name: actor_is_bot
+    description: Boolean indicating if the actor is a bot
+    required: true
+    example: false
+  - name: business
+    description: The GitHub business name
+    required: true
+    example: "acme"
+  - name: org
+    description: The GitHub organization name
+    required: true
+    example: "acme-dev"
+  - name: repo
+    description: The GitHub repository path (org/repo)
+    required: true
+    example: "acme-dev/web-app"
+  - name: public_repo
+    description: Boolean indicating if the repository is public
+    required: true
+    example: false
+  - name: user_agent
+    description: Browser user agent string
+    required: true
+    example: "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36"

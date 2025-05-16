@@ -1,0 +1,131 @@
+{%- set account_id = random_int(10000000000, 99999999999) -%}
+{%- set source_ip = random_public_ip() -%}
+{%- set user = registry.get_random_user() -%}
+{%- set username = user.username if user else "jsmith" -%}
+{%- set domain = registry.get_domain() | default("example.com") -%}
+{%- set role_id = random_string(13, 'abcdef0123456789') -%}
+{%- set principal_id = random_string(17, 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789') -%}
+{%- set access_key_id = random_string(20, 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789') -%}
+{%- set session_created_time = current_timestamp() - random_int(1000, 10000) -%}
+{%- set request_id = random_guid() -%}
+{%- set event_id = random_guid() -%}
+{
+  "metadata": {
+    "product": {
+      "version": "1.11",
+      "name": "CloudTrail",
+      "vendor_name": "AWS",
+      "feature": {
+        "name": "Management"
+      }
+    },
+    "event_code": "AwsApiCall",
+    "uid": "{{ random_guid() }}",
+    "profiles": "cloud",
+    "profiles": "datetime",
+    "version": "1.1.0"
+  },
+  "time": {{ current_timestamp() }},
+  "time_dt": {{ current_timestamp() }},
+  "cloud": {
+    "region": "us-east-1",
+    "provider": "AWS"
+  },
+  "api": {
+    "response": {
+      "error": "",
+      "message": "",
+      "data": ""
+    },
+    "operation": "DeleteTrail",
+    "version": "",
+    "service": {
+      "name": "cloudtrail.amazonaws.com"
+    },
+    "request": {
+      "data": "{\"name\":\"arn:aws:cloudtrail:us-east-1:{{ account_id }}:trail/test\"}",
+      "uid": "{{ request_id }}"
+    }
+  },
+  "dst_endpoint": {
+    "svc_name": ""
+  },
+  "actor": {
+    "user": {
+      "type": "AssumedRole",
+      "name": "",
+      "uid_alt": "{{ principal_id }}:{{ username }}@{{ domain }}",
+      "uid": "arn:aws:sts::{{ account_id }}:assumed-role/{{ role_id }}/{{ username }}@{{ domain }}",
+      "account": {
+        "uid": "{{ account_id }}"
+      },
+      "credential_uid": "{{ access_key_id }}"
+    },
+    "session": {
+      "created_time_dt": {{ session_created_time }},
+      "is_mfa": false,
+      "issuer": "arn:aws:iam::{{ account_id }}:role/aws-reserved/sso.amazonaws.com/us-west-2/{{ role_id }}"
+    },
+    "invoked_by": "",
+    "idp": {
+      "name": ""
+    }
+  },
+  "http_request": {
+    "user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36"
+  },
+  "src_endpoint": {
+    "uid": "",
+    "ip": "{{ source_ip }}",
+    "domain": ""
+  },
+  "session": {
+    "uid": "",
+    "uid_alt": "",
+    "credential_uid": "",
+    "issuer": ""
+  },
+  "policy": {
+    "uid": ""
+  },
+  "resources": null,
+  "class_name": "API Activity",
+  "class_uid": 6003,
+  "category_name": "Application Activity",
+  "category_uid": 6,
+  "severity_id": 1,
+  "severity": "Informational",
+  "user": {
+    "uid_alt": "",
+    "uid": "",
+    "name": ""
+  },
+  "activity_name": "Delete",
+  "activity_id": 4,
+  "type_uid": 600304,
+  "type_name": "API Activity: Delete",
+  "status": "Success",
+  "is_mfa": false,
+  "unmapped": {
+    "userIdentity.sessionContext.sessionIssuer.type": "Role",
+    "sessionCredentialFromConsole": "true",
+    "tlsDetails.clientProvidedHostHeader": "cloudtrail.us-east-1.amazonaws.com",
+    "userIdentity.sessionContext.sessionIssuer.userName": "{{ role_id }}",
+    "userIdentity.sessionContext.sessionIssuer.principalId": "{{ principal_id }}",
+    "recipientAccountId": "{{ account_id }}",
+    "readOnly": "false",
+    "tlsDetails.tlsVersion": "TLSv1.3",
+    "managementEvent": "true",
+    "userIdentity.sessionContext.sessionIssuer.accountId": "{{ account_id }}",
+    "tlsDetails.cipherSuite": "TLS_AES_128_GCM_SHA256"
+  },
+  "accountid": "",
+  "region": "",
+  "asl_version": "",
+  "observables": {
+    "name": "src_endpoint.ip",
+    "value": "{{ source_ip }}",
+    "type": "IP Address",
+    "type_id": 2
+  }
+}

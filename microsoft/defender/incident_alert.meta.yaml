@@ -1,0 +1,74 @@
+vendor: Microsoft
+product: Defender for Identity
+data_source: Pass the Ticket Alert
+description: Microsoft Defender for Identity alerts for suspected Pass-the-Ticket attacks
+format: JSON
+frequency: medium
+
+# Generator settings
+is_generator: true
+base_frequency: 0.05  # Approximately one alert every 20 seconds
+time_patterns:
+  - business_hours
+  - night_hours
+  - weekend
+business_hours_multiplier: 1.5  # More common during business hours
+night_hours_multiplier: 0.3    # Less common outside of business hours
+weekend_multiplier: 0.2        # Rare on weekends
+
+# Context values for rendering
+context:
+  severity_levels:
+    - Low
+    - Medium
+    - High
+  alert_categories:
+    - LateralMovement
+    - PrivilegeEscalation
+    - CredentialAccess
+    - DefenseEvasion
+  mitre_techniques:
+    - T1550        # Use Alternate Authentication Material
+    - T1550.003    # Pass the Ticket
+
+# Documentation for the template
+documentation: |
+  This template generates Microsoft Defender for Identity alert events for Pass-the-Ticket attacks.
+  Pass-the-Ticket is an attack technique where an attacker extracts Kerberos tickets from one
+  system and reuses them on another system to impersonate a user.
+  
+  These alerts simulate suspicious Kerberos ticket usage that might indicate lateral movement
+  in an environment.
+  
+  The template uses:
+  - Random GUID generation for unique identifiers
+  - Timestamp manipulation for realistic alert timelines
+  - Entity registry to populate user and device information
+  - Organization domain information for realistic naming
+
+# Parameter definitions
+parameters:
+  - name: user
+    description: The user whose identity is being stolen
+    required: true
+    example: registry.get_random_user()
+  
+  - name: source_device
+    description: The device where the Kerberos ticket was stolen from
+    required: true
+    example: registry.get_random_device()
+    
+  - name: target_device
+    description: The device where the stolen ticket was used
+    required: true
+    example: registry.get_random_device()
+    
+  - name: dc_device
+    description: The domain controller that issued the Kerberos ticket
+    required: true
+    example: registry.get_random_device()
+    
+  - name: alert_creation_time
+    description: The timestamp when the alert was created
+    required: true
+    example: current_timestamp()

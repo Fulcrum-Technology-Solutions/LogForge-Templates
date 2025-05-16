@@ -1,0 +1,31 @@
+vendor: AppOmni
+product: SaaS Security Platform
+data_source: AppOmni SaaS Security Platform
+description: AppOmni SaaS Security Platform Events
+format: JSON
+frequency: high
+
+# Generator settings
+is_generator: true
+base_frequency: 0.8
+time_patterns:
+  - business_hours
+  - night_hours
+  - weekend
+business_hours_multiplier: 2.0
+night_hours_multiplier: 0.3
+weekend_multiplier: 0.1
+
+# Context values for template variables
+context:
+  organization_name: "Example Corporation"
+  event_module: "Endpoint"
+  event_code: "FileRead"
+  event_provider: "DLPEndpoint"
+  event_outcome: "success"
+  policy_name: "Microsoft AI hub - Discover sensitive prompts in AI assistants"
+  rule_name: "Audit sensitive data shared to generative AI sites"
+  sensitive_type_name: "IP Address v4"
+  service_type: "o365"
+  service_slug: "o365"
+  source_tag: "appomni"

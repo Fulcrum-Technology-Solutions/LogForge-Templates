@@ -1,0 +1,55 @@
+vendor: SentinelOne
+product: Endpoint Security
+data_source: Activities
+description: SentinelOne Channel Activities
+format: JSON
+frequency: low
+
+# Generator settings
+is_generator: true
+base_frequency: 0.4
+time_patterns:
+  - business_hours
+  - night_hours
+  - weekend
+business_hours_multiplier: 2.5
+night_hours_multiplier: 0.2
+weekend_multiplier: 0.3
+
+# Context values for rendering
+context:
+  account_name: "EXAMPLE COMPANY"
+  device_class: "00h"
+  device_name: "<N/A>"
+  os_type: "windows"
+  group_name: "Policy Testing"
+  site_name: "Clients"
+  manufacturer_name: ""
+
+# Parameter definitions
+parameters:
+  - name: account_name
+    description: The name of the account/organization
+    required: false
+  - name: device_name
+    description: The name of the USB device
+    required: false
+  - name: event_type
+    description: Whether the device was connected or disconnected
+    required: false
+    options:
+      - connected
+      - disconnected
+  - name: os_type
+    description: The operating system of the computer
+    required: false
+    options:
+      - windows
+      - macos
+      - linux
+  - name: site_name
+    description: The site name within the organization
+    required: false
+  - name: group_name
+    description: The policy group name
+    required: false

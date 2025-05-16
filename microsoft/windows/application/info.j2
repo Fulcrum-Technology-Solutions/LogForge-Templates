@@ -1,0 +1,23 @@
+<Event xmlns="http://schemas.microsoft.com/win/2004/08/events/event">
+  <System>
+    <Provider Name="{{ application }}" Guid="{D16D0BBE-7129-472A-B1E9-8E0AD5D8F3B4}" />
+    <EventID Qualifiers="0">{{ event_id }}</EventID>
+    <Version>0</Version>
+    <Level>4</Level>
+    <Task>0</Task>
+    <Opcode>0</Opcode>
+    <Keywords>0x80000000000000</Keywords>
+    <TimeCreated SystemTime="{{ timestamp }}" />
+    <EventRecordID>12345</EventRecordID>
+    <Correlation />
+    <Execution ProcessID="{{ process_id }}" ThreadID="{{ thread_id }}" />
+    <Channel>Application</Channel>
+    <Computer>{{ registry.get_random_device().hostname if registry.get_random_device() else "WIN-" + random_string(8).upper() }}</Computer>
+    <Security />
+  </System>
+  <EventData>
+    <Data>{{ message }}</Data>
+    <Data>{{ application }}</Data>
+    <Data>12345</Data>
+  </EventData>
+</Event>

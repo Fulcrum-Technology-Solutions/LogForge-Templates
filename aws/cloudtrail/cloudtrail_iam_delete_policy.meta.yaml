@@ -1,0 +1,84 @@
+vendor: AWS
+product: IAM
+data_source: DeletePolicy
+description: AWS CloudTrail logs for IAM DeletePolicy API operations, which indicate policy deletions which may be unauthorized
+format: JSON
+frequency: medium
+
+# Generator settings
+is_generator: true
+base_frequency: 0.1
+time_patterns:
+  - business_hours
+  - night_hours
+  - weekend
+business_hours_multiplier: 2.0
+night_hours_multiplier: 0.3
+weekend_multiplier: 0.5
+
+# Context values for template variables
+context:
+  event_type: "AwsApiCall"
+  management_event: true
+  event_category: "Management"
+  read_only: false
+
+# Documentation of fields in the template
+parameters:
+  - name: eventVersion
+    description: Version of the CloudTrail event format
+    required: true
+  - name: userIdentity
+    description: Information about the user or role that performed the API action
+    required: true
+  - name: eventTime
+    description: The timestamp when the request was made
+    required: true
+  - name: eventSource
+    description: The AWS service that the request was made to
+    required: true
+  - name: eventName
+    description: The action taken
+    required: true
+  - name: awsRegion
+    description: The AWS region where the action was taken
+    required: true
+  - name: sourceIPAddress
+    description: The IP address where the request originated from
+    required: true
+  - name: userAgent
+    description: The agent through which the request was made
+    required: true
+  - name: errorCode
+    description: Error code if the request failed
+    required: false
+  - name: errorMessage
+    description: Error message if the request failed
+    required: false
+  - name: requestParameters
+    description: Parameters for the API call, including the policy ARN
+    required: true
+  - name: responseElements
+    description: The response from the service
+    required: true
+  - name: requestID
+    description: ID assigned by AWS to the request
+    required: true
+  - name: eventID
+    description: A unique ID for the event
+    required: true
+  - name: readOnly
+    description: Whether this was a read-only operation
+    required: true
+  - name: eventType
+    description: Type of event
+    required: true
+  - name: managementEvent
+    description: Whether this was an AWS management event
+    required: true
+  - name: eventCategory
+    description: Category of the event
+    required: true
+  - name: recipientAccountId
+    description: The account ID that received this event
+    required: true

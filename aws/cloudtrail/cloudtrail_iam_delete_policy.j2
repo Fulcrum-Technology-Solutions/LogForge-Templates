@@ -1,0 +1,59 @@
+{%- set eventVersion = random_string(4, '1.08') -%}
+{%- set identity_type = ['IAMUser', 'AssumedRole'] | random -%}
+{%- set account_id = random_int(100000000000, 999999999999) -%}
+{%- set user = registry.get_random_user() -%}
+{%- set role_name = random_string(10, 'role_') -%}
+{%- set policy_name = ['AtomicRedTeam', 'VulnerablePolicy', 'Privesc2', 'AdminPolicy', random_string(10, 'custom-policy-')] | random -%}
+{%- set arn = "arn:aws:" ~ (
+  "iam::" ~ account_id ~ ":user/" ~ user.username if identity_type == 'IAMUser' 
+  else "sts::" ~ account_id ~ ":assumed-role/" ~ role_name ~ "/" ~ user.username ~ "@" ~ registry.get_domain()
+) -%}
+{%- set has_error = random_int(0, 2) -%}
+{%- set error_code = ['NoSuchEntityException', 'DeleteConflictException', 'AccessDenied'] | random if has_error == 1 else '' -%}
+{%- set policy_arn = "arn:aws:iam::" ~ account_id ~ ":policy/" ~ policy_name -%}
+{
+  "eventVersion": "{{ eventVersion }}",
+  "userIdentity": {
+    "type": "{{ identity_type }}",
+    "principalId": "{{ random_string(21, 'AIDA') }}",
+    "arn": "{{ arn }}",
+    "accountId": "{{ account_id }}",
+    "accessKeyId": "{{ random_string(20, 'AKIA') }}",
+    "userName": "{% if identity_type == 'IAMUser' %}{{ user.username }}{% endif %}"{% if identity_type == 'AssumedRole' %},
+    "sessionContext": {
+      "sessionIssuer": {
+        "type": "Role",
+        "principalId": "{{ random_string(21, 'ARO') }}",
+        "arn": "arn:aws:iam::{{ account_id }}:role/{{ role_name }}",
+        "accountId": "{{ account_id }}",
+        "userName": "{{ role_name }}"
+      },
+      "webIdFederationData": {},
+      "attributes": {
+        "mfaAuthenticated": "false",
+        "creationDate": "{{ (current_timestamp() - random_int(0, 3600)) | format_timestamp('%Y-%m-%dT%H:%M:%SZ') }}"
+      }
+    }{% endif %}
+  },
+  "eventTime": "{{ current_timestamp() | format_timestamp('%Y-%m-%dT%H:%M:%SZ') }}",
+  "eventSource": "iam.amazonaws.com",
+  "eventName": "DeletePolicy",
+  "awsRegion": "{{ ['us-east-1', 'us-west-2', 'eu-west-1', 'ap-southeast-1'] | random }}",
+  "sourceIPAddress": "{{ random_private_ip() if random_int(0, 1) == 0 else random_public_ip() }}",
+  "userAgent": "{{ ['aws-cli/2.0.62 Python/3.9.2 Darwin/19.6.0 source/x86_64 command/iam.delete-policy', 'aws-sdk-go/1.36.7 (go1.15.5; darwin; amd64) APN/1.0 HashiCorp/1.0 Terraform/0.14.4 (+https://www.terraform.io)', 'console.amazonaws.com'] | random }}",
+  {%- if has_error == 1 -%}
+  "errorCode": "{{ error_code }}",
+  "errorMessage": "{% if error_code == 'NoSuchEntityException' %}Policy {{ policy_arn }} was not found.{% elif error_code == 'DeleteConflictException' %}{{ ['This policy has more than one version. Before you delete a policy, you must delete the policy\'s versions. The default version is deleted with the policy.', 'Cannot delete a policy attached to entities.'] | random }}{% elif error_code == 'AccessDenied' %}User: {{ arn }} is not authorized to perform: iam:DeletePolicy on resource: policy {{ policy_arn }} with an explicit deny{% endif %}",
+  {%- endif -%}
+  "requestParameters": {
+    "policyArn": "arn:aws:iam::{{ account_id }}:policy/{{ policy_name }}"
+  },
+  "responseElements": null,
+  "requestID": "{{ random_guid() }}",
+  "eventID": "{{ random_guid() }}",
+  "readOnly": false,
+  "eventType": "AwsApiCall",
+  "managementEvent": true,
+  "eventCategory": "Management",
+  "recipientAccountId": "{{ account_id }}"
+}

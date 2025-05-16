@@ -1,0 +1,43 @@
+vendor: Microsoft
+product: Azure Active Directory
+data_source: SignInLogs
+description: Azure AD authentication events tracking user sign-ins, including device, location, and authentication details
+format: JSON
+frequency: high
+
+# Generator settings
+is_generator: true
+base_frequency: 0.5
+time_patterns:
+  - business_hours
+  - night_hours
+  - weekend
+business_hours_multiplier: 2.0
+night_hours_multiplier: 0.3
+weekend_multiplier: 0.1
+
+# Context values for template variables
+context:
+  authentication_method: "Windows Hello for Business"
+  client_app_used: "Mobile Apps and Desktop clients"
+  resource_display_name: "Windows Azure Active Directory"
+  resource_id: "00000002-0000-0000-c000-000000000000"
+
+# Parameter definitions
+parameters:
+  - name: Level
+    description: The severity level of the sign-in event
+    required: true
+    default: "1"
+  - name: category
+    description: The category of the log event
+    required: true
+    default: "SignInLogs"
+  - name: operationName
+    description: The type of operation performed
+    required: true
+    default: "Sign-in activity"
+  - name: location
+    description: Geographic location information
+    required: false
+    default: "US"

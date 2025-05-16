@@ -1,0 +1,56 @@
+vendor: Microsoft
+product: Windows
+data_source: System Service Creation
+description: Windows Event Logs for service creation events (EventCode 7045) related to potential malicious service creation by Clop ransomware
+format: XML
+frequency: medium
+
+# Generator settings
+is_generator: true
+base_frequency: 0.01
+time_patterns:
+  - business_hours
+  - night_hours
+  - weekend
+business_hours_multiplier: 1.5
+night_hours_multiplier: 0.5
+weekend_multiplier: 0.3
+
+# Context values for rendering
+context:
+  event_id: 7045
+  provider: "Service Control Manager"
+  provider_guid: "{555908d1-a6d7-4695-8e1e-26931d2012f4}"
+  channel: "System"
+  malicious_service_names: ["SecurityCenterIBM", "WinCheckDRVs"]
+  malicious_image_paths: ["cmd.exe", "C:\\Temp\\mockService.exe"]
+
+# Documentation for registry entity access
+registry_entity_docs:
+  - field: device.hostname
+    description: "Hostname of the device where the service was created"
+  - field: device.fqdn
+    description: "Fully Qualified Domain Name of the device"
+  - field: device.ip_address
+    description: "IP address of the device"
+  - field: user.username
+    description: "Username used for service creation context"
+  - field: registry.get_domain()
+    description: "Domain name for the organization"
+  - field: registry.get_netbios_domain()
+    description: "NetBIOS domain name for the organization"
+
+# Parameter definitions
+parameters:
+  - name: event_id
+    description: "Windows Event ID for service creation"
+    required: true
+    default: 7045
+  - name: service_name
+    description: "Name of the created service (suspicious service names used by Clop ransomware)"
+    required: true
+    examples: ["SecurityCenterIBM", "WinCheckDRVs"]
+  - name: image_path
+    description: "Path to the service executable"
+    required: true
+    examples: ["cmd.exe", "C:\\Temp\\mockService.exe"]

@@ -1,0 +1,37 @@
+{%- set log_sub_types = ['start', 'end', 'deny', 'drop'] -%}
+{%- set log_sub_type = log_sub_types | random -%}
+{%- set rule_names = ['Allow_DNS', 'Block_Malicious', 'Allow_Internal', 'Allow_Web', 'Default_Rule'] -%}
+{%- set rule_name = rule_names | random -%}
+{%- set usernames = ['jsmith', 'alee', 'bjohnson', 'mwilliams', 'dthomas'] -%}
+{%- set source_user = registry.get_random_user().username if registry.get_random_user() else usernames | random -%}
+{%- set destination_user_names = ['unknown', 'admin', 'guest', 'external'] -%}
+{%- set destination_user_name = destination_user_names | random -%}
+{%- set applications = ['dns', 'web-browsing', 'ssl', 'ssh', 'ftp', 'smtp', 'ms-ds-smb', 'ldap', 'ntp', 'snmp', 'ms-rdp', 'netbios-ss', 'mysql', 'ms-sql-m', 'icmp', 'http', 'https', 'ping', 'traceroute', 'unknown-tcp', 'unknown-udp'] -%}
+{%- set application = applications | random -%}
+{%- set source_zones = ['Trust', 'LAN', 'Internal', 'DMZ-In', 'VPN'] -%}
+{%- set source_zone = source_zones | random -%}
+{%- set destination_zones = ['Untrust', 'DMZ', 'External', 'Internet', 'Partner'] -%}
+{%- set destination_zone = destination_zones | random -%}
+{%- set common_ports = [53, 80, 443, 22, 21, 25, 445, 389, 123, 161, 3389, 139, 3306, 1433, 8080, 8443] -%}
+{%- set protocols = ['tcp', 'udp', 'icmp', 'esp', 'gre'] -%}
+{%- set protocol = protocols | random -%}
+{%- set actions = ['allow', 'deny', 'drop', 'reset-client', 'reset-server', 'reset-both'] -%}
+{%- set action = actions | random -%}
+{%- set categories = ['any', 'adult', 'alcohol-tobacco', 'auctions', 'business-economy', 'computer-internet-info', 'content-delivery-networks', 'cryptocurrency', 'dating', 'educational-institutions', 'entertainment-recreation', 'financial-services', 'gambling', 'games', 'government', 'health-medicine', 'high-risk', 'home-garden', 'hunting-fishing', 'insufficient-content', 'internet-communications-telephony', 'internet-portals', 'job-search', 'legal', 'military', 'motor-vehicles', 'news', 'not-resolved', 'nudity', 'online-storage-backup', 'peer-to-peer', 'personal-sites-blogs', 'philosophy-political-advocacy', 'private-ip-addresses', 'questionable', 'real-estate', 'reference-research', 'religion', 'search-engines', 'sex-education', 'shareware-freeware', 'shopping', 'social-networking', 'society-daily-living', 'sports', 'stock-advice-tools', 'streaming-media', 'swimsuits-lingerie', 'training-tools', 'translation', 'travel', 'web-advertisements', 'web-based-email', 'web-hosting', 'weapons', 'unknown', 'malware', 'phishing', 'command-and-control', 'hacking', 'proxy-avoidance-anonymizers'] -%}
+{%- set category = categories | random -%}
+{%- set src_countries = ['US', 'RU', 'CN', 'GB', 'DE', 'JP', 'FR', 'KR', 'IN', 'BR', 'CA', 'AU', 'NL', 'IT', 'ZA'] -%}
+{%- set src_country = src_countries | random -%}
+{%- set session_end_reasons = ['aged-out', 'policy-deny', 'policy-based-forward', 'tcp-fin', 'tcp-rst-from-client', 'tcp-rst-from-server', 'resources-unavailable', 'unknown', 'n/a'] -%}
+{%- set session_end_reason = session_end_reasons | random -%}
+{%- set src_dynamic_addr_groups = ['Corp-Internal', 'Corp-Workstations', 'Finance-Dept', 'Corp-BYOD', 'IT-Dept', 'HR-Dept', 'Engineering', 'Executive', 'Marketing', 'Sales', 'Data-Center', 'R&D', 'QA-Testing', 'Contractors'] -%}
+{%- set src_dynamic_addr_group = src_dynamic_addr_groups | random -%}
+{%- set dst_dynamic_addr_groups = ['DNS-Server', 'Web-Server', 'Mail-Server', 'File-Server', 'Database-Server', 'Application-Server', 'Authentication-Server', 'VPN-Gateway', 'Proxy-Server', 'IDS-IPS', 'Developer-Workstation', 'Executive-Laptop', 'Guest-Device', 'IoT-Device', 'SCADA-System', 'POS-Terminal', 'Mobile-Device', 'Unknown'] -%}
+{%- set dst_dynamic_addr_group = dst_dynamic_addr_groups | random -%}
+{%- set risks = ['low', 'medium', 'high', 'critical', 'informational'] -%}
+{%- set risk = risks | random -%}
+{%- set proxy_traffic_values = ['ProxyTraffic', 'NonProxyTraffic'] -%}
+{%- set proxy_traffic_value = proxy_traffic_values | random -%}
+{%- set tunnel_types = ['primary', 'secondary', 'backup'] -%}
+{%- set tunnel_type = tunnel_types | random -%}
+
+1,{{ current_timestamp() | format_timestamp('%Y/%m/%d %H:%M:%S') }},PA-5250-{{ random_int(1000, 9999) }},TRAFFIC,{{ log_sub_type }},{{ random_int(2000, 3000) }},{{ current_timestamp() | format_timestamp('%Y/%m/%d %H:%M:%S') }},{{ random_private_ip() }},{{ random_public_ip() }},{{ registry.get_random_device().ip_address if registry.get_random_device() else "10.10." + random_int(1, 5) | string + "." + random_int(1, 254) | string }},{{ random_public_ip() }},{{ rule_name }},{{ source_user }},{{ destination_user_name }},{{ application }},vsys1,{{ source_zone }},{{ destination_zone}},ethernet1/{{ random_int(1, 3) }},ethernet1/{{ random_int(1, 4) }},LogForward,{{ current_timestamp() | format_timestamp('%Y/%m/%d %H:%M:%S') }},{{ random_int(54320, 54399) }},1,{{ random_port() }},{{ common_ports | random }},{{ random_port() }},{{ common_ports | random }},0x{{ random_int(0, 67108864) | hex }},{{ protocol }},{{ action }},{{ random_int(0, 150000) }},{{ random_int(0, 80000) }},{{ random_int(0, 70000) }},{{ random_int(0, 300) }},{{ current_timestamp() | format_timestamp('%Y/%m/%d %H:%M:%S') }},{{ random_int(0, 120) }},{{ category }},,{{ random_int(7892340, 7892399) }},0x0,US,{{ src_country }},,{{ random_int(0, 200) }},{{ random_int(0, 150) }},{{ session_end_reason }},DG1,DG2,,,vsys1,PA-5250-{{ random_int(1000, 9999) }},policy,,,,,,0,0,0,0,0,0,0,0,,0,,,,,,,,,,,,,,,,,,,,,,,,{{ src_dynamic_addr_group }},{{ dst_dynamic_addr_group }},,,,,,{{ risk }},0,{{ proxy_traffic_value }},{{ tunnel_type }}

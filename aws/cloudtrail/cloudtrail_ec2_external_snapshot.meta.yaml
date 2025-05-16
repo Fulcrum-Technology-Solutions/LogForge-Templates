@@ -1,0 +1,34 @@
+vendor: AWS
+product: CloudTrail
+data_source: EC2 Snapshot Shared Externally
+description: AWS CloudTrail logs for EC2 snapshot modifications, specifically when snapshots are shared with external AWS accounts. This activity could indicate data exfiltration attempts if unauthorized.
+format: JSON
+frequency: low
+is_generator: true
+base_frequency: 0.05
+time_patterns:
+  - business_hours
+  - night_hours
+  - weekend
+business_hours_multiplier: 1.5
+night_hours_multiplier: 0.2
+weekend_multiplier: 0.1
+
+# Context values for template variables
+context:
+  aws_account_id: "111111111111"
+  event_type: "AwsApiCall"
+  event_source: "ec2.amazonaws.com"
+  event_name: "ModifySnapshotAttribute"
+  attribute_type: "CREATE_VOLUME_PERMISSION"
+
+# Parameter definitions
+parameters:
+  - name: aws_account_id
+    description: The AWS account ID where the event originates
+    required: false
+    default: "111111111111"
+  - name: external_account_ids
+    description: List of external AWS account IDs that might be used for sharing
+    required: false
+    default: []

@@ -1,0 +1,69 @@
+vendor: Zscaler
+product: ZIA
+data_source: Web Traffic
+description: Zscaler Internet Access (ZIA) web traffic logs containing HTTP/HTTPS requests, security scanning results, threat detection, and device information
+format: JSON
+frequency: high
+
+# Generator settings
+is_generator: true
+base_frequency: 0.5
+time_patterns:
+  - business_hours
+  - night_hours
+  - weekend
+business_hours_multiplier: 2.0
+night_hours_multiplier: 0.3
+weekend_multiplier: 0.1
+
+# Required context values
+context:
+  module: "ZIA"
+  product: "ZIA"
+  productversion: "1.0"
+  
+# Documentation
+documentation: |
+  This template generates realistic web traffic logs for Zscaler Internet Access (ZIA),
+  a cloud security service that inspects web traffic.
+  
+  The logs include:
+  - User information and authentication details
+  - Device details including OS, model, and custom fields
+  - HTTP/HTTPS request/response data
+  - Security scanning results and threat detection
+  - TLS/SSL connection information
+  - Bandwidth and sizing metrics
+  - URL categorization and policy enforcement
+  
+  The template demonstrates:
+  - Using random user and device entities from the registry
+  - Setting and reusing variables for consistent log data
+  - Creating realistic web traffic patterns with appropriate methods, status codes, and sizes
+  - Including realistic threat names and categories when threats are detected
+  - Accessing custom device fields with fallbacks when fields are not defined
+  
+  Each log entry represents a single web request passing through the Zscaler cloud proxy,
+  with appropriate metadata about the security scanning performed.
+  
+  Roughly 20% of generated logs will include detected threats with specific threat names,
+  categories, and appropriate action (BLOCK) and status code (403) values.
+
+# Entity Usage Examples
+entity_examples: |
+  User entities: username, email, department
+  Device entities: hostname, ip_address, os_type, model, custom_location
+  Custom fields are accessed using: device.custom_fieldname
+  
+# Threat name examples
+threat_examples: |
+  - HTML.Adware.Gen
+  - HTML.Adware.Popads
+  - Win32.Adware.PCAppStore
+  - PS.Adware.DesktopGoose
+  - W32/Adware.QXJK-2664
+  - Trojan.GenericKD.40251423
+  - JS:Trojan.Cryxos
+  - Trojan:Win32/Occamy.C
+  - Backdoor.Win32.Androm
+  - Win32.Downloader.Banload

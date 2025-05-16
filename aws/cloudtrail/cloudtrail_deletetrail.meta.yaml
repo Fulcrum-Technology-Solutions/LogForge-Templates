@@ -1,0 +1,63 @@
+vendor: AWS
+product: CloudTrail
+data_source: DeleteTrail Event
+description: AWS CloudTrail DeleteTrail event that occurs when a CloudTrail trail is deleted. This is a potentially suspicious activity that could indicate defense evasion tactics to hide AWS activity.
+format: JSON
+frequency: low
+
+# Generator settings
+is_generator: true
+base_frequency: 0.01         # Very low frequency as this is a rare event
+time_patterns:
+  - business_hours           # References patterns defined in config.yaml
+  - night_hours
+  - weekend
+business_hours_multiplier: 1.2    # Slightly higher during business hours
+night_hours_multiplier: 0.8       # Lower frequency after business hours
+weekend_multiplier: 0.5           # Lower frequency on weekends
+
+# Context values for template variables
+context:
+  cloud_region: us-east-1
+  cloud_provider: AWS
+  api_operation: DeleteTrail
+  api_service_name: cloudtrail.amazonaws.com
+  user_agent: "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36"
+  class_name: "API Activity"
+  class_uid: 6003
+  category_name: "Application Activity"
+  category_uid: 6
+  severity_id: 1
+  severity: "Informational"
+  activity_name: "Delete"
+  activity_id: 4
+  type_uid: 600304
+  type_name: "API Activity: Delete"
+  status: "Success"
+
+# Documentation
+documentation: |
+  This template generates AWS CloudTrail logs for DeleteTrail operations in Amazon Security Lake OCSF format.
+  
+  DeleteTrail operations are security-relevant as they could indicate an attacker trying to cover their tracks
+  by removing audit logging capabilities. These events are often used in security monitoring to detect potential
+  defense evasion techniques (MITRE ATT&CK T1562.008).
+  
+  The template uses:
+  - random_guid() for generating unique identifiers
+  - current_timestamp() for event timestamps
+  - random_int() for account IDs and other numeric values
+  - random_string() for credential UIDs and other string identifiers
+  - random_public_ip() for source IP addresses
+  - registry functions to access user entities from the entity registry
+
+# Parameter definitions
+parameters:
+  - name: cloud_region
+    description: AWS region where the event occurred
+    required: false
+    default: us-east-1
+  - name: account_id
+    description: AWS account ID where the deletion occurred
+    required: false
+    default: null

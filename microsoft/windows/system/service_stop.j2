@@ -1,0 +1,22 @@
+<Event xmlns="http://schemas.microsoft.com/win/2004/08/events/event">
+  <System>
+    <Provider Name="Service Control Manager" Guid="{555908d1-a6d7-4695-8e1e-26931d2012f4}" EventSourceName="Service Control Manager" />
+    <EventID Qualifiers="16384">{{ event_id }}</EventID>
+    <Version>0</Version>
+    <Level>4</Level>
+    <Task>0</Task>
+    <Opcode>0</Opcode>
+    <Keywords>0x8080000000000000</Keywords>
+    <TimeCreated SystemTime="{{ timestamp }}" />
+    <EventRecordID>12345</EventRecordID>
+    <Correlation />
+    <Execution ProcessID="{{ process_id }}" ThreadID="{{ thread_id }}" />
+    <Channel>System</Channel>
+    <Computer>{{ hostname }}</Computer>
+    <Security />
+  </System>
+  <EventData>
+    <Data Name="param1">{{ display_name }}</Data>
+    <Data Name="param2">{{ status }}</Data>
+  </EventData>
+</Event>

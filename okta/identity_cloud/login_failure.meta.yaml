@@ -1,0 +1,65 @@
+vendor: Okta
+product: Identity Cloud
+data_source: Authentication Events
+description: Okta failed login attempts due to invalid credentials
+format: JSON
+frequency: high
+
+# Generator settings
+is_generator: true
+base_frequency: 0.1          # Base rate: 1 event every 10 seconds
+time_patterns:               # List of time patterns that affect this generator
+  - business_hours
+  - night_hours
+  - weekend
+business_hours_multiplier: 2.0    # Higher frequency during business hours
+night_hours_multiplier: 0.3       # Lower frequency after business hours
+weekend_multiplier: 0.2           # Lower frequency on weekends
+
+# Context values for rendering
+context:
+  event_type: "user.session.start"
+  legacyEventType: "core.user_auth.login_failed"
+  outcome_result: "FAILURE"
+  outcome_reason: "INVALID_CREDENTIALS"
+  severity: "WARN"
+  displayMessage: "User login to Okta"
+  browser: "CHROME"
+  os: "Mac OS 14.3.1 (Sonoma)"
+  userAgent: "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36"
+# Geographical context will be pulled from user.location
+# This context is just a fallback if user.location is not available
+  postalCode: "20036"
+  postalCode: "20036"
+  asOrg: "twc internal spectrum"
+  isp: "charter communications inc"
+  domain: "rr.com"
+  requestUri: "/idp/idx/identify"
+  url: "/idp/idx/identify?"
+  oktaUserAgentExtended: "okta-auth-js/7.0.1 okta-signin-widget-7.15.1"
+
+# Parameter definitions
+parameters:
+  - name: event_uuid
+    description: Unique identifier for the event
+    required: true
+    
+  - name: user
+    description: The user attempting to authenticate
+    required: true
+    
+  - name: public_ip
+    description: The public IP address of the client
+    required: true
+    
+  - name: timestamp
+    description: The time when the event occurred
+    required: true
+    
+  - name: lat
+    description: Latitude coordinate of the client location
+    required: true
+    
+  - name: lon
+    description: Longitude coordinate of the client location
+    required: true

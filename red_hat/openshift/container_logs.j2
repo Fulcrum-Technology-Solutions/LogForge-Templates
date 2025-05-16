@@ -1,0 +1,57 @@
+{
+  "_time": {{ current_timestamp() }},
+  "openshift_node_labels": [
+    "kubernetes.io/arch=amd64",
+    "kubernetes.io/hostname={{ registry.get_random_device().hostname }}",
+    "kubernetes.io/os=linux",
+    "node-role.kubernetes.io/control-plane=",
+    "node-role.kubernetes.io/master=",
+    "node.openshift.io/os_id=rhcos",
+    "beta.kubernetes.io/arch=amd64",
+    "beta.kubernetes.io/os=linux"
+  ],
+  "openshift_namespace": "openshift-monitoring",
+  "openshift_container_imageid": "quay.io/openshift-release-dev/ocp-v4.0-art-dev@sha256:{{ random_string(64, '0123456789abcdef') }}",
+  "period_sec": 30,
+  "openshift_pod_labels": [
+    "app.kubernetes.io/component=exporter",
+    "app.kubernetes.io/managed-by=cluster-monitoring-operator",
+    "app.kubernetes.io/name=node-exporter",
+    "app.kubernetes.io/part-of=openshift-monitoring",
+    "app.kubernetes.io/version=1.4.0",
+    "controller-revision-hash={{ random_string(10, '0123456789abcdef') }}",
+    "pod-template-generation={{ random_int(1, 10) }}"
+  ],
+  "openshift_namespace_labels": [
+    "openshift.io/cluster-monitoring=true",
+    "pod-security.kubernetes.io/audit=privileged",
+    "pod-security.kubernetes.io/enforce=privileged",
+    "pod-security.kubernetes.io/warn=privileged",
+    "kubernetes.io/metadata.name=openshift-monitoring",
+    "name=openshift-monitoring",
+    "network.openshift.io/policy-group=monitoring",
+    "olm.operatorgroup.uid/{{ random_guid() }}="
+  ],
+  "openshift_pod_ip": "{{ random_private_ip() }}",
+  "openshift_daemonset_labels": [
+    "app.kubernetes.io/component=exporter",
+    "app.kubernetes.io/managed-by=cluster-monitoring-operator",
+    "app.kubernetes.io/name=node-exporter",
+    "app.kubernetes.io/part-of=openshift-monitoring",
+    "app.kubernetes.io/version=1.4.0"
+  ],
+  "openshift_container_id": "{{ random_string(64, '0123456789abcdef') }}",
+  "openshift_stats_object": "container",
+  "openshift_pod_name": "node-exporter-{{ random_string(5, '0123456789abcdefghijklmnopqrstuvwxyz') }}",
+  "openshift_daemonset_name": "node-exporter",
+  "openshift_host_ip": "{{ random_private_ip() }}",
+  "openshift_container_image": "quay.io/openshift-release-dev/ocp-v4.0-art-dev@sha256:{{ random_string(64, '0123456789abcdef') }}",
+  "openshift_container_name": "kube-rbac-proxy",
+  "openshift_pod_id": "{{ random_guid() }}",
+  "openshift_node_id": "{{ random_guid() }}",
+  "openshift_cluster": "{{ context.cluster_name }}",
+  "openshift_node_name": "{{ context.cluster_name }}-{{ random_string(4, '0123456789abcdefghijklmnopqrstuvwxyz') }}-master-{{ random_int(0, 2) }}",
+  "openshift_daemonset_id": "{{ random_guid() }}",
+  "source": "/openshift/container/{{ random_string(64, '0123456789abcdef') }}",
+  "host": "{{ context.cluster_name }}-{{ random_string(4, '0123456789abcdefghijklmnopqrstuvwxyz') }}-master-{{ random_int(0, 2) }}"
+}

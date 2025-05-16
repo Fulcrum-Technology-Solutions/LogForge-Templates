@@ -1,0 +1,31 @@
+vendor: Check Point
+product: Firewall
+data_source: Traffic Logs
+description: Check Point firewall traffic logs capturing allowed connections through different network zones
+format: TEXT
+frequency: high
+
+# Generator settings
+is_generator: true
+base_frequency: 1.0
+time_patterns:
+  - business_hours
+  - night_hours
+  - weekend
+business_hours_multiplier: 2.0
+night_hours_multiplier: 0.5
+weekend_multiplier: 0.3
+
+# Context values for template variables
+context:
+  layer_name: "Internal-Policy Network"
+  layer_uuid: "1cfc5be4-cef8-4340-8217-3828ef6e9aa2"
+  parent_rule: 0
+  rule_action: "Accept"
+  action: "Accept"
+  ifdir: "inbound"
+  logid: 0
+  version: 5
+  inzone: "Internal"
+  member_id: "1_3"
+  outzone: "Internal"

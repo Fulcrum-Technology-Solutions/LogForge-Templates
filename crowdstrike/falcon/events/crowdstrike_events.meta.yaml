@@ -1,0 +1,46 @@
+vendor: Crowdstrike
+product: Falcon
+data_source: Falcon Events
+description: Crowdstrike Falcon Events
+format: JSON
+frequency: high
+
+# Generator settings
+is_generator: true
+base_frequency: 0.3          # Base rate: approximately 1 event every 3.3 seconds
+time_patterns:               
+  - business_hours
+  - night_hours
+  - weekend
+business_hours_multiplier: 2.0    # Higher frequency during business hours
+night_hours_multiplier: 0.5       # Lower frequency after business hours
+weekend_multiplier: 0.3           # Low frequency on weekends
+
+# Context values for rendering
+context:
+  event_type: "AuthActivityAuditEvent"
+  service_name: "api_request"
+  operation_name: "logged"
+  produces: "[application/json]"
+  request_accept: "application/json"
+
+# Parameter definitions
+parameters:
+  - name: customer_id
+    description: The customer ID for the CrowdStrike tenant
+    required: true
+  - name: api_client_id
+    description: The API client ID used for authentication
+    required: true
+  - name: request_method
+    description: HTTP method used for the API request
+    required: true
+  - name: request_path
+    description: Endpoint path for the API request
+    required: true
+  - name: status_code
+    description: HTTP status code of the API response
+    required: true
+  - name: user_ip
+    description: IP address of the client making the API request
+    required: true

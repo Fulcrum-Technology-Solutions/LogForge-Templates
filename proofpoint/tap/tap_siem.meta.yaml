@@ -1,0 +1,25 @@
+vendor: Proofpoint
+product: Targeted Attack Protection
+data_source: TAP SIEM Events
+description: Proofpoint TAP SIEM Events with threat and user correlation
+format: JSON
+frequency: low
+
+# Generator settings for template-based generators
+is_generator: true
+base_frequency: 0.1
+time_patterns:
+  - business_hours
+  - night_hours
+  - weekend
+business_hours_multiplier: 1.5
+night_hours_multiplier: 0.3
+weekend_multiplier: 0.5
+
+# Template uses Jinja2 set statement for variable reuse
+# This enables consistent entity references throughout the template:
+# - sender_user: A random user who is sending the email
+# - recipient_user: A random user who receives the email
+# - device: A random device used in hostname references
+# - service: A random service used in policy routes
+# - threat_classification: Consistent threat type for coherent event data
