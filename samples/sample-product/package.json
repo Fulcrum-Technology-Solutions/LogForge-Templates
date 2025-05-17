@@ -1,9 +1,9 @@
 {
-  "vendor": "LogForge-Templates",
-  "product": "samples",
+  "vendor": "samples",
+  "product": "sample-product",
   "templates": [
     {
-      "file": "LogForge-Templates/samples/sample-product/sample-data/sample.j2",
+      "file": "samples/sample-product/sample-data/sample.j2",
       "name": "Event Source Name",
       "description": "Detailed description of what this log represents and when it's generated",
       "vendor": "Vendor Name",
