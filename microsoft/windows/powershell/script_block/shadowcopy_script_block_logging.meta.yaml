@@ -1,69 +1,34 @@
-vendor: Microsoft
-product: Windows
-data_source: PowerShell Script Block
+name: PowerShell Script Block
 description: Windows PowerShell script block execution logging (EventID 4104)
-format: XML
-frequency: medium
-
-# Generator settings
-is_generator: true
-base_frequency: 0.1          # Base rate: 1 event every 10 seconds
-time_patterns:               # List of time patterns that affect this generator
-  - business_hours           # References patterns defined in config.yaml
-  - night_hours
-  - weekend
-business_hours_multiplier: 1.5    # Higher frequency during business hours
-night_hours_multiplier: 0.2       # Lower frequency after business hours
-weekend_multiplier: 0.3           # Lower frequency on weekends
-
-# Context values for rendering
-context:
-  provider_guid: '{A0C1853B-5C40-4B15-8766-3CF1C58F985A}'
-  event_id: 4104
-  version: 1
-  level: 5
-  task: 2
-  opcode: 15
-  keywords: '0x0'
-  channel: 'Microsoft-Windows-PowerShell/Operational'
-  message_number: 1
-  message_total: 1
-
-# Documentation for template variables
-parameters:
-  - name: device
-    description: Random device from entity registry
-    required: true
-    example: "{{ registry.get_random_device() }}"
-  - name: user
-    description: Random user from entity registry
-    required: true
-    example: "{{ registry.get_random_user() }}"
-  - name: timestamp
-    description: Current timestamp for event generation
-    required: true
-    example: "{{ current_timestamp() }}"
-  - name: formatted_time
-    description: Formatted timestamp in Windows event log format
-    required: true
-    example: "{{ timestamp | format_timestamp('%Y-%m-%dT%H:%M:%S.%fZ') }}"
-  - name: process_id
-    description: Random process ID
-    required: true
-    example: "{{ random_int(1000, 9999) }}"
-  - name: thread_id
-    description: Random thread ID
-    required: true
-    example: "{{ random_int(1000, 9999) }}"
-  - name: script_block_id
-    description: Random GUID for script block identification
-    required: true
-    example: "{{ random_guid() }}"
-  - name: activity_id
-    description: Random GUID for correlation activity
-    required: true
-    example: "{{ random_guid() }}"
-  - name: event_record_id
-    description: Random event record ID
-    required: true
-    example: "{{ random_int(100000, 999999) }}"
+log_type: windows
+author: Fulcrum Technology Solutions
+version: 1.0.0
+product: Windows
+vendor: Microsoft
+tags:
+- microsoft
+- windows
+- powershell
+- script
+- block
+date_created: '2025-05-16'
+last_updated: '2025-05-16'
+fields:
+- field: device
+  description: Random device from entity registry
+- field: user
+  description: Random user from entity registry
+- field: timestamp
+  description: Current timestamp for event generation
+- field: formatted_time
+  description: Formatted timestamp in Windows event log format
+- field: process_id
+  description: Random process ID
+- field: thread_id
+  description: Random thread ID
+- field: script_block_id
+  description: Random GUID for script block identification
+- field: activity_id
+  description: Random GUID for correlation activity
+- field: event_record_id
+  description: Random event record ID

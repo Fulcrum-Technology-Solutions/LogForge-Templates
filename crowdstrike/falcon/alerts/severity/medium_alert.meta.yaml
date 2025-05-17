@@ -1,17 +1,14 @@
-vendor: Crowdstrike
-product: Falcon
-data_source: Falcon Medium Alert
+name: Falcon Medium Alert
 description: Crowdstrike Falcon Medium Alerts
-format: JSON
-frequency: high
-
-# Generator settings
-is_generator: true
-base_frequency: 0.3          # Base rate: approximately 1 event every 3.3 seconds
-time_patterns:               
-  - business_hours
-  - night_hours
-  - weekend
-business_hours_multiplier: 2.0    # Higher frequency during business hours
-night_hours_multiplier: 0.5       # Lower frequency after business hours
-weekend_multiplier: 0.3           # Low frequency on weekends
+log_type: falcon
+author: Fulcrum Technology Solutions
+version: 1.0.0
+product: Falcon
+vendor: Crowdstrike
+tags:
+- crowdstrike
+- falcon
+- medium
+- alert
+date_created: '2025-05-16'
+last_updated: '2025-05-16'

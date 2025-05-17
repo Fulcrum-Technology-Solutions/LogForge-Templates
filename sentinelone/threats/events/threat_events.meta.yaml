@@ -1,60 +1,21 @@
-vendor: SentinelOne
-product: Endpoint Security
-data_source: Threat Detection
+name: Threat Detection
 description: SentinelOne Endpoint Threat Detection Eventss
-format: JSON
-frequency: medium
-
-# Generator settings
-is_generator: true
-base_frequency: 0.1
-time_patterns:
-  - business_hours
-  - night_hours
-  - weekend
-business_hours_multiplier: 1.5
-night_hours_multiplier: 0.5
-weekend_multiplier: 0.3
-
-# Context values for template variables
-context:
-  threat_types:
-    - Malware
-    - PUA
-    - Suspicious
-    - Ransomware
-    - Legitimate
-  detection_engines:
-    - pre_execution
-    - post_execution
-    - behavioral
-    - static
-  mitigation_actions:
-    - quarantine
-    - isolate
-    - block
-    - rollback
-
-# Documentation of entity usage
-# Demonstrates device fields with FQDN and custom fields access
-entity_notes: |
-  This template uses:
-   - Device entities (hostname, fqdn, ip_address, mac_address, device_type, os_type, os_version, department)
-   - User entities (username, department, email)
-   - Custom device fields if available (accessed via device.custom_field_name)
-   - Time patterns to model realistic frequency of detections (more during business hours)
-
-# Parameter definitions
-parameters:
-  - name: include_container_info
-    description: Include container information in the generated events
-    required: false
-    default: false
-  - name: include_kubernetes_info
-    description: Include Kubernetes information in the generated events
-    required: false
-    default: false
-  - name: include_cloud_info
-    description: Include cloud platform information in the generated events
-    required: false
-    default: false
+log_type: endpoint security
+author: Fulcrum Technology Solutions
+version: 1.0.0
+product: Endpoint Security
+vendor: SentinelOne
+tags:
+- sentinelone
+- endpoint-security
+- threat
+- detection
+date_created: '2025-05-16'
+last_updated: '2025-05-16'
+fields:
+- field: include_container_info
+  description: Include container information in the generated events
+- field: include_kubernetes_info
+  description: Include Kubernetes information in the generated events
+- field: include_cloud_info
+  description: Include cloud platform information in the generated events

@@ -1,35 +1,21 @@
-vendor: Inky
-product: Phish Fence
-data_source: Email Analysis
+name: Email Analysis
 description: Inky Phish Fence Email Security Analysis Events
-format: JSON
-frequency: high
-
-# Generator settings
-is_generator: true
-base_frequency: 0.3          # One event every ~3 seconds
-time_patterns:
-  - business_hours
-  - night_hours
-  - weekend
-business_hours_multiplier: 2.0    # More emails during business hours
-night_hours_multiplier: 0.2       # Fewer emails at night
-weekend_multiplier: 0.4           # Reduced email traffic on weekends
-
-# Context values for template variables
-context:
-  organization: "company"
-  mail_domain: "mail.example.com" 
-  subject_prefix: "[COMPANY]"
-
-# Parameter definitions
-parameters:
-  - name: organization
-    description: Organization name used in teamid and dashboard URLs
-    required: true
-  - name: mail_domain
-    description: Primary mail domain for SMTP server references
-    required: true
-  - name: subject_prefix
-    description: Optional prefix to add to email subjects
-    required: false
+log_type: phish fence
+author: Fulcrum Technology Solutions
+version: 1.0.0
+product: Phish Fence
+vendor: Inky
+tags:
+- inky
+- phish-fence
+- email
+- analysis
+date_created: '2025-05-16'
+last_updated: '2025-05-16'
+fields:
+- field: organization
+  description: Organization name used in teamid and dashboard URLs
+- field: mail_domain
+  description: Primary mail domain for SMTP server references
+- field: subject_prefix
+  description: Optional prefix to add to email subjects

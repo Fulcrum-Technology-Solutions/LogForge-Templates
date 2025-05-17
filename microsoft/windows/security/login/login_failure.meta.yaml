@@ -1,59 +1,28 @@
-vendor: Microsoft
-product: Windows
-data_source: Security Login Failure
+name: Security Login Failure
 description: Windows Security failed login events (EventID 4625)
-format: XML
-frequency: low
-
-# Generator settings for template-based generators
-is_generator: true
-base_frequency: 0.05  # Lower than login success (1 event every 20 seconds)
-time_patterns:
-  - business_hours
-  - night_hours
-  - weekend
-business_hours_multiplier: 1.0  # No multiplier during business hours
-night_hours_multiplier: 0.2  # Even lower at night
-weekend_multiplier: 0.3  # Low on weekends too
-
-# Context values for rendering
-context:
-  event_id: 4625
-  logon_type: 3
-  session_id: 0
-
-# Parameter definitions
-parameters:
-  - name: username
-    description: The username of the user attempting to log in
-    required: true
-  - name: domain
-    description: The domain of the user
-    required: true
-  - name: hostname
-    description: The hostname of the machine
-    required: true
-  - name: ip_address
-    description: Source IP address of the login attempt
-    required: true
-  - name: process_id
-    description: Process ID of the login process
-    required: false
-  - name: thread_id
-    description: Thread ID of the login process
-    required: false
-
-# Example usages
-examples:
-  - description: Failed local user login
-    parameters:
-      username: john.doe
-      domain: CONTOSO
-      hostname: WIN-DC01
-      ip_address: 192.168.1.100
-  - description: Failed remote login
-    parameters:
-      username: admin
-      domain: CONTOSO
-      hostname: WIN-DC01
-      ip_address: 10.0.0.5
+log_type: security
+author: Fulcrum Technology Solutions
+version: 1.0.0
+product: Windows
+vendor: Microsoft
+tags:
+- microsoft
+- windows
+- security
+- login
+- failure
+date_created: '2025-05-16'
+last_updated: '2025-05-16'
+fields:
+- field: username
+  description: The username of the user attempting to log in
+- field: domain
+  description: The domain of the user
+- field: hostname
+  description: The hostname of the machine
+- field: ip_address
+  description: Source IP address of the login attempt
+- field: process_id
+  description: Process ID of the login process
+- field: thread_id
+  description: Thread ID of the login process
