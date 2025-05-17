@@ -9,7 +9,7 @@
   "tags": ["paloalto", "wildfire", "threat", "malware", "security"],
   "templates": [
     {
-      "file": "wildfire_threat_detected.j2",
+      "file": "threats/wildfire_threat_detected.j2",
       "name": "WildFire Threat Detected",
       "description": "Palo Alto Networks WildFire threat detection logs",
       "log_type": "security",

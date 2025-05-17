@@ -9,7 +9,7 @@
   "tags": ["checkpoint", "firewall", "network", "security"],
   "templates": [
     {
-      "file": "traffic_logs.j2",
+      "file": "traffic/logs.j2",
       "name": "Traffic Logs",
       "description": "Check Point firewall traffic logs",
       "log_type": "network",

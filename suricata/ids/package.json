@@ -9,7 +9,7 @@
   "tags": ["suricata", "ids", "intrusion", "cve", "security"],
   "templates": [
     {
-      "file": "CVE-2023-4966.j2",
+      "file": "cve/CVE-2023-4966.j2",
       "name": "CVE-2023-4966",
       "description": "Suricata IDS alert logs for CVE-2023-4966 (Citrix Bleed) detection",
       "log_type": "security",

@@ -9,7 +9,7 @@
   "tags": ["redhat", "openshift", "container", "kubernetes", "logs"],
   "templates": [
     {
-      "file": "container_logs.j2",
+      "file": "container/container_logs.j2",
       "name": "Container Logs",
       "description": "Red Hat OpenShift container logs",
       "log_type": "application",

@@ -9,7 +9,7 @@
   "tags": ["zscaler", "zia", "web", "traffic", "security"],
   "templates": [
     {
-      "file": "zia_web_traffic.j2",
+      "file": "traffic/zia_web_traffic.j2",
       "name": "ZIA Web Traffic",
       "description": "Zscaler Internet Access web traffic logs",
       "log_type": "network",

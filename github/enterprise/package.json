@@ -9,7 +9,7 @@
   "tags": ["github", "enterprise", "security", "devsecops"],
   "templates": [
     {
-      "file": "disable_dependabot.j2",
+      "file": "dependabot/disable.j2",
       "name": "Disable Dependabot",
       "description": "GitHub Enterprise event for disabling Dependabot",
       "log_type": "security",

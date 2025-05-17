@@ -9,7 +9,7 @@
   "tags": ["paloalto", "globalprotect", "vpn", "authentication", "syslog"],
   "templates": [
     {
-      "file": "globalprotect.j2",
+      "file": "vpn/globalprotect.j2",
       "name": "GlobalProtect VPN",
       "description": "Palo Alto GlobalProtect VPN authentication and connection logs",
       "log_type": "authentication",
