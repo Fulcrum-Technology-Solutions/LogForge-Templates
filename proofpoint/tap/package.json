@@ -5,8 +5,13 @@
   "author": "Fulcrum Technology Solutions",
   "description": "Templates for Proofpoint Targeted Attack Protection (TAP) SIEM logs.",
   "repository": "https://github.com/Fulcrum-Technology-Solutions/LogForge-Templates",
-  "license": "MIT",
-  "tags": ["proofpoint", "tap", "email", "security", "siem"],
+  "tags": [
+    "proofpoint",
+    "tap",
+    "email",
+    "security",
+    "siem"
+  ],
   "templates": [
     {
       "file": "events/tap_siem.j2",
