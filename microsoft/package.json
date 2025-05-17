@@ -142,7 +142,7 @@
       "version": "1.0.0"
     },
     {
-      "file": "windows/sysmon/process_creation_adfind.j2",
+      "file": "windows/sysmon/process/process_creation_adfind.j2",
       "name": "Windows Process Creation AdFind",
       "description": "Sysmon process creation events for AdFind tool",
       "log_type": "security",

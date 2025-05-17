@@ -9,7 +9,7 @@
   "tags": ["windows", "sysmon", "process", "security", "eventlog"],
   "templates": [
     {
-      "file": "process_creation_adfind.j2",
+      "file": "process/process_creation_adfind.j2",
       "name": "Process Creation AdFind",
       "description": "Sysmon process creation events for AdFind tool",
       "log_type": "security",
