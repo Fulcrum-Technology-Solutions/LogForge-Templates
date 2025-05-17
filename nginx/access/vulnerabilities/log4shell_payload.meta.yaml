@@ -1,23 +1,23 @@
-vendor: NGINX
+name: HTTP Access Logs
+description: NGINX access logs showing Log4Shell JNDI payload injection attempts with
+  outbound connections
+log_type: access logs
+author: Fulcrum Technology Solutions
+version: 1.0.0
 product: Access Logs
-data_source: HTTP Access Logs
-description: NGINX access logs showing Log4Shell JNDI payload injection attempts with outbound connections
-format: Syslog
-frequency: low
+vendor: NGINX
+tags:
+- nginx
+- access-logs
+- http
+- access
+- logs
+date_created: '2025-05-16'
+last_updated: '2025-05-16'
+notes: 'This template generates NGINX access logs that show attempted Log4Shell JNDI
+  payload injection attacks.
 
-# Generator settings
-is_generator: true
-base_frequency: 0.01
-time_patterns:
-  - business_hours
-  - night_hours
-  - weekend
-business_hours_multiplier: 1.0
-night_hours_multiplier: 0.5
-weekend_multiplier: 0.3
+  The logs include the JNDI payload in the User-Agent field, which is a common attack
+  vector.
 
-# Documentation
-documentation: |
-  This template generates NGINX access logs that show attempted Log4Shell JNDI payload injection attacks.
-  The logs include the JNDI payload in the User-Agent field, which is a common attack vector.
-  The template generates a random source IP, timestamp, and JNDI payload pattern.
+  The template generates a random source IP, timestamp, and JNDI payload pattern.'

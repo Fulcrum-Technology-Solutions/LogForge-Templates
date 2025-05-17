@@ -5,8 +5,13 @@
   "author": "Fulcrum Technology Solutions",
   "description": "Templates for Microsoft Windows PowerShell script block logging events.",
   "repository": "https://github.com/Fulcrum-Technology-Solutions/LogForge-Templates",
-  "license": "MIT",
-  "tags": ["windows", "powershell", "script-block", "security", "eventlog"],
+  "tags": [
+    "windows",
+    "powershell",
+    "script-block",
+    "security",
+    "eventlog"
+  ],
   "templates": [
     {
       "file": "script_block/shadowcopy_script_block_logging.j2",
