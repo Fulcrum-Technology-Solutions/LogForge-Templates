@@ -1,0 +1,47 @@
+<Event xmlns="http://schemas.microsoft.com/win/2004/08/events/event">
+  <System>
+    <Provider Name="Microsoft-Windows-Security-Auditing" Guid="{54849625-5478-4994-A5BA-3E3B0328C30D}" />
+    <EventID>{{ event_id }}</EventID>
+    <Version>0</Version>
+    <Level>0</Level>
+    <Task>12544</Task>
+    <Opcode>0</Opcode>
+    <Keywords>0x8020000000000000</Keywords>
+    <TimeCreated SystemTime="{{ timestamp }}" />
+    <EventRecordID>12345</EventRecordID>
+    <Correlation />
+    <Execution ProcessID="{{ process_id }}" ThreadID="{{ thread_id }}" />
+    <Channel>Security</Channel>
+    <Computer>{{ hostname }}</Computer>
+    <Security />
+  </System>
+  <EventData>
+    <Data Name="SubjectUserSid">S-1-5-18</Data>
+    <Data Name="SubjectUserName">{{ registry.get_random_user().username if registry.get_random_user() else "jsmith" }}</Data>
+    <Data Name="SubjectDomainName">{{ domain }}</Data>
+    <Data Name="SubjectLogonId">0x3e7</Data>
+    <Data Name="TargetUserSid">S-1-5-21-12345-12345-12345-12345</Data>
+    <Data Name="TargetUserName">{{ registry.get_random_user().username if registry.get_random_user() else "jsmith" }}</Data>
+    <Data Name="TargetDomainName">{{ domain }}</Data>
+    <Data Name="TargetLogonId">0x4f8</Data>
+    <Data Name="LogonType">{{ logon_type }}</Data>
+    <Data Name="LogonProcessName">Advapi</Data>
+    <Data Name="AuthenticationPackageName">Negotiate</Data>
+    <Data Name="WorkstationName">{{ hostname }}</Data>
+    <Data Name="LogonGuid">{00000000-0000-0000-0000-000000000000}</Data>
+    <Data Name="TransmittedServices">-</Data>
+    <Data Name="LmPackageName">-</Data>
+    <Data Name="KeyLength">0</Data>
+    <Data Name="ProcessId">0x4</Data>
+    <Data Name="ProcessName">C:\Windows\System32\svchost.exe</Data>
+    <Data Name="IpAddress">{{ ip_address }}</Data>
+    <Data Name="IpPort">58742</Data>
+    <Data Name="ImpersonationLevel">%%1833</Data>
+    <Data Name="RestrictedAdminMode">-</Data>
+    <Data Name="TargetOutboundUserName">-</Data>
+    <Data Name="TargetOutboundDomainName">-</Data>
+    <Data Name="VirtualAccount">%%1843</Data>
+    <Data Name="TargetLinkedLogonId">0x0</Data>
+    <Data Name="ElevatedToken">%%1842</Data>
+  </EventData>
+</Event>

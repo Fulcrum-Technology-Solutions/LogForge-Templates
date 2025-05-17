@@ -1,0 +1,140 @@
+{
+  "name": "microsoft-windows",
+  "displayName": "Microsoft Windows Events",
+  "version": "1.0.0",
+  "author": "Fulcrum Technology Solutions",
+  "description": "A comprehensive bundle of templates for Microsoft Windows event logs across security, system, application, PowerShell, and Sysmon sources.",
+  "repository": "https://github.com/Fulcrum-Technology-Solutions/LogForge-Templates",
+  "tags": [
+    "windows",
+    "security",
+    "system",
+    "application",
+    "powershell",
+    "sysmon",
+    "eventlog",
+    "microsoft",
+    "xml"
+  ],
+  "templates": [
+    {
+      "file": "security/account/account_locked.j2",
+      "name": "Account Locked",
+      "description": "Windows Security account lockout events (EventID 4740)",
+      "log_type": "security",
+      "version": "1.0.0"
+    },
+    {
+      "file": "security/login/login_success.j2",
+      "name": "Login Success",
+      "description": "Windows Security successful login events (EventID 4624)",
+      "log_type": "security",
+      "version": "1.0.0"
+    },
+    {
+      "file": "security/login/login_failure.j2",
+      "name": "Login Failure",
+      "description": "Windows Security failed login events (EventID 4625)",
+      "log_type": "security",
+      "version": "1.0.0"
+    },
+    {
+      "file": "security/kerberos/kerberos_auth_4768.j2",
+      "name": "Kerberos Authentication Ticket Request",
+      "description": "Windows Security Auditing event for Kerberos Authentication Ticket Request (Event ID 4768)",
+      "log_type": "security",
+      "version": "1.0.0"
+    },
+    {
+      "file": "security/kerberos/kerberos_auth_failed_4771.j2",
+      "name": "Kerberos Authentication Failed",
+      "description": "Windows Security Auditing event for Kerberos Authentication Service Ticket Failed (Event ID 4771)",
+      "log_type": "security",
+      "version": "1.0.0"
+    },
+    {
+      "file": "security/privilege/privilege_use.j2",
+      "name": "Privilege Use",
+      "description": "Windows Security events for privilege use",
+      "log_type": "security",
+      "version": "1.0.0"
+    },
+    {
+      "file": "security/process/process_creation.j2",
+      "name": "Process Creation",
+      "description": "Windows Security events for process creation (EventID 4688)",
+      "log_type": "security",
+      "version": "1.0.0"
+    },
+    {
+      "file": "system/ransomware/clop_ransomware_known_service_name.j2",
+      "name": "Clop Ransomware Known Service Name",
+      "description": "Windows System event log for Clop ransomware known service names",
+      "log_type": "system",
+      "version": "1.0.0"
+    },
+    {
+      "file": "system/service/service_start.j2",
+      "name": "Service Start",
+      "description": "Windows System event log for service start events",
+      "log_type": "system",
+      "version": "1.0.0"
+    },
+    {
+      "file": "system/service/service_stop.j2",
+      "name": "Service Stop",
+      "description": "Windows System event log for service stop events",
+      "log_type": "system",
+      "version": "1.0.0"
+    },
+    {
+      "file": "system/time/time_change.j2",
+      "name": "Time Change",
+      "description": "Windows System event log for system time change events",
+      "log_type": "system",
+      "version": "1.0.0"
+    },
+    {
+      "file": "application/crash/crash.j2",
+      "name": "Application Crash",
+      "description": "Windows Application event log for application crashes",
+      "log_type": "application",
+      "version": "1.0.0"
+    },
+    {
+      "file": "application/error/error.j2",
+      "name": "Application Error",
+      "description": "Windows Application event log for application errors",
+      "log_type": "application",
+      "version": "1.0.0"
+    },
+    {
+      "file": "application/info/info.j2",
+      "name": "Application Info",
+      "description": "Windows Application event log for informational events",
+      "log_type": "application",
+      "version": "1.0.0"
+    },
+    {
+      "file": "application/warning/warning.j2",
+      "name": "Application Warning",
+      "description": "Windows Application event log for application warnings",
+      "log_type": "application",
+      "version": "1.0.0"
+    },
+    {
+      "file": "powershell/script_block/shadowcopy_script_block_logging.j2",
+      "name": "ShadowCopy Script Block Logging",
+      "description": "PowerShell script block logging for ShadowCopy operations",
+      "log_type": "security",
+      "version": "1.0.0"
+    },
+    {
+      "file": "sysmon/process/process_creation_adfind.j2",
+      "name": "Process Creation AdFind",
+      "description": "Sysmon process creation events for AdFind tool",
+      "log_type": "security",
+      "version": "1.0.0"
+    }
+  ]
+}

@@ -1,0 +1,148 @@
+{%- set user = registry.get_random_user() -%}
+{%- set device = registry.get_random_device() -%}
+{%- set timestamp = current_timestamp() | format_timestamp('%Y-%m-%dT%H:%M:%S.%fZ') -%}
+{%- set correlation_id = random_guid() -%}
+{%- set session_id = random_guid() -%}
+{%- set tenant_id = random_guid() -%}
+{%- set app_id = random_guid() -%}
+{%- set user_id = random_guid() -%}
+{%- set ip_address = random_public_ip() -%}
+
+{%- set operationNames = ['Sign-in activity', 'Password change', 'User registration'] -%}
+{%- set operationName = operationNames | random -%}
+{%- set categories = ['SignInLogs', 'PasswordChangeLogs', 'UserActivityLogs'] -%}
+{%- set category = categories | random -%}
+{%- set appDisplayNames = ['Windows Sign In','SignInLogs', 'PasswordChangeLogs', 'UserActivityLogs','Atlassian','Azure DevOps','AzureDataBricks','Canvas','Microsoft Office','Microsoft PowerBI','Microsoft Teams'] -%}
+{%- set appDisplayName = appDisplayNames | random -%}
+
+{%- set authMethods = ['Windows Hello for Busines', 'Password', 'MFA'] -%}
+{%- set authenticationMethod = authMethods | random -%}
+
+{
+    "Level": "{{ random_int(1, 4) }}",
+    "callerIpAddress": "{{ ip_address }}",
+    "category": "{{ category }}",
+    "correlationId": "{{ correlation_id }}",
+    "durationMs": "{{ random_int(0, 1000) }}",
+    "identity": "{{ user.username }}",
+    "location": "US",
+    "operationName": "{{ operationName }}",
+    "operationVersion": "1.0",
+    "properties": {
+      "appDisplayName": "{{ appDisplayName }}",
+      "appId": "{{ app_id }}",
+      "appServicePrincipalId": "null",
+      "appliedConditionalAccessPolicies": [
+      ],
+      "authenticationContextClassReferences": [
+      ],
+      "authenticationDetails": [
+        {
+          "RequestSequence": "1",
+          "StatusSequence": "0",
+          "authenticationMethod": "{{ authenticationMethod }}",
+          "authenticationMethodDetail": "",
+          "authenticationStepDateTime": "{{ timestamp }}",
+          "authenticationStepRequirement": "Primary authentication",
+          "succeeded": "true"
+        }
+      ],
+      "authenticationProcessingDetails": [
+        {
+          "key": "Legacy TLS (TLS 1.0, 1.1, 3DES)",
+          "value": "False"
+        },
+        {
+          "key": "Is CAE Token",
+          "value": "False"
+        }
+      ],
+      "authenticationProtocol": "none",
+      "authenticationRequirement": "singleFactorAuthentication",
+      "authenticationRequirementPolicies": [
+      ],
+      "authenticationStrengths": [
+      ],
+      "autonomousSystemNumber": "209",
+      "clientAppUsed": "Mobile Apps and Desktop clients",
+      "clientCredentialType": "none",
+      "conditionalAccessStatus": "notApplied",
+      "correlationId": "{{ correlation_id }}",
+      "createdDateTime": "{{ timestamp }}",
+      "crossTenantAccessType": "none",
+      "deviceDetail": {
+        "deviceId": "{{ device.device_id }}",
+        "displayName": "{{ device.hostname }}",
+        "operatingSystem": "{{ device.os_type }}",
+        "isCompliant": "{{ [true, false] | random }}",
+        "isManaged": "{{ [true, false] | random }}",
+        "trustType": "Azure AD joined" 
+      },
+      "flaggedForReview": "{{ [true, false] | random }}",
+      "homeTenantId": "{{ tenant_id }}",
+      "id": "{{ random_guid() }}",
+      "incomingTokenType": "primaryRefreshToken",
+      "ipAddress": "{{ ip_address }}",
+      "isInteractive": "{{ [true, false] | random }}",
+      "isTenantRestricted": "{{ [true, false] | random }}",
+      "isThroughGlobalSecureAccess": "{{ [true, false] | random }}",
+      "location": {
+        "city": "Westminster",
+        "countryOrRegion": "US",
+        "geoCoordinates": {
+          "latitude": "39.84273147583008",
+          "longitude": "-105.04839324951172"
+        },
+        "state": "Colorado"
+      },
+      "mfaDetail": {
+      },
+      "networkLocationDetails": [
+      ],
+      "originalRequestId": "{{ random_string(4) }}-{{ random_string(4) }}-{{ random_string(4) }}-{{ random_string(16) }}",
+      "originalTransferMethod": "none",
+      "privateLinkDetails": {
+      },
+      "processingTimeInMilliseconds": "{{ random_int(0, 1000) }}",
+      "resourceDisplayName": "Windows Azure Active Directory",
+      "resourceId": "00000002-0000-0000-c000-000000000000",
+      "resourceOwnerTenantId": "{{ tenant_id }}",
+      "resourceServicePrincipalId": "{{ random_guid() }}",
+      "resourceTenantId": "{{ tenant_id }}",
+      "riskDetail": "none",
+      "riskEventTypes": [
+      ],
+      "riskEventTypes_v2": [
+      ],
+      "riskLevelAggregated": "none",
+      "riskLevelDuringSignIn": "none",
+      "riskState": "none",
+      "rngcStatus": "0",
+      "servicePrincipalId": "",
+      "sessionId": "{{ session_id }}",
+      "sessionLifetimePolicies": [
+      ],
+      "signInTokenProtectionStatus": "none",
+      "ssoExtensionVersion": "",
+      "status": {
+        "additionalDetails": "MFA requirement satisfied by claim in the token",
+        "errorCode": "0"
+      },
+      "tenantId": "tokenIssuerName:",
+      "tokenIssuerType": "AzureAD",
+      "tokenProtectionStatusDetails": {
+        "signInSessionStatus": "bound",
+        "signInSessionStatusCode": "0"
+      },
+      "uniqueTokenIdentifier": "{{ random_string(8) + random_string(8) }}",
+      "userAgent": "Windows-AzureAD-Authentication-Provider/1.0",
+      "userDisplayName": "{{ user.full_name }}",
+      "userId": "{{ user_id }}",
+      "userPrincipalName": "{{ user.email }}",
+      "userType": "Member"
+     },
+  "resourceId": "/tenants/{{ random_string(6) }}--4e80-9f8c-5a91bdd/providers/Microsoft.aadiam",
+  "resultSignature": "None",
+  "resultType": "0",
+  "tenantId": "{{ tenant_id }}"
+}

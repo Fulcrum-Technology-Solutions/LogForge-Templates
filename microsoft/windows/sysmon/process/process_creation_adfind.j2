@@ -1,0 +1,56 @@
+{%- set device = registry.get_random_device() -%}
+{%- set user = registry.get_random_user() -%}
+{%- set domain = registry.get_domain() -%}
+{%- set netbios_domain = registry.get_netbios_domain() -%}
+{%- set timestamp = current_timestamp() -%}
+{%- set formatted_time = timestamp | format_timestamp('%Y-%m-%dT%H:%M:%S.%fZ') -%}
+{%- set formatted_time_simple = timestamp | format_timestamp('%Y-%m-%d %H:%M:%S.%f') | truncate(23, true, "") -%}
+{%- set process_id = random_int(1000, 9999) -%}
+{%- set parent_process_id = random_int(1000, 9999) -%}
+{%- set event_record_id = random_int(400000, 500000) -%}
+{%- set logon_id = "0x" + random_string(4, '0123456789ABCDEF') -%}
+{%- set process_guid = "{" + random_guid() + "}" -%}
+{%- set parent_process_guid = "{" + random_guid() + "}" -%}
+{%- set logon_guid = "{" + random_guid() + "}" -%}
+<Event xmlns="http://schemas.microsoft.com/win/2004/08/events/event">
+  <System>
+    <Provider Name="Microsoft-Windows-Sysmon" Guid="{5770385F-C22A-43E0-BF4C-06F5698FFBD9}" />
+    <EventID>1</EventID>
+    <Version>5</Version>
+    <Level>4</Level>
+    <Task>1</Task>
+    <Opcode>0</Opcode>
+    <Keywords>0x8000000000000000</Keywords>
+    <TimeCreated SystemTime="{{ formatted_time }}" />
+    <EventRecordID>{{ event_record_id }}</EventRecordID>
+    <Correlation />
+    <Execution ProcessID="4" ThreadID="{{ random_int(10, 100) }}" />
+    <Channel>Microsoft-Windows-Sysmon/Operational</Channel>
+    <Computer>{{ device.fqdn | default(device.hostname + '.' + domain) }}</Computer>
+    <Security UserID="S-1-5-18" />
+  </System>
+  <EventData>
+    <Data Name="RuleName">TechniqueID=T1018,TechniqueName=Remote System Discovery</Data>
+    <Data Name="UtcTime">{{ formatted_time_simple }}</Data>
+    <Data Name="ProcessGuid">{{ process_guid }}</Data>
+    <Data Name="ProcessId">{{ process_id }}</Data>
+    <Data Name="Image">C:\Users\{{ user.username }}\Downloads\AdFind.exe</Data>
+    <Data Name="FileVersion">1.51.00</Data>
+    <Data Name="Description">AdFind tool</Data>
+    <Data Name="Product">AdFind - AD query tool</Data>
+    <Data Name="Company">Joeware.net</Data>
+    <Data Name="OriginalFileName">AdFind.exe</Data>
+    <Data Name="CommandLine">AdFind.exe -b "DC={{ netbios_domain }},DC=local" -sc trustdmp</Data>
+    <Data Name="CurrentDirectory">C:\Users\{{ user.username }}\Downloads\</Data>
+    <Data Name="User">{{ netbios_domain }}\{{ user.username }}</Data>
+    <Data Name="LogonGuid">{{ logon_guid }}</Data>
+    <Data Name="LogonId">{{ logon_id }}</Data>
+    <Data Name="TerminalSessionId">{{ random_int(1, 5) }}</Data>
+    <Data Name="IntegrityLevel">Medium</Data>
+    <Data Name="Hashes">SHA1={{ random_string(40, 'ABCDEF0123456789') }},MD5={{ random_string(32, 'ABCDEF0123456789') }}</Data>
+    <Data Name="ParentProcessGuid">{{ parent_process_guid }}</Data>
+    <Data Name="ParentProcessId">{{ parent_process_id }}</Data>
+    <Data Name="ParentImage">C:\Windows\System32\cmd.exe</Data>
+    <Data Name="ParentCommandLine">C:\Windows\System32\cmd.exe</Data>
+  </EventData>
+</Event>

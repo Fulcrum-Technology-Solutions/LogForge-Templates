@@ -1,0 +1,54 @@
+{%- set target_user = registry.get_random_user() -%}
+{%- set source_device = registry.get_random_device() -%}
+{%- set event_timestamp = timestamp | default(current_timestamp() | format_timestamp('%Y-%m-%dT%H:%M:%S.%fZ')) -%}
+{%- set process_id_value = process_id | default(random_int(1, 4096)) -%}
+{%- set thread_id_value = thread_id | default(random_int(1, 4096)) -%}
+{%- set host = hostname | default(source_device.hostname if source_device else "WIN-" ~ random_string(7, "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789")) -%}
+{%- set domain_name = domain | default(registry.get_netbios_domain() | default("CONTOSO")) -%}
+{%- set workstation_name = source_device.hostname if source_device else host -%}
+{%- set client_ip = source_device.ip_address if source_device else random_private_ip() -%}
+{%- set ip_port = random_port() -%}
+{%- set logon_type_value = logon_type | default(3) -%}
+{%- set status_code_value = status_code | default("0xC000006D") -%}
+{%- set sub_status_code_value = sub_status_code | default("0xC0000064") -%}
+<Event xmlns="http://schemas.microsoft.com/win/2004/08/events/event">
+  <System>
+    <Provider Name="Microsoft-Windows-Security-Auditing" Guid="{54849625-5478-4994-A5BA-3E3B0328C30D}" />
+    <EventID>{{ event_id | default(4625) }}</EventID>
+    <Version>0</Version>
+    <Level>0</Level>
+    <Task>12544</Task>
+    <Opcode>0</Opcode>
+    <Keywords>0x8010000000000000</Keywords>
+    <TimeCreated SystemTime="{{ event_timestamp }}" />
+    <EventRecordID>{{ random_int(10000, 99999) }}</EventRecordID>
+    <Correlation />
+    <Execution ProcessID="{{ process_id_value }}" ThreadID="{{ thread_id_value }}" />
+    <Channel>Security</Channel>
+    <Computer>{{ host }}</Computer>
+    <Security />
+  </System>
+  <EventData>
+    <Data Name="SubjectUserSid">S-1-5-18</Data>
+    <Data Name="SubjectUserName">-</Data>
+    <Data Name="SubjectDomainName">-</Data>
+    <Data Name="SubjectLogonId">0x0</Data>
+    <Data Name="TargetUserSid">S-1-0-0</Data>
+    <Data Name="TargetUserName">{{ target_user.username if target_user else "jsmith" }}</Data>
+    <Data Name="TargetDomainName">{{ domain_name }}</Data>
+    <Data Name="Status">{{ status_code_value }}</Data>
+    <Data Name="FailureReason">%%2313</Data>
+    <Data Name="SubStatus">{{ sub_status_code_value }}</Data>
+    <Data Name="LogonType">{{ logon_type_value }}</Data>
+    <Data Name="LogonProcessName">NtLmSsp</Data>
+    <Data Name="AuthenticationPackageName">NTLM</Data>
+    <Data Name="WorkstationName">{{ workstation_name }}</Data>
+    <Data Name="TransmittedServices">-</Data>
+    <Data Name="LmPackageName">-</Data>
+    <Data Name="KeyLength">0</Data>
+    <Data Name="ProcessId">0x{{ '%x' % 4 }}</Data>
+    <Data Name="ProcessName">C:\Windows\System32\svchost.exe</Data>
+    <Data Name="IpAddress">{{ client_ip }}</Data>
+    <Data Name="IpPort">{{ ip_port }}</Data>
+  </EventData>
+</Event>

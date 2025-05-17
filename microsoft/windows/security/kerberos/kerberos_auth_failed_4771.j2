@@ -1,0 +1,43 @@
+{%- set device = registry.get_random_device() -%}
+{%- set user = registry.get_random_user() -%}
+{%- set domain = registry.get_domain() -%}
+{%- set netbios_domain = registry.get_netbios_domain() -%}
+{%- set timestamp = current_timestamp() -%}
+{%- set formatted_time = timestamp | format_timestamp('%Y-%m-%dT%H:%M:%S.%fZ') -%}
+{%- set client_ip = random_private_ip() -%}
+{%- set client_port = random_port() -%}
+{%- set event_record_id = random_int(800000, 900000) -%}
+{%- set process_id = random_int(500, 1000) -%}
+{%- set thread_id = random_int(1000, 5000) -%}
+{%- set status_code = ["0x18", "0x6", "0x12", "0xC"] | random -%}
+<Event xmlns='http://schemas.microsoft.com/win/2004/08/events/event'>
+  <System>
+    <Provider Name='Microsoft-Windows-Security-Auditing' Guid='{54849625-5478-4994-a5ba-3e3b0328c30d}'/>
+    <EventID>4771</EventID>
+    <Version>0</Version>
+    <Level>0</Level>
+    <Task>14339</Task>
+    <Opcode>0</Opcode>
+    <Keywords>0x8010000000000000</Keywords>
+    <TimeCreated SystemTime='{{ formatted_time }}'/>
+    <EventRecordID>{{ event_record_id }}</EventRecordID>
+    <Correlation/>
+    <Execution ProcessID='{{ process_id }}' ThreadID='{{ thread_id }}'/>
+    <Channel>Security</Channel>
+    <Computer>{{ device.fqdn | default(device.hostname + '.' + domain) }}</Computer>
+    <Security/>
+  </System>
+  <EventData>
+    <Data Name='TargetUserName'>{{ user.username }}</Data>
+    <Data Name='TargetSid'>S-1-5-21-{{ random_int(100000000, 999999999) }}-{{ random_int(100000000, 999999999) }}-{{ random_int(100000000, 999999999) }}-{{ random_int(100000, 999999) }}</Data>
+    <Data Name='ServiceName'>krbtgt/{{ netbios_domain }}.{{ domain | upper }}</Data>
+    <Data Name='TicketOptions'>0x10</Data>
+    <Data Name='Status'>{{ status_code }}</Data>
+    <Data Name='PreAuthType'>2</Data>
+    <Data Name='IpAddress'>{{ client_ip }}</Data>
+    <Data Name='IpPort'>{{ client_port }}</Data>
+    <Data Name='CertIssuerName'></Data>
+    <Data Name='CertSerialNumber'></Data>
+    <Data Name='CertThumbprint'></Data>
+  </EventData>
+</Event>

@@ -1,0 +1,28 @@
+name: Security Login Success
+description: Windows Security successful login events (EventID 4624)
+log_type: security
+author: Fulcrum Technology Solutions
+version: 1.0.0
+product: Windows
+vendor: Microsoft
+tags:
+- microsoft
+- windows
+- security
+- login
+- success
+date_created: '2025-05-16'
+last_updated: '2025-05-16'
+fields:
+- field: username
+  description: The username of the user logging in
+- field: domain
+  description: The domain of the user
+- field: hostname
+  description: The hostname of the machine
+- field: ip_address
+  description: Source IP address of the login
+- field: process_id
+  description: Process ID of the login process
+- field: thread_id
+  description: Thread ID of the login process

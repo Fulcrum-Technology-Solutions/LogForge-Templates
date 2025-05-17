@@ -1,0 +1,38 @@
+{%- set device = registry.get_random_device() -%}
+{%- set user = registry.get_random_user() -%}
+{%- set timestamp = current_timestamp() | format_timestamp('%Y-%m-%dT%H:%M:%S.%fZ') -%}
+{%- set event_id = 7045 -%}
+{%- set process_id = random_int(500, 900) -%}
+{%- set thread_id = random_int(600, 900) -%}
+{%- set event_record_id = random_int(150000, 200000) -%}
+{%- set guid = '{555908d1-a6d7-4695-8e1e-26931d2012f4}' -%}
+{%- set service_names = ["SecurityCenterIBM", "WinCheckDRVs"] -%}
+{%- set service_name = service_names | random -%}
+{%- set image_paths = ["cmd.exe", "C:\\Temp\\mockService.exe"] -%}
+{%- set image_path = image_paths | random -%}
+{%- set domain = registry.get_netbios_domain() -%}
+<Event xmlns='http://schemas.microsoft.com/win/2004/08/events/event'>
+  <System>
+    <Provider Name='Service Control Manager' Guid='{{ guid }}' EventSourceName='Service Control Manager'/>
+    <EventID Qualifiers='16384'>{{ event_id }}</EventID>
+    <Version>0</Version>
+    <Level>4</Level>
+    <Task>0</Task>
+    <Opcode>0</Opcode>
+    <Keywords>0x8080000000000000</Keywords>
+    <TimeCreated SystemTime='{{ timestamp }}'/>
+    <EventRecordID>{{ event_record_id }}</EventRecordID>
+    <Correlation/>
+    <Execution ProcessID='{{ process_id }}' ThreadID='{{ thread_id }}'/>
+    <Channel>System</Channel>
+    <Computer>{{ device.fqdn | default(device.hostname + '.' + registry.get_domain()) }}</Computer>
+    <Security UserID='S-1-5-21-{{ random_int(1000000000, 9999999999) }}-{{ random_int(1000000000, 9999999999) }}-{{ random_int(1000000000, 9999999999) }}-{{ random_int(500, 1000) }}'/>
+  </System>
+  <EventData>
+    <Data Name='ServiceName'>{{ service_name }}</Data>
+    <Data Name='ImagePath'>{{ image_path }}</Data>
+    <Data Name='ServiceType'>user mode service</Data>
+    <Data Name='StartType'>auto start</Data>
+    <Data Name='AccountName'>LocalSystem</Data>
+  </EventData>
+</Event>
