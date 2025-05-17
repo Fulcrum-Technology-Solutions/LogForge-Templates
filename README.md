@@ -26,13 +26,11 @@ Package metadata at the vendor/product level is stored in `package.json` files.
 
 The repository includes templates for logs from:
 
-- **Cloud Providers**: AWS (CloudTrail), Microsoft Azure (Active Directory)
+- **Cloud Providers**: Microsoft Azure (Active Directory)
 - **Operating Systems**: Microsoft Windows (Security, System, Application logs)
-- **Network Security**: Palo Alto Networks, Check Point, Suricata
-- **Endpoint Security**: CrowdStrike, SentinelOne
-- **Identity**: Okta, Microsoft Azure AD
-- **Email Security**: Proofpoint, Inky
-- **Web Infrastructure**: NGINX, Zscaler
+- **Network Security**: Palo Alto Networks (GlobalProtect, Traffic, WildFire)
+- **Identity**: Microsoft Azure AD
+- **Email Security**: Microsoft Office 365
 
 See the [TEMPLATES.yaml](TEMPLATES.yaml) file for a complete index of all templates.
 
@@ -80,26 +78,30 @@ Example template (`microsoft/windows/security/login/login_success.j2`):
 
 Example metadata (`microsoft/windows/security/login/login_success.meta.yaml`):
 ```yaml
-vendor: Microsoft
-product: Windows
-data_source: Security Login Success
+name: Security Login Success
 description: Windows Security successful login events (EventID 4624)
-format: XML
-frequency: high
-
-parameters:
-  - name: username
+log_type: security
+author: Fulcrum Technology Solutions
+version: 1.0.0
+product: Windows
+vendor: Microsoft
+tags:
+  - microsoft
+  - windows
+  - security
+  - login
+  - success
+date_created: '2025-05-16'
+last_updated: '2025-05-16'
+fields:
+  - field: username
     description: The username of the user logging in
-    required: true
-  - name: domain
+  - field: domain
     description: The domain of the user
-    required: true
-  - name: hostname
+  - field: hostname
     description: The hostname of the machine
-    required: true
-  - name: ip_address
+  - field: ip_address
     description: Source IP address of the login
-    required: true
 ```
 
 ## Template Index
