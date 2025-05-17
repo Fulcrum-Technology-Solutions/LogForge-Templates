@@ -9,28 +9,28 @@
   "tags": ["windows", "application", "eventlog", "microsoft", "xml"],
   "templates": [
     {
-      "file": "crash.j2",
+      "file": "crash/crash.j2",
       "name": "Application Crash",
       "description": "Windows Application event log for application crashes",
       "log_type": "application",
       "version": "1.0.0"
     },
     {
-      "file": "error.j2",
+      "file": "error/error.j2",
       "name": "Application Error",
       "description": "Windows Application event log for application errors",
       "log_type": "application",
       "version": "1.0.0"
     },
     {
-      "file": "info.j2",
+      "file": "info/info.j2",
       "name": "Application Info",
       "description": "Windows Application event log for informational events",
       "log_type": "application",
       "version": "1.0.0"
     },
     {
-      "file": "warning.j2",
+      "file": "warning/warning.j2",
       "name": "Application Warning",
       "description": "Windows Application event log for application warnings",
       "log_type": "application",

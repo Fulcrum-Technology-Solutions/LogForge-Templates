@@ -9,7 +9,7 @@
   "tags": ["nginx", "webserver", "access", "log4shell", "security"],
   "templates": [
     {
-      "file": "vulnerabilities/log4shell_payload.j2",
+      "file": "log4shell_jndi_payload_injection_with_outbound_connection.j2",
       "name": "Log4Shell JNDI Payload Injection",
       "description": "NGINX access logs showing Log4Shell JNDI payload injection attempts with outbound connections",
       "log_type": "security",

@@ -9,28 +9,28 @@
   "tags": ["windows", "system", "eventlog", "microsoft", "xml"],
   "templates": [
     {
-      "file": "clop_ransomware_known_service_name.j2",
+      "file": "ransomware/clop_ransomware_known_service_name.j2",
       "name": "Clop Ransomware Known Service Name",
       "description": "Windows System event log for Clop ransomware known service names",
       "log_type": "system",
       "version": "1.0.0"
     },
     {
-      "file": "service_start.j2",
+      "file": "service/service_start.j2",
       "name": "Service Start",
       "description": "Windows System event log for service start events",
       "log_type": "system",
       "version": "1.0.0"
     },
     {
-      "file": "service_stop.j2",
+      "file": "service/service_stop.j2",
       "name": "Service Stop",
       "description": "Windows System event log for service stop events",
       "log_type": "system",
       "version": "1.0.0"
     },
     {
-      "file": "time_change.j2",
+      "file": "time/time_change.j2",
       "name": "Time Change",
       "description": "Windows System event log for system time change events",
       "log_type": "system",

@@ -9,7 +9,7 @@
   "tags": ["paloalto", "firewall", "traffic", "network", "security"],
   "templates": [
     {
-      "file": "traffic.j2",
+      "file": "network/traffic.j2",
       "name": "Traffic Logs",
       "description": "Palo Alto Networks firewall traffic logs",
       "log_type": "network",

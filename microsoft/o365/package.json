@@ -9,7 +9,7 @@
   "tags": ["microsoft", "o365", "office365", "email", "security"],
   "templates": [
     {
-      "file": "email_new_inbox_rule_created.j2",
+      "file": "inbox_rules/email_new_inbox_rule_created.j2",
       "name": "Email New Inbox Rule Created",
       "description": "Office 365 email events for new inbox rule creation",
       "log_type": "security",

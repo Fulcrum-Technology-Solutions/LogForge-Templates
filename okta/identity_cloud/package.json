@@ -9,7 +9,7 @@
   "tags": ["okta", "identity", "authentication", "security"],
   "templates": [
     {
-      "file": "login_failure.j2",
+      "file": "login/login_failure.j2",
       "name": "Login Failure",
       "description": "Okta Identity Cloud failed login events",
       "log_type": "authentication",

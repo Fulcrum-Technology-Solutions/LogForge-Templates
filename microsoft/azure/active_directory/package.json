@@ -6,10 +6,10 @@
   "description": "Templates for Microsoft Azure Active Directory authentication events.",
   "repository": "https://github.com/Fulcrum-Technology-Solutions/LogForge-Templates",
   "license": "MIT",
-  "tags": ["microsoft", "azure", "active-directory", "authentication", "security"],
+  "tags": ["azure", "active-directory", "authentication", "microsoft", "cloud", "identity"],
   "templates": [
     {
-      "file": "active_directory/authentication/event.j2",
+      "file": "authentication/event.j2",
       "name": "Authentication Event",
       "description": "Azure Active Directory authentication events",
       "log_type": "authentication",

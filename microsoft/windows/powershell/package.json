@@ -9,7 +9,7 @@
   "tags": ["windows", "powershell", "script-block", "security", "eventlog"],
   "templates": [
     {
-      "file": "shadowcopy_script_block_logging.j2",
+      "file": "script_block/shadowcopy_script_block_logging.j2",
       "name": "ShadowCopy Script Block Logging",
       "description": "PowerShell script block logging for ShadowCopy operations",
       "log_type": "security",

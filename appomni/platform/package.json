@@ -9,7 +9,7 @@
   "tags": ["appomni", "security", "saas", "events"],
   "templates": [
     {
-      "file": "events/security_events.j2",
+      "file": "appomni_events.j2",
       "name": "AppOmni Security Events",
       "description": "AppOmni platform security events",
       "log_type": "security",

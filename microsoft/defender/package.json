@@ -9,7 +9,7 @@
   "tags": ["microsoft", "defender", "security", "incidents", "alerts"],
   "templates": [
     {
-      "file": "incident_alert.j2",
+      "file": "incidents/incident_alert.j2",
       "name": "Incident Alert",
       "description": "Microsoft Defender incident alerts",
       "log_type": "security",

@@ -9,7 +9,7 @@
   "tags": ["inky", "email", "security", "phishing"],
   "templates": [
     {
-      "file": "inky_email_security_events.j2",
+      "file": "security/events.j2",
       "name": "Inky Email Security Events",
       "description": "Inky email security event logs",
       "log_type": "security",
