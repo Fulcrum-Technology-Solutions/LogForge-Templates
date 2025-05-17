@@ -1,175 +1,87 @@
 %YAML 1.2
 ---
-- bundle: appomni-platform
-  bundle_display_name: AppOmni Platform Events
-  bundle_version: 1.0.0
-  bundle_author: Fulcrum Technology Solutions
-  bundle_description: Templates for AppOmni platform security events.
-  bundle_tags:
+- name: appomni-platform
+  display_name: AppOmni Platform Events
+  version: 1.0.0
+  author: Fulcrum Technology Solutions
+  description: Templates for AppOmni platform security events.
+  tags:
     - appomni
     - security
     - saas
     - events
-  file: appomni/platform/events/security_events.j2
-  name: AppOmni Security Events
-  description: AppOmni platform security events
-  log_type: security
-  template_version: 1.0.0
-- bundle: aws-cloudtrail
-  bundle_display_name: AWS CloudTrail Events
-  bundle_version: 1.0.0
-  bundle_author: Fulcrum Technology Solutions
-  bundle_description: AWS CloudTrail templates for security-relevant events in JSON
-    format.
-  bundle_tags:
+  path: appomni/platform
+  template_count: 1
+- name: aws-cloudtrail
+  display_name: AWS CloudTrail Events
+  version: 1.0.0
+  author: Fulcrum Technology Solutions
+  description: AWS CloudTrail templates for security-relevant events in JSON format.
+  tags:
     - aws
     - cloudtrail
     - security
     - cloud
     - json
-  file: aws/cloudtrail/deletetrail/cloudtrail_deletetrail.j2
-  name: CloudTrail DeleteTrail
-  description: AWS CloudTrail DeleteTrail event that occurs when a CloudTrail trail
-    is deleted
-  log_type: cloudtrail
-  template_version: 1.0.0
-- bundle: aws-cloudtrail
-  bundle_display_name: AWS CloudTrail Events
-  bundle_version: 1.0.0
-  bundle_author: Fulcrum Technology Solutions
-  bundle_description: AWS CloudTrail templates for security-relevant events in JSON
-    format.
-  bundle_tags:
-    - aws
-    - cloudtrail
-    - security
-    - cloud
-    - json
-  file: aws/cloudtrail/ec2/cloudtrail_ec2_external_snapshot.j2
-  name: EC2 External Snapshot
-  description: AWS CloudTrail events for EC2 external snapshots
-  log_type: cloudtrail
-  template_version: 1.0.0
-- bundle: aws-cloudtrail
-  bundle_display_name: AWS CloudTrail Events
-  bundle_version: 1.0.0
-  bundle_author: Fulcrum Technology Solutions
-  bundle_description: AWS CloudTrail templates for security-relevant events in JSON
-    format.
-  bundle_tags:
-    - aws
-    - cloudtrail
-    - security
-    - cloud
-    - json
-  file: aws/cloudtrail/iam/cloudtrail_iam_delete_policy.j2
-  name: IAM Delete Policy
-  description: AWS CloudTrail events for IAM policy deletion
-  log_type: cloudtrail
-  template_version: 1.0.0
-- bundle: checkpoint-firewall
-  bundle_display_name: Check Point Firewall
-  bundle_version: 1.0.0
-  bundle_author: Fulcrum Technology Solutions
-  bundle_description: Templates for Check Point firewall traffic logs.
-  bundle_tags:
+  path: aws/cloudtrail
+  template_count: 3
+- name: checkpoint-firewall
+  display_name: Check Point Firewall
+  version: 1.0.0
+  author: Fulcrum Technology Solutions
+  description: Templates for Check Point firewall traffic logs.
+  tags:
     - checkpoint
     - firewall
     - network
     - security
-  file: check_point/firewall/traffic/logs.j2
-  name: Traffic Logs
-  description: Check Point firewall traffic logs
-  log_type: network
-  template_version: 1.0.0
-- bundle: crowdstrike-falcon
-  bundle_display_name: CrowdStrike Falcon
-  bundle_version: 1.0.0
-  bundle_author: Fulcrum Technology Solutions
-  bundle_description: Templates for CrowdStrike Falcon events and alerts.
-  bundle_tags:
+  path: check_point/firewall
+  template_count: 1
+- name: crowdstrike-falcon
+  display_name: CrowdStrike Falcon
+  version: 1.0.0
+  author: Fulcrum Technology Solutions
+  description: Templates for CrowdStrike Falcon events and alerts.
+  tags:
     - crowdstrike
     - falcon
     - edr
     - events
     - alerts
     - security
-  file: crowdstrike/falcon/events/general/crowdstrike_events.j2
-  name: CrowdStrike Events
-  description: CrowdStrike Falcon event logs
-  log_type: security
-  template_version: 1.0.0
-- bundle: crowdstrike-falcon
-  bundle_display_name: CrowdStrike Falcon
-  bundle_version: 1.0.0
-  bundle_author: Fulcrum Technology Solutions
-  bundle_description: Templates for CrowdStrike Falcon events and alerts.
-  bundle_tags:
-    - crowdstrike
-    - falcon
-    - edr
-    - events
-    - alerts
-    - security
-  file: crowdstrike/falcon/alerts/severity/low_alert.j2
-  name: Low Alert
-  description: CrowdStrike Falcon low severity alert events
-  log_type: security
-  template_version: 1.0.0
-- bundle: crowdstrike-falcon
-  bundle_display_name: CrowdStrike Falcon
-  bundle_version: 1.0.0
-  bundle_author: Fulcrum Technology Solutions
-  bundle_description: Templates for CrowdStrike Falcon events and alerts.
-  bundle_tags:
-    - crowdstrike
-    - falcon
-    - edr
-    - events
-    - alerts
-    - security
-  file: crowdstrike/falcon/alerts/severity/medium_alert.j2
-  name: Medium Alert
-  description: CrowdStrike Falcon medium severity alert events
-  log_type: security
-  template_version: 1.0.0
-- bundle: github-enterprise
-  bundle_display_name: GitHub Enterprise
-  bundle_version: 1.0.0
-  bundle_author: Fulcrum Technology Solutions
-  bundle_description: Templates for GitHub Enterprise security events.
-  bundle_tags:
+  path: crowdstrike/falcon
+  template_count: 3
+- name: github-enterprise
+  display_name: GitHub Enterprise
+  version: 1.0.0
+  author: Fulcrum Technology Solutions
+  description: Templates for GitHub Enterprise security events.
+  tags:
     - github
     - enterprise
     - security
     - devsecops
-  file: github/enterprise/dependabot/disable.j2
-  name: Disable Dependabot
-  description: GitHub Enterprise event for disabling Dependabot
-  log_type: security
-  template_version: 1.0.0
-- bundle: inky-email-security
-  bundle_display_name: Inky Email Security
-  bundle_version: 1.0.0
-  bundle_author: Fulcrum Technology Solutions
-  bundle_description: Templates for Inky email security events.
-  bundle_tags:
+  path: github/enterprise
+  template_count: 1
+- name: inky-email-security
+  display_name: Inky Email Security
+  version: 1.0.0
+  author: Fulcrum Technology Solutions
+  description: Templates for Inky email security events.
+  tags:
     - inky
     - email
     - security
     - phishing
-  file: inky/email_security/security/events.j2
-  name: Inky Email Security Events
-  description: Inky email security event logs
-  log_type: security
-  template_version: 1.0.0
-- bundle: microsoft
-  bundle_display_name: Microsoft
-  bundle_version: 1.0.0
-  bundle_author: Fulcrum Technology Solutions
-  bundle_description: A comprehensive collection of templates for Microsoft products
-    including Windows, Azure, Defender, and Office 365.
-  bundle_tags:
+  path: inky/email_security
+  template_count: 1
+- name: microsoft
+  display_name: Microsoft
+  version: 1.0.0
+  author: Fulcrum Technology Solutions
+  description: A comprehensive collection of templates for Microsoft products including
+    Windows, Azure, Defender, and Office 365.
+  tags:
     - microsoft
     - windows
     - azure
@@ -178,467 +90,68 @@
     - office365
     - security
     - cloud
-  file: microsoft/azure/active_directory/authentication/event.j2
-  name: Azure AD Authentication Event
-  description: Azure Active Directory authentication events
-  log_type: authentication
-  template_version: 1.0.0
-- bundle: microsoft
-  bundle_display_name: Microsoft
-  bundle_version: 1.0.0
-  bundle_author: Fulcrum Technology Solutions
-  bundle_description: A comprehensive collection of templates for Microsoft products
-    including Windows, Azure, Defender, and Office 365.
-  bundle_tags:
-    - microsoft
-    - windows
-    - azure
-    - defender
-    - o365
-    - office365
-    - security
-    - cloud
-  file: microsoft/defender/incidents/incident_alert.j2
-  name: Defender Incident Alert
-  description: Microsoft Defender incident alerts
-  log_type: security
-  template_version: 1.0.0
-- bundle: microsoft
-  bundle_display_name: Microsoft
-  bundle_version: 1.0.0
-  bundle_author: Fulcrum Technology Solutions
-  bundle_description: A comprehensive collection of templates for Microsoft products
-    including Windows, Azure, Defender, and Office 365.
-  bundle_tags:
-    - microsoft
-    - windows
-    - azure
-    - defender
-    - o365
-    - office365
-    - security
-    - cloud
-  file: microsoft/o365/inbox_rules/email_new_inbox_rule_created.j2
-  name: O365 Email New Inbox Rule Created
-  description: Office 365 email events for new inbox rule creation
-  log_type: security
-  template_version: 1.0.0
-- bundle: microsoft
-  bundle_display_name: Microsoft
-  bundle_version: 1.0.0
-  bundle_author: Fulcrum Technology Solutions
-  bundle_description: A comprehensive collection of templates for Microsoft products
-    including Windows, Azure, Defender, and Office 365.
-  bundle_tags:
-    - microsoft
-    - windows
-    - azure
-    - defender
-    - o365
-    - office365
-    - security
-    - cloud
-  file: microsoft/windows/security/account/account_locked.j2
-  name: Windows Account Locked
-  description: Windows Security account lockout events (EventID 4740)
-  log_type: security
-  template_version: 1.0.0
-- bundle: microsoft
-  bundle_display_name: Microsoft
-  bundle_version: 1.0.0
-  bundle_author: Fulcrum Technology Solutions
-  bundle_description: A comprehensive collection of templates for Microsoft products
-    including Windows, Azure, Defender, and Office 365.
-  bundle_tags:
-    - microsoft
-    - windows
-    - azure
-    - defender
-    - o365
-    - office365
-    - security
-    - cloud
-  file: microsoft/windows/application/crash/crash.j2
-  name: Windows Application Crash
-  description: Windows Application event log for application crashes
-  log_type: application
-  template_version: 1.0.0
-- bundle: microsoft
-  bundle_display_name: Microsoft
-  bundle_version: 1.0.0
-  bundle_author: Fulcrum Technology Solutions
-  bundle_description: A comprehensive collection of templates for Microsoft products
-    including Windows, Azure, Defender, and Office 365.
-  bundle_tags:
-    - microsoft
-    - windows
-    - azure
-    - defender
-    - o365
-    - office365
-    - security
-    - cloud
-  file: microsoft/windows/application/error/error.j2
-  name: Windows Application Error
-  description: Windows Application event log for application errors
-  log_type: application
-  template_version: 1.0.0
-- bundle: microsoft
-  bundle_display_name: Microsoft
-  bundle_version: 1.0.0
-  bundle_author: Fulcrum Technology Solutions
-  bundle_description: A comprehensive collection of templates for Microsoft products
-    including Windows, Azure, Defender, and Office 365.
-  bundle_tags:
-    - microsoft
-    - windows
-    - azure
-    - defender
-    - o365
-    - office365
-    - security
-    - cloud
-  file: microsoft/windows/application/info/info.j2
-  name: Windows Application Info
-  description: Windows Application event log for informational events
-  log_type: application
-  template_version: 1.0.0
-- bundle: microsoft
-  bundle_display_name: Microsoft
-  bundle_version: 1.0.0
-  bundle_author: Fulcrum Technology Solutions
-  bundle_description: A comprehensive collection of templates for Microsoft products
-    including Windows, Azure, Defender, and Office 365.
-  bundle_tags:
-    - microsoft
-    - windows
-    - azure
-    - defender
-    - o365
-    - office365
-    - security
-    - cloud
-  file: microsoft/windows/application/warning/warning.j2
-  name: Windows Application Warning
-  description: Windows Application event log for application warnings
-  log_type: application
-  template_version: 1.0.0
-- bundle: microsoft
-  bundle_display_name: Microsoft
-  bundle_version: 1.0.0
-  bundle_author: Fulcrum Technology Solutions
-  bundle_description: A comprehensive collection of templates for Microsoft products
-    including Windows, Azure, Defender, and Office 365.
-  bundle_tags:
-    - microsoft
-    - windows
-    - azure
-    - defender
-    - o365
-    - office365
-    - security
-    - cloud
-  file: microsoft/windows/system/ransomware/clop_ransomware_known_service_name.j2
-  name: Windows Clop Ransomware Known Service Name
-  description: Windows System event log for Clop ransomware known service names
-  log_type: system
-  template_version: 1.0.0
-- bundle: microsoft
-  bundle_display_name: Microsoft
-  bundle_version: 1.0.0
-  bundle_author: Fulcrum Technology Solutions
-  bundle_description: A comprehensive collection of templates for Microsoft products
-    including Windows, Azure, Defender, and Office 365.
-  bundle_tags:
-    - microsoft
-    - windows
-    - azure
-    - defender
-    - o365
-    - office365
-    - security
-    - cloud
-  file: microsoft/windows/security/kerberos/kerberos_auth_failed_4771.j2
-  name: Windows Kerberos Authentication Failed
-  description: Windows Security Auditing event for Kerberos Authentication Service
-    Ticket Failed (Event ID 4771)
-  log_type: security
-  template_version: 1.0.0
-- bundle: microsoft
-  bundle_display_name: Microsoft
-  bundle_version: 1.0.0
-  bundle_author: Fulcrum Technology Solutions
-  bundle_description: A comprehensive collection of templates for Microsoft products
-    including Windows, Azure, Defender, and Office 365.
-  bundle_tags:
-    - microsoft
-    - windows
-    - azure
-    - defender
-    - o365
-    - office365
-    - security
-    - cloud
-  file: microsoft/windows/security/kerberos/kerberos_auth_4768.j2
-  name: Windows Kerberos Authentication Ticket Request
-  description: Windows Security Auditing event for Kerberos Authentication Ticket
-    Request (Event ID 4768)
-  log_type: security
-  template_version: 1.0.0
-- bundle: microsoft
-  bundle_display_name: Microsoft
-  bundle_version: 1.0.0
-  bundle_author: Fulcrum Technology Solutions
-  bundle_description: A comprehensive collection of templates for Microsoft products
-    including Windows, Azure, Defender, and Office 365.
-  bundle_tags:
-    - microsoft
-    - windows
-    - azure
-    - defender
-    - o365
-    - office365
-    - security
-    - cloud
-  file: microsoft/windows/security/login/login_failure.j2
-  name: Windows Login Failure
-  description: Windows Security failed login events (EventID 4625)
-  log_type: security
-  template_version: 1.0.0
-- bundle: microsoft
-  bundle_display_name: Microsoft
-  bundle_version: 1.0.0
-  bundle_author: Fulcrum Technology Solutions
-  bundle_description: A comprehensive collection of templates for Microsoft products
-    including Windows, Azure, Defender, and Office 365.
-  bundle_tags:
-    - microsoft
-    - windows
-    - azure
-    - defender
-    - o365
-    - office365
-    - security
-    - cloud
-  file: microsoft/windows/security/login/login_success.j2
-  name: Windows Login Success
-  description: Windows Security successful login events (EventID 4624)
-  log_type: security
-  template_version: 1.0.0
-- bundle: microsoft
-  bundle_display_name: Microsoft
-  bundle_version: 1.0.0
-  bundle_author: Fulcrum Technology Solutions
-  bundle_description: A comprehensive collection of templates for Microsoft products
-    including Windows, Azure, Defender, and Office 365.
-  bundle_tags:
-    - microsoft
-    - windows
-    - azure
-    - defender
-    - o365
-    - office365
-    - security
-    - cloud
-  file: microsoft/windows/security/privilege/privilege_use.j2
-  name: Windows Privilege Use
-  description: Windows Security events for privilege use
-  log_type: security
-  template_version: 1.0.0
-- bundle: microsoft
-  bundle_display_name: Microsoft
-  bundle_version: 1.0.0
-  bundle_author: Fulcrum Technology Solutions
-  bundle_description: A comprehensive collection of templates for Microsoft products
-    including Windows, Azure, Defender, and Office 365.
-  bundle_tags:
-    - microsoft
-    - windows
-    - azure
-    - defender
-    - o365
-    - office365
-    - security
-    - cloud
-  file: microsoft/windows/security/process/process_creation.j2
-  name: Windows Process Creation
-  description: Windows Security events for process creation (EventID 4688)
-  log_type: security
-  template_version: 1.0.0
-- bundle: microsoft
-  bundle_display_name: Microsoft
-  bundle_version: 1.0.0
-  bundle_author: Fulcrum Technology Solutions
-  bundle_description: A comprehensive collection of templates for Microsoft products
-    including Windows, Azure, Defender, and Office 365.
-  bundle_tags:
-    - microsoft
-    - windows
-    - azure
-    - defender
-    - o365
-    - office365
-    - security
-    - cloud
-  file: microsoft/windows/sysmon/process/process_creation_adfind.j2
-  name: Windows Process Creation AdFind
-  description: Sysmon process creation events for AdFind tool
-  log_type: security
-  template_version: 1.0.0
-- bundle: microsoft
-  bundle_display_name: Microsoft
-  bundle_version: 1.0.0
-  bundle_author: Fulcrum Technology Solutions
-  bundle_description: A comprehensive collection of templates for Microsoft products
-    including Windows, Azure, Defender, and Office 365.
-  bundle_tags:
-    - microsoft
-    - windows
-    - azure
-    - defender
-    - o365
-    - office365
-    - security
-    - cloud
-  file: microsoft/windows/system/service/service_start.j2
-  name: Windows Service Start
-  description: Windows System event log for service start events
-  log_type: system
-  template_version: 1.0.0
-- bundle: microsoft
-  bundle_display_name: Microsoft
-  bundle_version: 1.0.0
-  bundle_author: Fulcrum Technology Solutions
-  bundle_description: A comprehensive collection of templates for Microsoft products
-    including Windows, Azure, Defender, and Office 365.
-  bundle_tags:
-    - microsoft
-    - windows
-    - azure
-    - defender
-    - o365
-    - office365
-    - security
-    - cloud
-  file: microsoft/windows/system/service/service_stop.j2
-  name: Windows Service Stop
-  description: Windows System event log for service stop events
-  log_type: system
-  template_version: 1.0.0
-- bundle: microsoft
-  bundle_display_name: Microsoft
-  bundle_version: 1.0.0
-  bundle_author: Fulcrum Technology Solutions
-  bundle_description: A comprehensive collection of templates for Microsoft products
-    including Windows, Azure, Defender, and Office 365.
-  bundle_tags:
-    - microsoft
-    - windows
-    - azure
-    - defender
-    - o365
-    - office365
-    - security
-    - cloud
-  file: microsoft/windows/powershell/script_block/shadowcopy_script_block_logging.j2
-  name: Windows ShadowCopy Script Block Logging
-  description: PowerShell script block logging for ShadowCopy operations
-  log_type: security
-  template_version: 1.0.0
-- bundle: microsoft
-  bundle_display_name: Microsoft
-  bundle_version: 1.0.0
-  bundle_author: Fulcrum Technology Solutions
-  bundle_description: A comprehensive collection of templates for Microsoft products
-    including Windows, Azure, Defender, and Office 365.
-  bundle_tags:
-    - microsoft
-    - windows
-    - azure
-    - defender
-    - o365
-    - office365
-    - security
-    - cloud
-  file: microsoft/windows/system/time/time_change.j2
-  name: Windows Time Change
-  description: Windows System event log for system time change events
-  log_type: system
-  template_version: 1.0.0
-- bundle: microsoft-azure-active-directory
-  bundle_display_name: Microsoft Azure Active Directory
-  bundle_version: 1.0.0
-  bundle_author: Fulcrum Technology Solutions
-  bundle_description: Templates for Microsoft Azure Active Directory authentication
-    events.
-  bundle_tags:
+  path: microsoft
+  template_count: 20
+- name: microsoft-azure-active-directory
+  display_name: Microsoft Azure Active Directory
+  version: 1.0.0
+  author: Fulcrum Technology Solutions
+  description: Templates for Microsoft Azure Active Directory authentication events.
+  tags:
     - microsoft
     - azure
     - active-directory
     - authentication
     - security
-  file: microsoft/azure/active_directory/authentication/event.j2
-  name: Authentication Event
-  description: Azure Active Directory authentication events
-  log_type: authentication
-  template_version: 1.0.0
-- bundle: microsoft-azure-active-directory
-  bundle_display_name: Microsoft Azure Active Directory
-  bundle_version: 1.0.0
-  bundle_author: Fulcrum Technology Solutions
-  bundle_description: Templates for Microsoft Azure Active Directory authentication
-    events.
-  bundle_tags:
+  path: microsoft/azure
+  template_count: 1
+- name: microsoft-azure-active-directory
+  display_name: Microsoft Azure Active Directory
+  version: 1.0.0
+  author: Fulcrum Technology Solutions
+  description: Templates for Microsoft Azure Active Directory authentication events.
+  tags:
     - azure
     - active-directory
     - authentication
     - microsoft
     - cloud
     - identity
-  file: microsoft/azure/active_directory/authentication/event.j2
-  name: Authentication Event
-  description: Azure Active Directory authentication events
-  log_type: authentication
-  template_version: 1.0.0
-- bundle: microsoft-defender
-  bundle_display_name: Microsoft Defender
-  bundle_version: 1.0.0
-  bundle_author: Fulcrum Technology Solutions
-  bundle_description: Templates for Microsoft Defender security incidents and alerts.
-  bundle_tags:
+  path: microsoft/azure/active_directory
+  template_count: 1
+- name: microsoft-defender
+  display_name: Microsoft Defender
+  version: 1.0.0
+  author: Fulcrum Technology Solutions
+  description: Templates for Microsoft Defender security incidents and alerts.
+  tags:
     - microsoft
     - defender
     - security
     - incidents
     - alerts
-  file: microsoft/defender/incidents/incident_alert.j2
-  name: Incident Alert
-  description: Microsoft Defender incident alerts
-  log_type: security
-  template_version: 1.0.0
-- bundle: microsoft-o365
-  bundle_display_name: Microsoft Office 365
-  bundle_version: 1.0.0
-  bundle_author: Fulcrum Technology Solutions
-  bundle_description: Templates for Microsoft Office 365 security events.
-  bundle_tags:
+  path: microsoft/defender
+  template_count: 1
+- name: microsoft-o365
+  display_name: Microsoft Office 365
+  version: 1.0.0
+  author: Fulcrum Technology Solutions
+  description: Templates for Microsoft Office 365 security events.
+  tags:
     - microsoft
     - o365
     - office365
     - email
     - security
-  file: microsoft/o365/inbox_rules/email_new_inbox_rule_created.j2
-  name: Email New Inbox Rule Created
-  description: Office 365 email events for new inbox rule creation
-  log_type: security
-  template_version: 1.0.0
-- bundle: microsoft-windows
-  bundle_display_name: Microsoft Windows Events
-  bundle_version: 1.0.0
-  bundle_author: Fulcrum Technology Solutions
-  bundle_description: A comprehensive bundle of templates for Microsoft Windows event
-    logs across security, system, application, PowerShell, and Sysmon sources.
-  bundle_tags:
+  path: microsoft/o365
+  template_count: 1
+- name: microsoft-windows
+  display_name: Microsoft Windows Events
+  version: 1.0.0
+  author: Fulcrum Technology Solutions
+  description: A comprehensive bundle of templates for Microsoft Windows event logs
+    across security, system, application, PowerShell, and Sysmon sources.
+  tags:
     - windows
     - security
     - system
@@ -648,811 +161,214 @@
     - eventlog
     - microsoft
     - xml
-  file: microsoft/windows/security/account/account_locked.j2
-  name: Account Locked
-  description: Windows Security account lockout events (EventID 4740)
-  log_type: security
-  template_version: 1.0.0
-- bundle: microsoft-windows
-  bundle_display_name: Microsoft Windows Events
-  bundle_version: 1.0.0
-  bundle_author: Fulcrum Technology Solutions
-  bundle_description: A comprehensive bundle of templates for Microsoft Windows event
-    logs across security, system, application, PowerShell, and Sysmon sources.
-  bundle_tags:
-    - windows
-    - security
-    - system
-    - application
-    - powershell
-    - sysmon
-    - eventlog
-    - microsoft
-    - xml
-  file: microsoft/windows/application/crash/crash.j2
-  name: Application Crash
-  description: Windows Application event log for application crashes
-  log_type: application
-  template_version: 1.0.0
-- bundle: microsoft-windows
-  bundle_display_name: Microsoft Windows Events
-  bundle_version: 1.0.0
-  bundle_author: Fulcrum Technology Solutions
-  bundle_description: A comprehensive bundle of templates for Microsoft Windows event
-    logs across security, system, application, PowerShell, and Sysmon sources.
-  bundle_tags:
-    - windows
-    - security
-    - system
-    - application
-    - powershell
-    - sysmon
-    - eventlog
-    - microsoft
-    - xml
-  file: microsoft/windows/application/error/error.j2
-  name: Application Error
-  description: Windows Application event log for application errors
-  log_type: application
-  template_version: 1.0.0
-- bundle: microsoft-windows
-  bundle_display_name: Microsoft Windows Events
-  bundle_version: 1.0.0
-  bundle_author: Fulcrum Technology Solutions
-  bundle_description: A comprehensive bundle of templates for Microsoft Windows event
-    logs across security, system, application, PowerShell, and Sysmon sources.
-  bundle_tags:
-    - windows
-    - security
-    - system
-    - application
-    - powershell
-    - sysmon
-    - eventlog
-    - microsoft
-    - xml
-  file: microsoft/windows/application/info/info.j2
-  name: Application Info
-  description: Windows Application event log for informational events
-  log_type: application
-  template_version: 1.0.0
-- bundle: microsoft-windows
-  bundle_display_name: Microsoft Windows Events
-  bundle_version: 1.0.0
-  bundle_author: Fulcrum Technology Solutions
-  bundle_description: A comprehensive bundle of templates for Microsoft Windows event
-    logs across security, system, application, PowerShell, and Sysmon sources.
-  bundle_tags:
-    - windows
-    - security
-    - system
-    - application
-    - powershell
-    - sysmon
-    - eventlog
-    - microsoft
-    - xml
-  file: microsoft/windows/application/warning/warning.j2
-  name: Application Warning
-  description: Windows Application event log for application warnings
-  log_type: application
-  template_version: 1.0.0
-- bundle: microsoft-windows
-  bundle_display_name: Microsoft Windows Events
-  bundle_version: 1.0.0
-  bundle_author: Fulcrum Technology Solutions
-  bundle_description: A comprehensive bundle of templates for Microsoft Windows event
-    logs across security, system, application, PowerShell, and Sysmon sources.
-  bundle_tags:
-    - windows
-    - security
-    - system
-    - application
-    - powershell
-    - sysmon
-    - eventlog
-    - microsoft
-    - xml
-  file: microsoft/windows/system/ransomware/clop_ransomware_known_service_name.j2
-  name: Clop Ransomware Known Service Name
-  description: Windows System event log for Clop ransomware known service names
-  log_type: system
-  template_version: 1.0.0
-- bundle: microsoft-windows
-  bundle_display_name: Microsoft Windows Events
-  bundle_version: 1.0.0
-  bundle_author: Fulcrum Technology Solutions
-  bundle_description: A comprehensive bundle of templates for Microsoft Windows event
-    logs across security, system, application, PowerShell, and Sysmon sources.
-  bundle_tags:
-    - windows
-    - security
-    - system
-    - application
-    - powershell
-    - sysmon
-    - eventlog
-    - microsoft
-    - xml
-  file: microsoft/windows/security/kerberos/kerberos_auth_failed_4771.j2
-  name: Kerberos Authentication Failed
-  description: Windows Security Auditing event for Kerberos Authentication Service
-    Ticket Failed (Event ID 4771)
-  log_type: security
-  template_version: 1.0.0
-- bundle: microsoft-windows
-  bundle_display_name: Microsoft Windows Events
-  bundle_version: 1.0.0
-  bundle_author: Fulcrum Technology Solutions
-  bundle_description: A comprehensive bundle of templates for Microsoft Windows event
-    logs across security, system, application, PowerShell, and Sysmon sources.
-  bundle_tags:
-    - windows
-    - security
-    - system
-    - application
-    - powershell
-    - sysmon
-    - eventlog
-    - microsoft
-    - xml
-  file: microsoft/windows/security/kerberos/kerberos_auth_4768.j2
-  name: Kerberos Authentication Ticket Request
-  description: Windows Security Auditing event for Kerberos Authentication Ticket
-    Request (Event ID 4768)
-  log_type: security
-  template_version: 1.0.0
-- bundle: microsoft-windows
-  bundle_display_name: Microsoft Windows Events
-  bundle_version: 1.0.0
-  bundle_author: Fulcrum Technology Solutions
-  bundle_description: A comprehensive bundle of templates for Microsoft Windows event
-    logs across security, system, application, PowerShell, and Sysmon sources.
-  bundle_tags:
-    - windows
-    - security
-    - system
-    - application
-    - powershell
-    - sysmon
-    - eventlog
-    - microsoft
-    - xml
-  file: microsoft/windows/security/login/login_failure.j2
-  name: Login Failure
-  description: Windows Security failed login events (EventID 4625)
-  log_type: security
-  template_version: 1.0.0
-- bundle: microsoft-windows
-  bundle_display_name: Microsoft Windows Events
-  bundle_version: 1.0.0
-  bundle_author: Fulcrum Technology Solutions
-  bundle_description: A comprehensive bundle of templates for Microsoft Windows event
-    logs across security, system, application, PowerShell, and Sysmon sources.
-  bundle_tags:
-    - windows
-    - security
-    - system
-    - application
-    - powershell
-    - sysmon
-    - eventlog
-    - microsoft
-    - xml
-  file: microsoft/windows/security/login/login_success.j2
-  name: Login Success
-  description: Windows Security successful login events (EventID 4624)
-  log_type: security
-  template_version: 1.0.0
-- bundle: microsoft-windows
-  bundle_display_name: Microsoft Windows Events
-  bundle_version: 1.0.0
-  bundle_author: Fulcrum Technology Solutions
-  bundle_description: A comprehensive bundle of templates for Microsoft Windows event
-    logs across security, system, application, PowerShell, and Sysmon sources.
-  bundle_tags:
-    - windows
-    - security
-    - system
-    - application
-    - powershell
-    - sysmon
-    - eventlog
-    - microsoft
-    - xml
-  file: microsoft/windows/security/privilege/privilege_use.j2
-  name: Privilege Use
-  description: Windows Security events for privilege use
-  log_type: security
-  template_version: 1.0.0
-- bundle: microsoft-windows
-  bundle_display_name: Microsoft Windows Events
-  bundle_version: 1.0.0
-  bundle_author: Fulcrum Technology Solutions
-  bundle_description: A comprehensive bundle of templates for Microsoft Windows event
-    logs across security, system, application, PowerShell, and Sysmon sources.
-  bundle_tags:
-    - windows
-    - security
-    - system
-    - application
-    - powershell
-    - sysmon
-    - eventlog
-    - microsoft
-    - xml
-  file: microsoft/windows/security/process/process_creation.j2
-  name: Process Creation
-  description: Windows Security events for process creation (EventID 4688)
-  log_type: security
-  template_version: 1.0.0
-- bundle: microsoft-windows
-  bundle_display_name: Microsoft Windows Events
-  bundle_version: 1.0.0
-  bundle_author: Fulcrum Technology Solutions
-  bundle_description: A comprehensive bundle of templates for Microsoft Windows event
-    logs across security, system, application, PowerShell, and Sysmon sources.
-  bundle_tags:
-    - windows
-    - security
-    - system
-    - application
-    - powershell
-    - sysmon
-    - eventlog
-    - microsoft
-    - xml
-  file: microsoft/windows/sysmon/process/process_creation_adfind.j2
-  name: Process Creation AdFind
-  description: Sysmon process creation events for AdFind tool
-  log_type: security
-  template_version: 1.0.0
-- bundle: microsoft-windows
-  bundle_display_name: Microsoft Windows Events
-  bundle_version: 1.0.0
-  bundle_author: Fulcrum Technology Solutions
-  bundle_description: A comprehensive bundle of templates for Microsoft Windows event
-    logs across security, system, application, PowerShell, and Sysmon sources.
-  bundle_tags:
-    - windows
-    - security
-    - system
-    - application
-    - powershell
-    - sysmon
-    - eventlog
-    - microsoft
-    - xml
-  file: microsoft/windows/system/service/service_start.j2
-  name: Service Start
-  description: Windows System event log for service start events
-  log_type: system
-  template_version: 1.0.0
-- bundle: microsoft-windows
-  bundle_display_name: Microsoft Windows Events
-  bundle_version: 1.0.0
-  bundle_author: Fulcrum Technology Solutions
-  bundle_description: A comprehensive bundle of templates for Microsoft Windows event
-    logs across security, system, application, PowerShell, and Sysmon sources.
-  bundle_tags:
-    - windows
-    - security
-    - system
-    - application
-    - powershell
-    - sysmon
-    - eventlog
-    - microsoft
-    - xml
-  file: microsoft/windows/system/service/service_stop.j2
-  name: Service Stop
-  description: Windows System event log for service stop events
-  log_type: system
-  template_version: 1.0.0
-- bundle: microsoft-windows
-  bundle_display_name: Microsoft Windows Events
-  bundle_version: 1.0.0
-  bundle_author: Fulcrum Technology Solutions
-  bundle_description: A comprehensive bundle of templates for Microsoft Windows event
-    logs across security, system, application, PowerShell, and Sysmon sources.
-  bundle_tags:
-    - windows
-    - security
-    - system
-    - application
-    - powershell
-    - sysmon
-    - eventlog
-    - microsoft
-    - xml
-  file: microsoft/windows/powershell/script_block/shadowcopy_script_block_logging.j2
-  name: ShadowCopy Script Block Logging
-  description: PowerShell script block logging for ShadowCopy operations
-  log_type: security
-  template_version: 1.0.0
-- bundle: microsoft-windows
-  bundle_display_name: Microsoft Windows Events
-  bundle_version: 1.0.0
-  bundle_author: Fulcrum Technology Solutions
-  bundle_description: A comprehensive bundle of templates for Microsoft Windows event
-    logs across security, system, application, PowerShell, and Sysmon sources.
-  bundle_tags:
-    - windows
-    - security
-    - system
-    - application
-    - powershell
-    - sysmon
-    - eventlog
-    - microsoft
-    - xml
-  file: microsoft/windows/system/time/time_change.j2
-  name: Time Change
-  description: Windows System event log for system time change events
-  log_type: system
-  template_version: 1.0.0
-- bundle: microsoft-windows-application
-  bundle_display_name: Microsoft Windows Application Events
-  bundle_version: 1.0.0
-  bundle_author: Fulcrum Technology Solutions
-  bundle_description: Templates for Microsoft Windows Application event logs in XML
-    format.
-  bundle_tags:
+  path: microsoft/windows
+  template_count: 17
+- name: microsoft-windows-application
+  display_name: Microsoft Windows Application Events
+  version: 1.0.0
+  author: Fulcrum Technology Solutions
+  description: Templates for Microsoft Windows Application event logs in XML format.
+  tags:
     - windows
     - application
     - eventlog
     - microsoft
     - xml
-  file: microsoft/windows/application/crash/crash.j2
-  name: Application Crash
-  description: Windows Application event log for application crashes
-  log_type: application
-  template_version: 1.0.0
-- bundle: microsoft-windows-application
-  bundle_display_name: Microsoft Windows Application Events
-  bundle_version: 1.0.0
-  bundle_author: Fulcrum Technology Solutions
-  bundle_description: Templates for Microsoft Windows Application event logs in XML
-    format.
-  bundle_tags:
-    - windows
-    - application
-    - eventlog
-    - microsoft
-    - xml
-  file: microsoft/windows/application/error/error.j2
-  name: Application Error
-  description: Windows Application event log for application errors
-  log_type: application
-  template_version: 1.0.0
-- bundle: microsoft-windows-application
-  bundle_display_name: Microsoft Windows Application Events
-  bundle_version: 1.0.0
-  bundle_author: Fulcrum Technology Solutions
-  bundle_description: Templates for Microsoft Windows Application event logs in XML
-    format.
-  bundle_tags:
-    - windows
-    - application
-    - eventlog
-    - microsoft
-    - xml
-  file: microsoft/windows/application/info/info.j2
-  name: Application Info
-  description: Windows Application event log for informational events
-  log_type: application
-  template_version: 1.0.0
-- bundle: microsoft-windows-application
-  bundle_display_name: Microsoft Windows Application Events
-  bundle_version: 1.0.0
-  bundle_author: Fulcrum Technology Solutions
-  bundle_description: Templates for Microsoft Windows Application event logs in XML
-    format.
-  bundle_tags:
-    - windows
-    - application
-    - eventlog
-    - microsoft
-    - xml
-  file: microsoft/windows/application/warning/warning.j2
-  name: Application Warning
-  description: Windows Application event log for application warnings
-  log_type: application
-  template_version: 1.0.0
-- bundle: microsoft-windows-powershell
-  bundle_display_name: Microsoft Windows PowerShell
-  bundle_version: 1.0.0
-  bundle_author: Fulcrum Technology Solutions
-  bundle_description: Templates for Microsoft Windows PowerShell script block logging
-    events.
-  bundle_tags:
+  path: microsoft/windows/application
+  template_count: 4
+- name: microsoft-windows-powershell
+  display_name: Microsoft Windows PowerShell
+  version: 1.0.0
+  author: Fulcrum Technology Solutions
+  description: Templates for Microsoft Windows PowerShell script block logging events.
+  tags:
     - windows
     - powershell
     - script-block
     - security
     - eventlog
-  file: microsoft/windows/powershell/script_block/shadowcopy_script_block_logging.j2
-  name: ShadowCopy Script Block Logging
-  description: PowerShell script block logging for ShadowCopy operations
-  log_type: security
-  template_version: 1.0.0
-- bundle: microsoft-windows-security
-  bundle_display_name: Microsoft Windows Security Events
-  bundle_version: 1.0.0
-  bundle_author: Fulcrum Technology Solutions
-  bundle_description: A bundle of templates for Microsoft Windows Security event logs,
-    supporting XML event formats.
-  bundle_tags:
+  path: microsoft/windows/powershell
+  template_count: 1
+- name: microsoft-windows-security
+  display_name: Microsoft Windows Security Events
+  version: 1.0.0
+  author: Fulcrum Technology Solutions
+  description: A bundle of templates for Microsoft Windows Security event logs, supporting
+    XML event formats.
+  tags:
     - windows
     - security
     - eventlog
     - microsoft
     - xml
-  file: microsoft/windows/security/account/account_locked.j2
-  name: Account Locked
-  description: Windows Security account lockout events (EventID 4740)
-  log_type: security
-  template_version: 1.0.0
-- bundle: microsoft-windows-security
-  bundle_display_name: Microsoft Windows Security Events
-  bundle_version: 1.0.0
-  bundle_author: Fulcrum Technology Solutions
-  bundle_description: A bundle of templates for Microsoft Windows Security event logs,
-    supporting XML event formats.
-  bundle_tags:
-    - windows
-    - security
-    - eventlog
-    - microsoft
-    - xml
-  file: microsoft/windows/security/kerberos/kerberos_auth_failed_4771.j2
-  name: Kerberos Authentication Failed
-  description: Windows Security Auditing event for Kerberos Authentication Service
-    Ticket Failed (Event ID 4771)
-  log_type: security
-  template_version: 1.0.0
-- bundle: microsoft-windows-security
-  bundle_display_name: Microsoft Windows Security Events
-  bundle_version: 1.0.0
-  bundle_author: Fulcrum Technology Solutions
-  bundle_description: A bundle of templates for Microsoft Windows Security event logs,
-    supporting XML event formats.
-  bundle_tags:
-    - windows
-    - security
-    - eventlog
-    - microsoft
-    - xml
-  file: microsoft/windows/security/kerberos/kerberos_auth_4768.j2
-  name: Kerberos Authentication Ticket Request
-  description: Windows Security Auditing event for Kerberos Authentication Ticket
-    Request (Event ID 4768)
-  log_type: security
-  template_version: 1.0.0
-- bundle: microsoft-windows-security
-  bundle_display_name: Microsoft Windows Security Events
-  bundle_version: 1.0.0
-  bundle_author: Fulcrum Technology Solutions
-  bundle_description: A bundle of templates for Microsoft Windows Security event logs,
-    supporting XML event formats.
-  bundle_tags:
-    - windows
-    - security
-    - eventlog
-    - microsoft
-    - xml
-  file: microsoft/windows/security/login/login_failure.j2
-  name: Login Failure
-  description: Windows Security failed login events (EventID 4625)
-  log_type: security
-  template_version: 1.0.0
-- bundle: microsoft-windows-security
-  bundle_display_name: Microsoft Windows Security Events
-  bundle_version: 1.0.0
-  bundle_author: Fulcrum Technology Solutions
-  bundle_description: A bundle of templates for Microsoft Windows Security event logs,
-    supporting XML event formats.
-  bundle_tags:
-    - windows
-    - security
-    - eventlog
-    - microsoft
-    - xml
-  file: microsoft/windows/security/login/login_success.j2
-  name: Login Success
-  description: Windows Security successful login events (EventID 4624)
-  log_type: security
-  template_version: 1.0.0
-- bundle: microsoft-windows-security
-  bundle_display_name: Microsoft Windows Security Events
-  bundle_version: 1.0.0
-  bundle_author: Fulcrum Technology Solutions
-  bundle_description: A bundle of templates for Microsoft Windows Security event logs,
-    supporting XML event formats.
-  bundle_tags:
-    - windows
-    - security
-    - eventlog
-    - microsoft
-    - xml
-  file: microsoft/windows/security/privilege/privilege_use.j2
-  name: Privilege Use
-  description: Windows Security events for privilege use
-  log_type: security
-  template_version: 1.0.0
-- bundle: microsoft-windows-security
-  bundle_display_name: Microsoft Windows Security Events
-  bundle_version: 1.0.0
-  bundle_author: Fulcrum Technology Solutions
-  bundle_description: A bundle of templates for Microsoft Windows Security event logs,
-    supporting XML event formats.
-  bundle_tags:
-    - windows
-    - security
-    - eventlog
-    - microsoft
-    - xml
-  file: microsoft/windows/security/process/process_creation.j2
-  name: Process Creation
-  description: Windows Security events for process creation (EventID 4688)
-  log_type: security
-  template_version: 1.0.0
-- bundle: microsoft-windows-sysmon
-  bundle_display_name: Microsoft Windows Sysmon
-  bundle_version: 1.0.0
-  bundle_author: Fulcrum Technology Solutions
-  bundle_description: Templates for Microsoft Windows Sysmon process events.
-  bundle_tags:
+  path: microsoft/windows/security
+  template_count: 7
+- name: microsoft-windows-sysmon
+  display_name: Microsoft Windows Sysmon
+  version: 1.0.0
+  author: Fulcrum Technology Solutions
+  description: Templates for Microsoft Windows Sysmon process events.
+  tags:
     - windows
     - sysmon
     - process
     - security
     - eventlog
-  file: microsoft/windows/sysmon/process/process_creation_adfind.j2
-  name: Process Creation AdFind
-  description: Sysmon process creation events for AdFind tool
-  log_type: security
-  template_version: 1.0.0
-- bundle: microsoft-windows-system
-  bundle_display_name: Microsoft Windows System Events
-  bundle_version: 1.0.0
-  bundle_author: Fulcrum Technology Solutions
-  bundle_description: Templates for Microsoft Windows System event logs in XML format.
-  bundle_tags:
+  path: microsoft/windows/sysmon
+  template_count: 1
+- name: microsoft-windows-system
+  display_name: Microsoft Windows System Events
+  version: 1.0.0
+  author: Fulcrum Technology Solutions
+  description: Templates for Microsoft Windows System event logs in XML format.
+  tags:
     - windows
     - system
     - eventlog
     - microsoft
     - xml
-  file: microsoft/windows/system/ransomware/clop_ransomware_known_service_name.j2
-  name: Clop Ransomware Known Service Name
-  description: Windows System event log for Clop ransomware known service names
-  log_type: system
-  template_version: 1.0.0
-- bundle: microsoft-windows-system
-  bundle_display_name: Microsoft Windows System Events
-  bundle_version: 1.0.0
-  bundle_author: Fulcrum Technology Solutions
-  bundle_description: Templates for Microsoft Windows System event logs in XML format.
-  bundle_tags:
-    - windows
-    - system
-    - eventlog
-    - microsoft
-    - xml
-  file: microsoft/windows/system/service/service_start.j2
-  name: Service Start
-  description: Windows System event log for service start events
-  log_type: system
-  template_version: 1.0.0
-- bundle: microsoft-windows-system
-  bundle_display_name: Microsoft Windows System Events
-  bundle_version: 1.0.0
-  bundle_author: Fulcrum Technology Solutions
-  bundle_description: Templates for Microsoft Windows System event logs in XML format.
-  bundle_tags:
-    - windows
-    - system
-    - eventlog
-    - microsoft
-    - xml
-  file: microsoft/windows/system/service/service_stop.j2
-  name: Service Stop
-  description: Windows System event log for service stop events
-  log_type: system
-  template_version: 1.0.0
-- bundle: microsoft-windows-system
-  bundle_display_name: Microsoft Windows System Events
-  bundle_version: 1.0.0
-  bundle_author: Fulcrum Technology Solutions
-  bundle_description: Templates for Microsoft Windows System event logs in XML format.
-  bundle_tags:
-    - windows
-    - system
-    - eventlog
-    - microsoft
-    - xml
-  file: microsoft/windows/system/time/time_change.j2
-  name: Time Change
-  description: Windows System event log for system time change events
-  log_type: system
-  template_version: 1.0.0
-- bundle: nginx-access
-  bundle_display_name: NGINX Access Logs
-  bundle_version: 1.0.0
-  bundle_author: Fulcrum Technology Solutions
-  bundle_description: Templates for NGINX access logs including security events.
-  bundle_tags:
+  path: microsoft/windows/system
+  template_count: 4
+- name: nginx-access
+  display_name: NGINX Access Logs
+  version: 1.0.0
+  author: Fulcrum Technology Solutions
+  description: Templates for NGINX access logs including security events.
+  tags:
     - nginx
     - webserver
     - access
     - log4shell
     - security
-  file: nginx/access/vulnerabilities/log4shell_payload.j2
-  name: Log4Shell JNDI Payload Injection
-  description: NGINX access logs showing Log4Shell JNDI payload injection attempts
-    with outbound connections
-  log_type: security
-  template_version: 1.0.0
-- bundle: okta-identity-cloud
-  bundle_display_name: Okta Identity Cloud
-  bundle_version: 1.0.0
-  bundle_author: Fulcrum Technology Solutions
-  bundle_description: Templates for Okta Identity Cloud authentication events.
-  bundle_tags:
+  path: nginx/access
+  template_count: 1
+- name: okta-identity-cloud
+  display_name: Okta Identity Cloud
+  version: 1.0.0
+  author: Fulcrum Technology Solutions
+  description: Templates for Okta Identity Cloud authentication events.
+  tags:
     - okta
     - identity
     - authentication
     - security
-  file: okta/identity_cloud/login/login_failure.j2
-  name: Login Failure
-  description: Okta Identity Cloud failed login events
-  log_type: authentication
-  template_version: 1.0.0
-- bundle: paloalto-globalprotect
-  bundle_display_name: Palo Alto Networks GlobalProtect VPN
-  bundle_version: 1.0.0
-  bundle_author: Fulcrum Technology Solutions
-  bundle_description: Template for Palo Alto GlobalProtect VPN authentication and
-    connection logs in Syslog format.
-  bundle_tags:
+  path: okta/identity_cloud
+  template_count: 1
+- name: paloalto-globalprotect
+  display_name: Palo Alto Networks GlobalProtect VPN
+  version: 1.0.0
+  author: Fulcrum Technology Solutions
+  description: Template for Palo Alto GlobalProtect VPN authentication and connection
+    logs in Syslog format.
+  tags:
     - paloalto
     - globalprotect
     - vpn
     - authentication
     - syslog
-  file: paloalto/globalprotect/vpn/globalprotect.j2
-  name: GlobalProtect VPN
-  description: Palo Alto GlobalProtect VPN authentication and connection logs
-  log_type: authentication
-  template_version: 1.0.0
-- bundle: paloalto-traffic
-  bundle_display_name: Palo Alto Networks Traffic
-  bundle_version: 1.0.0
-  bundle_author: Fulcrum Technology Solutions
-  bundle_description: Templates for Palo Alto Networks firewall traffic logs.
-  bundle_tags:
+  path: paloalto/globalprotect
+  template_count: 1
+- name: paloalto-traffic
+  display_name: Palo Alto Networks Traffic
+  version: 1.0.0
+  author: Fulcrum Technology Solutions
+  description: Templates for Palo Alto Networks firewall traffic logs.
+  tags:
     - paloalto
     - firewall
     - traffic
     - network
     - security
-  file: paloalto/traffic/network/traffic.j2
-  name: Traffic Logs
-  description: Palo Alto Networks firewall traffic logs
-  log_type: network
-  template_version: 1.0.0
-- bundle: paloalto-wildfire
-  bundle_display_name: Palo Alto Networks WildFire
-  bundle_version: 1.0.0
-  bundle_author: Fulcrum Technology Solutions
-  bundle_description: Templates for Palo Alto Networks WildFire threat detection logs.
-  bundle_tags:
+  path: paloalto/traffic
+  template_count: 1
+- name: paloalto-wildfire
+  display_name: Palo Alto Networks WildFire
+  version: 1.0.0
+  author: Fulcrum Technology Solutions
+  description: Templates for Palo Alto Networks WildFire threat detection logs.
+  tags:
     - paloalto
     - wildfire
     - threat
     - malware
     - security
-  file: paloalto/wildfire/threats/wildfire_threat_detected.j2
-  name: WildFire Threat Detected
-  description: Palo Alto Networks WildFire threat detection logs
-  log_type: security
-  template_version: 1.0.0
-- bundle: proofpoint-tap
-  bundle_display_name: Proofpoint TAP
-  bundle_version: 1.0.0
-  bundle_author: Fulcrum Technology Solutions
-  bundle_description: Templates for Proofpoint Targeted Attack Protection (TAP) SIEM
-    logs.
-  bundle_tags:
+  path: paloalto/wildfire
+  template_count: 1
+- name: proofpoint-tap
+  display_name: Proofpoint TAP
+  version: 1.0.0
+  author: Fulcrum Technology Solutions
+  description: Templates for Proofpoint Targeted Attack Protection (TAP) SIEM logs.
+  tags:
     - proofpoint
     - tap
     - email
     - security
     - siem
-  file: proofpoint/tap/events/tap_siem.j2
-  name: TAP SIEM
-  description: Proofpoint TAP SIEM event logs
-  log_type: security
-  template_version: 1.0.0
-- bundle: redhat-openshift
-  bundle_display_name: Red Hat OpenShift
-  bundle_version: 1.0.0
-  bundle_author: Fulcrum Technology Solutions
-  bundle_description: Templates for Red Hat OpenShift container logs.
-  bundle_tags:
+  path: proofpoint/tap
+  template_count: 1
+- name: redhat-openshift
+  display_name: Red Hat OpenShift
+  version: 1.0.0
+  author: Fulcrum Technology Solutions
+  description: Templates for Red Hat OpenShift container logs.
+  tags:
     - redhat
     - openshift
     - container
     - kubernetes
     - logs
-  file: red_hat/openshift/container/container_logs.j2
-  name: Container Logs
-  description: Red Hat OpenShift container logs
-  log_type: application
-  template_version: 1.0.0
-- bundle: sentinelone-channel-activities
-  bundle_display_name: SentinelOne Channel Activities
-  bundle_version: 1.0.0
-  bundle_author: Fulcrum Technology Solutions
-  bundle_description: Templates for SentinelOne channel activity events.
-  bundle_tags:
+  path: red_hat/openshift
+  template_count: 1
+- name: sentinelone-channel-activities
+  display_name: SentinelOne Channel Activities
+  version: 1.0.0
+  author: Fulcrum Technology Solutions
+  description: Templates for SentinelOne channel activity events.
+  tags:
     - sentinelone
     - edr
     - channel
     - activities
     - security
-  file: sentinelone/channel/activities/channel_activities.j2
-  name: Channel Activities
-  description: SentinelOne channel activity logs
-  log_type: security
-  template_version: 1.0.0
-- bundle: sentinelone-threats-events
-  bundle_display_name: SentinelOne Threat Events
-  bundle_version: 1.0.0
-  bundle_author: Fulcrum Technology Solutions
-  bundle_description: Templates for SentinelOne threat event logs.
-  bundle_tags:
+  path: sentinelone/channel
+  template_count: 1
+- name: sentinelone-threats-events
+  display_name: SentinelOne Threat Events
+  version: 1.0.0
+  author: Fulcrum Technology Solutions
+  description: Templates for SentinelOne threat event logs.
+  tags:
     - sentinelone
     - edr
     - threats
     - events
     - security
-  file: sentinelone/threats/events/threat_events.j2
-  name: Threat Events
-  description: SentinelOne threat event logs
-  log_type: security
-  template_version: 1.0.0
-- bundle: suricata-ids
-  bundle_display_name: Suricata IDS
-  bundle_version: 1.0.0
-  bundle_author: Fulcrum Technology Solutions
-  bundle_description: Templates for Suricata IDS alert logs for CVE detections.
-  bundle_tags:
+  path: sentinelone/threats
+  template_count: 1
+- name: suricata-ids
+  display_name: Suricata IDS
+  version: 1.0.0
+  author: Fulcrum Technology Solutions
+  description: Templates for Suricata IDS alert logs for CVE detections.
+  tags:
     - suricata
     - ids
     - intrusion
     - cve
     - security
-  file: suricata/ids/cve/CVE-2023-4966.j2
-  name: CVE-2023-4966
-  description: Suricata IDS alert logs for CVE-2023-4966 (Citrix Bleed) detection
-  log_type: security
-  template_version: 1.0.0
-- bundle: zscaler-zia
-  bundle_display_name: Zscaler Internet Access
-  bundle_version: 1.0.0
-  bundle_author: Fulcrum Technology Solutions
-  bundle_description: Templates for Zscaler Internet Access (ZIA) web traffic logs.
-  bundle_tags:
+  path: suricata/ids
+  template_count: 1
+- name: zscaler-zia
+  display_name: Zscaler Internet Access
+  version: 1.0.0
+  author: Fulcrum Technology Solutions
+  description: Templates for Zscaler Internet Access (ZIA) web traffic logs.
+  tags:
     - zscaler
     - zia
     - web
     - traffic
     - security
-  file: zscaler/zia/traffic/zia_web_traffic.j2
-  name: ZIA Web Traffic
-  description: Zscaler Internet Access web traffic logs
-  log_type: network
-  template_version: 1.0.0
-...
+  path: zscaler/zia
+  template_count: 1
