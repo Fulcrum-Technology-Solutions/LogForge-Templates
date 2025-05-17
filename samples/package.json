@@ -1,27 +1,14 @@
 {
-  "name": "resource-access-events",
-  "displayName": "Resource Access Event Logs",
-  "version": "1.0.0",
-  "author": "Fulcrum Technology Solutions",
-  "description": "Templates for generic resource access event logs in XML format for security auditing and monitoring.",
-  "repository": "https://github.com/Fulcrum-Technology-Solutions/LogForge-Templates",
-  "tags": [
-    "resource",
-    "access",
-    "authentication",
-    "authorization",
-    "security",
-    "audit",
-    "xml",
-    "events"
-  ],
+  "vendor": "LogForge-Templates",
+  "product": "samples",
   "templates": [
     {
-      "file": "security/resource_access_event.j2",
-      "name": "Resource Access Event",
-      "description": "Generic XML-formatted resource access events for security monitoring",
-      "log_type": "security",
-      "version": "1.0.0"
+      "file": "LogForge-Templates/samples/sample-product/sample-data/sample.j2",
+      "name": "Event Source Name",
+      "description": "Detailed description of what this log represents and when it's generated",
+      "vendor": "Vendor Name",
+      "product": "Product Name",
+      "format": "XML"
     }
   ]
 }

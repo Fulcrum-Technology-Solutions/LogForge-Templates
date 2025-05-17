@@ -1,0 +1,30 @@
+{
+  "vendor": "LogForge-Templates",
+  "product": "paloalto",
+  "templates": [
+    {
+      "file": "LogForge-Templates/paloalto/traffic/network/traffic.j2",
+      "name": "Traffic",
+      "description": "PaloAlto traffic log for network sessions",
+      "vendor": "Palo Alto Networks",
+      "product": "Firewall",
+      "format": "Syslog"
+    },
+    {
+      "file": "LogForge-Templates/paloalto/wildfire/threat/wildfire_threat_detected.j2",
+      "name": "WildFire Threat",
+      "description": "Palo Alto Networks WildFire malicious file detection logs in CSV format",
+      "vendor": "Palo Alto Networks",
+      "product": "Firewall",
+      "format": "Syslog"
+    },
+    {
+      "file": "LogForge-Templates/paloalto/globalprotect/vpn/globalprotect.j2",
+      "name": "VPN Authentication Logs",
+      "description": "Palo Alto GlobalProtect VPN authentication and connection logs",
+      "vendor": "Palo Alto Networks",
+      "product": "GlobalProtect",
+      "format": "Syslog"
+    }
+  ]
+}
