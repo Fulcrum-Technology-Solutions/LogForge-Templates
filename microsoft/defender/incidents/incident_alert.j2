@@ -1,0 +1,138 @@
+{%- set alert_id = random_guid() -%}
+{%- set alert_creation_time = current_timestamp() -%}
+{%- set alert_last_updated_time = alert_creation_time + random_int(3600, 86400) -%}
+{%- set alert_resolved_time = alert_last_updated_time - random_int(60, 3600) -%}
+{%- set alert_first_activity = alert_creation_time - random_int(7200, 14400) -%}
+{%- set alert_last_activity = alert_first_activity + random_int(1800, 3600) -%}
+{%- set user = registry.get_random_user() -%}
+{%- set source_device = registry.get_random_device() -%}
+{%- set target_device = registry.get_random_device() -%}
+{%- set dc_device = registry.get_random_device() -%}
+{%- set incident_id = random_int(100, 9999) -%}
+{%- set domain = registry.get_domain() -%}
+{%- set netbios_domain = registry.get_netbios_domain() -%}
+{
+  "alertId": "a{{ alert_id }}",
+  "providerAlertId": "{{ alert_id }}",
+  "incidentId": {{ incident_id }},
+  "serviceSource": "MicrosoftDefenderForIdentity",
+  "creationTime": "{{ alert_creation_time | format_timestamp('%Y-%m-%dT%H:%M:%S.%fZ') }}",
+  "lastUpdatedTime": "{{ alert_last_updated_time | format_timestamp('%Y-%m-%dT%H:%M:%S.%fZ') }}",
+  "resolvedTime": "{{ alert_resolved_time | format_timestamp('%Y-%m-%dT%H:%M:%S.%fZ') }}",
+  "firstActivity": "{{ alert_first_activity | format_timestamp('%Y-%m-%dT%H:%M:%S.%fZ') }}",
+  "lastActivity": "{{ alert_last_activity | format_timestamp('%Y-%m-%dT%H:%M:%S.%fZ') }}",
+  "title": "Suspected identity theft (pass-the-ticket)",
+  "description": "An actor took {{ user.full_name }} ({{ user.title }})'s Kerberos ticket from {{ source_device.hostname }} and used it on {{ target_device.hostname }} to access {{ random_int(1, 5) }} resources.",
+  "category": "LateralMovement",
+  "status": "Resolved",
+  "severity": "High",
+  "investigationId": null,
+  "investigationState": "UnsupportedAlertType",
+  "classification": "TruePositive",
+  "determination": "SecurityTesting",
+  "detectionSource": "AzureATP",
+  "detectorId": "PassTheTicketSecurityAlert",
+  "assignedTo": "{{ user.username }}@{{ domain }}",
+  "actorName": null,
+  "threatFamilyName": null,
+  "mitreTechniques": ["T1550", "T1550.003"],
+  "devices": [
+    {
+      "mdatpDeviceId": "{{ random_string(40, 'abcdef0123456789') }}",
+      "aadDeviceId": null,
+      "deviceDnsName": "{{ dc_device.hostname }}.{{ domain }}",
+      "osPlatform": "WindowsServer2019",
+      "version": "1809",
+      "osProcessor": "x64",
+      "osBuild": 17763,
+      "healthStatus": "Active",
+      "riskScore": "None",
+      "rbacGroupName": "UnassignedGroup",
+      "firstSeen": "{{ (alert_creation_time - random_int(1000000, 10000000)) | format_timestamp('%Y-%m-%dT%H:%M:%S.%fZ') }}",
+      "tags": [],
+      "defenderAvStatus": "NotSupported",
+      "onboardingStatus": "Onboarded",
+      "vmMetadata": {
+        "vmId": "{{ random_guid() }}",
+        "cloudProvider": "Unknown",
+        "resourceId": "/subscriptions/{{ random_string(8, '0123456789abcdef') }}-{{ random_string(4, '0123456789abcdef') }}-{{ random_string(4, '0123456789abcdef') }}-{{ random_string(4, '0123456789abcdef') }}-{{ random_string(12, '0123456789abcdef') }}/resourceGroups/{{ netbios_domain }}/providers/Microsoft.Compute/virtualMachines/{{ dc_device.hostname }}",
+        "subscriptionId": "{{ random_string(8, '0123456789abcdef') }}-{{ random_string(4, '0123456789abcdef') }}-{{ random_string(4, '0123456789abcdef') }}-{{ random_string(4, '0123456789abcdef') }}-{{ random_string(12, '0123456789abcdef') }}"
+      },
+      "loggedOnUsers": []
+    },
+    {
+      "mdatpDeviceId": "{{ random_string(40, 'abcdef0123456789') }}",
+      "aadDeviceId": null,
+      "deviceDnsName": "{{ target_device.hostname }}.{{ domain }}",
+      "osPlatform": "Windows10",
+      "version": "1809",
+      "osProcessor": "x64",
+      "osBuild": 17763,
+      "healthStatus": "Active",
+      "riskScore": "None",
+      "rbacGroupName": "Full Auto Clients",
+      "firstSeen": "{{ (alert_creation_time - random_int(1000000, 10000000)) | format_timestamp('%Y-%m-%dT%H:%M:%S.%fZ') }}",
+      "tags": ["Full auto"],
+      "defenderAvStatus": "Updated",
+      "onboardingStatus": "Onboarded",
+      "vmMetadata": {
+        "vmId": "{{ random_guid() }}",
+        "cloudProvider": "Unknown",
+        "resourceId": "/subscriptions/{{ random_string(8, '0123456789abcdef') }}-{{ random_string(4, '0123456789abcdef') }}-{{ random_string(4, '0123456789abcdef') }}-{{ random_string(4, '0123456789abcdef') }}-{{ random_string(12, '0123456789abcdef') }}/resourceGroups/{{ netbios_domain }}/providers/Microsoft.Compute/virtualMachines/{{ target_device.hostname }}",
+        "subscriptionId": "{{ random_string(8, '0123456789abcdef') }}-{{ random_string(4, '0123456789abcdef') }}-{{ random_string(4, '0123456789abcdef') }}-{{ random_string(4, '0123456789abcdef') }}-{{ random_string(12, '0123456789abcdef') }}"
+      },
+      "loggedOnUsers": []
+    },
+    {
+      "mdatpDeviceId": "{{ random_string(40, 'abcdef0123456789') }}",
+      "aadDeviceId": "{{ random_string(8, '0123456789abcdef') }}-{{ random_string(4, '0123456789abcdef') }}-{{ random_string(4, '0123456789abcdef') }}-{{ random_string(4, '0123456789abcdef') }}-{{ random_string(12, '0123456789abcdef') }}",
+      "deviceDnsName": "{{ source_device.hostname }}.{{ domain }}",
+      "osPlatform": "Windows10",
+      "version": "21H1",
+      "osProcessor": "x64",
+      "osBuild": 19043,
+      "healthStatus": "Active",
+      "riskScore": "None",
+      "rbacGroupName": "Semi Auto Client",
+      "firstSeen": "{{ (alert_creation_time - random_int(1000000, 10000000)) | format_timestamp('%Y-%m-%dT%H:%M:%S.%fZ') }}",
+      "tags": ["MDE-Management", "semi auto", "servers"],
+      "defenderAvStatus": "Updated",
+      "onboardingStatus": "Onboarded",
+      "vmMetadata": {
+        "vmId": "{{ random_guid() }}",
+        "cloudProvider": "Unknown",
+        "resourceId": "/subscriptions/{{ random_string(8, '0123456789abcdef') }}-{{ random_string(4, '0123456789abcdef') }}-{{ random_string(4, '0123456789abcdef') }}-{{ random_string(4, '0123456789abcdef') }}-{{ random_string(12, '0123456789abcdef') }}/resourceGroups/{{ netbios_domain }}/providers/Microsoft.Compute/virtualMachines/{{ source_device.hostname }}",
+        "subscriptionId": "{{ random_string(8, '0123456789abcdef') }}-{{ random_string(4, '0123456789abcdef') }}-{{ random_string(4, '0123456789abcdef') }}-{{ random_string(4, '0123456789abcdef') }}-{{ random_string(12, '0123456789abcdef') }}"
+      },
+      "loggedOnUsers": []
+    }
+  ],
+  "entities": [
+    {
+      "entityType": "User",
+      "evidenceCreationTime": "{{ alert_creation_time | format_timestamp('%Y-%m-%dT%H:%M:%S.%fZ') }}",
+      "verdict": "5",
+      "remediationStatus": "None",
+      "accountName": "krbtgt",
+      "userSid": "S-1-5-21-{{ random_int(1000000000, 9999999999) }}-{{ random_int(1000000000, 9999999999) }}-{{ random_int(100000000, 999999999) }}-502"
+    },
+    {
+      "entityType": "User",
+      "evidenceCreationTime": "{{ alert_creation_time | format_timestamp('%Y-%m-%dT%H:%M:%S.%fZ') }}",
+      "verdict": "Suspicious",
+      "remediationStatus": "None",
+      "accountName": "{{ user.username }}",
+      "domainName": "{{ netbios_domain }}.{{ domain.split('.')[0] }}",
+      "userSid": "S-1-5-21-{{ random_int(1000000000, 9999999999) }}-{{ random_int(1000000000, 9999999999) }}-{{ random_int(100000000, 999999999) }}-{{ random_int(1000, 9999) }}",
+      "aadUserId": "{{ random_string(8, '0123456789abcdef') }}-{{ random_string(4, '0123456789abcdef') }}-{{ random_string(4, '0123456789abcdef') }}-{{ random_string(4, '0123456789abcdef') }}-{{ random_string(12, '0123456789abcdef') }}",
+      "userPrincipalName": "{{ user.username }}@{{ domain }}"
+    },
+    {
+      "entityType": "Ip",
+      "evidenceCreationTime": "{{ alert_creation_time | format_timestamp('%Y-%m-%dT%H:%M:%S.%fZ') }}",
+      "verdict": "Suspicious",
+      "remediationStatus": "None",
+      "ipAddress": "{{ source_device.ip_address }}"
+    }
+  ]
+}

@@ -1,0 +1,14 @@
+name: VPN Authentication Logs
+description: Palo Alto GlobalProtect VPN authentication and connection logs
+log_type: globalprotect
+author: Fulcrum Technology Solutions
+version: 1.0.0
+product: GlobalProtect
+vendor: Palo Alto Networks
+tags:
+- palo-alto-networks
+- globalprotect
+- authentication
+- logs
+date_created: '2025-05-16'
+last_updated: '2025-05-16'

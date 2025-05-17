@@ -1,0 +1,26 @@
+name: Security Account Locked
+description: Windows Security account lockout events (EventID 4740)
+log_type: security
+author: Fulcrum Technology Solutions
+version: 1.0.0
+product: Windows
+vendor: Microsoft
+tags:
+- microsoft
+- windows
+- security
+- account
+- locked
+date_created: '2025-05-16'
+last_updated: '2025-05-16'
+fields:
+- field: username
+  description: The username of the locked account
+- field: domain
+  description: The domain of the user
+- field: hostname
+  description: The hostname of the machine
+- field: process_id
+  description: Process ID
+- field: thread_id
+  description: Thread ID

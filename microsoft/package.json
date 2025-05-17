@@ -1,0 +1,160 @@
+{
+  "name": "microsoft",
+  "displayName": "Microsoft",
+  "version": "1.0.0",
+  "author": "Fulcrum Technology Solutions",
+  "description": "A comprehensive collection of templates for Microsoft products including Windows, Azure, Defender, and Office 365.",
+  "repository": "https://github.com/Fulcrum-Technology-Solutions/LogForge-Templates",
+  "tags": [
+    "microsoft",
+    "windows",
+    "azure",
+    "defender",
+    "o365",
+    "office365",
+    "security",
+    "cloud"
+  ],
+  "templates": [
+    {
+      "file": "azure/active_directory/authentication/event.j2",
+      "name": "Azure AD Authentication Event",
+      "description": "Azure Active Directory authentication events",
+      "log_type": "authentication",
+      "version": "1.0.0"
+    },
+    {
+      "file": "defender/incidents/incident_alert.j2",
+      "name": "Defender Incident Alert",
+      "description": "Microsoft Defender incident alerts",
+      "log_type": "security",
+      "version": "1.0.0"
+    },
+    {
+      "file": "o365/inbox_rules/email_new_inbox_rule_created.j2",
+      "name": "O365 Email New Inbox Rule Created",
+      "description": "Office 365 email events for new inbox rule creation",
+      "log_type": "security",
+      "version": "1.0.0"
+    },
+    {
+      "file": "windows/security/account/account_locked.j2",
+      "name": "Windows Account Locked",
+      "description": "Windows Security account lockout events (EventID 4740)",
+      "log_type": "security",
+      "version": "1.0.0"
+    },
+    {
+      "file": "windows/security/login/login_success.j2",
+      "name": "Windows Login Success",
+      "description": "Windows Security successful login events (EventID 4624)",
+      "log_type": "security",
+      "version": "1.0.0"
+    },
+    {
+      "file": "windows/security/login/login_failure.j2",
+      "name": "Windows Login Failure",
+      "description": "Windows Security failed login events (EventID 4625)",
+      "log_type": "security",
+      "version": "1.0.0"
+    },
+    {
+      "file": "windows/security/kerberos/kerberos_auth_4768.j2",
+      "name": "Windows Kerberos Authentication Ticket Request",
+      "description": "Windows Security Auditing event for Kerberos Authentication Ticket Request (Event ID 4768)",
+      "log_type": "security",
+      "version": "1.0.0"
+    },
+    {
+      "file": "windows/security/kerberos/kerberos_auth_failed_4771.j2",
+      "name": "Windows Kerberos Authentication Failed",
+      "description": "Windows Security Auditing event for Kerberos Authentication Service Ticket Failed (Event ID 4771)",
+      "log_type": "security",
+      "version": "1.0.0"
+    },
+    {
+      "file": "windows/security/privilege/privilege_use.j2",
+      "name": "Windows Privilege Use",
+      "description": "Windows Security events for privilege use",
+      "log_type": "security",
+      "version": "1.0.0"
+    },
+    {
+      "file": "windows/security/process/process_creation.j2",
+      "name": "Windows Process Creation",
+      "description": "Windows Security events for process creation (EventID 4688)",
+      "log_type": "security",
+      "version": "1.0.0"
+    },
+    {
+      "file": "windows/system/ransomware/clop_ransomware_known_service_name.j2",
+      "name": "Windows Clop Ransomware Known Service Name",
+      "description": "Windows System event log for Clop ransomware known service names",
+      "log_type": "system",
+      "version": "1.0.0"
+    },
+    {
+      "file": "windows/system/service/service_start.j2",
+      "name": "Windows Service Start",
+      "description": "Windows System event log for service start events",
+      "log_type": "system",
+      "version": "1.0.0"
+    },
+    {
+      "file": "windows/system/service/service_stop.j2",
+      "name": "Windows Service Stop",
+      "description": "Windows System event log for service stop events",
+      "log_type": "system",
+      "version": "1.0.0"
+    },
+    {
+      "file": "windows/system/time/time_change.j2",
+      "name": "Windows Time Change",
+      "description": "Windows System event log for system time change events",
+      "log_type": "system",
+      "version": "1.0.0"
+    },
+    {
+      "file": "windows/application/crash/crash.j2",
+      "name": "Windows Application Crash",
+      "description": "Windows Application event log for application crashes",
+      "log_type": "application",
+      "version": "1.0.0"
+    },
+    {
+      "file": "windows/application/error/error.j2",
+      "name": "Windows Application Error",
+      "description": "Windows Application event log for application errors",
+      "log_type": "application",
+      "version": "1.0.0"
+    },
+    {
+      "file": "windows/application/info/info.j2",
+      "name": "Windows Application Info",
+      "description": "Windows Application event log for informational events",
+      "log_type": "application",
+      "version": "1.0.0"
+    },
+    {
+      "file": "windows/application/warning/warning.j2",
+      "name": "Windows Application Warning",
+      "description": "Windows Application event log for application warnings",
+      "log_type": "application",
+      "version": "1.0.0"
+    },
+    {
+      "file": "windows/powershell/script_block/shadowcopy_script_block_logging.j2",
+      "name": "Windows ShadowCopy Script Block Logging",
+      "description": "PowerShell script block logging for ShadowCopy operations",
+      "log_type": "security",
+      "version": "1.0.0"
+    },
+    {
+      "file": "windows/sysmon/process/process_creation_adfind.j2",
+      "name": "Windows Process Creation AdFind",
+      "description": "Sysmon process creation events for AdFind tool",
+      "log_type": "security",
+      "version": "1.0.0"
+    }
+  ]
+}

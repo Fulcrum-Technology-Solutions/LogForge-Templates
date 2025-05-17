@@ -1,0 +1,25 @@
+name: Security Kerberos Authentication
+description: Windows Security Kerberos pre-authentication failure events (EventID
+  4771)
+log_type: security
+author: Fulcrum Technology Solutions
+version: 1.0.0
+product: Windows
+vendor: Microsoft
+tags:
+- microsoft
+- windows
+- security
+- kerberos
+- authentication
+date_created: '2025-05-16'
+last_updated: '2025-05-16'
+fields:
+- field: device
+  description: The device where the event was generated
+- field: user
+  description: The user account that failed pre-authentication
+- field: domain
+  description: The domain of the user account
+- field: netbios_domain
+  description: The NetBIOS domain name

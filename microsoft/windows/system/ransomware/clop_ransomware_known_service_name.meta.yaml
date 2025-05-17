@@ -1,0 +1,24 @@
+name: System Service Creation
+description: Windows Event Logs for service creation events (EventCode 7045) related
+  to potential malicious service creation by Clop ransomware
+log_type: windows
+author: Fulcrum Technology Solutions
+version: 1.0.0
+product: Windows
+vendor: Microsoft
+tags:
+- microsoft
+- windows
+- system
+- service
+- creation
+date_created: '2025-05-16'
+last_updated: '2025-05-16'
+fields:
+- field: event_id
+  description: Windows Event ID for service creation
+- field: service_name
+  description: Name of the created service (suspicious service names used by Clop
+    ransomware)
+- field: image_path
+  description: Path to the service executable

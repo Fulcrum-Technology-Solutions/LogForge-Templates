@@ -1,0 +1,42 @@
+{%- set user = registry.get_random_user() -%}
+{%- set device = registry.get_random_device() -%}
+{%- set domain = registry.get_netbios_domain() -%}
+{%- set timestamp = current_timestamp() -%}
+{%- set formatted_time = timestamp | format_timestamp('%Y-%m-%dT%H:%M:%S.%fZ') -%}
+{%- set source_ip = random_private_ip() -%}
+{%- set source_port = random_port() -%}
+{%- set event_id = 4768 -%}
+<Event xmlns='http://schemas.microsoft.com/win/2004/08/events/event'>
+  <System>
+    <Provider Name='Microsoft-Windows-Security-Auditing' Guid='{54849625-5478-4994-a5ba-3e3b0328c30d}'/>
+    <EventID>{{ event_id }}</EventID>
+    <Version>0</Version>
+    <Level>0</Level>
+    <Task>14339</Task>
+    <Opcode>0</Opcode>
+    <Keywords>0x8020000000000000</Keywords>
+    <TimeCreated SystemTime='{{ formatted_time }}'/>
+    <EventRecordID>{{ random_int(100000, 999999) }}</EventRecordID>
+    <Correlation/>
+    <Execution ProcessID='{{ random_int(100, 9999) }}' ThreadID='{{ random_int(100, 9999) }}'/>
+    <Channel>Security</Channel>
+    <Computer>{{ device.fqdn | default(device.hostname + '.' + registry.get_domain()) }}</Computer>
+    <Security/>
+  </System>
+  <EventData>
+    <Data Name='TargetUserName'>{{ user.username }}</Data>
+    <Data Name='TargetDomainName'>{{ domain }}.COM</Data>
+    <Data Name='TargetSid'>S-1-5-21-{{ random_int(100000000, 999999999) }}-{{ random_int(100000000, 999999999) }}-{{ random_int(100000000, 999999999) }}-{{ random_int(100000, 999999) }}</Data>
+    <Data Name='ServiceName'>krbtgt</Data>
+    <Data Name='ServiceSid'>S-1-5-21-{{ random_int(100000000, 999999999) }}-{{ random_int(100000000, 999999999) }}-{{ random_int(100000000, 999999999) }}-502</Data>
+    <Data Name='TicketOptions'>0x{{ ['10', '40', '50'] | random }}</Data>
+    <Data Name='Status'>0x0</Data>
+    <Data Name='TicketEncryptionType'>0x{{ ['12', '17', '18'] | random }}</Data>
+    <Data Name='PreAuthType'>{{ random_int(1, 3) }}</Data>
+    <Data Name='IpAddress'>::ffff:{{ source_ip }}</Data>
+    <Data Name='IpPort'>{{ source_port }}</Data>
+    <Data Name='CertIssuerName'></Data>
+    <Data Name='CertSerialNumber'></Data>
+    <Data Name='CertThumbprint'></Data>
+  </EventData>
+</Event>

@@ -1,0 +1,13 @@
+name: Traffic
+description: PaloAlto traffic log for network sessions
+log_type: threat
+author: Fulcrum Technology Solutions
+version: 1.0.0
+product: Firewall
+vendor: Palo Alto Networks
+tags:
+- palo-alto-networks
+- firewall
+- traffic
+date_created: '2025-05-16'
+last_updated: '2025-05-16'

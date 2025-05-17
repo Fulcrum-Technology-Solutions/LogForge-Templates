@@ -1,0 +1,27 @@
+name: Generate Template Index
+
+on:
+  pull_request:
+    paths:
+      - '**.j2'
+      - '**/package.json'
+      - 'generate_template_index.py'
+  push:
+    branches: [main]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+      - name: Install PyYAML
+        run: pip install pyyaml
+      - name: Generate TEMPLATES.yaml
+        run: python generate_template_index.py
+      - name: Check for changes
+        run: |
+          git diff --exit-code TEMPLATES.yaml || (echo 'TEMPLATES.yaml is out of date. Please run the index script and commit the result.' && exit 1)
