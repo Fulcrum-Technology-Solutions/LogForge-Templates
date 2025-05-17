@@ -1,0 +1,103 @@
+{
+  "@timestamp": "{{ current_timestamp() | format_timestamp('%Y-%m-%dT%H:%M:%S.000Z') }}",
+  "appomni": {
+    "event": {
+      "collected_time": "{{ current_timestamp() | format_timestamp('%Y-%m-%dT%H:%M:%S.%fZ') }}",
+      "dataset": "o365_audit_general",
+      "enrichments": [
+        "ao_identity",
+        "ipinfo",
+        "spur"
+      ],
+      "id": "{{ random_guid() }}",
+      "ingestion_time": "{{ current_timestamp() | format_timestamp('%Y-%m-%dT%H:%M:%S.%fZ', 1) }}"
+    },
+    "organization": {
+      "id": {{ random_int(100, 999) }}
+    },
+    "service": {
+      "account_id": "{{ random_guid() }}",
+      "id": {{ random_int(10000, 99999) }},
+      "name": "{{ registry.get_domain() | default('example.com') | replace('.com', '') | replace('.org', '') | replace('.net', '') | capitalize }}",
+      "slug": "o365",
+      "type": "o365"
+    },
+    "source": {
+      "id": "{{ random_guid() }}"
+    }
+  },
+  "event": {
+    "action": "unknown",
+    "code": "FileRead",
+    "created": "{{ current_timestamp() | format_timestamp('%Y-%m-%dT%H:%M:%S.%fZ') }}",
+    "dataset": "o365_audit_general",
+    "id": "{{ random_guid() }}",
+    "ingested": "{{ current_timestamp() | format_timestamp('%Y-%m-%dT%H:%M:%S.%fZ', 1) }}",
+    "kind": "event",
+    "module": "Endpoint",
+    "original": "{\"Application\":\"{{ ['cleanmgr.exe', 'csc_ui.exe', 'csrss.exe'] | random }}\",\"ClientIP\":\"{{ random_private_ip() }}\",\"CreationTime\":\"{{ current_timestamp() | format_timestamp('%Y-%m-%dT%H:%M:%S') }}\",\"DeviceName\":\"{{ registry.get_random_device().hostname }}\",\"DlpAuditEventMetadata\":{\"DlpPolicyMatchId\":\"00000000-0000-0000-0000-000000000000\",\"EvaluationTime\":\"{{ current_timestamp() | format_timestamp('%Y-%m-%dT%H:%M:%S.%fZ', -30) }}\"},\"EnforcementMode\":1,\"FileExtension\":\"{{ ['exe', 'inf', 'json'] | random }}\",\"FileSize\":{{ random_int(100, 5000) }},\"FileType\":\"Unknown\",\"Hidden\":false,\"Id\":\"{{ random_guid() }}\",\"MDATPDeviceId\":\"{{ random_string(40, '0123456789abcdef') }}\",\"ObjectId\":\"C:\\\\{{ ['Windows\\\\System32', 'Program Files (x86)\\\\Citrix\\\\ICA Client', 'Program Files (x86)\\\\Cisco\\\\Cisco Secure Client'] | random }}\\\\{{ ['system.dll', 'SelfServicePlugin\\\\SelfService.exe.config', 'Plugins\\\\pluginreg_vpn_api.json'] | random }}\",\"Operation\":\"FileRead\",\"OrganizationId\":\"{{ random_guid() }}\",\"Platform\":1,\"PolicyMatchInfo\":{\"PolicyId\":\"{{ random_guid() }}\",\"PolicyName\":\"Microsoft AI hub - Discover sensitive prompts in AI assistants\",\"RuleId\":\"{{ random_guid() }}\",\"RuleName\":\"Audit sensitive data shared to generative AI sites\"},\"RMSEncrypted\":false,\"RecordType\":63,\"Scope\":1,\"SensitiveInfoTypeData\":[{\"Confidence\":75,\"Count\":{{ random_int(1, 10) }},\"SensitiveInfoTypeId\":\"{{ random_guid() }}\",\"SensitiveInfoTypeName\":\"IP Address v4\",\"SensitiveInformationDetailedClassificationAttributes\":[{\"Confidence\":65,\"Count\":{{ random_int(1, 10) }}},{\"Confidence\":75,\"Count\":{{ random_int(1, 10) }}},{\"Confidence\":85,\"Count\":0}]}],\"Sha1\":\"{{ random_string(40, '0123456789abcdef') }}\",\"Sha256\":\"{{ random_string(64, '0123456789abcdef') }}\",\"SourceLocationType\":1,\"UserId\":\"{{ registry.get_random_user().email }}\",\"UserKey\":\"{{ random_guid() }}\",\"UserType\":0,\"Version\":1,\"Workload\":\"Endpoint\"}",
+    "outcome": "success",
+    "provider": "DLPEndpoint"
+  },
+  "related": {
+    "identity": [
+      "{{ random_guid() }}"
+    ],
+    "ip": [
+      "{{ random_private_ip() }}"
+    ],
+    "user": [
+      "{{ registry.get_random_user().email | lower }}"
+    ]
+  },
+  "source": {
+    "address": "{{ random_private_ip() }}",
+    "as": {
+      "country": "US",
+      "domain": "{{ registry.get_domain() | default('example.com') }}",
+      "number": {{ random_int(10000, 99999) }},
+      "organization": {
+        "name": "{{ registry.get_domain() | default('example.com') | replace('.com', '') | replace('.org', '') | replace('.net', '') | capitalize }}"
+      },
+      "type": "business"
+    },
+    "geo": {
+      "city_name": "{{ ['Dallas', 'Houston', 'Austin', 'San Francisco', 'New York'] | random }}",
+      "country_iso_code": "US",
+      "location": {
+        "lat": {{ random_int(25, 48) }}.{{ random_int(10000, 99999) }},
+        "lon": {{ random_int(-123, -70) }}.{{ random_int(10000, 99999) }}
+      },
+      "postal_code": "{{ random_int(10000, 99999) }}",
+      "region_name": "{{ ['Texas', 'California', 'New York', 'Florida', 'Washington'] | random }}",
+      "timezone": "America/{{ ['Chicago', 'Los_Angeles', 'New_York', 'Denver'] | random }}"
+    },
+    "ip": "{{ random_private_ip() }}"
+  },
+  "tags": [
+    "is_internal_user"
+  ],
+  "user": {
+    "id": "{{ random_guid() }}",
+    "identity": {
+      "email": "{{ registry.get_random_user().email }}",
+      "full_name": "{{ registry.get_random_user().full_name }}",
+      "id": "{{ random_guid() }}"
+    },
+    "name": "{{ registry.get_random_user().email | lower }}",
+    "roles": [
+      "{{ random_guid() }}",
+      "{{ random_guid() }}",
+      "{{ random_guid() }}",
+      "All Active Users",
+      "AppAccess",
+      "O365 Users",
+      "IntuneAutoPilotUsers",
+      "Power Platform Access",
+      "Regular"
+    ]
+  },
+  "version": "2.0.0",
+  "source_tag": "appomni",
+  "_time": {{ current_timestamp() }}.{{ random_int(100, 999) }}
+}

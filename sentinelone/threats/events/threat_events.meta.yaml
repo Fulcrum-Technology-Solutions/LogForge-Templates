@@ -1,0 +1,21 @@
+name: Threat Detection
+description: SentinelOne Endpoint Threat Detection Eventss
+log_type: endpoint security
+author: Fulcrum Technology Solutions
+version: 1.0.0
+product: Endpoint Security
+vendor: SentinelOne
+tags:
+- sentinelone
+- endpoint-security
+- threat
+- detection
+date_created: '2025-05-16'
+last_updated: '2025-05-16'
+fields:
+- field: include_container_info
+  description: Include container information in the generated events
+- field: include_kubernetes_info
+  description: Include Kubernetes information in the generated events
+- field: include_cloud_info
+  description: Include cloud platform information in the generated events

@@ -1,0 +1,15 @@
+name: AppOmni SaaS Security Platform
+description: AppOmni SaaS Security Platform Events
+log_type: security
+author: Fulcrum Technology Solutions
+version: 1.0.0
+product: SaaS Security Platform
+vendor: AppOmni
+tags:
+- appomni
+- saas-security-platform
+- saas
+- security
+- platform
+date_created: '2025-05-16'
+last_updated: '2025-05-16'

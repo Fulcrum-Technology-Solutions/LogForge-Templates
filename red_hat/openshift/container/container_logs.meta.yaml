@@ -1,0 +1,21 @@
+name: Container Stats
+description: OpenShift Container Statistics
+log_type: openshift
+author: Fulcrum Technology Solutions
+version: 1.0.0
+product: OpenShift
+vendor: RedHat
+tags:
+- redhat
+- openshift
+- container
+- stats
+date_created: '2025-05-16'
+last_updated: '2025-05-16'
+fields:
+- field: cluster_name
+  description: The OpenShift cluster name
+- field: namespace
+  description: The Kubernetes namespace
+- field: container_name
+  description: The name of the container

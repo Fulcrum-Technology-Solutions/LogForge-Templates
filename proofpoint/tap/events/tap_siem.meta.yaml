@@ -1,0 +1,14 @@
+name: TAP SIEM Events
+description: Proofpoint TAP SIEM Events with threat and user correlation
+log_type: targeted attack protection
+author: Fulcrum Technology Solutions
+version: 1.0.0
+product: Targeted Attack Protection
+vendor: Proofpoint
+tags:
+- proofpoint
+- targeted-attack-protection
+- siem
+- events
+date_created: '2025-05-16'
+last_updated: '2025-05-16'

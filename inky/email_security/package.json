@@ -1,0 +1,23 @@
+{
+  "name": "inky-email-security",
+  "displayName": "Inky Email Security",
+  "version": "1.0.0",
+  "author": "Fulcrum Technology Solutions",
+  "description": "Templates for Inky email security events.",
+  "repository": "https://github.com/Fulcrum-Technology-Solutions/LogForge-Templates",
+  "tags": [
+    "inky",
+    "email",
+    "security",
+    "phishing"
+  ],
+  "templates": [
+    {
+      "file": "security/events.j2",
+      "name": "Inky Email Security Events",
+      "description": "Inky email security event logs",
+      "log_type": "security",
+      "version": "1.0.0"
+    }
+  ]
+}

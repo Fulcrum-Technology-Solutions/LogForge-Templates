@@ -1,0 +1,21 @@
+name: Email Analysis
+description: Inky Phish Fence Email Security Analysis Events
+log_type: phish fence
+author: Fulcrum Technology Solutions
+version: 1.0.0
+product: Phish Fence
+vendor: Inky
+tags:
+- inky
+- phish-fence
+- email
+- analysis
+date_created: '2025-05-16'
+last_updated: '2025-05-16'
+fields:
+- field: organization
+  description: Organization name used in teamid and dashboard URLs
+- field: mail_domain
+  description: Primary mail domain for SMTP server references
+- field: subject_prefix
+  description: Optional prefix to add to email subjects

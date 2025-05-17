@@ -1,0 +1,38 @@
+{
+  "name": "aws-cloudtrail",
+  "displayName": "AWS CloudTrail Events",
+  "version": "1.0.0",
+  "author": "Fulcrum Technology Solutions",
+  "description": "AWS CloudTrail templates for security-relevant events in JSON format.",
+  "repository": "https://github.com/Fulcrum-Technology-Solutions/LogForge-Templates",
+  "tags": [
+    "aws",
+    "cloudtrail",
+    "security",
+    "cloud",
+    "json"
+  ],
+  "templates": [
+    {
+      "file": "deletetrail/cloudtrail_deletetrail.j2",
+      "name": "CloudTrail DeleteTrail",
+      "description": "AWS CloudTrail DeleteTrail event that occurs when a CloudTrail trail is deleted",
+      "log_type": "cloudtrail",
+      "version": "1.0.0"
+    },
+    {
+      "file": "ec2/cloudtrail_ec2_external_snapshot.j2",
+      "name": "EC2 External Snapshot",
+      "description": "AWS CloudTrail events for EC2 external snapshots",
+      "log_type": "cloudtrail",
+      "version": "1.0.0"
+    },
+    {
+      "file": "iam/cloudtrail_iam_delete_policy.j2",
+      "name": "IAM Delete Policy",
+      "description": "AWS CloudTrail events for IAM policy deletion",
+      "log_type": "cloudtrail",
+      "version": "1.0.0"
+    }
+  ]
+}

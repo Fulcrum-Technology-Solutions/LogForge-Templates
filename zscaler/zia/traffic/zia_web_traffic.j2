@@ -1,0 +1,130 @@
+{%- set user = registry.get_random_user() -%}
+{%- set device = registry.get_random_device() -%}
+{%- set client_ip = device.ip_address -%}
+{%- set server_ip = random_private_ip() -%}
+{%- set request_method = ['GET', 'POST', 'PUT', 'DELETE'] | random -%}
+{%- set status_code = [200, 201, 301, 302, 400, 401, 403, 404, 500] | random -%}
+{%- set current_time = current_timestamp() -%}
+{%- set domain = registry.get_domain() -%}
+{%- set url_path = ['/', '/login', '/dashboard', '/api/v1/users', '/resources/document.pdf'] | random -%}
+{%- set url = 'https://' + domain + url_path -%}
+{%- set referer = 'https://' + domain + '/' -%}
+{%- set ua_class = ['Browser', 'Mobile App', 'API Client'] | random -%}
+{%- set protocol = ['HTTP', 'HTTPS'] | random -%}
+{%- set action = ['ALLOW', 'BLOCK', 'ALERT', 'MONITOR'] | random -%}
+{%- set req_size = random_int(100, 5000) -%}
+{%- set resp_size = random_int(500, 10000) -%}
+{%- set total_size = req_size + resp_size -%}
+{%- set client_time = random_int(5, 500) -%}
+{%- set server_time = random_int(10, 1000) -%}
+{%- set tls_version = ['TLSv1.2', 'TLSv1.3'] | random -%}
+{%- set ssl_cipher = ['ECDHE-RSA-AES256-GCM-SHA384', 'ECDHE-RSA-AES128-GCM-SHA256'] | random -%}
+{%- set content_type = ['text/html', 'application/json', 'text/plain', 'application/pdf'] | random -%}
+{%- set record_id = random_int(1000000, 9999999) -%}
+{%- set risk_score = random_int(0, 100) -%}
+{%- set has_threat = [true, false, false, false, false] | random -%}
+{%- set threat_names = [
+  'HTML.Adware.Gen', 
+  'HTML.Adware.Popads', 
+  'Win32.Adware.PCAppStore', 
+  'PS.Adware.DesktopGoose', 
+  'W32/Adware.QXJK-2664',
+  'Trojan.GenericKD.40251423',
+  'JS:Trojan.Cryxos',
+  'Trojan:Win32/Occamy.C',
+  'Backdoor.Win32.Androm',
+  'Win32.Downloader.Banload'
+] | random -%}
+{%- set threat_categories = ['Adware', 'Trojan', 'Malware', 'Spyware', 'Backdoor'] | random -%}
+{%- set threat_class = ['Malicious', 'Suspicious', 'PUA', 'Unwanted'] | random -%}
+
+{
+  "action": "{{ 'BLOCK' if has_threat else action }}",
+  "appclass": "Web",
+  "appname": "Web Browsing",
+  "bwclassname": "Default",
+  "bwrulename": "Default",
+  "bwthrottle": "No",
+  "ClientIP": "{{ client_ip }}",
+  "clientpublicIP": "{{ random_public_ip() }}",
+  "clientsslcipher": "{{ ssl_cipher }}",
+  "clientsslsessreuse": "No",
+  "clienttlsversion": "{{ tls_version }}",
+  "clienttranstime": "{{ client_time }}",
+  "contenttype": "{{ content_type }}",
+  "contenttype__1": "{{ content_type }}",
+  "department": "{{ user.department }}",
+  "dept": "{{ user.department }}",
+  "deviceappversion": "1.0",
+  "devicemodel": "{{ device.model | default('Unknown') }}",
+  "devicename": "{{ device.hostname }}",
+  "devicename__1": "{{ device.hostname }}",
+  "deviceostype": "{{ device.os_type | default('Unknown') }}",
+  "deviceostype__1": "{{ device.os_type | default('Unknown') }}",
+  "deviceosversion": "{{ device.os_version | default('Unknown') }}",
+  "deviceplatform": "{{ device.device_type | default('workstation') }}",
+  "dlpdicthitcount": "0",
+  "dlpdictionaries": "None",
+  "dlpengine": "Default",
+  "dlpidentifier": "0",
+  "dlpmd5": "None",
+  "ehost": "{{ domain }}",
+  "epochtime": "{{ current_time }}",
+  "ereferer": "{{ referer }}",
+  "event_id": "{{ record_id }}",
+  "fileclass": "None",
+  "filename": "None",
+  "filesubtype": "None",
+  "filetype": "None",
+  "hostname": "{{ domain }}",
+  "location": "{{ device.custom_location | default('Unknown') }}",
+  "md5": "{{ random_string(32, '0123456789abcdef') if has_threat else 'None' }}",
+  "mobappcat": "None",
+  "mobappname": "None",
+  "mobdevtype": "None",
+  "module": "ZIA",
+  "login": "{{ user.username }}",
+  "pagerisk": "{{ '85' if has_threat else risk_score }}",
+  "product": "ZIA",
+  "productversion": "1.0",
+  "protocol": "{{ protocol }}",
+  "reason": "{{ 'Malware detected' if has_threat else 'Default' }}",
+  "refererURL": "{{ referer }}",
+  "reqdatasize": "{{ req_size - 200 }}",
+  "reqhdrsize": "200",
+  "requestmethod": "{{ request_method }}",
+  "requestsize": "{{ req_size }}",
+  "respdatasize": "{{ resp_size - 300 }}",
+  "resphdrsize": "300",
+  "responsesize": "{{ resp_size }}",
+  "respsize": "{{ resp_size }}",
+  "respversion": "HTTP/1.1",
+  "rulelabel": "Default",
+  "ruletype": "Default",
+  "serverip": "{{ server_ip }}",
+  "serversslsessreuse": "No",
+  "servertranstime": "{{ server_time }}",
+  "srvcertchainvalpass": "Yes",
+  "srvcertvalidationtype": "Default",
+  "srvcertvalidityperiod": "365",
+  "srvocspresult": "None",
+  "srvsslcipher": "{{ ssl_cipher }}",
+  "srvtlsversion": "{{ tls_version }}",
+  "srvwildcardcert": "No",
+  "status": "{{ '403' if has_threat else status_code }}",
+  "threatcategory": "{{ threat_categories if has_threat else 'None' }}",
+  "threatclass": "{{ threat_class if has_threat else 'None' }}",
+  "threatname": "{{ threat_names if has_threat else 'None' }}",
+  "throttlereqsize": "0",
+  "throttlerespsize": "0",
+  "trafficredirectmethod": "None",
+  "transactionsize": "{{ total_size }}",
+  "tz": "UTC",
+  "ua_token": "Mozilla/5.0",
+  "uaclass": "{{ ua_class }}",
+  "url": "{{ url }}",
+  "urlcategory": "{{ ['Business', 'Technology', 'Social Media', 'News'] | random }}",
+  "urlclass": "{{ ['Business', 'Allowed', 'Monitored'] | random }}",
+  "urlsupercategory": "Web Content",
+  "user": "{{ user.username }}"
+}
