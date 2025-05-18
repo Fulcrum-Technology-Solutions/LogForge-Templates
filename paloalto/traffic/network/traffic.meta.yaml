@@ -1,13 +1,27 @@
-name: Traffic
-description: PaloAlto traffic log for network sessions
-log_type: threat
-author: Fulcrum Technology Solutions
-version: 1.0.0
-product: Firewall
 vendor: Palo Alto Networks
-tags:
-- palo-alto-networks
-- firewall
-- traffic
-date_created: '2025-05-16'
-last_updated: '2025-05-16'
+product: Firewall
+data_source: Traffic
+description: PaloAlto traffic log for network sessions
+format: Syslog
+frequency: high
+
+# Generator settings
+is_generator: true
+base_frequency: 0.3
+time_patterns:
+  - business_hours
+  - night_hours
+  - weekend
+business_hours_multiplier: 2.0
+night_hours_multiplier: 0.2
+weekend_multiplier: 0.5
+
+# Context values for template variables
+context:
+  src_ip: ""
+  dst_ip: ""
+  src_port: ""
+  dst_port: ""
+  rule_name: "allow-outbound"
+  category: "web-browsing"
+  application: "web-browsing"

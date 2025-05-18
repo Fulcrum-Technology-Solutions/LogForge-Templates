@@ -1,0 +1,85 @@
+# Log Template Metadata File
+# This file defines the properties of the log template for documentation and generation
+
+# Basic log identification information
+vendor: "Vendor Name"               # Organization that produces the software/device generating this log type
+product: "Product Name"             # Specific product or application name
+data_source: "Event Source Name"    # Specific event type or source within the product
+description: "Detailed description of what this log represents and when it's generated"
+format: "XML"                       # Format of the log output (XML, JSON, CSV, etc.)
+frequency: "medium"                 # General categorization of event frequency (high, medium, low)
+
+# Generator settings for controlling log generation patterns
+is_generator: true                  # Indicates this template is used for log generation
+base_frequency: 0.1                 # Base events per minute (adjusted by multipliers)
+time_patterns:                      # Time patterns this generator should follow
+  - business_hours                  # Mon-Fri, 9am-5pm
+  - night_hours                     # Mon-Fri, 5pm-9am
+  - weekend                         # Sat-Sun, all day
+business_hours_multiplier: 1.5      # Increases frequency during business hours
+night_hours_multiplier: 0.2         # Reduces frequency during non-business hours
+weekend_multiplier: 0.3             # Reduces frequency during weekends
+
+# Context values for template rendering (default values)
+context:
+  event_id: 1234                    # Default event ID for this log type
+  severity: "Information"           # Default severity level
+  source_system: "ApplicationName"  # Default source system name
+
+# Parameter definitions for template documentation
+parameters:
+  - name: timestamp
+    description: "ISO8601 formatted timestamp when the event occurred"
+    required: true
+    example: "2025-05-16T14:30:45.123Z"
+    
+  - name: user_id
+    description: "Unique identifier for the user associated with this event"
+    required: true
+    example: "user123"
+    
+  - name: action
+    description: "The specific action being performed"
+    required: true
+    example: "file_access"
+    
+  - name: resource_id
+    description: "Identifier for the resource being accessed"
+    required: true
+    example: "document-435"
+    
+  - name: ip_address
+    description: "Source IP address for the action"
+    required: true
+    example: "192.168.1.45"
+    
+  - name: status_code
+    description: "Result code indicating success or failure"
+    required: false
+    example: "200"
+    
+  - name: details
+    description: "Additional contextual information about the event"
+    required: false
+    example: "User accessed file via web interface"
+
+# Example usages demonstrating how to implement this template
+examples:
+  - description: "Standard successful resource access event"
+    parameters:
+      timestamp: "2025-05-16T10:23:45.789Z"
+      user_id: "jsmith"
+      action: "read"
+      resource_id: "document-123"
+      ip_address: "10.1.2.3"
+      status_code: "200"
+      
+  - description: "Failed access attempt event"
+    parameters:
+      timestamp: "2025-05-16T15:45:12.456Z"
+      user_id: "external_user"
+      action: "write"
+      resource_id: "secure-document-456"
+      ip_address: "203.0.113.42"
+      status_code: "403"
+      details: "Insufficient permissions for requested operation"
