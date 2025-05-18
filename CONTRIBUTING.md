@@ -1,110 +1,76 @@
-# Contributing to LogForge
+# Contributing to LogForge Templates
 
-Thank you for your interest in contributing to LogForge! We welcome both code and template contributions. Please follow these guidelines to help us maintain a high-quality, user-friendly project.
+Thank you for your interest in contributing to LogForge Templates! This document provides guidelines for creating and submitting new templates.
 
 ## Table of Contents
-- [How to Contribute](#how-to-contribute)
-- [Code Contributions](#code-contributions)
-- [Template Contributions](#template-contributions)
-- [Coding Standards](#coding-standards)
-- [Testing](#testing)
-- [Schema Validation](#schema-validation)
+- [Repository Structure](#repository-structure)
+- [Adding a New Template](#adding-a-new-template)
+- [Metadata Files](#metadata-files)
+- [Template Testing & Validation](#template-testing--validation)
 - [Pull Request Process](#pull-request-process)
 - [Community Standards](#community-standards)
 
 ---
 
-## How to Contribute
-1. **Check [Issues.md](./Issues.md) and [Tasks.md](./Tasks.md)** for open tasks or bugs.
-2. **Fork the repository** and create a new branch for your changes.
-3. **Make your changes** (see below for details).
-4. **Test your changes** locally.
-5. **Update documentation** as needed.
-6. **Submit a pull request** (or share your patch if not using GitHub).
+## Repository Structure
 
----
+Templates are organized in a 4-tier structure:
+- Vendor (e.g., `microsoft`)
+- Product (e.g., `windows`)
+- Data Source (e.g., `security`)
+- Template files (e.g., `account_locked.j2`, `account_locked.meta.yaml`)
 
-## Code Contributions
-- Follow the existing project structure (`core/`, `cli/`, `entities/`, `templates/`, `configs/`, `tests/`).
-- Use clear, descriptive commit messages.
-- Add or update unit tests for new features or bug fixes.
-- Run all tests with `pytest` before submitting.
-- Ensure your code passes schema validation (see below).
-- Add docstrings and comments for clarity.
+See the `examples/` directory for a complete sample structure and files.
 
----
+## Adding a New Template
 
-## Template Contributions
-- Place new templates in the correct vendor/product/data_source directory (e.g., `templates/microsoft/windows/security/`).
-- Each template (`.j2` file) **must** have a corresponding `.meta.yaml` file with required metadata fields:
-  - `name`: Template name
-  - `description`: Short description
-  - `log_type`: e.g., security, application, network
-  - `author`: Your name or handle
-  - `version`: Template version (e.g., 1.0.0)
-- Use realistic field names and values in your templates.
-- Reference entities using the `entities` object (e.g., `{{ entities.users[0] }}` or `{{ random_email() }}`).
-- Test your template with sample entity files and run validation:
-  ```bash
-  logforge validate-template --template <path-to-template> --entities <path-to-entities.yaml>
-  ```
-- See the [README.md](./README.md) for advanced helpers and authoring tips.
+### To an Existing Vendor/Product
 
-### Example Template and Metadata
-**Template:**
-```jinja2
-{{ current_timestamp() }} {{ random_email() }} {{ random_hostname() }} {{ registry.get_random_user() }}
-```
-**Metadata (`.meta.yaml`):**
-```yaml
-name: Example Log
-description: Example log template for demonstration
-log_type: application
-author: Your Name
-version: 1.0.0
-```
+1. Navigate to the appropriate `vendor/product/data_source` directory
+2. Create your template file (`.j2`) and its metadata file (`.meta.yaml`)
+3. Update the product's `collection.json` to include your new template
 
----
+### For a New Vendor/Product
 
-## Coding Standards
-- Use 4 spaces for indentation (no tabs).
-- Follow PEP8 style guidelines for Python code.
-- Use descriptive variable and function names.
-- Add comments explaining "why" for non-obvious logic.
+1. Create the directory structure: `vendor/product/data_source/`
+2. Create a `vendor.meta.yaml` in the vendor directory
+3. Create a `product.meta.yaml` in the product directory
+4. Create a `collection.json` in the product directory
+5. Add your template `.j2` and `.meta.yaml` files in the data source directory
 
----
+## Metadata Files
 
-## Testing
-- All new code should include unit tests (see `tests/` directory).
-- Use `pytest` for all tests.
-- For templates, add sample entity files and test rendering.
-- Run all tests before submitting:
-  ```bash
-  pytest
-  ```
+Each level has its own metadata file:
 
----
+1. Vendor level: `vendor.meta.yaml`
+2. Product level: `product.meta.yaml`
+3. Package level: `collection.json`
+4. Template level: `template_name.meta.yaml`
 
-## Schema Validation
-- LogForge uses [Pydantic](https://docs.pydantic.dev/) to validate entity and metadata files.
-- Ensure your entity YAML and template metadata files conform to the documented schema (see README).
-- Validation errors will be shown in the CLI if your files are invalid.
+See the `schemas/` directory for the required fields for each file.
 
----
+## Template Testing & Validation
+
+Before submitting a PR:
+1. Validate your metadata files using:
+   ```bash
+   python .github/scripts/validate_templates.py
+   ```
+2. Test your template with LogForge to ensure it generates valid logs
+
+GitHub Actions will automatically validate your templates and update the `TEMPLATES.yaml` index file on every push and pull request.
 
 ## Pull Request Process
-1. Fork the repository and create a new branch.
-2. Make your changes and commit them with clear messages.
-3. Run all tests and validation scripts.
-4. Open a pull request and describe your changes.
-5. Reference any related issues or tasks.
-6. Respond to feedback and make any requested changes.
 
----
+1. Fork the repository
+2. Create your feature branch
+3. Commit your changes
+4. Push to your branch
+5. Submit a Pull Request
 
 ## Community Standards
 - Be respectful and constructive in all communications.
 - Help others by reviewing pull requests and answering questions.
-- Report bugs and suggest improvements in [Issues.md](./Issues.md).
+- Report bugs and suggest improvements using GitHub Issues.
 
-Thank you for helping make LogForge better! 
+Thank you for helping make LogForge Templates better! 

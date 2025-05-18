@@ -1,0 +1,26 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Product Metadata Schema",
+  "description": "Schema for product.meta.yaml files",
+  "type": "object",
+  "required": ["name", "description"],
+  "properties": {
+    "name": {
+      "type": "string",
+      "description": "Display name of the product"
+    },
+    "description": {
+      "type": "string",
+      "description": "Brief description of the product"
+    },
+    "version": {
+      "type": "string",
+      "description": "Version or version range of the product"
+    },
+    "documentation_url": {
+      "type": "string",
+      "format": "uri",
+      "description": "URL to product documentation"
+    }
+  }
+} 

@@ -1,0 +1,60 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Template Collection Schema",
+  "description": "Schema for collection.json files",
+  "type": "object",
+  "required": ["name", "version", "description", "templates"],
+  "properties": {
+    "name": {
+      "type": "string",
+      "pattern": "^[a-z0-9-]+$",
+      "description": "Package identifier (lowercase with hyphens)"
+    },
+    "version": {
+      "type": "string",
+      "pattern": "^\\d+\\.\\d+\\.\\d+$",
+      "description": "Semantic version of the template collection"
+    },
+    "description": {
+      "type": "string",
+      "description": "Brief description of the template collection"
+    },
+    "maintainers": {
+      "type": "array",
+      "description": "List of people maintaining these templates",
+      "items": {
+        "type": "object",
+        "required": ["name"],
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Maintainer's name"
+          },
+          "email": {
+            "type": "string",
+            "format": "email",
+            "description": "Maintainer's email"
+          },
+          "github": {
+            "type": "string",
+            "description": "Maintainer's GitHub username"
+          }
+        }
+      }
+    },
+    "tags": {
+      "type": "array",
+      "description": "List of tags for categorizing templates",
+      "items": {
+        "type": "string"
+      }
+    },
+    "templates": {
+      "type": "array",
+      "description": "List of template paths relative to product directory",
+      "items": {
+        "type": "string"
+      }
+    }
+  }
+} 

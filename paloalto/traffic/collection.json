@@ -1,0 +1,16 @@
+{
+  "name": "paloalto-firewall",
+  "version": "1.0.0",
+  "description": "LogForge templates for Palo Alto firewall logs",
+  "maintainers": [
+    {
+      "name": "John Owen",
+      "email": "jowen@ftsc.com",
+      "github": "jowen-ftsc"
+    }
+  ],
+  "tags": ["network", "firewall", "security"],
+  "templates": [
+    "network/traffic"
+  ]
+} 

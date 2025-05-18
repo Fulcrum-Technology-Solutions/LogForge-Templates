@@ -21,118 +21,118 @@ context:
   portal_name: "gp-portal"
   gateway_name: "gp-gateway"
  
-# Documentation of fields used in template
-fields_documentation:
-  - field: receive_time
-    description: "The time that the log was received at the management plane"
-    template_function: "{{ timestamp | format_timestamp('%Y/%m/%d %H:%M:%S') }}"
-  - field: serial
-    description: "The serial number of the firewall that generated the log"
-    template_function: "PA-{{ random_string(10, '0123456789ABCDEF') }}"
-  - field: type
-    description: "Specifies the type of log"
-    value: "GLOBALPROTECT"
-  - field: subtype
-    description: "Subtype of GlobalProtect log"
-    value: "portal-auth"
-  - field: time_generated
-    description: "The time that the log was generated on the dataplane"
-    template_function: "{{ timestamp | format_timestamp('%Y/%m/%d %H:%M:%S') }}"
-  - field: vsys
-    description: "The Virtual System associated with the session"
-    value: "vsys1"
-  - field: eventid
-    description: "A string showing the name of the event"
-    template_function: "{{ event_types | random }}"
-    possible_values: ["gateway-connected", "portal-prelogin", "gateway-prelogin", "portal-login", "gateway-login"]
-  - field: stage
-    description: "A string showing the stage of the connection"
-    template_function: "{{ stages | random }}"
-    possible_values: ["before-login", "login", "tunnel"]
-  - field: auth_method
-    description: "A string showing the authentication type"
-    template_function: "{{ auth_methods | random }}"
-    possible_values: ["LDAP", "RADIUS", "SAML", "Kerberos", "Local"]
-  - field: tunnel_type
-    description: "The type of tunnel"
-    template_function: "{{ tunnel_types | random }}"
-    possible_values: ["SSLVPN", "IPSec"]
-  - field: srcuser
-    description: "The username of the user who initiated the session"
-    template_function: "{{ user.username }}"
-  - field: srcregion
-    description: "The region for the user who initiated the session"
-    value: "US"
-  - field: machinename
-    description: "The name of the user's machine"
-    template_function: "{{ device.hostname }}"
-  - field: public_ip
-    description: "The public IP address for the user who initiated the session"
-    template_function: "{{ random_public_ip() }}"
-  - field: private_ip
-    description: "The private IP address for the user who initiated the session"
-    template_function: "{{ device.ip_address }}"
-  - field: hostid
-    description: "The unique ID that GlobalProtect assigns to identify the host"
-    template_function: "{{ random_guid() }}"
-  - field: serialnumber
-    description: "The serial number of the user's machine or device"
-    template_function: "{{ random_string(10, '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ') }}"
-  - field: client_ver
-    description: "The client's GlobalProtect app version"
-    template_function: "5.3.{{ random_int(0, 9) }}"
-  - field: client_os
-    description: "The client device's OS type"
-    template_function: "{{ client_os_types | random }}"
-    possible_values: ["Windows", "macOS", "Linux", "iOS", "Android"]
-  - field: client_os_ver
-    description: "The client device's OS version"
-    template_function: "{{ client_os_versions[client_os] | random }}"
-  - field: repeatcnt
-    description: "The number of sessions with the same source IP address"
-    value: "1"
-  - field: error
-    description: "A string showing that error that has occurred in any event"
-    template_function: "{% if status == 'failure' %}Authentication failed{% endif %}"
-  - field: opaque
-    description: "Additional information for any event that has occurred"
-    template_function: "GlobalProtect {{ event_id }} {{ status }}"
-  - field: status
-    description: "The status (success or failure) of the event"
-    template_function: "{{ statuses | random }}"
-    possible_values: ["success", "failure"]
-  - field: location
-    description: "A string showing the administrator-defined location of the GlobalProtect portal or gateway"
-    value: "remote"
-  - field: login_duration
-    description: "The length of time, in seconds, the user is connected to the GlobalProtect gateway"
-    template_function: "{{ random_int(0, 3600) }}"
-  - field: connect_method
-    description: "A string showing the how the GlobalProtect app connects to Gateway"
-    value: "on-demand"
-  - field: error_code
-    description: "An integer associated with any errors that occurred"
-    template_function: "{% if status == 'failure' %}401{% endif %}"
-  - field: portal
-    description: "The name of the GlobalProtect portal or gateway"
-    template_function: "{{ portal }}"
-  - field: seqno
-    description: "A 64-bit log entry identifier incremented sequentially"
-    template_function: "{{ random_int(1000000, 9999999) }}"
-  - field: actionflags
-    description: "A bit field indicating if the log was forwarded to Panorama"
-    value: "0x0"
-  - field: selection_type
-    description: "The connection method that is selected to connect to the gateway"
-    template_function: "{{ selection_types | random }}"
-    possible_values: ["manual", "preferred", "auto"]
-  - field: response_time
-    description: "The SSL response time of the selected gateway"
-    template_function: "{{ random_int(10, 500) }}"
-  - field: priority
-    description: "The priority order of the gateway"
-    template_function: "{{ priorities | random }}"
-    possible_values: [1, 2, 3, 4, 5]
-  - field: gateway
-    description: "The name of the gateway that is specified on the portal configuration"
-    template_function: "{{ gateway_name }}"
+# The following documentation and field details are for reference only and not part of the schema:
+# fields_documentation:
+#   - field: receive_time
+#     description: "The time that the log was received at the management plane"
+#     template_function: "{{ timestamp | format_timestamp('%Y/%m/%d %H:%M:%S') }}"
+#   - field: serial
+#     description: "The serial number of the firewall that generated the log"
+#     template_function: "PA-{{ random_string(10, '0123456789ABCDEF') }}"
+#   - field: type
+#     description: "Specifies the type of log"
+#     value: "GLOBALPROTECT"
+#   - field: subtype
+#     description: "Subtype of GlobalProtect log"
+#     value: "portal-auth"
+#   - field: time_generated
+#     description: "The time that the log was generated on the dataplane"
+#     template_function: "{{ timestamp | format_timestamp('%Y/%m/%d %H:%M:%S') }}"
+#   - field: vsys
+#     description: "The Virtual System associated with the session"
+#     value: "vsys1"
+#   - field: eventid
+#     description: "A string showing the name of the event"
+#     template_function: "{{ event_types | random }}"
+#     possible_values: ["gateway-connected", "portal-prelogin", "gateway-prelogin", "portal-login", "gateway-login"]
+#   - field: stage
+#     description: "A string showing the stage of the connection"
+#     template_function: "{{ stages | random }}"
+#     possible_values: ["before-login", "login", "tunnel"]
+#   - field: auth_method
+#     description: "A string showing the authentication type"
+#     template_function: "{{ auth_methods | random }}"
+#     possible_values: ["LDAP", "RADIUS", "SAML", "Kerberos", "Local"]
+#   - field: tunnel_type
+#     description: "The type of tunnel"
+#     template_function: "{{ tunnel_types | random }}"
+#     possible_values: ["SSLVPN", "IPSec"]
+#   - field: srcuser
+#     description: "The username of the user who initiated the session"
+#     template_function: "{{ user.username }}"
+#   - field: srcregion
+#     description: "The region for the user who initiated the session"
+#     value: "US"
+#   - field: machinename
+#     description: "The name of the user's machine"
+#     template_function: "{{ device.hostname }}"
+#   - field: public_ip
+#     description: "The public IP address for the user who initiated the session"
+#     template_function: "{{ random_public_ip() }}"
+#   - field: private_ip
+#     description: "The private IP address for the user who initiated the session"
+#     template_function: "{{ device.ip_address }}"
+#   - field: hostid
+#     description: "The unique ID that GlobalProtect assigns to identify the host"
+#     template_function: "{{ random_guid() }}"
+#   - field: serialnumber
+#     description: "The serial number of the user's machine or device"
+#     template_function: "{{ random_string(10, '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ') }}"
+#   - field: client_ver
+#     description: "The client's GlobalProtect app version"
+#     template_function: "5.3.{{ random_int(0, 9) }}"
+#   - field: client_os
+#     description: "The client device's OS type"
+#     template_function: "{{ client_os_types | random }}"
+#     possible_values: ["Windows", "macOS", "Linux", "iOS", "Android"]
+#   - field: client_os_ver
+#     description: "The client device's OS version"
+#     template_function: "{{ client_os_versions[client_os] | random }}"
+#   - field: repeatcnt
+#     description: "The number of sessions with the same source IP address"
+#     value: "1"
+#   - field: error
+#     description: "A string showing that error that has occurred in any event"
+#     template_function: "{% if status == 'failure' %}Authentication failed{% endif %}"
+#   - field: opaque
+#     description: "Additional information for any event that has occurred"
+#     template_function: "GlobalProtect {{ event_id }} {{ status }}"
+#   - field: status
+#     description: "The status (success or failure) of the event"
+#     template_function: "{{ statuses | random }}"
+#     possible_values: ["success", "failure"]
+#   - field: location
+#     description: "A string showing the administrator-defined location of the GlobalProtect portal or gateway"
+#     value: "remote"
+#   - field: login_duration
+#     description: "The length of time, in seconds, the user is connected to the GlobalProtect gateway"
+#     template_function: "{{ random_int(0, 3600) }}"
+#   - field: connect_method
+#     description: "A string showing the how the GlobalProtect app connects to Gateway"
+#     value: "on-demand"
+#   - field: error_code
+#     description: "An integer associated with any errors that occurred"
+#     template_function: "{% if status == 'failure' %}401{% endif %}"
+#   - field: portal
+#     description: "The name of the GlobalProtect portal or gateway"
+#     template_function: "{{ portal }}"
+#   - field: seqno
+#     description: "A 64-bit log entry identifier incremented sequentially"
+#     template_function: "{{ random_int(1000000, 9999999) }}"
+#   - field: actionflags
+#     description: "A bit field indicating if the log was forwarded to Panorama"
+#     value: "0x0"
+#   - field: selection_type
+#     description: "The connection method that is selected to connect to the gateway"
+#     template_function: "{{ selection_types | random }}"
+#     possible_values: ["manual", "preferred", "auto"]
+#   - field: response_time
+#     description: "The SSL response time of the selected gateway"
+#     template_function: "{{ random_int(10, 500) }}"
+#   - field: priority
+#     description: "The priority order of the gateway"
+#     template_function: "{{ priorities | random }}"
+#     possible_values: [1, 2, 3, 4, 5]
+#   - field: gateway
+#     description: "The name of the gateway that is specified on the portal configuration"
+#     template_function: "{{ gateway_name }}"

@@ -1,0 +1,22 @@
+vendor: "Acme"
+product: "Widget"
+data_source: "telemetry"
+description: "Indicates that a device has come online."
+format: "JSON"
+frequency: "medium"
+is_generator: true
+base_frequency: 10
+time_patterns:
+  - business_hours
+context:
+  device_id: "device-1234"
+  timestamp: "2025-01-01T00:00:00Z"
+parameters:
+  - name: "device_id"
+    description: "Unique identifier for the device."
+    required: true
+    default: "device-1234"
+  - name: "timestamp"
+    description: "Event timestamp in ISO8601 format."
+    required: true
+    default: "2025-01-01T00:00:00Z" 

@@ -1,0 +1,16 @@
+{
+  "name": "paloalto-globalprotect",
+  "version": "1.0.0",
+  "description": "LogForge templates for Palo Alto GlobalProtect VPN logs",
+  "maintainers": [
+    {
+      "name": "John Owen",
+      "email": "jowen@ftsc.com",
+      "github": "jowen-ftsc"
+    }
+  ],
+  "tags": ["vpn", "globalprotect", "security"],
+  "templates": [
+    "vpn/globalprotect"
+  ]
+} 

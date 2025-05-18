@@ -1,0 +1,26 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Vendor Metadata Schema",
+  "description": "Schema for vendor.meta.yaml files",
+  "type": "object",
+  "required": ["name", "description"],
+  "properties": {
+    "name": {
+      "type": "string",
+      "description": "Display name of the vendor"
+    },
+    "website": {
+      "type": "string",
+      "format": "uri",
+      "description": "Vendor's website URL"
+    },
+    "description": {
+      "type": "string",
+      "description": "Brief description of the vendor"
+    },
+    "logo": {
+      "type": "string",
+      "description": "Relative path to vendor logo image"
+    }
+  }
+} 

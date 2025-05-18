@@ -1,0 +1,80 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Template Metadata Schema",
+  "description": "Schema for template .meta.yaml files",
+  "type": "object",
+  "required": ["vendor", "product", "data_source", "description", "format"],
+  "properties": {
+    "vendor": {
+      "type": "string",
+      "description": "Vendor name"
+    },
+    "product": {
+      "type": "string",
+      "description": "Product name"
+    },
+    "data_source": {
+      "type": "string",
+      "description": "Data source category"
+    },
+    "description": {
+      "type": "string",
+      "description": "Brief description of the template"
+    },
+    "format": {
+      "type": "string",
+      "description": "Output format (XML, JSON, CSV, etc.)"
+    },
+    "frequency": {
+      "type": "string",
+      "enum": ["very_low", "low", "medium", "high", "very_high"],
+      "description": "Default generation frequency"
+    },
+    "is_generator": {
+      "type": "boolean",
+      "description": "Whether this template is used for generation"
+    },
+    "base_frequency": {
+      "type": "number",
+      "minimum": 0,
+      "description": "Base frequency for generation (events per minute)"
+    },
+    "time_patterns": {
+      "type": "array",
+      "description": "Time patterns affecting generation frequency",
+      "items": {
+        "type": "string",
+        "enum": ["business_hours", "night_hours", "weekend", "custom"]
+      }
+    },
+    "context": {
+      "type": "object",
+      "description": "Default context values for rendering"
+    },
+    "parameters": {
+      "type": "array",
+      "description": "Parameter definitions for the template",
+      "items": {
+        "type": "object",
+        "required": ["name", "description"],
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Parameter name"
+          },
+          "description": {
+            "type": "string",
+            "description": "Parameter description"
+          },
+          "required": {
+            "type": "boolean",
+            "description": "Whether the parameter is required"
+          },
+          "default": {
+            "description": "Default value for the parameter"
+          }
+        }
+      }
+    }
+  }
+} 
