@@ -1,0 +1,56 @@
+{%- set subject_user = registry.get_random_user() -%}
+{%- set target_user = registry.get_random_user() -%}
+{%- set source_device = registry.get_random_device() -%}
+{%- set event_time = timestamp -%}
+{%- set subject_sid = "S-1-5-21-" ~ random_int(10000, 99999) ~ "-" ~ random_int(10000, 99999) ~ "-" ~ random_int(10000, 99999) ~ "-" ~ random_int(1000, 9999) -%}
+{%- set target_sid = "S-1-5-21-" ~ random_int(10000, 99999) ~ "-" ~ random_int(10000, 99999) ~ "-" ~ random_int(10000, 99999) ~ "-" ~ random_int(1000, 9999) -%}
+{%- set subject_logon_id = random_int(100000, 999999) -%}
+{%- set target_logon_id = random_int(100000, 999999) -%}
+{%- set process_id_value = random_int(1, 9999) -%}
+<Event xmlns="http://schemas.microsoft.com/win/2004/08/events/event">
+  <System>
+    <Provider Name="Microsoft-Windows-Security-Auditing" Guid="{54849625-5478-4994-A5BA-3E3B0328C30D}" />
+    <EventID>{{ event_id }}</EventID>
+    <Version>0</Version>
+    <Level>0</Level>
+    <Task>12544</Task>
+    <Opcode>0</Opcode>
+    <Keywords>0x8020000000000000</Keywords>
+    <TimeCreated SystemTime="{{ event_time }}" />
+    <EventRecordID>{{ random_int(10000, 99999) }}</EventRecordID>
+    <Correlation />
+    <Execution ProcessID="{{ process_id }}" ThreadID="{{ thread_id }}" />
+    <Channel>Security</Channel>
+    <Computer>{{ hostname }}</Computer>
+    <Security />
+  </System>
+  <EventData>
+    <Data Name="SubjectUserSid">{{ subject_sid }}</Data>
+    <Data Name="SubjectUserName">{{ subject_user.username }}</Data>
+    <Data Name="SubjectDomainName">{{ domain }}</Data>
+    <Data Name="SubjectLogonId">0x{{ '%x' % subject_logon_id }}</Data>
+    <Data Name="TargetUserSid">{{ target_sid }}</Data>
+    <Data Name="TargetUserName">{{ target_user.username }}</Data>
+    <Data Name="TargetDomainName">{{ domain }}</Data>
+    <Data Name="TargetLogonId">0x{{ '%x' % target_logon_id }}</Data>
+    <Data Name="LogonType">{{ logon_type }}</Data>
+    <Data Name="LogonProcessName">Advapi</Data>
+    <Data Name="AuthenticationPackageName">Negotiate</Data>
+    <Data Name="WorkstationName">{{ source_device.hostname }}</Data>
+    <Data Name="LogonGuid">{{ '{' }}{{ random_guid().upper() }}{{ '}' }}</Data>
+    <Data Name="TransmittedServices">-</Data>
+    <Data Name="LmPackageName">-</Data>
+    <Data Name="KeyLength">0</Data>
+    <Data Name="ProcessId">0x{{ '%x' % process_id_value }}</Data>
+    <Data Name="ProcessName">C:\Windows\System32\svchost.exe</Data>
+    <Data Name="IpAddress">{{ source_device.ip_address }}</Data>
+    <Data Name="IpPort">{{ random_port() }}</Data>
+    <Data Name="ImpersonationLevel">%%1833</Data>
+    <Data Name="RestrictedAdminMode">-</Data>
+    <Data Name="TargetOutboundUserName">-</Data>
+    <Data Name="TargetOutboundDomainName">-</Data>
+    <Data Name="VirtualAccount">%%1843</Data>
+    <Data Name="TargetLinkedLogonId">0x0</Data>
+    <Data Name="ElevatedToken">%%1842</Data>
+  </EventData>
+</Event>

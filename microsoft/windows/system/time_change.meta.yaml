@@ -1,0 +1,48 @@
+vendor: Microsoft
+product: Windows
+data_source: System Time Change
+description: Windows System time change events
+format: XML
+frequency: low
+
+# Generator settings for template-based generators
+is_generator: true
+base_frequency: 3  # Approximately one alert every 20 seconds
+time_patterns:
+  - business_hours
+  - night_hours
+  - weekend
+business_hours_multiplier: 1.2
+night_hours_multiplier: 0.3
+weekend_multiplier: 0.5
+
+# Context values for rendering
+context:
+  event_id: 1
+
+# Parameter definitions
+parameters:
+  - name: hostname
+    description: The hostname of the machine
+    required: true
+  - name: process_id
+    description: Process ID
+    required: true
+  - name: thread_id
+    description: Thread ID
+    required: false
+  - name: old_time
+    description: The old system time
+    required: true
+  - name: new_time
+    description: The new system time
+    required: true
+
+# Example usages
+examples:
+  - description: System time change event
+    parameters:
+      hostname: WIN-DC01
+      process_id: 4567
+      old_time: 2023-01-01T12:00:00.000Z
+      new_time: 2023-01-01T12:05:00.000Z

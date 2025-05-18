@@ -1,0 +1,65 @@
+vendor: Palo Alto Networks
+product: Firewall
+data_source: WildFire Threat
+description: Palo Alto Networks WildFire malicious file detection logs in CSV format
+format: Syslog
+
+# Generator settings
+is_generator: true
+base_frequency: 3  # Approximately one alert every 20 seconds
+time_patterns:
+  - business_hours
+  - night_hours
+  - weekend
+business_hours_multiplier: 1.5  # More active during business hours
+night_hours_multiplier: 0.3    # Less active after business hours
+weekend_multiplier: 0.2        # Minimal activity on weekends
+
+# Context values for template variables
+context:
+  virtual_system: vsys1
+  source_zone: trusted
+  destination_zone: untrusted
+  inbound_interface: ethernet1/2
+  outbound_interface: ethernet1/1
+  policy_name: fw-policy-1
+  action: deny
+
+# Documentation
+documentation: |
+  This template generates Palo Alto Networks WildFire threat logs in CSV format.
+  The logs represent malicious file detections analyzed by the WildFire cloud service.
+  
+  The template follows the exact field order from the PAN-OS 10.1 threat log specification
+  and includes realistic threat descriptions and file types based on threat categories.
+  
+  Each log entry contains:
+  - Timestamp information
+  - Source and destination IP addresses
+  - User information from the entity registry
+  - Threat type (virus, spyware, vulnerability, command-and-control, ransomware)
+  - File information (name, hash, type)
+  - WildFire verdict with appropriate severity
+  - Detailed threat description
+  
+  Threat logs are generated with realistic frequency patterns:
+  - More common during business hours
+  - Less frequent during nights and weekends
+  - Occasional critical severity events (especially for ransomware)
+
+# Parameter definitions (not required but provided for documentation)
+parameters:
+  - name: threat_type
+    description: Type of threat detected (virus, spyware, vulnerability, etc.)
+    required: false
+    default: Random selection from common threat types
+    
+  - name: severity
+    description: Severity level of the detected threat
+    required: false
+    default: Based on threat type (high for most threats, critical for ransomware)
+    
+  - name: file_type
+    description: Type of file analyzed by WildFire
+    required: false
+    default: Realistic file type based on threat category

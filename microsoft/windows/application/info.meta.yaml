@@ -1,0 +1,48 @@
+vendor: Microsoft
+product: Windows
+data_source: Application Info
+description: Windows Application information events
+format: XML
+frequency: medium
+
+# Generator settings for template-based generators
+is_generator: true
+base_frequency: 12
+time_patterns:
+  - business_hours
+  - night_hours
+  - weekend
+business_hours_multiplier: 1.5
+night_hours_multiplier: 0.3
+weekend_multiplier: 0.5
+
+# Context values for rendering
+context:
+  event_id: 1000
+
+# Parameter definitions
+parameters:
+  - name: hostname
+    description: The hostname of the machine
+    required: true
+  - name: process_id
+    description: Process ID
+    required: true
+  - name: thread_id
+    description: Thread ID
+    required: false
+  - name: application
+    description: The name of the application
+    required: true
+  - name: message
+    description: The event message
+    required: true
+
+# Example usages
+examples:
+  - description: Standard application info event
+    parameters:
+      hostname: WIN-DC01
+      process_id: 4567
+      application: Microsoft Office
+      message: Application started successfully

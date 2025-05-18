@@ -1,0 +1,47 @@
+vendor: Microsoft
+product: Windows
+data_source: Security Account Locked
+description: Windows Security account lockout events (EventID 4740)
+format: XML
+frequency: low
+
+# Generator settings for template-based generators
+is_generator: true
+base_frequency: 3  # Approximately one alert every 20 seconds
+time_patterns:
+  - business_hours
+  - night_hours
+  - weekend
+business_hours_multiplier: 1.2
+night_hours_multiplier: 0.3
+weekend_multiplier: 0.4
+
+# Context values for rendering
+context:
+  event_id: 4740
+
+# Parameter definitions
+parameters:
+  - name: username
+    description: The username of the locked account
+    required: true
+  - name: domain
+    description: The domain of the user
+    required: true
+  - name: hostname
+    description: The hostname of the machine
+    required: true
+  - name: process_id
+    description: Process ID
+    required: false
+  - name: thread_id
+    description: Thread ID
+    required: false
+
+# Example usages
+examples:
+  - description: Account locked after multiple failed login attempts
+    parameters:
+      username: john.doe
+      domain: CONTOSO
+      hostname: WIN-DC01

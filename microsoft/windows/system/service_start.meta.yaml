@@ -1,0 +1,48 @@
+vendor: Microsoft
+product: Windows
+data_source: System Service Start
+description: Windows System service start events
+format: XML
+frequency: medium
+
+# Generator settings for template-based generators
+is_generator: true
+base_frequency: 9
+time_patterns:
+  - business_hours
+  - night_hours
+  - weekend
+business_hours_multiplier: 1.5
+night_hours_multiplier: 0.3
+weekend_multiplier: 0.5
+
+# Context values for rendering
+context:
+  event_id: 7036
+
+# Parameter definitions
+parameters:
+  - name: hostname
+    description: The hostname of the machine
+    required: true
+  - name: process_id
+    description: Process ID
+    required: true
+  - name: thread_id
+    description: Thread ID
+    required: false
+  - name: display_name
+    description: The display name of the service
+    required: true
+  - name: status
+    description: The status message
+    required: true
+
+# Example usages
+examples:
+  - description: Windows service start event
+    parameters:
+      hostname: WIN-DC01
+      process_id: 4567
+      display_name: Windows Update Service
+      status: started

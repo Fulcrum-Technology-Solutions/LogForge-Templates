@@ -1,0 +1,166 @@
+{
+  "vendor": "LogForge-Templates",
+  "product": "microsoft",
+  "templates": [
+    {
+      "file": "LogForge-Templates/microsoft/azure/active_directory/authentication_event.j2",
+      "name": "SignInLogs",
+      "description": "Azure AD authentication events tracking user sign-ins, including device, location, and authentication details",
+      "vendor": "Microsoft",
+      "product": "Azure Active Directory",
+      "format": "JSON"
+    },
+    {
+      "file": "LogForge-Templates/microsoft/o365/email/email_new_inbox_rule_created.j2",
+      "name": "Inbox Rule Creation",
+      "description": "Exchange Online logs for the creation of new inbox rules, which could indicate potential email manipulation or data exfiltration attempts",
+      "vendor": "Microsoft",
+      "product": "Exchange Online",
+      "format": "JSON"
+    },
+    {
+      "file": "LogForge-Templates/microsoft/windows/security/login_success.j2",
+      "name": "Security Login Success",
+      "description": "Windows Security successful login events (EventID 4624)",
+      "vendor": "Microsoft",
+      "product": "Windows",
+      "format": "XML"
+    },
+    {
+      "file": "LogForge-Templates/microsoft/windows/security/login_failure.j2",
+      "name": "Security Login Failure",
+      "description": "Windows Security failed login events (EventID 4625)",
+      "vendor": "Microsoft",
+      "product": "Windows",
+      "format": "XML"
+    },
+    {
+      "file": "LogForge-Templates/microsoft/windows/security/kerberos_auth_4768.j2",
+      "name": "Security Auditing",
+      "description": "Windows Security Auditing event for Kerberos Authentication Ticket Request (Event ID 4768)",
+      "vendor": "Microsoft",
+      "product": "Windows",
+      "format": "XML"
+    },
+    {
+      "file": "LogForge-Templates/microsoft/windows/security/kerberos_auth_failed_4771.j2",
+      "name": "Security Kerberos Authentication",
+      "description": "Windows Security Kerberos pre-authentication failure events (EventID 4771)",
+      "vendor": "Microsoft",
+      "product": "Windows",
+      "format": "XML"
+    },
+    {
+      "file": "LogForge-Templates/microsoft/windows/security/account_locked.j2",
+      "name": "Security Account Locked",
+      "description": "Windows Security account lockout events (EventID 4740)",
+      "vendor": "Microsoft",
+      "product": "Windows",
+      "format": "XML"
+    },
+    {
+      "file": "LogForge-Templates/microsoft/windows/security/process_creation.j2",
+      "name": "Security Process Creation",
+      "description": "Windows Security process creation events (EventID 4688)",
+      "vendor": "Microsoft",
+      "product": "Windows",
+      "format": "XML"
+    },
+    {
+      "file": "LogForge-Templates/microsoft/windows/security/privilege_use.j2",
+      "name": "Privilege Use",
+      "description": "Windows Security privilege use events (EventID 4672)",
+      "vendor": "Microsoft",
+      "product": "Windows",
+      "format": "XML"
+    },
+    {
+      "file": "LogForge-Templates/microsoft/windows/powershell/shadowcopy_script_block_logging.j2",
+      "name": "PowerShell Script Block",
+      "description": "Windows PowerShell script block execution logging (EventID 4104)",
+      "vendor": "Microsoft",
+      "product": "Windows",
+      "format": "XML"
+    },
+    {
+      "file": "LogForge-Templates/microsoft/windows/system/service_start.j2",
+      "name": "System Service Start",
+      "description": "Windows System service start events",
+      "vendor": "Microsoft",
+      "product": "Windows",
+      "format": "XML"
+    },
+    {
+      "file": "LogForge-Templates/microsoft/windows/system/time_change.j2",
+      "name": "System Time Change",
+      "description": "Windows System time change events",
+      "vendor": "Microsoft",
+      "product": "Windows",
+      "format": "XML"
+    },
+    {
+      "file": "LogForge-Templates/microsoft/windows/system/service_stop.j2",
+      "name": "System Service Stop",
+      "description": "Windows System service stop events",
+      "vendor": "Microsoft",
+      "product": "Windows",
+      "format": "XML"
+    },
+    {
+      "file": "LogForge-Templates/microsoft/windows/system/clop_ransomware_known_service_name.j2",
+      "name": "System Service Creation",
+      "description": "Windows Event Logs for service creation events (EventCode 7045) related to potential malicious service creation by Clop ransomware",
+      "vendor": "Microsoft",
+      "product": "Windows",
+      "format": "XML"
+    },
+    {
+      "file": "LogForge-Templates/microsoft/windows/application/info.j2",
+      "name": "Application Info",
+      "description": "Windows Application information events",
+      "vendor": "Microsoft",
+      "product": "Windows",
+      "format": "XML"
+    },
+    {
+      "file": "LogForge-Templates/microsoft/windows/application/warning.j2",
+      "name": "Application Warning",
+      "description": "Windows Application warning events",
+      "vendor": "Microsoft",
+      "product": "Windows",
+      "format": "XML"
+    },
+    {
+      "file": "LogForge-Templates/microsoft/windows/application/error.j2",
+      "name": "Application Error",
+      "description": "Windows Application error events",
+      "vendor": "Microsoft",
+      "product": "Windows",
+      "format": "XML"
+    },
+    {
+      "file": "LogForge-Templates/microsoft/windows/application/crash.j2",
+      "name": "Application Crash",
+      "description": "Windows Application crash events",
+      "vendor": "Microsoft",
+      "product": "Windows",
+      "format": "XML"
+    },
+    {
+      "file": "LogForge-Templates/microsoft/windows/sysmon/process_creation_adfind.j2",
+      "name": "Sysmon Process Creation - ADFind",
+      "description": "Windows command line ADFinds",
+      "vendor": "Microsoft",
+      "product": "Windows",
+      "format": "XML"
+    },
+    {
+      "file": "LogForge-Templates/microsoft/defender/incidents/incident_alert.j2",
+      "name": "Pass the Ticket Alert",
+      "description": "Microsoft Defender for Identity alerts for suspected Pass-the-Ticket attacks",
+      "vendor": "Microsoft",
+      "product": "Defender for Identity",
+      "format": "JSON"
+    }
+  ]
+}

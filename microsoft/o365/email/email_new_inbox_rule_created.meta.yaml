@@ -1,0 +1,59 @@
+vendor: Microsoft
+product: Exchange Online
+data_source: Inbox Rule Creation
+description: Exchange Online logs for the creation of new inbox rules, which could indicate potential email manipulation or data exfiltration attempts
+format: JSON
+frequency: medium
+
+# Generator settings
+is_generator: true
+base_frequency: 6  # Approximately one event every 10 seconds
+time_patterns:
+  - business_hours
+  - night_hours
+  - weekend
+business_hours_multiplier: 2.0  # More rule creation during business hours
+night_hours_multiplier: 0.3  # Fewer rule creations outside business hours
+weekend_multiplier: 0.1  # Very few rule creations on weekends
+
+# Context values for rendering
+context:
+  operation: "New-InboxRule"
+  app_id: "00000002-0000-0ff1-ce00-000000000000"
+  app_pool_name: "MSExchangeOWAAppPool"
+  record_type: 1
+  user_type: 2
+  version: 1
+  workload: "Exchange"
+  external_access: false
+
+# Documentation
+notes: |
+  This template generates Microsoft Exchange Online inbox rule creation events.
+  These events can be used to simulate normal email management behavior or
+  potentially suspicious activities like auto-forwarding rules or rules that
+  move specific messages to hidden folders.
+  
+  Common suspicious indicators:
+  - Rules that forward emails externally
+  - Rules that move messages to rarely used folders
+  - Rules with generic trigger words in subject/body
+  - Multiple rules created in short succession
+
+# Parameter definitions
+parameters:
+  - name: rule_name
+    description: The name of the inbox rule being created
+    required: true
+  - name: rule_condition
+    description: The condition that triggers the rule (subject/body contains words)
+    required: true
+  - name: target_folder
+    description: The folder where matching emails will be moved
+    required: true
+  - name: user
+    description: The user creating the inbox rule
+    required: true
+  - name: session_id
+    description: The AAD session identifier
+    required: true

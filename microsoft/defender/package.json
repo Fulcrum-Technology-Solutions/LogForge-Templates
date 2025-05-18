@@ -1,0 +1,14 @@
+{
+  "vendor": "Microsoft",
+  "product": "Defender",
+  "templates": [
+    {
+      "file": "microsoft/defender/incidents/incident_alert.j2",
+      "name": "Pass the Ticket Alert",
+      "description": "Microsoft Defender for Identity alerts for suspected Pass-the-Ticket attacks",
+      "vendor": "Microsoft",
+      "product": "Defender for Identity",
+      "format": "JSON"
+    }
+  ]
+}

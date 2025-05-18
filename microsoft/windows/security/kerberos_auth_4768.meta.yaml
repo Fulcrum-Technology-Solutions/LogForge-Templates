@@ -1,0 +1,44 @@
+vendor: Microsoft
+product: Windows
+data_source: Security Auditing
+description: Windows Security Auditing event for Kerberos Authentication Ticket Request (Event ID 4768)
+format: XML
+frequency: high
+
+# Generator settings
+is_generator: true
+base_frequency: 18
+time_patterns:
+  - business_hours
+  - night_hours
+  - weekend
+business_hours_multiplier: 2.0  # Higher frequency during business hours
+night_hours_multiplier: 0.5    # Lower frequency after business hours
+weekend_multiplier: 0.3        # Even lower frequency on weekends
+
+# Context values
+context:
+  event_id: 4768
+  provider_name: Microsoft-Windows-Security-Auditing
+  provider_guid: '{54849625-5478-4994-a5ba-3e3b0328c30d}'
+  version: 0
+  level: 0
+  task: 14339
+  opcode: 0
+  keywords: '0x8020000000000000'
+  channel: Security
+  service_name: krbtgt
+
+# Documentation
+documentation: |
+  This template generates Windows Security event logs for successful Kerberos TGT (Ticket Granting Ticket) requests.
+  Event ID 4768 indicates that a Kerberos authentication ticket (TGT) was requested.
+  
+  The template uses random users and devices from the entity registry and generates:
+  - Random SIDs for target users and services
+  - Random encryption types and ticket options
+  - Random source IP addresses and ports
+  - Timestamps based on the current time
+  
+  These events are common on Windows domain controllers and represent normal authentication activity.
+  They can be used to track user logons and authentication patterns.s

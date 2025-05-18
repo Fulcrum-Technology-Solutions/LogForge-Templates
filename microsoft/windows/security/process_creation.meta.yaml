@@ -1,0 +1,56 @@
+vendor: Microsoft
+product: Windows
+data_source: Security Process Creation
+description: Windows Security process creation events (EventID 4688)
+format: XML
+frequency: high
+
+# Generator settings for template-based generators
+is_generator: true
+base_frequency: 24
+time_patterns:
+  - business_hours
+  - night_hours
+  - weekend
+business_hours_multiplier: 1.8
+night_hours_multiplier: 0.4
+weekend_multiplier: 0.6
+
+# Context values for rendering
+context:
+  event_id: 4688
+
+# Parameter definitions
+parameters:
+  - name: username
+    description: The username that executed the process
+    required: true
+  - name: domain
+    description: The domain of the user
+    required: true
+  - name: hostname
+    description: The hostname of the machine
+    required: true
+  - name: process_id
+    description: Process ID
+    required: true
+  - name: thread_id
+    description: Thread ID
+    required: false
+  - name: process_name
+    description: The name of the process
+    required: true
+  - name: command_line
+    description: The command line of the process
+    required: false
+
+# Example usages
+examples:
+  - description: Standard process creation
+    parameters:
+      username: john.doe
+      domain: CONTOSO
+      hostname: WIN-DC01
+      process_id: 4567
+      process_name: C:\Windows\System32\cmd.exe
+      command_line: cmd.exe /c dir

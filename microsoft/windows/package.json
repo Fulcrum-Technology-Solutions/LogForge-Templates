@@ -1,0 +1,278 @@
+{
+  "vendor": "Microsoft",
+  "product": "Windows",
+  "templates": [
+    {
+      "file": "microsoft/windows/security/login_success.j2",
+      "name": "Security Login Success",
+      "description": "Windows Security successful login events (EventID 4624)",
+      "vendor": "Microsoft",
+      "product": "Windows",
+      "format": "XML"
+    },
+    {
+      "file": "microsoft/windows/security/login_failure.j2",
+      "name": "Security Login Failure",
+      "description": "Windows Security failed login events (EventID 4625)",
+      "vendor": "Microsoft",
+      "product": "Windows",
+      "format": "XML"
+    },
+    {
+      "file": "microsoft/windows/security/kerberos_auth_4768.j2",
+      "name": "Security Auditing",
+      "description": "Windows Security Auditing event for Kerberos Authentication Ticket Request (Event ID 4768)",
+      "vendor": "Microsoft",
+      "product": "Windows",
+      "format": "XML"
+    },
+    {
+      "file": "microsoft/windows/security/kerberos_auth_failed_4771.j2",
+      "name": "Security Kerberos Authentication",
+      "description": "Windows Security Kerberos pre-authentication failure events (EventID 4771)",
+      "vendor": "Microsoft",
+      "product": "Windows",
+      "format": "XML"
+    },
+    {
+      "file": "microsoft/windows/security/account_locked.j2",
+      "name": "Security Account Locked",
+      "description": "Windows Security account lockout events (EventID 4740)",
+      "vendor": "Microsoft",
+      "product": "Windows",
+      "format": "XML"
+    },
+    {
+      "file": "microsoft/windows/security/process_creation.j2",
+      "name": "Security Process Creation",
+      "description": "Windows Security process creation events (EventID 4688)",
+      "vendor": "Microsoft",
+      "product": "Windows",
+      "format": "XML"
+    },
+    {
+      "file": "microsoft/windows/security/privilege_use.j2",
+      "name": "Privilege Use",
+      "description": "Windows Security privilege use events (EventID 4672)",
+      "vendor": "Microsoft",
+      "product": "Windows",
+      "format": "XML"
+    },
+    {
+      "file": "microsoft/windows/security/kerberos/kerberos_auth_4768.j2",
+      "name": "kerberos_auth_4768",
+      "description": "Windows Security Auditing event for Kerberos Authentication Ticket Request (Event ID 4768)",
+      "vendor": "Microsoft",
+      "product": "Windows",
+      "format": ""
+    },
+    {
+      "file": "microsoft/windows/security/kerberos/kerberos_auth_failed_4771.j2",
+      "name": "kerberos_auth_failed_4771",
+      "description": "Windows Security Kerberos pre-authentication failure events (EventID 4771)",
+      "vendor": "Microsoft",
+      "product": "Windows",
+      "format": ""
+    },
+    {
+      "file": "microsoft/windows/security/privilege/privilege_use.j2",
+      "name": "privilege_use",
+      "description": "Windows Security privilege use events (EventID 4672)",
+      "vendor": "Microsoft",
+      "product": "Windows",
+      "format": ""
+    },
+    {
+      "file": "microsoft/windows/security/account/account_locked.j2",
+      "name": "account_locked",
+      "description": "Windows Security account lockout events (EventID 4740)",
+      "vendor": "Microsoft",
+      "product": "Windows",
+      "format": ""
+    },
+    {
+      "file": "microsoft/windows/security/login/login_success.j2",
+      "name": "login_success",
+      "description": "Windows Security successful login events (EventID 4624)",
+      "vendor": "Microsoft",
+      "product": "Windows",
+      "format": ""
+    },
+    {
+      "file": "microsoft/windows/security/login/login_failure.j2",
+      "name": "login_failure",
+      "description": "Windows Security failed login events (EventID 4625)",
+      "vendor": "Microsoft",
+      "product": "Windows",
+      "format": ""
+    },
+    {
+      "file": "microsoft/windows/security/process/process_creation.j2",
+      "name": "process_creation",
+      "description": "Windows Security process creation events (EventID 4688)",
+      "vendor": "Microsoft",
+      "product": "Windows",
+      "format": ""
+    },
+    {
+      "file": "microsoft/windows/powershell/shadowcopy_script_block_logging.j2",
+      "name": "PowerShell Script Block",
+      "description": "Windows PowerShell script block execution logging (EventID 4104)",
+      "vendor": "Microsoft",
+      "product": "Windows",
+      "format": "XML"
+    },
+    {
+      "file": "microsoft/windows/powershell/script_block/shadowcopy_script_block_logging.j2",
+      "name": "shadowcopy_script_block_logging",
+      "description": "Windows PowerShell script block execution logging (EventID 4104)",
+      "vendor": "Microsoft",
+      "product": "Windows",
+      "format": ""
+    },
+    {
+      "file": "microsoft/windows/system/service_start.j2",
+      "name": "System Service Start",
+      "description": "Windows System service start events",
+      "vendor": "Microsoft",
+      "product": "Windows",
+      "format": "XML"
+    },
+    {
+      "file": "microsoft/windows/system/time_change.j2",
+      "name": "System Time Change",
+      "description": "Windows System time change events",
+      "vendor": "Microsoft",
+      "product": "Windows",
+      "format": "XML"
+    },
+    {
+      "file": "microsoft/windows/system/service_stop.j2",
+      "name": "System Service Stop",
+      "description": "Windows System service stop events",
+      "vendor": "Microsoft",
+      "product": "Windows",
+      "format": "XML"
+    },
+    {
+      "file": "microsoft/windows/system/clop_ransomware_known_service_name.j2",
+      "name": "System Service Creation",
+      "description": "Windows Event Logs for service creation events (EventCode 7045) related to potential malicious service creation by Clop ransomware",
+      "vendor": "Microsoft",
+      "product": "Windows",
+      "format": "XML"
+    },
+    {
+      "file": "microsoft/windows/system/time/time_change.j2",
+      "name": "time_change",
+      "description": "Windows System time change events",
+      "vendor": "Microsoft",
+      "product": "Windows",
+      "format": ""
+    },
+    {
+      "file": "microsoft/windows/system/ransomware/clop_ransomware_known_service_name.j2",
+      "name": "clop_ransomware_known_service_name",
+      "description": "Windows Event Logs for service creation events (EventCode 7045) related to potential malicious service creation by Clop ransomware",
+      "vendor": "Microsoft",
+      "product": "Windows",
+      "format": ""
+    },
+    {
+      "file": "microsoft/windows/system/service/service_start.j2",
+      "name": "service_start",
+      "description": "Windows System service start events",
+      "vendor": "Microsoft",
+      "product": "Windows",
+      "format": ""
+    },
+    {
+      "file": "microsoft/windows/system/service/service_stop.j2",
+      "name": "service_stop",
+      "description": "Windows System service stop events",
+      "vendor": "Microsoft",
+      "product": "Windows",
+      "format": ""
+    },
+    {
+      "file": "microsoft/windows/application/info.j2",
+      "name": "Application Info",
+      "description": "Windows Application information events",
+      "vendor": "Microsoft",
+      "product": "Windows",
+      "format": "XML"
+    },
+    {
+      "file": "microsoft/windows/application/warning.j2",
+      "name": "Application Warning",
+      "description": "Windows Application warning events",
+      "vendor": "Microsoft",
+      "product": "Windows",
+      "format": "XML"
+    },
+    {
+      "file": "microsoft/windows/application/error.j2",
+      "name": "Application Error",
+      "description": "Windows Application error events",
+      "vendor": "Microsoft",
+      "product": "Windows",
+      "format": "XML"
+    },
+    {
+      "file": "microsoft/windows/application/crash.j2",
+      "name": "Application Crash",
+      "description": "Windows Application crash events",
+      "vendor": "Microsoft",
+      "product": "Windows",
+      "format": "XML"
+    },
+    {
+      "file": "microsoft/windows/application/crash/crash.j2",
+      "name": "crash",
+      "description": "Windows Application crash events",
+      "vendor": "Microsoft",
+      "product": "Windows",
+      "format": ""
+    },
+    {
+      "file": "microsoft/windows/application/info/info.j2",
+      "name": "info",
+      "description": "Windows Application information events",
+      "vendor": "Microsoft",
+      "product": "Windows",
+      "format": ""
+    },
+    {
+      "file": "microsoft/windows/application/warning/warning.j2",
+      "name": "warning",
+      "description": "Windows Application warning events",
+      "vendor": "Microsoft",
+      "product": "Windows",
+      "format": ""
+    },
+    {
+      "file": "microsoft/windows/application/error/error.j2",
+      "name": "error",
+      "description": "Windows Application error events",
+      "vendor": "Microsoft",
+      "product": "Windows",
+      "format": ""
+    },
+    {
+      "file": "microsoft/windows/sysmon/process_creation_adfind.j2",
+      "name": "Sysmon Process Creation - ADFind",
+      "description": "Windows command line ADFinds",
+      "vendor": "Microsoft",
+      "product": "Windows",
+      "format": "XML"
+    },
+    {
+      "file": "microsoft/windows/sysmon/process/process_creation_adfind.j2",
+      "name": "process_creation_adfind",
+      "description": "Windows command line ADFinds",
+      "vendor": "Microsoft",
+      "product": "Windows",
+      "format": ""
+    }
+  ]
+}
