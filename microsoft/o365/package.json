@@ -3,14 +3,6 @@
   "product": "O365",
   "templates": [
     {
-      "file": "microsoft/o365/inbox_rules/email_new_inbox_rule_created.j2",
-      "name": "email_new_inbox_rule_created",
-      "description": "Exchange Online logs for the creation of new inbox rules, which could indicate potential email manipulation or data exfiltration attempts",
-      "vendor": "Microsoft",
-      "product": "Exchange Online",
-      "format": ""
-    },
-    {
       "file": "microsoft/o365/email/email_new_inbox_rule_created.j2",
       "name": "Inbox Rule Creation",
       "description": "Exchange Online logs for the creation of new inbox rules, which could indicate potential email manipulation or data exfiltration attempts",

@@ -7,7 +7,7 @@ frequency: high
 
 # Generator settings
 is_generator: true
-base_frequency: 0.1          # Base rate: 1 event every 10 seconds
+base_frequency: 6  # Approximately one event every 10 seconds
 time_patterns:               # List of time patterns that affect this generator
   - business_hours           # References patterns defined in config.yaml
   - night_hours

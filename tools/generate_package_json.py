@@ -34,11 +34,12 @@ def collect_templates(product_path, vendor, product):
                 meta_path = os.path.splitext(os.path.join(dirpath, file))[0] + '.meta.yaml'
                 meta = {}
                 if os.path.exists(meta_path):
-                    with open(meta_path) as f:
-                        try:
+                    try:
+                        with open(meta_path) as f:
                             meta = yaml.safe_load(f) or {}
-                        except Exception:
-                            meta = {}
+                    except Exception as e:
+                        print(f"WARNING: Could not parse {meta_path}: {e}")
+                        meta = {}
                 templates.append({
                     "file": rel_path.replace('\\', '/'),
                     "name": meta.get("data_source", os.path.splitext(file)[0]),
@@ -65,4 +66,4 @@ def main():
         print(f"Generated {os.path.relpath(out_path, REPO_ROOT)} with {len(templates)} templates.")
 
 if __name__ == "__main__":
-    main() 
+    main()

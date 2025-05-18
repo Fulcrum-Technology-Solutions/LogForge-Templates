@@ -9,14 +9,6 @@
       "vendor": "Microsoft",
       "product": "Azure Active Directory",
       "format": "JSON"
-    },
-    {
-      "file": "microsoft/azure/active_directory/authentication/event.j2",
-      "name": "event",
-      "description": "Azure AD authentication events tracking user sign-ins, including device, location, and authentication details",
-      "vendor": "Microsoft",
-      "product": "Azure Active Directory",
-      "format": ""
     }
   ]
 }

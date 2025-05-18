@@ -11,7 +11,7 @@ frequency: "medium"                 # General categorization of event frequency 
 
 # Generator settings for controlling log generation patterns
 is_generator: true                  # Indicates this template is used for log generation
-base_frequency: 0.1                 # Base events per minute (adjusted by multipliers)
+base_frequency: 6                   # Base events per hour (adjusted by multipliers)
 time_patterns:                      # Time patterns this generator should follow
   - business_hours                  # Mon-Fri, 9am-5pm
   - night_hours                     # Mon-Fri, 5pm-9am

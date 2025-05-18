@@ -7,7 +7,7 @@ frequency: medium
 
 # Generator settings
 is_generator: true
-base_frequency: 0.05  # Approximately one alert every 20 seconds
+base_frequency: 3  # Approximately one alert every 20 seconds
 time_patterns:
   - business_hours
   - night_hours

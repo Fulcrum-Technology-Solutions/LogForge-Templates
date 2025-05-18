@@ -4,11 +4,11 @@
   "templates": [
     {
       "file": "paloalto/wildfire/threats/wildfire_threat_detected.j2",
-      "name": "wildfire_threat_detected",
+      "name": "WildFire Threat",
       "description": "Palo Alto Networks WildFire malicious file detection logs in CSV format",
       "vendor": "Palo Alto Networks",
       "product": "Firewall",
-      "format": ""
+      "format": "Syslog"
     },
     {
       "file": "paloalto/wildfire/threat/wildfire_threat_detected.j2",

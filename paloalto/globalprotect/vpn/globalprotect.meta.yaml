@@ -7,7 +7,7 @@ frequency: high
  
 # Generator settings
 is_generator: true
-base_frequency: 0.3
+base_frequency: 18
 time_patterns:
   - business_hours
   - night_hours

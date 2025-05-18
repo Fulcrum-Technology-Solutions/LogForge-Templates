@@ -7,7 +7,7 @@ frequency: low
 
 # Generator settings for template-based generators
 is_generator: true
-base_frequency: 0.08
+base_frequency: 4.8
 time_patterns:
   - business_hours
   - night_hours
