@@ -1,0 +1,21 @@
+{
+    "name": "zscaler-internet-access",
+    "version": "1.0.0",
+    "description": "LogForge templates for Zscaler Internet Access web security logs",
+    "maintainers": [
+      {
+        "name": "Fulcrum Technology Solutions",
+        "email": "info@ftsc.coms"
+      }
+    ],
+    "tags": [
+      "web-security",
+      "proxy",
+      "threat-detection",
+      "cloud-security",
+      "http-filtering"
+    ],
+    "templates": [
+      "web_security/web_transaction"
+    ]
+}
