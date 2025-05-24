@@ -1,5 +1,4 @@
-machine_id: zscaler
-display_name: Zscaler
+name: Zscaler
 website: https://www.zscaler.com
-description: Leading cloud security platform providing secure internet and private app access
-logo: https://www.zscaler.com/themes/custom/zscaler/logo.svg
+description: Cloud-native security platform providing secure internet and private access
+logo: zscaler-logo.png

@@ -1,0 +1,36 @@
+vendor: Zscaler
+product: ZIA
+data_source: web_security
+description: Comprehensive web traffic log with threat detection and policy enforcement
+format: JSON
+frequency: high
+is_generator: true
+base_frequency: 750
+time_patterns:
+  - business_hours
+  - night_hours
+  - weekend
+business_hours_multiplier: 2.5
+night_hours_multiplier: 0.8
+weekend_multiplier: 0.4
+context:
+  timezone: "UTC"
+  product_version: "1.0"
+  module: "ZIA"
+parameters:
+  - name: threat_detection_enabled
+    description: Enable threat detection scenarios in logs
+    required: false
+    default: true
+  - name: dlp_enabled
+    description: Enable DLP (Data Loss Prevention) scenarios
+    required: false
+    default: false
+  - name: bandwidth_monitoring
+    description: Include bandwidth throttling scenarios
+    required: false
+    default: true
+  - name: ssl_inspection
+    description: Include SSL/TLS inspection details
+    required: false
+    default: true
