@@ -1,0 +1,21 @@
+{
+  "name": "zscaler-zia",
+  "version": "1.0.0",
+  "description": "Zscaler Internet Access (ZIA) log templates for web security events",
+  "maintainers": [
+    {
+      "name": "LogForge Community",
+      "email": "community@logforge.io"
+    }
+  ],
+  "tags": [
+    "web-security",
+    "proxy",
+    "cloud-security",
+    "threat-detection",
+    "web-gateway"
+  ],
+  "templates": [
+    "web_security/web_traffic.j2"
+  ]
+}
