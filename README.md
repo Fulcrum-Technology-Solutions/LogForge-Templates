@@ -126,6 +126,8 @@ If a template references a field (e.g., `entities.registry`) that is missing fro
 
 - The `TEMPLATES.yaml` file is auto-generated and provides a complete index of all templates in the repository.
 - **Do not edit `TEMPLATES.yaml` manually.**
+- **Do not use generate_template_index.py; it is deprecated and has been removed.**
+- The only supported script for index generation is `.github/scripts/update_templates_index.py`.
 - GitHub Actions automatically validate all metadata and update the index on every push and pull request.
 - You can also run the scripts locally:
 
