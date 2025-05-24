@@ -64,7 +64,8 @@ def main():
     # Build the final TEMPLATES.yaml structure
     templates_data = {
         "updated": datetime.utcnow().strftime("%Y-%m-%dT%H:%M:%SZ"),
-        "packages": packages
+        # Sort packages by key (package name) for alphabetical order
+        "packages": {k: packages[k] for k in sorted(packages.keys())}
     }
     
     # Write to TEMPLATES.yaml
