@@ -1,85 +1,143 @@
-# Log Template Metadata File
-# This file defines the properties of the log template for documentation and generation
+# LogForge Template Metadata File
+# This file defines the properties and documentation for log templates
 
 # Basic log identification information
-vendor: "Vendor Name"               # Organization that produces the software/device generating this log type
-product: "Product Name"             # Specific product or application name
-data_source: "Event Source Name"    # Specific event type or source within the product
-description: "Detailed description of what this log represents and when it's generated"
-format: "XML"                       # Format of the log output (XML, JSON, CSV, etc.)
-frequency: "medium"                 # General categorization of event frequency (high, medium, low)
+vendor: "Acme Corporation"          # Organization that produces the software/device generating this log type
+product: "SecureApp Pro"            # Specific product or application name
+data_source: "User Authentication"  # Specific event type or source within the product
+description: "Records user login attempts including successful authentications and access failures"
+format: "JSON"                      # Format of the log output (XML, JSON, CSV, Syslog, etc.)
+frequency: "high"                   # General categorization of event frequency (high, medium, low, critical)
 
 # Generator settings for controlling log generation patterns
 is_generator: true                  # Indicates this template is used for log generation
-base_frequency: 6                   # Base events per hour (adjusted by multipliers)
+base_frequency: 12                  # Base events per hour (adjusted by multipliers)
 time_patterns:                      # Time patterns this generator should follow
   - business_hours                  # Mon-Fri, 9am-5pm
   - night_hours                     # Mon-Fri, 5pm-9am
   - weekend                         # Sat-Sun, all day
-business_hours_multiplier: 1.5      # Increases frequency during business hours
-night_hours_multiplier: 0.2         # Reduces frequency during non-business hours
-weekend_multiplier: 0.3             # Reduces frequency during weekends
-
-# Context values for template rendering (default values)
-context:
-  event_id: 1234                    # Default event ID for this log type
-  severity: "Information"           # Default severity level
-  source_system: "ApplicationName"  # Default source system name
-
-# Parameter definitions for template documentation
-parameters:
-  - name: timestamp
-    description: "ISO8601 formatted timestamp when the event occurred"
-    required: true
-    example: "2025-05-16T14:30:45.123Z"
+business_hours_multiplier: 3.0      # Increases frequency during business hours
+night_hours_multiplier: 0.4         # Reduces frequency during non-business hours
+weekend_multiplier: 0.6             # Reduces frequency during weekends
+# Enhanced documentation for UI rendering and user guidance
+documentation:
+  # Dashboard display information
+  display:
+    title: "User Authentication Events"
+    subtitle: "Login attempts and access control"
+    icon: "🔑"                      # Emoji or icon identifier for UI
+    color_scheme: "info"            # UI color theme: success, warning, error, info
+    tags:                           # Searchable/filterable tags for UI
+      - "authentication"
+      - "security"
+      - "access-control"
+      - "user-activity"
     
-  - name: user_id
-    description: "Unique identifier for the user associated with this event"
-    required: true
-    example: "user123"
+  # Detailed event information
+  overview:
+    summary: "Generated whenever users attempt to authenticate to SecureApp Pro, including both successful logins and failed access attempts with detailed context."
     
-  - name: action
-    description: "The specific action being performed"
-    required: true
-    example: "file_access"
+    when_generated:
+      - "User enters valid credentials and logs in successfully"
+      - "User provides incorrect username or password"
+      - "Account is locked due to multiple failed attempts"
+      - "User attempts access from blocked IP address"
+      - "Session expires and user is automatically logged out"
     
-  - name: resource_id
-    description: "Identifier for the resource being accessed"
-    required: true
-    example: "document-435"
+    security_relevance: "High"
+    compliance_frameworks:
+      - "SOC 2 Type II - Access Controls"
+      - "ISO 27001 - A.9.4.2 Secure Log-on Procedures"
+      - "NIST Cybersecurity Framework - PR.AC-1"
     
-  - name: ip_address
-    description: "Source IP address for the action"
-    required: true
-    example: "192.168.1.45"
-    
-  - name: status_code
-    description: "Result code indicating success or failure"
-    required: false
-    example: "200"
-    
-  - name: details
-    description: "Additional contextual information about the event"
-    required: false
-    example: "User accessed file via web interface"
-
-# Example usages demonstrating how to implement this template
-examples:
-  - description: "Standard successful resource access event"
-    parameters:
-      timestamp: "2025-05-16T10:23:45.789Z"
-      user_id: "jsmith"
-      action: "read"
-      resource_id: "document-123"
-      ip_address: "10.1.2.3"
-      status_code: "200"
+    frequency_notes: "High-frequency event during business hours. Peak activity between 8-10 AM and after lunch."
+  
+  # Unified field documentation for developers and users
+  # Each field documents the output data structure for log analysts,
+  # template implementation guidance for developers, and UI rendering details
+  fields:
+    - name: "timestamp"
+      type: "DateTime"
+      required: true
+      description: "ISO 8601 timestamp when the authentication attempt occurred"
+      example_value: "2025-05-25T14:23:17.890Z"
+      format: "ISO 8601 with milliseconds and UTC timezone"
+      template_source: "current_timestamp() | format_timestamp('%Y-%m-%dT%H:%M:%S.%fZ')"
       
-  - description: "Failed access attempt event"
-    parameters:
-      timestamp: "2025-05-16T15:45:12.456Z"
-      user_id: "external_user"
-      action: "write"
-      resource_id: "secure-document-456"
-      ip_address: "203.0.113.42"
-      status_code: "403"
-      details: "Insufficient permissions for requested operation"
+    - name: "user_id"
+      type: "String"
+      required: true
+      description: "Unique identifier for the user attempting authentication"
+      example_value: "jsmith"
+      validation: "Must be alphanumeric, 3-50 characters"
+      template_source: "registry.get_random_user().username"
+      
+    - name: "event_result"
+      type: "String"
+      required: true
+      description: "Result of the authentication attempt"
+      example_value: "success"
+      template_source: "Static values or conditional logic based on scenario"
+      possible_values:
+        - value: "success"
+          description: "Authentication completed successfully"
+        - value: "failure"
+          description: "Authentication failed due to invalid credentials"
+        - value: "blocked"
+          description: "Authentication blocked due to security policy"
+        - value: "expired"
+          description: "Session or password has expired"
+          
+    - name: "source_ip"
+      type: "String"
+      required: true
+      description: "IP address from which the authentication attempt originated"
+      example_value: "192.168.1.45"
+      format: "IPv4 or IPv6 address"
+      template_source: "random_private_ip() or registry.get_random_device().ip_address"
+      
+    - name: "user_agent"
+      type: "String"
+      required: false
+      description: "Browser or client application used for the request"
+      example_value: "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36"
+      template_source: "Static string or array of common user agents"
+      notes: "May be truncated for storage efficiency"
+      
+    - name: "failure_reason"
+      type: "String"
+      required: false
+      description: "Specific reason for authentication failure (only present when event_result is failure/blocked)"
+      example_value: "invalid_password"
+      template_source: "Conditional field, only included when event_result != 'success'"
+      possible_values:
+        - value: "invalid_password"
+          description: "Password did not match stored credentials"
+        - value: "unknown_user"
+          description: "Username not found in system"
+        - value: "account_locked"
+          description: "Account temporarily locked due to failed attempts"
+        - value: "ip_blocked"
+          description: "Source IP address is on blocklist"
+
+  # External resources and references
+  resources:
+    documentation:
+      - title: "SecureApp Pro Authentication Guide"
+        url: "https://docs.acmecorp.com/secureapp/authentication"
+        type: "official"
+      - title: "Authentication Best Practices"
+        url: "https://acmecorp.com/security/auth-best-practices"
+        type: "reference"
+        
+    tools:
+      - name: "SecureApp Analytics Dashboard"
+        description: "Real-time authentication monitoring and alerting"
+        url: "https://analytics.acmecorp.com/secureapp"
+      - name: "Log Analysis Toolkit"
+        description: "Parse and analyze SecureApp authentication logs"
+        url: "https://github.com/acmecorp/secureapp-tools"
+
+# Note: LogForge templates use entity registry functions and built-in helpers
+# rather than explicit parameters. Template variables are documented within 
+# the .j2 template files themselves using Jinja2 comments.

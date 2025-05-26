@@ -161,3 +161,7 @@ cython_debug/
 
 # Allow scripts directory
 !.github/scripts/
+
+# SQLite database files
+logforge_registry.db
+*.db
