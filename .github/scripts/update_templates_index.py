@@ -16,8 +16,11 @@ def main():
     
     for root, dirs, files in os.walk(REPO_ROOT):
         if "collection.json" in files:
-            # Skip examples/ and samples/ directories (do not index sample/reference templates)
             rel_path = os.path.relpath(root, REPO_ROOT)
+            # Only index real templates under templates/
+            if not rel_path.startswith("templates/"):
+                continue
+            # Skip examples/ and samples/ directories (do not index sample/reference templates)
             if rel_path.startswith("examples/") or rel_path.startswith("samples/"):
                 continue
             # Skip if this is not a product directory
