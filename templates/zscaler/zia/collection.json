@@ -16,6 +16,6 @@
     "web-gateway"
   ],
   "templates": [
-    "web_security/web_traffic.j2"
+    "web_security/web_traffic"
   ]
 }

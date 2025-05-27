@@ -1,0 +1,119 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "title": "LogForge Template Metadata",
+    "type": "object",
+    "required": ["vendor", "product", "data_source", "description", "format", "documentation"],
+    "properties": {
+      "vendor": { "type": "string" },
+      "product": { "type": "string" },
+      "data_source": { "type": "string" },
+      "description": { "type": "string" },
+      "format": { "type": "string", "enum": ["XML", "JSON", "CSV", "Syslog", "Other"] },
+      "frequency": { "type": "string", "enum": ["high", "medium", "low", "critical"] },
+      "is_generator": { "type": "boolean" },
+      "base_frequency": { "type": "number" },
+      "time_patterns": {
+        "type": "array",
+        "items": { "type": "string" }
+      },
+      "business_hours_multiplier": { "type": "number" },
+      "night_hours_multiplier": { "type": "number" },
+      "weekend_multiplier": { "type": "number" },
+      "documentation": {
+        "type": "object",
+        "required": ["display", "overview", "fields"],
+        "properties": {
+          "display": {
+            "type": "object",
+            "required": ["title", "subtitle", "icon", "color_scheme", "tags"],
+            "properties": {
+              "title": { "type": "string" },
+              "subtitle": { "type": "string" },
+              "icon": { "type": "string" },
+              "color_scheme": { "type": "string", "enum": ["success", "warning", "error", "info"] },
+              "tags": {
+                "type": "array",
+                "items": { "type": "string" }
+              }
+            }
+          },
+          "overview": {
+            "type": "object",
+            "required": ["summary", "when_generated", "security_relevance", "compliance_frameworks", "frequency_notes"],
+            "properties": {
+              "summary": { "type": "string" },
+              "when_generated": {
+                "type": "array",
+                "items": { "type": "string" }
+              },
+              "security_relevance": { "type": "string" },
+              "compliance_frameworks": {
+                "type": "array",
+                "items": { "type": "string" }
+              },
+              "frequency_notes": { "type": "string" }
+            }
+          },
+          "fields": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": ["name", "type", "required", "description", "example_value", "template_source"],
+              "properties": {
+                "name": { "type": "string" },
+                "type": { "type": "string" },
+                "required": { "type": "boolean" },
+                "description": { "type": "string" },
+                "example_value": {},
+                "format": { "type": "string" },
+                "validation": { "type": "string" },
+                "template_source": { "type": "string" },
+                "possible_values": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "required": ["value", "description"],
+                    "properties": {
+                      "value": {},
+                      "description": { "type": "string" }
+                    }
+                  }
+                },
+                "notes": { "type": "string" }
+              }
+            }
+          }
+        }
+      },
+      "resources": {
+        "type": "object",
+        "properties": {
+          "documentation": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": ["title", "url", "type"],
+              "properties": {
+                "title": { "type": "string" },
+                "url": { "type": "string", "format": "uri" },
+                "type": { "type": "string" }
+              }
+            }
+          },
+          "tools": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": ["name", "description", "url"],
+              "properties": {
+                "name": { "type": "string" },
+                "description": { "type": "string" },
+                "url": { "type": "string", "format": "uri" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "additionalProperties": true
+  }

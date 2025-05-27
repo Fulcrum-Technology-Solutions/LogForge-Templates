@@ -1,36 +1,403 @@
 vendor: Zscaler
 product: ZIA
-data_source: web_security
-description: Comprehensive web traffic log with threat detection and policy enforcement
+data_source: web_traffic
+description: "Comprehensive web proxy traffic logs with security analysis, threat detection, and bandwidth monitoring from Zscaler Internet Access"
 format: JSON
-frequency: high
+frequency: very_high
 is_generator: true
-base_frequency: 750
+base_frequency: 2400
 time_patterns:
   - business_hours
   - night_hours
   - weekend
-business_hours_multiplier: 2.5
+business_hours_multiplier: 3.0
 night_hours_multiplier: 0.8
 weekend_multiplier: 0.4
-context:
-  timezone: "UTC"
-  product_version: "1.0"
-  module: "ZIA"
-parameters:
-  - name: threat_detection_enabled
-    description: Enable threat detection scenarios in logs
-    required: false
-    default: true
-  - name: dlp_enabled
-    description: Enable DLP (Data Loss Prevention) scenarios
-    required: false
-    default: false
-  - name: bandwidth_monitoring
-    description: Include bandwidth throttling scenarios
-    required: false
-    default: true
-  - name: ssl_inspection
-    description: Include SSL/TLS inspection details
-    required: false
-    default: true
+documentation:
+  display:
+    title: "ZIA Web Traffic Log"
+    subtitle: "Zscaler Internet Access Web Proxy Traffic with Security Analysis"
+    icon: "🌐"
+    color_scheme: "info"
+    tags:
+      - "web-proxy"
+      - "security"
+      - "cloud"
+      - "threat-detection"
+      - "bandwidth"
+  overview:
+    summary: "Generated when users access web content through Zscaler Internet Access cloud proxy. Includes comprehensive security analysis, threat detection, bandwidth monitoring, and SSL/TLS inspection details."
+    when_generated:
+      - "User initiates web request through ZIA proxy"
+      - "HTTP/HTTPS traffic traverses Zscaler cloud"
+      - "Security policies are evaluated and enforced"
+      - "Threat scanning and content inspection occurs"
+      - "Bandwidth and performance metrics are collected"
+    security_relevance: "High - Critical for web security monitoring, threat detection, data loss prevention, and policy enforcement"
+    compliance_frameworks:
+      - "SOX"
+      - "PCI-DSS"
+      - "HIPAA"
+      - "GDPR"
+      - "SOC 2"
+    frequency_notes: "Very high frequency during business hours when users are actively browsing. Frequency scales with organization size and internet usage patterns."
+  fields:
+    - name: "action"
+      type: "String"
+      required: true
+      description: "Action taken by the proxy (ALLOW, BLOCK, ALERT, MONITOR)"
+      example_value: "ALLOW"
+      template_source: "Conditional based on threat detection"
+      possible_values:
+        - value: "ALLOW"
+          description: "Request was permitted through proxy"
+        - value: "BLOCK"
+          description: "Request was blocked due to policy or threat"
+        - value: "ALERT"
+          description: "Request triggered security alert"
+        - value: "MONITOR"
+          description: "Request was monitored for compliance"
+    - name: "appclass"
+      type: "String"
+      required: true
+      description: "Application classification category"
+      example_value: "Web"
+      template_source: "Static value 'Web'"
+    - name: "appname"
+      type: "String"
+      required: true
+      description: "Specific application name identified"
+      example_value: "Web Browsing"
+      template_source: "Static value 'Web Browsing'"
+    - name: "ClientIP"
+      type: "String"
+      required: true
+      description: "Client's internal IP address"
+      example_value: "192.168.1.100"
+      format: "IPv4 address"
+      template_source: "registry.get_random_device().ip_address"
+    - name: "clientpublicIP"
+      type: "String"
+      required: true
+      description: "Client's public/external IP address"
+      example_value: "203.0.113.45"
+      format: "IPv4 address"
+      template_source: "random_public_ip()"
+    - name: "clientsslcipher"
+      type: "String"
+      required: false
+      description: "SSL/TLS cipher suite used by client"
+      example_value: "ECDHE-RSA-AES256-GCM-SHA384"
+      template_source: "Random selection from common cipher suites"
+    - name: "clienttlsversion"
+      type: "String"
+      required: false
+      description: "TLS version used by client connection"
+      example_value: "TLSv1.3"
+      template_source: "Random selection between TLSv1.2 and TLSv1.3"
+      possible_values:
+        - value: "TLSv1.2"
+          description: "TLS version 1.2"
+        - value: "TLSv1.3"
+          description: "TLS version 1.3"
+    - name: "clienttranstime"
+      type: "Integer"
+      required: false
+      description: "Client transaction time in milliseconds"
+      example_value: 150
+      format: "Milliseconds"
+      template_source: "random_int(5, 500)"
+    - name: "contenttype"
+      type: "String"
+      required: false
+      description: "MIME content type of the response"
+      example_value: "text/html"
+      template_source: "Random selection from common MIME types"
+    - name: "department"
+      type: "String"
+      required: false
+      description: "User's department or organizational unit"
+      example_value: "Engineering"
+      template_source: "user.department with fallback to 'Unknown'"
+    - name: "devicename"
+      type: "String"
+      required: true
+      description: "Name/hostname of the client device"
+      example_value: "LAPTOP-USER01"
+      template_source: "registry.get_random_device().hostname"
+    - name: "deviceostype"
+      type: "String"
+      required: false
+      description: "Operating system type of client device"
+      example_value: "Windows"
+      template_source: "registry.get_random_device().os_type"
+    - name: "deviceosversion"
+      type: "String"
+      required: false
+      description: "Operating system version of client device"
+      example_value: "Windows 10"
+      template_source: "registry.get_random_device().os_version"
+    - name: "epochtime"
+      type: "Integer"
+      required: true
+      description: "Unix timestamp of the event"
+      example_value: 1703505015
+      format: "Unix epoch timestamp"
+      template_source: "current_timestamp()"
+    - name: "ehost"
+      type: "String"
+      required: true
+      description: "Destination hostname/domain"
+      example_value: "example.com"
+      format: "Domain name"
+      template_source: "registry.get_organization_field('domain')"
+    - name: "ereferer"
+      type: "String"
+      required: false
+      description: "HTTP referer header value"
+      example_value: "https://example.com/"
+      format: "URL"
+      template_source: "Constructed from domain + path"
+    - name: "event_id"
+      type: "Integer"
+      required: true
+      description: "Unique identifier for this log event"
+      example_value: 5847291
+      template_source: "random_int(1000000, 9999999)"
+    - name: "hostname"
+      type: "String"
+      required: true
+      description: "Target hostname being accessed"
+      example_value: "example.com"
+      format: "Domain name"
+      template_source: "registry.get_organization_field('domain')"
+    - name: "location"
+      type: "String"
+      required: false
+      description: "Geographic location of the user/device"
+      example_value: "New York Office"
+      template_source: "device.custom_location or user.location"
+    - name: "login"
+      type: "String"
+      required: true
+      description: "Username of the authenticated user"
+      example_value: "john.doe"
+      template_source: "registry.get_random_user().username"
+    - name: "md5"
+      type: "String"
+      required: false
+      description: "MD5 hash of detected malicious content"
+      example_value: "5d41402abc4b2a76b9719d911017c592"
+      format: "32-character hexadecimal string"
+      template_source: "Generated only when threat detected"
+      notes: "Only populated when malware is detected"
+    - name: "pagerisk"
+      type: "Integer"
+      required: false
+      description: "Risk score assigned to the accessed page (0-100)"
+      example_value: 25
+      format: "Integer 0-100"
+      template_source: "High score (85) for threats, random otherwise"
+    - name: "product"
+      type: "String"
+      required: true
+      description: "Zscaler product identifier"
+      example_value: "ZIA"
+      template_source: "Static value 'ZIA'"
+    - name: "protocol"
+      type: "String"
+      required: true
+      description: "Protocol used for the connection"
+      example_value: "HTTPS"
+      template_source: "Random selection between HTTP and HTTPS"
+      possible_values:
+        - value: "HTTP"
+          description: "Unencrypted HTTP protocol"
+        - value: "HTTPS"
+          description: "Encrypted HTTPS protocol"
+    - name: "reason"
+      type: "String"
+      required: true
+      description: "Reason for the action taken"
+      example_value: "Policy Allow"
+      template_source: "Threat-specific reason or 'Policy Allow'"
+    - name: "requestmethod"
+      type: "String"
+      required: true
+      description: "HTTP request method used"
+      example_value: "GET"
+      template_source: "Random selection from common HTTP methods"
+      possible_values:
+        - value: "GET"
+          description: "HTTP GET request"
+        - value: "POST"
+          description: "HTTP POST request"
+        - value: "PUT"
+          description: "HTTP PUT request"
+        - value: "DELETE"
+          description: "HTTP DELETE request"
+        - value: "HEAD"
+          description: "HTTP HEAD request"
+        - value: "OPTIONS"
+          description: "HTTP OPTIONS request"
+    - name: "requestsize"
+      type: "Integer"
+      required: false
+      description: "Total size of HTTP request in bytes"
+      example_value: 2450
+      format: "Bytes"
+      template_source: "random_int(100, 5000)"
+    - name: "responsesize"
+      type: "Integer"
+      required: false
+      description: "Total size of HTTP response in bytes"
+      example_value: 15750
+      format: "Bytes"
+      template_source: "random_int(500, 50000)"
+    - name: "serverip"
+      type: "String"
+      required: true
+      description: "IP address of the destination server"
+      example_value: "10.0.0.50"
+      format: "IPv4 address"
+      template_source: "random_private_ip()"
+    - name: "servertranstime"
+      type: "Integer"
+      required: false
+      description: "Server response time in milliseconds"
+      example_value: 250
+      format: "Milliseconds"
+      template_source: "random_int(10, 1000)"
+    - name: "status"
+      type: "Integer"
+      required: true
+      description: "HTTP response status code"
+      example_value: 200
+      format: "HTTP status code"
+      template_source: "403 for threats, random selection otherwise"
+    - name: "threatcategory"
+      type: "String"
+      required: false
+      description: "Category of detected threat"
+      example_value: "Malware"
+      template_source: "Random threat category when threat detected"
+      possible_values:
+        - value: "Adware"
+          description: "Advertising-supported software"
+        - value: "Trojan"
+          description: "Trojan horse malware"
+        - value: "Malware"
+          description: "General malicious software"
+        - value: "Spyware"
+          description: "Software that gathers information secretly"
+        - value: "Backdoor"
+          description: "Unauthorized access mechanism"
+        - value: "Phishing"
+          description: "Fraudulent attempt to obtain sensitive information"
+      notes: "Only populated when threat is detected"
+    - name: "threatclass"
+      type: "String"
+      required: false
+      description: "Classification level of the detected threat"
+      example_value: "Malicious"
+      template_source: "Random threat classification when threat detected"
+      possible_values:
+        - value: "Malicious"
+          description: "Confirmed malicious content"
+        - value: "Suspicious"
+          description: "Potentially harmful content"
+        - value: "PUA"
+          description: "Potentially Unwanted Application"
+        - value: "Unwanted"
+          description: "Unwanted but not necessarily malicious"
+      notes: "Only populated when threat is detected"
+    - name: "threatname"
+      type: "String"
+      required: false
+      description: "Specific name of the detected threat"
+      example_value: "Trojan.GenericKD.40251423"
+      template_source: "Random selection from known threat signatures"
+      notes: "Only populated when threat is detected"
+    - name: "transactionsize"
+      type: "Integer"
+      required: false
+      description: "Total transaction size (request + response) in bytes"
+      example_value: 18200
+      format: "Bytes"
+      template_source: "Sum of request and response sizes"
+    - name: "url"
+      type: "String"
+      required: true
+      description: "Complete URL that was accessed"
+      example_value: "https://example.com/dashboard"
+      format: "Full URL"
+      template_source: "Constructed from domain and random path"
+    - name: "urlcategory"
+      type: "String"
+      required: false
+      description: "Content category of the accessed URL"
+      example_value: "Business"
+      template_source: "Random selection from URL categories"
+      possible_values:
+        - value: "Business"
+          description: "Business-related content"
+        - value: "Technology"
+          description: "Technology and IT content"
+        - value: "Social Media"
+          description: "Social networking platforms"
+        - value: "News"
+          description: "News and media content"
+        - value: "Education"
+          description: "Educational resources"
+        - value: "Entertainment"
+          description: "Entertainment content"
+        - value: "Shopping"
+          description: "E-commerce and shopping sites"
+        - value: "Travel"
+          description: "Travel and tourism content"
+        - value: "Finance"
+          description: "Financial services and content"
+        - value: "Government"
+          description: "Government and public sector content"
+    - name: "urlclass"
+      type: "String"
+      required: false
+      description: "Policy classification of the URL"
+      example_value: "Allowed"
+      template_source: "Random selection from URL policy classes"
+      possible_values:
+        - value: "Business"
+          description: "Business-approved content"
+        - value: "Allowed"
+          description: "Generally permitted content"
+        - value: "Monitored"
+          description: "Content under monitoring"
+        - value: "Restricted"
+          description: "Limited access content"
+    - name: "user"
+      type: "String"
+      required: true
+      description: "Username of the user making the request"
+      example_value: "john.doe"
+      template_source: "registry.get_random_user().username"
+resources:
+  documentation:
+    - title: "Zscaler Internet Access Administration Guide"
+      url: "https://help.zscaler.com/zia"
+      type: "official"
+    - title: "ZIA Log Streaming Configuration"
+      url: "https://help.zscaler.com/zia/about-log-streaming"
+      type: "official"
+    - title: "Web Security Logs Reference"
+      url: "https://help.zscaler.com/zia/nss-feed-output-format-web-logs"
+      type: "official"
+  tools:
+    - name: "Zscaler Admin Portal"
+      description: "Central management console for ZIA configuration and monitoring"
+      url: "https://admin.zscaler.net"
+    - name: "ZIA Log Streaming"
+      description: "Real-time log streaming service for SIEM integration"
+      url: "https://help.zscaler.com/zia/nss-feeds"
+    - name: "Zscaler API"
+      description: "RESTful API for programmatic ZIA management"
+      url: "https://help.zscaler.com/zia/api"

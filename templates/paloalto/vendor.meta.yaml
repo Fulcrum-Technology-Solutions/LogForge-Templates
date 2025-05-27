@@ -1,8 +1,4 @@
-# 'vendor': machine-friendly unique identifier (used in references, keys)
-# 'name': human-friendly display name (used in UI, docs)
-vendor: paloalto
 name: "Palo Alto Networks"
-product: "Palo Alto Networks"
 website: "https://www.paloaltonetworks.com"
-description: "Palo Alto Networks provides firewalls, VPN, and threat detection solutions."
-logo: "paloalto-logo.png" 
+description: "Leading cybersecurity company providing next-generation firewalls, cloud security, and network security solutions"
+logo: "paloalto-logo.png"
