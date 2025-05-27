@@ -1,0 +1,533 @@
+vendor: "Palo Alto Networks"
+product: "PAN-OS"
+data_source: "firewall"
+description: "Network traffic flow logs from PAN-OS Next-Generation Firewall showing connection details, policy decisions, and session information"
+format: "CSV"
+frequency: "very_high"
+is_generator: true
+base_frequency: 180
+time_patterns:
+  - "business_hours"
+  - "night_hours" 
+  - "weekend"
+business_hours_multiplier: 2.5
+night_hours_multiplier: 0.8
+weekend_multiplier: 0.4
+documentation:
+  display:
+    title: "PAN-OS Traffic Flow Logs"
+    subtitle: "Network connection and policy enforcement events"
+    icon: "🔥"
+    color_scheme: "info"
+    tags:
+      - "firewall"
+      - "network-traffic"
+      - "policy-enforcement"
+      - "session-monitoring"
+      - "threat-prevention"
+  overview:
+    summary: "Records all network traffic sessions processed by the PAN-OS firewall, including connection details, policy decisions, data transfer statistics, and session lifecycle events. Essential for network monitoring, security analysis, and compliance reporting."
+    when_generated:
+      - "New network connection establishment (start)"
+      - "Network connection termination (end)"
+      - "Traffic blocked by security policy (deny)"
+      - "Connection dropped due to resource constraints (drop)"
+      - "Policy rule evaluation and enforcement"
+      - "Application identification and control actions"
+    security_relevance: "Critical for security monitoring, threat detection, network forensics, and policy compliance validation. Provides visibility into all network communications and policy enforcement decisions."
+    compliance_frameworks:
+      - "PCI DSS"
+      - "SOX"
+      - "HIPAA"
+      - "GDPR"
+      - "NIST Cybersecurity Framework"
+      - "ISO 27001"
+    frequency_notes: "Very high frequency during business hours due to active user traffic. Frequency varies based on network size, user activity, and policy configuration. Large enterprises may generate 10,000+ events per hour."
+  fields:
+    - name: "domain"
+      type: "Integer"
+      required: true
+      description: "Virtual system domain identifier"
+      example_value: 1
+      template_source: "Static value"
+      
+    - name: "receive_time"
+      type: "DateTime"
+      required: true
+      description: "Log entry reception timestamp"
+      example_value: "2024/01/15 14:30:25"
+      format: "YYYY/MM/DD HH:MM:SS"
+      template_source: "current_timestamp() | format_timestamp('%Y/%m/%d %H:%M:%S')"
+      
+    - name: "serial_number"
+      type: "String"
+      required: true
+      description: "Firewall device serial number"
+      example_value: "PA-5250-1234"
+      template_source: "PA-5250-{{ random_int(1000, 9999) }}"
+      
+    - name: "log_type"
+      type: "String"
+      required: true
+      description: "Log category type"
+      example_value: "TRAFFIC"
+      template_source: "Static value"
+      
+    - name: "log_subtype"
+      type: "String"
+      required: true
+      description: "Specific traffic event type"
+      example_value: "start"
+      possible_values:
+        - value: "start"
+          description: "Session initiation"
+        - value: "end"
+          description: "Session termination"
+        - value: "deny"
+          description: "Traffic denied by policy"
+        - value: "drop"
+          description: "Traffic dropped"
+      template_source: "log_sub_types | random"
+      
+    - name: "config_version"
+      type: "Integer"
+      required: true
+      description: "Configuration version number"
+      example_value: 2048
+      template_source: "random_int(2000, 3000)"
+      
+    - name: "time_generated"
+      type: "DateTime"
+      required: true
+      description: "Event generation timestamp"
+      example_value: "2024/01/15 14:30:25"
+      format: "YYYY/MM/DD HH:MM:SS"
+      template_source: "current_timestamp() | format_timestamp('%Y/%m/%d %H:%M:%S')"
+      
+    - name: "source_ip"
+      type: "IP Address"
+      required: true
+      description: "Source IP address of the connection"
+      example_value: "192.168.1.100"
+      template_source: "random_private_ip()"
+      
+    - name: "destination_ip"
+      type: "IP Address"
+      required: true
+      description: "Destination IP address of the connection"
+      example_value: "8.8.8.8"
+      template_source: "random_public_ip()"
+      
+    - name: "nat_source_ip"
+      type: "IP Address"
+      required: true
+      description: "NAT translated source IP address"
+      example_value: "10.10.1.50"
+      template_source: "registry.get_random_device().ip_address with fallback"
+      
+    - name: "nat_destination_ip"
+      type: "IP Address"
+      required: true
+      description: "NAT translated destination IP address"
+      example_value: "203.0.113.10"
+      template_source: "random_public_ip()"
+      
+    - name: "rule_name"
+      type: "String"
+      required: true
+      description: "Security policy rule name that processed the traffic"
+      example_value: "Allow_DNS"
+      possible_values:
+        - value: "Allow_DNS"
+          description: "DNS traffic permission rule"
+        - value: "Block_Malicious"
+          description: "Malicious traffic blocking rule"
+        - value: "Allow_Internal"
+          description: "Internal network access rule"
+        - value: "Allow_Web"
+          description: "Web browsing permission rule"
+        - value: "Default_Rule"
+          description: "Catch-all default rule"
+      template_source: "rule_names | random"
+      
+    - name: "source_user"
+      type: "String"
+      required: false
+      description: "Username associated with source IP"
+      example_value: "jsmith"
+      template_source: "registry.get_random_user().username with fallback"
+      
+    - name: "destination_user"
+      type: "String"
+      required: false
+      description: "Username associated with destination"
+      example_value: "unknown"
+      possible_values:
+        - value: "unknown"
+          description: "User not identified"
+        - value: "admin"
+          description: "Administrative user"
+        - value: "guest"
+          description: "Guest user account"
+        - value: "external"
+          description: "External user"
+      template_source: "destination_user_names | random"
+      
+    - name: "application"
+      type: "String"
+      required: true
+      description: "Identified application or service"
+      example_value: "dns"
+      template_source: "applications | random"
+      notes: "PAN-OS App-ID identified application"
+      
+    - name: "virtual_system"
+      type: "String"
+      required: true
+      description: "Virtual system name"
+      example_value: "vsys1"
+      template_source: "Static value"
+      
+    - name: "source_zone"
+      type: "String"
+      required: true
+      description: "Source security zone"
+      example_value: "Trust"
+      possible_values:
+        - value: "Trust"
+          description: "Trusted internal zone"
+        - value: "LAN"
+          description: "Local area network zone"
+        - value: "Internal"
+          description: "Internal network zone"
+        - value: "DMZ-In"
+          description: "DMZ ingress zone"
+        - value: "VPN"
+          description: "VPN user zone"
+      template_source: "source_zones | random"
+      
+    - name: "destination_zone"
+      type: "String"
+      required: true
+      description: "Destination security zone"
+      example_value: "Untrust"
+      possible_values:
+        - value: "Untrust"
+          description: "Untrusted external zone"
+        - value: "DMZ"
+          description: "Demilitarized zone"
+        - value: "External"
+          description: "External network zone"
+        - value: "Internet"
+          description: "Internet zone"
+        - value: "Partner"
+          description: "Partner network zone"
+      template_source: "destination_zones | random"
+      
+    - name: "ingress_interface"
+      type: "String"
+      required: true
+      description: "Ingress network interface"
+      example_value: "ethernet1/1"
+      template_source: "ethernet1/{{ random_int(1, 3) }}"
+      
+    - name: "egress_interface"
+      type: "String"
+      required: true
+      description: "Egress network interface"
+      example_value: "ethernet1/2"
+      template_source: "ethernet1/{{ random_int(1, 4) }}"
+      
+    - name: "log_action"
+      type: "String"
+      required: true
+      description: "Log forwarding action"
+      example_value: "LogForward"
+      template_source: "Static value"
+      
+    - name: "session_id"
+      type: "Integer"
+      required: true
+      description: "Unique session identifier"
+      example_value: 54350
+      template_source: "random_int(54320, 54399)"
+      
+    - name: "repeat_count"
+      type: "Integer"
+      required: true
+      description: "Number of session repeats"
+      example_value: 1
+      template_source: "Static value"
+      
+    - name: "source_port"
+      type: "Integer"
+      required: true
+      description: "Source port number"
+      example_value: 54321
+      template_source: "random_port()"
+      
+    - name: "destination_port"
+      type: "Integer"
+      required: true
+      description: "Destination port number"
+      example_value: 53
+      template_source: "common_ports | random"
+      
+    - name: "nat_source_port"
+      type: "Integer"
+      required: true
+      description: "NAT translated source port"
+      example_value: 55123
+      template_source: "random_port()"
+      
+    - name: "nat_destination_port"
+      type: "Integer"
+      required: true
+      description: "NAT translated destination port"
+      example_value: 80
+      template_source: "common_ports | random"
+      
+    - name: "flags"
+      type: "String"
+      required: true
+      description: "TCP flags and session attributes"
+      example_value: "0x401000"
+      format: "Hexadecimal"
+      template_source: "0x{{ random_int(0, 67108864) | hex }}"
+      
+    - name: "protocol"
+      type: "String"
+      required: true
+      description: "IP protocol"
+      example_value: "tcp"
+      possible_values:
+        - value: "tcp"
+          description: "Transmission Control Protocol"
+        - value: "udp"
+          description: "User Datagram Protocol"
+        - value: "icmp"
+          description: "Internet Control Message Protocol"
+        - value: "esp"
+          description: "Encapsulating Security Payload"
+        - value: "gre"
+          description: "Generic Routing Encapsulation"
+      template_source: "protocols | random"
+      
+    - name: "action"
+      type: "String"
+      required: true
+      description: "Traffic action taken"
+      example_value: "allow"
+      possible_values:
+        - value: "allow"
+          description: "Traffic permitted"
+        - value: "deny"
+          description: "Traffic denied"
+        - value: "drop"
+          description: "Traffic dropped silently"
+        - value: "reset-client"
+          description: "Reset sent to client"
+        - value: "reset-server"
+          description: "Reset sent to server"
+        - value: "reset-both"
+          description: "Reset sent to both endpoints"
+      template_source: "actions | random"
+      
+    - name: "bytes_sent"
+      type: "Integer"
+      required: true
+      description: "Total bytes sent from source to destination"
+      example_value: 1500
+      template_source: "random_int(0, 150000)"
+      
+    - name: "bytes_received"
+      type: "Integer"
+      required: true
+      description: "Total bytes received from destination to source"
+      example_value: 800
+      template_source: "random_int(0, 80000)"
+      
+    - name: "packets_sent"
+      type: "Integer"
+      required: true
+      description: "Total packets sent from source to destination"
+      example_value: 15
+      template_source: "random_int(0, 70000)"
+      
+    - name: "packets_received"
+      type: "Integer"
+      required: true
+      description: "Total packets received from destination to source"
+      example_value: 12
+      template_source: "random_int(0, 300)"
+      
+    - name: "session_start_time"
+      type: "DateTime"
+      required: true
+      description: "Session start timestamp"
+      example_value: "2024/01/15 14:30:20"
+      format: "YYYY/MM/DD HH:MM:SS"
+      template_source: "current_timestamp() | format_timestamp('%Y/%m/%d %H:%M:%S')"
+      
+    - name: "elapsed_time"
+      type: "Integer"
+      required: true
+      description: "Session duration in seconds"
+      example_value: 45
+      template_source: "random_int(0, 120)"
+      
+    - name: "category"
+      type: "String"
+      required: true
+      description: "URL/Application category"
+      example_value: "any"
+      template_source: "categories | random"
+      notes: "PAN-OS URL filtering category"
+      
+    - name: "sequence_number"
+      type: "Integer"
+      required: true
+      description: "Log sequence number"
+      example_value: 7892350
+      template_source: "random_int(7892340, 7892399)"
+      
+    - name: "action_flags"
+      type: "String"
+      required: true
+      description: "Action-specific flags"
+      example_value: "0x0"
+      format: "Hexadecimal"
+      template_source: "Static value"
+      
+    - name: "source_country"
+      type: "String"
+      required: false
+      description: "Source IP geolocation country code"
+      example_value: "US"
+      format: "ISO 3166-1 alpha-2"
+      template_source: "Static value (US)"
+      
+    - name: "destination_country"
+      type: "String"
+      required: false
+      description: "Destination IP geolocation country code"
+      example_value: "CN"
+      format: "ISO 3166-1 alpha-2"
+      template_source: "src_countries | random"
+      
+    - name: "packets_sent_total"
+      type: "Integer"
+      required: false
+      description: "Total session packets sent"
+      example_value: 25
+      template_source: "random_int(0, 200)"
+      
+    - name: "packets_received_total"
+      type: "Integer"
+      required: false
+      description: "Total session packets received"
+      example_value: 20
+      template_source: "random_int(0, 150)"
+      
+    - name: "session_end_reason"
+      type: "String"
+      required: false
+      description: "Reason for session termination"
+      example_value: "aged-out"
+      possible_values:
+        - value: "aged-out"
+          description: "Session timeout"
+        - value: "policy-deny"
+          description: "Denied by policy"
+        - value: "tcp-fin"
+          description: "TCP FIN received"
+        - value: "tcp-rst-from-client"
+          description: "TCP reset from client"
+        - value: "tcp-rst-from-server"
+          description: "TCP reset from server"
+        - value: "resources-unavailable"
+          description: "System resource exhaustion"
+        - value: "unknown"
+          description: "Unknown termination reason"
+      template_source: "session_end_reasons | random"
+      
+    - name: "source_dag"
+      type: "String"
+      required: false
+      description: "Source Dynamic Address Group"
+      example_value: "Corp-Internal"
+      template_source: "src_dynamic_addr_groups | random"
+      notes: "Dynamic Address Group membership"
+      
+    - name: "destination_dag"
+      type: "String"
+      required: false
+      description: "Destination Dynamic Address Group"
+      example_value: "Web-Server"
+      template_source: "dst_dynamic_addr_groups | random"
+      notes: "Dynamic Address Group membership"
+      
+    - name: "risk_level"
+      type: "String"
+      required: false
+      description: "Application risk assessment level"
+      example_value: "low"
+      possible_values:
+        - value: "low"
+          description: "Low risk application"
+        - value: "medium"
+          description: "Medium risk application"
+        - value: "high"
+          description: "High risk application"
+        - value: "critical"
+          description: "Critical risk application"
+        - value: "informational"
+          description: "Informational only"
+      template_source: "risks | random"
+      
+    - name: "proxy_traffic"
+      type: "String"
+      required: false
+      description: "Proxy traffic indicator"
+      example_value: "NonProxyTraffic"
+      possible_values:
+        - value: "ProxyTraffic"
+          description: "Traffic through proxy"
+        - value: "NonProxyTraffic"
+          description: "Direct traffic"
+      template_source: "proxy_traffic_values | random"
+      
+    - name: "tunnel_type"
+      type: "String"
+      required: false
+      description: "VPN tunnel type"
+      example_value: "primary"
+      possible_values:
+        - value: "primary"
+          description: "Primary tunnel"
+        - value: "secondary"
+          description: "Secondary tunnel"
+        - value: "backup"
+          description: "Backup tunnel"
+      template_source: "tunnel_types | random"
+resources:
+  documentation:
+    - title: "PAN-OS Administrator's Guide - Traffic Logs"
+      url: "https://docs.paloaltonetworks.com/pan-os/11-1/pan-os-admin/monitoring/use-syslog-for-monitoring/syslog-field-descriptions/traffic-log-fields"
+      type: "official"
+    - title: "PAN-OS CLI Reference - Log Commands"
+      url: "https://docs.paloaltonetworks.com/pan-os/11-1/pan-os-cli-quick-start/cli-cheat-sheets/log-files-cli"
+      type: "official"
+    - title: "Palo Alto Networks Security Operating Platform"
+      url: "https://www.paloaltonetworks.com/network-security/next-generation-firewall"
+      type: "product"
+  tools:
+    - name: "PAN-OS CLI"
+      description: "Command-line interface for log analysis and system management"
+      url: "https://docs.paloaltonetworks.com/pan-os/11-1/pan-os-cli-quick-start"
+    - name: "Panorama"
+      description: "Centralized management and logging platform for PAN-OS devices"
+      url: "https://www.paloaltonetworks.com/network-security/panorama"
+    - name: "AutoFocus"
+      description: "Threat intelligence and analysis platform with log correlation"
+      url: "https://www.paloaltonetworks.com/products/secure-the-network/subscriptions/autofocus"

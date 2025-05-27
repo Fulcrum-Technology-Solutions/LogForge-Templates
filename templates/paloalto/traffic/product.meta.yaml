@@ -1,8 +1,0 @@
-# 'vendor': machine-friendly unique identifier of the parent vendor
-# 'name': human-friendly product display name
-vendor: paloalto
-product: "Firewall"
-name: "Firewall"
-description: "Palo Alto Networks Next-Generation Firewall"
-version: "All"
-documentation_url: "https://docs.paloaltonetworks.com/pan-os/10-2/pan-os-admin/monitoring/view-and-manage-logs" 

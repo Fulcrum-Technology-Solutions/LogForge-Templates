@@ -1,0 +1,5 @@
+name: "PAN-OS"
+vendor: "Palo Alto Networks"
+description: "Next-Generation Firewall operating system with integrated security features including GlobalProtect VPN"
+version: "10.2"
+documentation_url: "https://docs.paloaltonetworks.com/pan-os"

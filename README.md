@@ -6,6 +6,31 @@ This repository contains community-contributed templates for [LogForge](https://
 
 ---
 
+## LogForge Template Hierarchy: 4-Tier System
+
+LogForge Templates are organized in a strict 4-level hierarchy, which is reflected in both the directory structure and the API/UI:
+
+1. **Vendor**: The organization or company that produces the product (e.g., `paloalto`, `microsoft`, `acme`).
+   - Directory: `vendor/`
+   - Metadata: `vendor.meta.yaml`
+2. **Product**: The specific product or application from the vendor (e.g., `firewall`, `windows`, `secureapp-pro`).
+   - Directory: `vendor/product/`
+   - Metadata: `product.meta.yaml`, `collection.json`
+3. **Data Source**: The subsystem, log type, or event source within the product (e.g., `network`, `security`, `user-authentication`).
+   - Directory: `vendor/product/data_source/`
+4. **Event Type (Template)**: The specific event type or log template (e.g., `traffic`, `vpn`, `user_login`).
+   - Files: `template_name.j2` (Jinja2 template), `template_name.meta.yaml` (metadata)
+
+**Example Path:**
+```
+paloalto/firewall/network/traffic.j2
+paloalto/firewall/network/traffic.meta.yaml
+```
+
+Each level has its own metadata file (see `schemas/`), and the template-level meta.yaml must conform to `meta.schema.json`.
+
+---
+
 ## Overview
 LogForge Templates is a community-driven collection of Jinja2-based templates and metadata for generating realistic synthetic logs from a variety of systems (e.g., Windows Event Log, Palo Alto Firewall, Azure AD). Templates are designed for use with the LogForge CLI and entity registry, enabling customizable, high-fidelity log generation for testing, demos, and development.
 
@@ -48,11 +73,54 @@ All metadata files must conform to their respective JSON schemas in the `schemas
 - `schemas/product.schema.json` → `product.meta.yaml`
 - `schemas/collection.schema.json` → `collection.json`
 - `schemas/template.schema.json` → `template_name.meta.yaml`
+- `schemas/meta.schema.json` → `template-level meta.yaml` (see below)
 
 **Key Points:**
 - Only template-level `.meta.yaml` files require a `data_source` property.
 - Vendor and product metadata do **not** require `data_source`.
 - All fields and structure must match the schema for validation to pass.
+
+---
+
+## Template Metadata Schema (`meta.schema.json`)
+
+All template-level `meta.yaml` files must conform to the JSON schema defined in [`schemas/meta.schema.json`](schemas/meta.schema.json). This schema enforces the required structure, field types, and allowed values for template metadata, including:
+
+- Basic identification fields (vendor, product, data_source, description, format)
+- Event generation frequency and time pattern fields
+- Detailed documentation and field definitions for UI and developer guidance
+- External resources and tools
+
+**Location:** `schemas/meta.schema.json`
+
+**Validation:**
+You can validate any `meta.yaml` file against the schema using a Python script with `pyyaml` and `jsonschema`. Example script:
+
+```python
+import yaml
+import json
+import jsonschema
+from pathlib import Path
+
+SCHEMA_PATH = Path("schemas/meta.schema.json")
+
+def validate_meta_yaml(yaml_path):
+    with open(SCHEMA_PATH) as f:
+        schema = json.load(f)
+    with open(yaml_path) as f:
+        data = yaml.safe_load(f)
+    jsonschema.validate(instance=data, schema=schema)
+    print(f"{yaml_path} is valid.")
+
+# Usage:
+# python validate_meta_yaml.py path/to/meta.yaml
+```
+
+**Required fields and structure:**
+See the schema file for the full list of required and optional fields, types, and nested objects. The schema is designed to match the detailed example in `samples/sample-product/sample-data/sample.meta.yaml`.
+
+**Contributing:**
+All new or updated template-level `meta.yaml` files must pass schema validation before being merged. See [CONTRIBUTING.md](./CONTRIBUTING.md) for more details.
 
 ---
 
@@ -86,18 +154,46 @@ is_generator: true
 base_frequency: 10
 time_patterns:
   - business_hours
-context:
-  device_id: "device-1234"
-  timestamp: "2025-01-01T00:00:00Z"
-parameters:
-  - name: device_id
-    description: Unique identifier for the device.
-    required: true
-    default: device-1234
-  - name: timestamp
-    description: Event timestamp in ISO8601 format.
-    required: true
-    default: 2025-01-01T00:00:00Z
+documentation:
+  display:
+    title: "Example Log Event"
+    subtitle: "Demonstration of LogForge Template Structure"
+    icon: "📝"
+    color_scheme: "info"
+    tags:
+      - "demo"
+      - "example"
+  overview:
+    summary: "This event is generated for demonstration purposes."
+    when_generated:
+      - "When running LogForge in demo mode."
+    security_relevance: "Low"
+    compliance_frameworks:
+      - "N/A"
+    frequency_notes: "This is a low-frequency, demo-only event."
+  fields:
+    - name: "timestamp"
+      type: "DateTime"
+      required: true
+      description: "Event timestamp in ISO8601 format."
+      example_value: "2025-01-01T00:00:00Z"
+      format: "ISO 8601"
+      template_source: "current_timestamp()"
+    - name: "device_id"
+      type: "String"
+      required: true
+      description: "Unique identifier for the device."
+      example_value: "device-1234"
+      template_source: "device_id"
+resources:
+  documentation:
+    - title: "LogForge Template Authoring Guide"
+      url: "https://github.com/Fulcrum-Technology-Solutions/LogForge"
+      type: "official"
+  tools:
+    - name: "LogForge CLI"
+      description: "Command-line tool for template validation and log generation."
+      url: "https://github.com/Fulcrum-Technology-Solutions/LogForge"
 ```
 
 For more details and advanced authoring tips, see [CONTRIBUTING.md](./CONTRIBUTING.md).
@@ -294,3 +390,19 @@ We welcome contributions! Please see [CONTRIBUTING.md](CONTRIBUTING.md) for guid
 ## License
 
 This project is licensed under the MIT License - see the LICENSE file for details.
+
+## LogForge Template Package Format (.lft)
+
+When you download a vendor package from the registry, you will receive a file with the `.lft` extension (e.g., `crowdstrike.lft`). This is a **LogForge Template package**—a gzipped tar archive containing all templates, metadata, and subfolders for the vendor.
+
+- `.lft` files are fully compatible with standard archive tools (e.g., `tar`, `7-Zip`, `WinRAR`).
+- To extract on the command line:
+  ```bash
+  tar -xzf crowdstrike.lft
+  # or rename to .tar.gz and extract as usual
+  mv crowdstrike.lft crowdstrike.tar.gz
+  tar -xzf crowdstrike.tar.gz
+  ```
+- The `.lft` extension helps users and tools recognize LogForge Template packages.
+
+> **Tip:** You can import `.lft` files directly into LogForge or extract them manually for inspection.

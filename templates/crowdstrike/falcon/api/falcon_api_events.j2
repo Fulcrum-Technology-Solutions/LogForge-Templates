@@ -7,7 +7,7 @@
 {%- set elapsed_time = (elapsed_microseconds / 1000) ~ "." ~ (elapsed_microseconds % 1000) ~ "ms" -%}
 {%- set status_code = ["200", "201", "400", "403", "404", "500"] | random -%}
 {%- set request_method = ["GET", "POST", "PUT", "DELETE"] | random -%}
-{%- set request_path = ["/intel/combined/indicators/v1", "/devices/queries/devices/v1", "/oauth2/token", "/falcon/intelligence/queries/events/v1"] | random -%}
+{%- set request_path = ["/intel/combined/indicators/v1", "/devices/queries/devices/v1", "/oauth2/token", "/falcon/intelligence/queries/events/v1", "/detects/queries/detects/v1", "/incidents/queries/incidents/v1"] | random -%}
 {%- set received_time = timestamp | format_timestamp('%Y-%m-%dT%H:%M:%S.%fZ') -%}
 {
   "metadata": {
@@ -18,7 +18,7 @@
     "version": "1.0"
   },
   "event": {
-    "UserId": "",
+    "UserId": "{{ registry.get_random_user().username if registry.get_random_user() else '' }}",
     "UserIp": "{{ user_ip }}",
     "OperationName": "logged",
     "ServiceName": "api_request",
@@ -51,11 +51,11 @@
       },
       {
         "Key": "request_query",
-        "ValueString": "filter=type%3A%27hash_sha256%27%2Bindicator%3A%272feb47403960660c5b6872e2f3109b2c67d24cfbb7380cd86974c41ce705cc28%27&limit=100&offset=0"
+        "ValueString": "filter=type%3A%27hash_sha256%27%2Bindicator%3A%27{{ random_string(64, 'abcdef0123456789') }}%27&limit={{ random_int(10, 500) }}&offset={{ random_int(0, 1000) }}"
       },
       {
         "Key": "scopes",
-        "ValueString": "{{ ["falconx-indicators:read", "devices:read", "oauth2:read"] | random }}"
+        "ValueString": "{{ ["falconx-indicators:read", "devices:read", "oauth2:read", "detects:read", "incidents:read", "hosts:read", "real-time-response:read"] | random }}"
       },
       {
         "Key": "trace_id",
@@ -75,7 +75,7 @@
       },
       {
         "Key": "user_agent",
-        "ValueString": "{{ ["proofpoint_TapPreDelivery_v1", "python-requests/2.28.1", "curl/7.68.0", "Mozilla/5.0"] | random }}"
+        "ValueString": "{{ ["CrowdStrike-Falcon-API/1.0", "python-requests/2.28.1", "curl/7.68.0", "Mozilla/5.0", "PowerShell/7.0", "Postman/10.0"] | random }}"
       },
       {
         "Key": "elapsed_time",
@@ -100,12 +100,12 @@
       "request_accept": "application/json",
       "request_method": "{{ request_method }}",
       "request_path": "{{ request_path }}",
-      "request_query": "filter=type%3A%27hash_sha256%27%2Bindicator%3A%272feb47403960660c5b6872e2f3109b2c67d24cfbb7380cd86974c41ce705cc28%27&limit=100&offset=0",
+      "request_query": "filter=type%3A%27hash_sha256%27%2Bindicator%3A%27{{ random_string(64, 'abcdef0123456789') }}%27&limit={{ random_int(10, 500) }}&offset={{ random_int(0, 1000) }}",
       "request_uri_length": "{{ random_int(50, 200) }}",
-      "scopes": "{{ ["falconx-indicators:read", "devices:read", "oauth2:read"] | random }}",
+      "scopes": "{{ ["falconx-indicators:read", "devices:read", "oauth2:read", "detects:read", "incidents:read", "hosts:read", "real-time-response:read"] | random }}",
       "status_code": "{{ status_code }}",
       "trace_id": "{{ trace_id }}",
-      "user_agent": "{{ ["proofpoint_TapPreDelivery_v1", "python-requests/2.28.1", "curl/7.68.0", "Mozilla/5.0"] | random }}",
+      "user_agent": "{{ ["CrowdStrike-Falcon-API/1.0", "python-requests/2.28.1", "curl/7.68.0", "Mozilla/5.0", "PowerShell/7.0", "Postman/10.0"] | random }}",
       "user_ip": "{{ user_ip }}"
     },
     "Message": "",
@@ -115,10 +115,10 @@
   "ta_data": {
     "Feed_id": "{{ random_int(0, 10) }}",
     "Multiple_feeds": "{{ ["True", "False"] | random }}",
-    "Cloud_environment": "{{ ["us_commercial1", "us_commercial2", "us_gov1", "eu_central"] | random }}",
+    "Cloud_environment": "{{ ["us_commercial1", "us_commercial2", "us_gov1", "eu_central1", "gov_commercial1"] | random }}",
     "TA_version": "{{ random_int(1, 5) }}.{{ random_int(0, 9) }}.{{ random_int(0, 9) }}",
     "Input": "org_crowdstrike",
-    "App_id": "{{ ["US_Comm_ALL", "US_Gov_ALL", "EU_Comm_ALL"] | random }}",
+    "App_id": "{{ ["US_Comm_ALL", "US_Gov_ALL", "EU_Comm_ALL", "GOV_Comm_ALL"] | random }}",
     "Event_types": "['All']",
     "Initial_start": "{{ ["historic", "realtime"] | random }}"
   }
