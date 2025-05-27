@@ -60,7 +60,7 @@ packages:
     description: Zscaler Internet Access (ZIA) log templates for web security events
     version: 1.0.0
     templates:
-    - web_security/web_traffic.j2
+    - web_security/web_traffic
     tags:
     - web-security
     - proxy
