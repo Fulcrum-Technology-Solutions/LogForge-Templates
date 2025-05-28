@@ -1,0 +1,221 @@
+vendor: "Microsoft Corporation"
+product: "Exchange Online"
+data_source: "email-security"
+description: "Exchange Online audit log for new inbox rule creation events"
+format: "JSON"
+frequency: "low"
+is_generator: true
+base_frequency: 5
+time_patterns:
+  - business_hours
+  - night_hours
+  - weekend
+business_hours_multiplier: 3.0
+night_hours_multiplier: 0.2
+weekend_multiplier: 0.1
+documentation:
+  display:
+    title: "New Inbox Rule Creation"
+    subtitle: "Exchange Online security audit event"
+    icon: "📧"
+    color_scheme: "warning"
+    tags:
+      - "exchange"
+      - "email"
+      - "security"
+      - "audit"
+      - "microsoft365"
+      - "bec-indicator"
+  overview:
+    summary: "Records the creation of new inbox rules in Exchange Online mailboxes. Critical for detecting Business Email Compromise (BEC) attacks and malicious email forwarding."
+    when_generated:
+      - "When users create new inbox rules via Outlook Web App"
+      - "When inbox rules are created programmatically"
+      - "During email forwarding setup attempts"
+      - "When automated email processing rules are established"
+    security_relevance: "High - Inbox rules are frequently abused in BEC attacks for email forwarding, auto-deletion, and data exfiltration"
+    compliance_frameworks:
+      - "SOC 2"
+      - "GDPR"
+      - "HIPAA"
+      - "PCI DSS"
+      - "NIST Cybersecurity Framework"
+    frequency_notes: "Low frequency during normal business operations, with spikes during onboarding and organizational changes. Suspicious patterns include off-hours creation and rules targeting financial keywords."
+  fields:
+    - name: "AppAccessContext"
+      type: "Object"
+      required: true
+      description: "Azure AD authentication context for the application access"
+      example_value: {"AADSessionId": "uuid", "IssuedAtTime": "timestamp", "UniqueTokenId": "token"}
+      template_source: "Multiple GUIDs and session tokens"
+    - name: "AppId"
+      type: "String"
+      required: true
+      description: "Application ID for Exchange Online Web Services"
+      example_value: "00000002-0000-0ff1-ce00-000000000000"
+      template_source: "Fixed Exchange Online application identifier"
+    - name: "AppPoolName"
+      type: "String"
+      required: true
+      description: "IIS application pool name hosting the Exchange service"
+      example_value: "MSExchangeOWAAppPool"
+      template_source: "Fixed Exchange Online app pool identifier"
+    - name: "ClientIP"
+      type: "String"
+      required: true
+      description: "Client IP address and port that initiated the rule creation"
+      example_value: "203.0.113.42:54321"
+      format: "IPv4:Port"
+      template_source: "random_public_ip() + random_port()"
+    - name: "CreationTime"
+      type: "DateTime"
+      required: true
+      description: "UTC timestamp when the audit record was created"
+      example_value: "2024-01-15T14:30:25Z"
+      format: "ISO 8601"
+      template_source: "current_timestamp()"
+    - name: "ExternalAccess"
+      type: "Boolean"
+      required: true
+      description: "Indicates if the access originated from outside the organization"
+      example_value: false
+      template_source: "Random boolean with 30% true probability"
+    - name: "Id"
+      type: "String"
+      required: true
+      description: "Unique identifier for this audit record"
+      example_value: "a1b2c3d4-e5f6-7890-abcd-ef1234567890"
+      format: "UUID"
+      template_source: "random_guid()"
+    - name: "ObjectId"
+      type: "String"
+      required: true
+      description: "Full path to the Exchange object (mailbox and rule name)"
+      example_value: "SERVER.PROD.OUTLOOK.COM/Organizations/contoso.com/User, John Doe\\MyRule"
+      template_source: "Constructed from server, domain, user, and rule name"
+    - name: "Operation"
+      type: "String"
+      required: true
+      description: "The Exchange operation that was performed"
+      example_value: "New-InboxRule"
+      template_source: "Fixed value for this template"
+    - name: "OrganizationId"
+      type: "String"
+      required: true
+      description: "Unique identifier for the Microsoft 365 organization"
+      example_value: "12345678-abcd-ef12-3456-789abcdef012"
+      format: "UUID"
+      template_source: "random_guid()"
+    - name: "OrganizationName"
+      type: "String"
+      required: true
+      description: "Domain name of the Microsoft 365 organization"
+      example_value: "contoso.com"
+      template_source: "registry.get_organization_field('domain')"
+    - name: "OriginatingServer"
+      type: "String"
+      required: true
+      description: "Exchange server that processed the request with version info"
+      example_value: "SN6PR08MB1234 (15.20.8245.123)"
+      template_source: "Random server name and version numbers"
+    - name: "Parameters"
+      type: "Array"
+      required: true
+      description: "Array of parameter objects containing rule configuration"
+      example_value: [{"Name": "MoveToFolder", "Value": "Archive"}]
+      template_source: "Array of common inbox rule parameters with random values"
+    - name: "RecordType"
+      type: "Integer"
+      required: true
+      description: "Microsoft 365 audit record type (1 = Exchange Admin)"
+      example_value: 1
+      template_source: "Fixed value 1 for Exchange operations"
+    - name: "RequestId"
+      type: "String"
+      required: true
+      description: "Unique identifier for the original request"
+      example_value: "a1b2c3d4-e5f6-7890-abcd-ef1234567890"
+      format: "UUID"
+      template_source: "random_guid()"
+    - name: "ResultStatus"
+      type: "String"
+      required: true
+      description: "Success status of the operation"
+      example_value: "True"
+      template_source: "Fixed value 'True' for successful operations"
+      possible_values:
+        - value: "True"
+          description: "Operation completed successfully"
+        - value: "False"
+          description: "Operation failed"
+    - name: "SessionId"
+      type: "String"
+      required: true
+      description: "Session identifier for the user's Exchange session"
+      example_value: "a1b2c3d4-e5f6-7890-abcd-ef1234567890"
+      format: "UUID"
+      template_source: "random_guid()"
+    - name: "UserId"
+      type: "String"
+      required: true
+      description: "Email address of the user who created the rule"
+      example_value: "john.doe@contoso.com"
+      format: "Email"
+      template_source: "registry.get_random_user().username + '@' + domain"
+    - name: "UserKey"
+      type: "String"
+      required: true
+      description: "User identifier key (typically same as UserId)"
+      example_value: "john.doe@contoso.com"
+      format: "Email"
+      template_source: "Same as UserId"
+    - name: "UserType"
+      type: "Integer"
+      required: true
+      description: "Type classification of the user account"
+      example_value: 2
+      template_source: "Random integer 0-4"
+      possible_values:
+        - value: 0
+          description: "Regular user"
+        - value: 1
+          description: "Reserved"
+        - value: 2
+          description: "Admin user"
+        - value: 3
+          description: "DcAdmin user"
+        - value: 4
+          description: "System user"
+    - name: "Version"
+      type: "Integer"
+      required: true
+      description: "Schema version for the audit record format"
+      example_value: 1
+      template_source: "Fixed value 1"
+    - name: "Workload"
+      type: "String"
+      required: true
+      description: "Microsoft 365 service that generated the audit record"
+      example_value: "Exchange"
+      template_source: "Fixed value 'Exchange'"
+resources:
+  documentation:
+    - title: "Exchange Online Auditing Documentation"
+      url: "https://docs.microsoft.com/en-us/microsoft-365/compliance/exchange-auditing"
+      type: "official"
+    - title: "Microsoft 365 Unified Audit Log"
+      url: "https://docs.microsoft.com/en-us/microsoft-365/compliance/search-the-audit-log-in-security-and-compliance"
+      type: "official"
+    - title: "Exchange Online Management Shell"
+      url: "https://docs.microsoft.com/en-us/powershell/exchange/exchange-online-powershell"
+      type: "official"
+  tools:
+    - name: "Microsoft 365 Compliance Center"
+      description: "Web-based interface for searching and analyzing audit logs"
+      url: "https://compliance.microsoft.com"
+    - name: "Exchange Online PowerShell"
+      description: "PowerShell module for Exchange Online management and auditing"
+      url: "https://docs.microsoft.com/en-us/powershell/exchange/exchange-online-powershell"
+    - name: "Microsoft Graph Security API"
+      description: "Programmatic access to Microsoft 365 security data including audit logs"
+      url: "https://docs.microsoft.com/en-us/graph/security-concept-overview"

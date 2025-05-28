@@ -1,0 +1,194 @@
+vendor: "Okta"
+product: "Identity Cloud"
+data_source: "authentication"
+description: "Failed user authentication attempt to Okta with invalid credentials"
+format: "JSON"
+frequency: "medium"
+is_generator: true
+base_frequency: 45
+time_patterns:
+  - "business_hours"
+  - "night_hours" 
+  - "weekend"
+business_hours_multiplier: 2.5
+night_hours_multiplier: 0.4
+weekend_multiplier: 0.3
+documentation:
+  display:
+    title: "Authentication Failure Event"
+    subtitle: "Failed login attempt with invalid credentials"
+    icon: "🚫"
+    color_scheme: "warning"
+    tags:
+      - "authentication"
+      - "failure"
+      - "security"
+      - "invalid-credentials"
+  overview:
+    summary: "Generated when a user attempts to authenticate to Okta but provides invalid credentials (wrong password, incorrect username, etc.)"
+    when_generated:
+      - "User enters incorrect password during login"
+      - "User attempts login with non-existent username"
+      - "Automated brute force detection triggers"
+      - "Account lockout scenarios"
+    security_relevance: "High - indicates potential credential compromise attempts, brute force attacks, or user errors that may require attention"
+    compliance_frameworks:
+      - "SOC 2"
+      - "ISO 27001"
+      - "NIST Cybersecurity Framework"
+      - "GDPR (authentication logging)"
+    frequency_notes: "Higher frequency during business hours when legitimate users are active. Spikes may indicate attack attempts."
+  fields:
+    - name: "actor.id"
+      type: "String"
+      required: true
+      description: "Unique identifier for the user attempting authentication"
+      example_value: "00u1a2b3c4d5e6f7g8h9"
+      template_source: "random_string(20, '0123456789abcdef')"
+    - name: "actor.alternateId"
+      type: "String" 
+      required: true
+      description: "User's email address used as alternate identifier"
+      example_value: "john.doe@company.com"
+      template_source: "registry.get_random_user().email"
+    - name: "actor.displayName"
+      type: "String"
+      required: true
+      description: "User's display name or username"
+      example_value: "john.doe"
+      template_source: "registry.get_random_user().username"
+    - name: "client.ipAddress"
+      type: "String"
+      required: true
+      description: "Source IP address of the authentication attempt"
+      example_value: "203.0.113.45"
+      format: "IPv4 address"
+      template_source: "random_public_ip()"
+    - name: "client.userAgent.rawUserAgent"
+      type: "String"
+      required: true
+      description: "Full user agent string from the client browser"
+      example_value: "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36"
+      template_source: "Static realistic user agent"
+    - name: "client.userAgent.os"
+      type: "String"
+      required: true
+      description: "Operating system detected from user agent"
+      example_value: "Mac OS 14.3.1 (Sonoma)"
+      template_source: "Static OS version"
+    - name: "client.userAgent.browser"
+      type: "String"
+      required: true
+      description: "Browser type detected from user agent"
+      example_value: "CHROME"
+      template_source: "Static browser type"
+    - name: "client.geographicalContext"
+      type: "Object"
+      required: true
+      description: "Geographic location information for the source IP"
+      example_value: {"city": "Washington", "state": "DC", "country": "US"}
+      template_source: "registry.get_random_user().location"
+    - name: "eventType"
+      type: "String"
+      required: true
+      description: "Type of event - user.session.start for login attempts"
+      example_value: "user.session.start"
+      template_source: "Static value"
+    - name: "outcome.result"
+      type: "String"
+      required: true
+      description: "Result of the authentication attempt"
+      example_value: "FAILURE"
+      template_source: "Static value - FAILURE"
+      possible_values:
+        - value: "FAILURE"
+          description: "Authentication failed"
+        - value: "SUCCESS" 
+          description: "Authentication succeeded"
+    - name: "outcome.reason"
+      type: "String"
+      required: true
+      description: "Specific reason for authentication failure"
+      example_value: "INVALID_CREDENTIALS"
+      template_source: "Static value"
+      possible_values:
+        - value: "INVALID_CREDENTIALS"
+          description: "Wrong username or password"
+        - value: "ACCOUNT_LOCKED"
+          description: "User account is locked"
+        - value: "USER_SUSPENDED"
+          description: "User account is suspended"
+    - name: "published"
+      type: "DateTime"
+      required: true
+      description: "Timestamp when the event was published by Okta"
+      example_value: "2024-01-15T14:30:45.123Z"
+      format: "ISO 8601 with milliseconds"
+      template_source: "current_timestamp() | format_timestamp('%Y-%m-%dT%H:%M:%S.%fZ')"
+    - name: "severity"
+      type: "String"
+      required: true
+      description: "Event severity level"
+      example_value: "WARN"
+      template_source: "Static value - WARN for failures"
+      possible_values:
+        - value: "INFO"
+          description: "Informational events"
+        - value: "WARN"
+          description: "Warning events (like failed logins)"
+        - value: "ERROR"
+          description: "Error events"
+    - name: "securityContext.asNumber"
+      type: "Integer"
+      required: true
+      description: "Autonomous System Number for the source IP"
+      example_value: 12345
+      template_source: "random_int(1000, 65000)"
+    - name: "debugContext.debugData.requestId"
+      type: "String"
+      required: true
+      description: "Unique identifier for this specific request"
+      example_value: "abc123def456"
+      template_source: "random_string(32, '0123456789abcdef')"
+    - name: "uuid"
+      type: "String"
+      required: true
+      description: "Unique identifier for this log event"
+      example_value: "12345678-1234-1234-1234-123456789012"
+      format: "UUID v4"
+      template_source: "random_guid()"
+    - name: "legacyEventType"
+      type: "String"
+      required: true
+      description: "Legacy event type identifier for backward compatibility"
+      example_value: "core.user_auth.login_failed"
+      template_source: "Static value"
+    - name: "transaction.type"
+      type: "String"
+      required: true
+      description: "Type of transaction (WEB, API, etc.)"
+      example_value: "WEB"
+      template_source: "Static value"
+      possible_values:
+        - value: "WEB"
+          description: "Web browser-based authentication"
+        - value: "API"
+          description: "API-based authentication"
+resources:
+  documentation:
+    - title: "Okta System Log API"
+      url: "https://developer.okta.com/docs/reference/api/system-log/"
+      type: "official"
+    - title: "Okta Event Types"
+      url: "https://developer.okta.com/docs/reference/api/event-types/"
+      type: "official"
+    - title: "Authentication Events"
+      url: "https://help.okta.com/en-us/Content/Topics/Reports/reports_auth_events.htm"
+      type: "official"
+  tools:
+    - name: "Okta System Log API Explorer"
+      description: "Interactive API explorer for Okta System Log events"
+      url: "https://developer.okta.com/docs/api/getting_started/api_test_client/"
+    - name: "Okta Event Hooks"
+      description: "Real-time event streaming from Okta"
+      url: "https://developer.okta.com/docs/concepts/event-hooks/"

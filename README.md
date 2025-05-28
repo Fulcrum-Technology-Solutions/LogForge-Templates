@@ -391,18 +391,16 @@ We welcome contributions! Please see [CONTRIBUTING.md](CONTRIBUTING.md) for guid
 
 This project is licensed under the MIT License - see the LICENSE file for details.
 
-## LogForge Template Package Format (.lft)
+## LogForge Template Package Format (.forge)
 
-When you download a vendor package from the registry, you will receive a file with the `.lft` extension (e.g., `crowdstrike.lft`). This is a **LogForge Template package**—a gzipped tar archive containing all templates, metadata, and subfolders for the vendor.
+When you download a vendor package from the registry, you will receive a file with the `.forge` extension (e.g., `crowdstrike.forge`). This is a **LogForge Template package**—a gzipped tar archive containing all templates, metadata, and subfolders for the vendor.
 
-- `.lft` files are fully compatible with standard archive tools (e.g., `tar`, `7-Zip`, `WinRAR`).
+- `.forge` files are fully compatible with standard archive tools (e.g., `tar`, `7-Zip`, `WinRAR`).
 - To extract on the command line:
   ```bash
-  tar -xzf crowdstrike.lft
+  tar -xzf crowdstrike.forge
   # or rename to .tar.gz and extract as usual
-  mv crowdstrike.lft crowdstrike.tar.gz
+  mv crowdstrike.forge crowdstrike.tar.gz
   tar -xzf crowdstrike.tar.gz
   ```
-- The `.lft` extension helps users and tools recognize LogForge Template packages.
-
-> **Tip:** You can import `.lft` files directly into LogForge or extract them manually for inspection.
+- The `.forge` extension helps users and tools recognize LogForge Template packages.

@@ -1,0 +1,4 @@
+name: "CloudTrail"
+description: "AWS CloudTrail is a service that enables governance, compliance, operational auditing, and risk auditing of your AWS account."
+version: "1.11"
+documentation_url: "https://docs.aws.amazon.com/cloudtrail/"

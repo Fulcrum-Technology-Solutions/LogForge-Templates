@@ -1,0 +1,115 @@
+vendor: "SentinelOne"
+product: "Complete Platform"
+data_source: "security"
+description: "Comprehensive threat detection event from SentinelOne Complete Platform including agent information, threat details, and mitigation status"
+format: "JSON"
+frequency: "medium"
+is_generator: true
+base_frequency: 25
+time_patterns:
+  - "business_hours"
+  - "night_hours"
+  - "weekend"
+business_hours_multiplier: 1.5
+night_hours_multiplier: 0.7
+weekend_multiplier: 0.4
+documentation:
+  display:
+    title: "SentinelOne Threat Detection Event"
+    subtitle: "Endpoint security threat detection and response alert"
+    icon: "🛡️"
+    color_scheme: "warning"
+    tags:
+      - "threat-detection"
+      - "edr"
+      - "malware"
+      - "endpoint-security"
+      - "incident-response"
+  overview:
+    summary: "Comprehensive threat detection event generated when SentinelOne's Complete Platform identifies, analyzes, and responds to potential security threats on endpoints."
+    when_generated:
+      - "When malware or suspicious files are detected on endpoints"
+      - "During scheduled or on-demand security scans"
+      - "When behavioral analysis identifies anomalous activity"
+      - "Upon manual threat investigation or analyst review"
+    security_relevance: "Critical - indicates potential security compromise requiring immediate investigation and response"
+    compliance_frameworks:
+      - "SOC 2"
+      - "NIST Cybersecurity Framework"
+      - "ISO 27001"
+      - "PCI DSS"
+    frequency_notes: "Frequency varies significantly based on threat landscape and endpoint activity. Higher during active campaigns or in high-risk environments."
+  fields:
+    - name: "agentDetectionInfo"
+      type: "Object"
+      required: true
+      description: "Information about the SentinelOne agent that detected the threat"
+      example_value: {"accountId": "1234567890123456789", "agentUuid": "abcd1234-5678-90ab-cdef-1234567890ab"}
+      template_source: "Multiple helper functions for agent details"
+    - name: "agentRealtimeInfo"
+      type: "Object"
+      required: true
+      description: "Real-time status and configuration of the detecting agent"
+      example_value: {"agentComputerName": "DESKTOP-ABC123", "agentIsActive": true}
+      template_source: "registry.get_random_device() and status randomization"
+    - name: "threatInfo"
+      type: "Object"
+      required: true
+      description: "Detailed information about the detected threat including classification, file details, and analyst verdict"
+      example_value: {"classification": "Malware", "threatName": "suspicious.exe", "sha256": "abc123..."}
+      template_source: "Threat classification randomization and hash generation"
+    - name: "mitigationStatus"
+      type: "Array"
+      required: true
+      description: "Status of automated and manual mitigation actions taken against the threat"
+      example_value: [{"action": "quarantine", "status": "success"}]
+      template_source: "Mitigation action randomization with realistic timing"
+    - name: "indicators"
+      type: "Array"
+      required: true
+      description: "MITRE ATT&CK indicators and threat intelligence associated with the detection"
+      example_value: [{"category": "Malware", "description": "Detected by the Static Engine"}]
+      template_source: "Randomized threat categories and detection descriptions"
+    - name: "id"
+      type: "String"
+      required: true
+      description: "Unique threat identifier"
+      example_value: "1234567890123456789"
+      format: "19-digit numeric string"
+      template_source: "random_string(length=19, chars='0123456789')"
+    - name: "containerInfo"
+      type: "Object"
+      required: false
+      description: "Container-related information if threat detected in containerized environment"
+      example_value: {"id": null, "name": null}
+      template_source: "Static null values (container detection not common)"
+    - name: "kubernetesInfo"
+      type: "Object"
+      required: false
+      description: "Kubernetes-specific metadata if threat detected in K8s environment"
+      example_value: {"cluster": null, "namespace": null}
+      template_source: "Static null values (K8s detection specialized)"
+    - name: "ecsInfo"
+      type: "Object"
+      required: false
+      description: "AWS ECS-specific information if threat detected in ECS environment"
+      example_value: {"clusterName": null, "serviceArn": null}
+      template_source: "Static null values (ECS detection specialized)"
+resources:
+  documentation:
+    - title: "SentinelOne Complete Platform Documentation"
+      url: "https://docs.sentinelone.com/"
+      type: "official"
+    - title: "SentinelOne API Reference"
+      url: "https://usea1.sentinelone.net/docs/en/api-reference.html"
+      type: "api"
+    - title: "MITRE ATT&CK Framework"
+      url: "https://attack.mitre.org/"
+      type: "reference"
+  tools:
+    - name: "SentinelOne Management Console"
+      description: "Web-based console for managing agents, analyzing threats, and configuring policies"
+      url: "https://sentinelone.net/"
+    - name: "SentinelOne Singularity XDR"
+      description: "Extended detection and response platform providing broader threat visibility"
+      url: "https://www.sentinelone.com/products/singularity-xdr/"

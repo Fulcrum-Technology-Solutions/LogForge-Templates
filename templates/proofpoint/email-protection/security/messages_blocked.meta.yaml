@@ -1,0 +1,206 @@
+vendor: "Proofpoint"
+product: "Email Protection"
+data_source: "security"
+description: "Email threat analysis events for messages blocked by Proofpoint's security filters"
+format: "JSON"
+frequency: "high"
+is_generator: true
+base_frequency: 150
+time_patterns:
+  - business_hours
+  - night_hours
+  - weekend
+business_hours_multiplier: 3.0
+night_hours_multiplier: 0.8
+weekend_multiplier: 0.4
+documentation:
+  display:
+    title: "Email Messages Blocked"
+    subtitle: "Proofpoint threat analysis for blocked email messages"
+    icon: "🛡️"
+    color_scheme: "warning"
+    tags:
+      - "email-security"
+      - "threat-detection"
+      - "proofpoint"
+      - "malware"
+      - "phishing"
+  overview:
+    summary: "Generated when Proofpoint's email security system blocks suspicious or malicious email messages based on threat analysis including spam scores, phishing detection, malware analysis, and URL reputation checks."
+    when_generated:
+      - "Email message fails spam threshold checks"
+      - "Phishing content detected in message body or attachments"
+      - "Malware signatures found in attachments"
+      - "Suspicious URLs detected and blocked"
+      - "Message matches threat intelligence indicators"
+      - "DMARC, SPF, or DKIM validation failures combined with threat indicators"
+    security_relevance: "High - These events indicate active email-based threats targeting the organization and successful blocking by security controls"
+    compliance_frameworks:
+      - "SOC 2"
+      - "ISO 27001"
+      - "NIST Cybersecurity Framework"
+      - "PCI DSS"
+    frequency_notes: "High frequency during business hours when email volume peaks. Frequency varies based on threat landscape and attack campaigns targeting the organization."
+  fields:
+    - name: "spamScore"
+      type: "Integer"
+      required: true
+      description: "Spam confidence score from 0-100, with higher values indicating higher likelihood of spam"
+      example_value: 85
+      format: "0-100 integer scale"
+      template_source: "random_int(0, 100)"
+      possible_values:
+        - value: "0-30"
+          description: "Low spam likelihood"
+        - value: "31-70"
+          description: "Medium spam likelihood"
+        - value: "71-100"
+          description: "High spam likelihood"
+    - name: "phishScore"
+      type: "Integer"
+      required: true
+      description: "Phishing confidence score from 0-100, with higher values indicating higher likelihood of phishing attempt"
+      example_value: 75
+      format: "0-100 integer scale"
+      template_source: "random_int(0, 100)"
+    - name: "threatsInfoMap"
+      type: "Array"
+      required: true
+      description: "Array of threat detection information objects containing detailed threat analysis"
+      example_value: "[{threatID: 'uuid', classification: 'phish', ...}]"
+      template_source: "Complex object with threat details"
+      notes: "Contains nested threat detection details including threat IDs, classifications, and URLs"
+    - name: "messageTime"
+      type: "DateTime"
+      required: true
+      description: "Timestamp when the email message was originally sent"
+      example_value: "2025-01-15T14:30:45.000Z"
+      format: "ISO 8601 with milliseconds"
+      template_source: "current_timestamp() | format_timestamp('%Y-%m-%dT%H:%M:%S.000Z')"
+    - name: "impostorScore"
+      type: "Float"
+      required: true
+      description: "Business Email Compromise (BEC) impostor detection score, scaled 0.0-10.0"
+      example_value: 7.5
+      format: "Decimal value 0.0-10.0"
+      template_source: "random_int(0, 100) / 10.0"
+    - name: "malwareScore"
+      type: "Integer"
+      required: true
+      description: "Malware detection confidence score from 0-100"
+      example_value: 45
+      template_source: "random_int(0, 100)"
+    - name: "cluster"
+      type: "String"
+      required: true
+      description: "Proofpoint cluster identifier handling the email processing"
+      example_value: "mail-server-01_hosted"
+      template_source: "device.hostname + '_hosted'"
+    - name: "subject"
+      type: "String"
+      required: true
+      description: "Email subject line that was analyzed"
+      example_value: "Your account has been locked"
+      template_source: "Random selection from common phishing subjects"
+    - name: "quarantineFolder"
+      type: "String"
+      required: true
+      description: "Quarantine folder where the blocked message was stored"
+      example_value: "Phish"
+      template_source: "threat_classification | capitalize"
+      possible_values:
+        - value: "Toad"
+          description: "Bulk/marketing email quarantine"
+        - value: "Phish"
+          description: "Phishing attempt quarantine"
+        - value: "Malware"
+          description: "Malware-containing message quarantine"
+        - value: "Spam"
+          description: "Spam message quarantine"
+    - name: "quarantineRule"
+      type: "String"
+      required: true
+      description: "Specific quarantine rule that triggered the blocking action"
+      example_value: "inbound_phish"
+      template_source: "'inbound_' + threat_classification"
+    - name: "policyRoutes"
+      type: "Array"
+      required: true
+      description: "List of email policy routes that processed this message"
+      example_value: "['domain_routes', 'default_inbound', 'o365_mail']"
+      template_source: "Array of policy identifiers including device and service names"
+    - name: "modulesRun"
+      type: "Array"
+      required: true
+      description: "List of Proofpoint security modules that analyzed this message"
+      example_value: "['access', 'av', 'spam', 'dmarc', 'urldefense']"
+      template_source: "Fixed array of common Proofpoint modules"
+    - name: "messageSize"
+      type: "Integer"
+      required: true
+      description: "Size of the email message in bytes"
+      example_value: 45678
+      format: "Bytes"
+      template_source: "random_int(5000, 200000)"
+    - name: "headerFrom"
+      type: "String"
+      required: true
+      description: "Email From header containing sender name and email address"
+      example_value: "\"John Smith\" <john.smith@example.com>"
+      template_source: "sender_user.full_name and sender_user.email"
+    - name: "fromAddress"
+      type: "Array"
+      required: true
+      description: "Array containing the sender's email address"
+      example_value: "['sender@example.com']"
+      template_source: "sender_user.email"
+    - name: "toAddresses"
+      type: "Array"
+      required: true
+      description: "Array of recipient email addresses"
+      example_value: "['recipient@company.com']"
+      template_source: "recipient_user.email"
+    - name: "senderIP"
+      type: "String"
+      required: true
+      description: "IP address of the sending mail server"
+      example_value: "203.0.113.45"
+      format: "IPv4 address"
+      template_source: "sender_user.ip_address or random_ip()"
+    - name: "messageID"
+      type: "String"
+      required: true
+      description: "Unique message identifier from email headers"
+      example_value: "<A12.34.56789.ABCD1234@mailserver>"
+      template_source: "Complex string generation with random components"
+    - name: "eventType"
+      type: "String"
+      required: true
+      description: "Type of Proofpoint event being logged"
+      example_value: "messagesBlocked"
+      template_source: "Fixed value: 'messagesBlocked'"
+    - name: "eventTime"
+      type: "DateTime"
+      required: true
+      description: "Timestamp when Proofpoint processed and blocked this message"
+      example_value: "2025-01-15T14:30:45.123456Z"
+      format: "ISO 8601 with microseconds"
+      template_source: "current_timestamp() | format_timestamp('%Y-%m-%dT%H:%M:%S.%fZ')"
+resources:
+  documentation:
+    - title: "Proofpoint TAP API Documentation"
+      url: "https://help.proofpoint.com/Threat_Insight_Dashboard/API_Documentation"
+      type: "official"
+    - title: "Email Security Event Analysis Guide"
+      url: "https://help.proofpoint.com/Proofpoint_Essentials/Email_Security"
+      type: "official"
+    - title: "SIEM Integration Guide for Proofpoint"
+      url: "https://help.proofpoint.com/Threat_Insight_Dashboard/Siem_Integration"
+      type: "official"
+  tools:
+    - name: "Proofpoint Threat Insight Dashboard"
+      description: "Web-based threat analysis and investigation platform"
+      url: "https://threatinsight.proofpoint.com"
+    - name: "Proofpoint TRAP (Targeted Attack Protection)"
+      description: "Advanced threat detection and response platform"
+      url: "https://www.proofpoint.com/us/products/email-security/targeted-attack-protection"
