@@ -1,6 +1,5 @@
 slug: zia
-vendor: Zscaler
-name: ZIA
+product: ZIA
 full_name: Zscaler Internet Access
 description: Cloud-native secure web gateway and firewall service
 version: "1.0"

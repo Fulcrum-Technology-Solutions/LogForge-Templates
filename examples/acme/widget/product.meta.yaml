@@ -1,6 +1,4 @@
 slug: widget
-vendor: acme
-name: "Widget"
 product: "Widget"
 description: "Acme Widget is a sample product for demonstration purposes."
 version: "All"

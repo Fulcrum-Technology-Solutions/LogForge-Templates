@@ -1,5 +1,5 @@
-vendor: CrowdStrike
-name: Falcon Platform
+slug: falcon-platform
+product: Falcon Platform
 description: Cloud-native cybersecurity platform providing endpoint protection, threat intelligence, and incident response
 version: "1.0"
 documentation: https://falcon.crowdstrike.com/documentation/
