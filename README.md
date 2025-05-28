@@ -404,5 +404,3 @@ When you download a vendor package from the registry, you will receive a file wi
   tar -xzf crowdstrike.tar.gz
   ```
 - The `.forge` extension helps users and tools recognize LogForge Template packages.
-
-> **Tip:** You can import `.forge` files directly into LogForge or extract them manually for inspection.
