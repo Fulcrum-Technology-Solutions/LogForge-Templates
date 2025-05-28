@@ -1,4 +1,4 @@
-vendor: "Microsoft Corporation"
+slug: defender-for-identity
 product: "Defender for Identity"
 description: "Cloud-based security solution that identifies, detects, and investigates advanced threats, compromised identities, and malicious insider actions"
 version: "Current"
