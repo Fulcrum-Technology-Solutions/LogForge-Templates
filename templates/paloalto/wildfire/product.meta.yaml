@@ -1,8 +1,5 @@
-# 'vendor': machine-friendly unique identifier of the parent vendor
-# 'name': human-friendly product display name
-vendor: paloalto
+slug: wildfire
 product: "WildFire"
-name: "WildFire"
 description: "Palo Alto Networks WildFire Threat Detection"
 version: "All"
 documentation_url: "https://docs.paloaltonetworks.com/wildfire" 

@@ -1,5 +1,5 @@
 slug: okta
-name: "Okta"
+vendor: "Okta"
 website: "https://www.okta.com"
 description: "Identity and access management platform providing secure authentication, authorization, and user management for enterprises"
 logo: "okta-logo.png"
