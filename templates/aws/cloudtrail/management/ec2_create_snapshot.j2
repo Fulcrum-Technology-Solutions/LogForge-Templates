@@ -1,0 +1,120 @@
+{%- set eventVersion = ['1.05', '1.08', '1.09'] | random -%}
+{%- set identity_type = ['IAMUser', 'AssumedRole'] | random -%}
+{%- set account_id = random_int(100000000000, 999999999999) -%}
+{%- set user = registry.get_random_user() -%}
+{%- set username = user.username if user else "admin" -%}
+{%- set domain = registry.get_organization_field('domain') | default("example.com") -%}
+{%- set volume_id = "vol-" ~ random_string(17, '0123456789abcdef') -%}
+{%- set snapshot_id = "snap-" ~ random_string(17, '0123456789abcdef') -%}
+{%- set volume_size = [1, 8, 10, 20, 50, 100, 500, 1000] | random -%}
+{%- set encrypted = [true, false] | random -%}
+{%- set has_error = random_int(0, 8) -%}
+{%- set error_codes = ['Client.InvalidVolume.NotFound', 'Client.IncorrectState', 'UnauthorizedOperation', 'Client.InvalidVolume.ZoneMismatch'] -%}
+{%- set error_code = error_codes | random if has_error == 1 else '' -%}
+{%- set aws_regions = ['us-east-1', 'us-east-2', 'us-west-1', 'us-west-2', 'eu-west-1', 'eu-central-1', 'ap-southeast-1'] -%}
+{%- set current_region = aws_regions | random -%}
+{%- set role_names = ['EC2AdminRole', 'BackupRole', 'DataEngineerRole', 'DevOpsRole', 'okta_adm_role'] -%}
+{%- set role_name = role_names | random -%}
+{%- set tag_scenarios = [
+  [{"key": "Name", "value": "backup-" ~ current_timestamp()}],
+  [{"key": "Environment", "value": ["prod", "staging", "dev", "test"] | random}, {"key": "Team", "value": ["devops", "data", "security", "platform"] | random}],
+  [{"key": "Backup", "value": "automated"}, {"key": "Retention", "value": ["7days", "30days", "90days", "1year"] | random}],
+  [{"key": "StratusRedTeam", "value": "true"}],
+  []
+] -%}
+{%- set tags = tag_scenarios | random -%}
+{%- set user_agents = [
+  'APN/1.0 HashiCorp/1.0 Terraform/1.1.2 (+https://www.terraform.io) terraform-provider-aws/3.76.1 (+https://registry.terraform.io/providers/hashicorp/aws) aws-sdk-go/1.44.157',
+  'aws-cli/2.0.62 Python/3.9.2 Darwin/19.6.0 source/x86_64 command/ec2.create-snapshot',
+  'aws-cli/2.1.34 Python/3.8.5 Linux/5.4.0-74-generic source/x86_64 command/ec2.create-snapshot',
+  'console.ec2.amazonaws.com',
+  'aws-sdk-python/1.26.0 Python/3.9.7 Linux/5.4.0-81-generic botocore/1.29.0',
+  'APN/1.0 HashiCorp/1.0 Terraform/1.1.2 (+https://www.terraform.io) terraform-provider-aws/3.76.1 stratus-red-team_' ~ random_string(36, '0123456789abcdef-')
+] -%}
+{%- set user_agent = user_agents | random -%}
+{%- set principal_id = random_string(21, 'AIDA') if identity_type == 'IAMUser' else random_string(21, 'ARO') -%}
+{%- set access_key_prefix = 'AKIA' if identity_type == 'IAMUser' else 'ASIA' -%}
+{%- set access_key_id = access_key_prefix ~ random_string(16, 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789') -%}
+{%- set start_time = current_timestamp() * 1000 -%}
+{
+  "eventVersion": "{{ eventVersion }}",
+  "userIdentity": {
+    "type": "{{ identity_type }}",
+    "principalId": "{{ principal_id }}",
+    "arn": "arn:aws:{{ 'iam' if identity_type == 'IAMUser' else 'sts' }}::{{ account_id }}:{{ 'user' if identity_type == 'IAMUser' else 'assumed-role' }}/{{ username if identity_type == 'IAMUser' else role_name }}{% if identity_type == 'AssumedRole' %}/{{ username }}@{{ domain }}{% endif %}",
+    "accountId": "{{ account_id }}",
+    "accessKeyId": "{{ access_key_id }}",
+    {% if identity_type == 'IAMUser' -%}
+    "userName": "{{ username }}"
+    {%- else -%}
+    "sessionContext": {
+      "sessionIssuer": {
+        "type": "Role",
+        "principalId": "{{ random_string(21, 'AROA') }}",
+        "arn": "arn:aws:iam::{{ account_id }}:role/{{ role_name }}",
+        "accountId": "{{ account_id }}",
+        "userName": "{{ role_name }}"
+      },
+      "webIdFederationData": {},
+      "attributes": {
+        "creationDate": "{{ (current_timestamp() - random_int(1800, 28800)) | timestamp_to_iso }}",
+        "mfaAuthenticated": "{{ ['true', 'false'] | random }}"
+      }
+    }
+    {%- endif %}
+  },
+  "eventTime": "{{ current_timestamp() | timestamp_to_iso }}",
+  "eventSource": "ec2.amazonaws.com",
+  "eventName": "CreateSnapshot",
+  "awsRegion": "{{ current_region }}",
+  "sourceIPAddress": "{{ random_private_ip() if random_int(0, 4) == 0 else random_public_ip() }}",
+  "userAgent": "{{ user_agent }}",
+  {% if has_error == 1 -%}
+  "errorCode": "{{ error_code }}",
+  "errorMessage": "{% if error_code == 'Client.InvalidVolume.NotFound' %}The volume '{{ volume_id }}' does not exist{% elif error_code == 'Client.IncorrectState' %}Volume '{{ volume_id }}' is not in a state from which snapshots can be created{% elif error_code == 'UnauthorizedOperation' %}You are not authorized to perform this operation{% elif error_code == 'Client.InvalidVolume.ZoneMismatch' %}Volume '{{ volume_id }}' is not in the correct availability zone{% endif %}",
+  {%- endif %}
+  "requestParameters": {
+    "volumeId": "{{ volume_id }}"{% if tags | length > 0 %},
+    "tagSpecificationSet": {
+      "items": [
+        {
+          "resourceType": "snapshot",
+          "tags": [
+            {% for tag in tags -%}
+            {"key": "{{ tag.key }}", "value": "{{ tag.value }}"}{% if not loop.last %},{% endif %}
+            {% endfor %}
+          ]
+        }
+      ]
+    }{% endif %}
+  },
+  "responseElements": {% if has_error == 1 %}null{% else %}{
+    "requestId": "{{ random_guid() }}",
+    "snapshotId": "{{ snapshot_id }}",
+    "volumeId": "{{ volume_id }}",
+    "status": "pending",
+    "startTime": {{ start_time }},
+    "ownerId": "{{ account_id }}",
+    "volumeSize": "{{ volume_size }}",
+    "encrypted": {{ encrypted | tojson }}{% if tags | length > 0 %},
+    "tagSet": {
+      "items": [
+        {% for tag in tags -%}
+        {"key": "{{ tag.key }}", "value": "{{ tag.value }}"}{% if not loop.last %},{% endif %}
+        {% endfor %}
+      ]
+    }{% endif %}
+  }{% endif %},
+  "requestID": "{{ random_guid() }}",
+  "eventID": "{{ random_guid() }}",
+  "readOnly": false,
+  "eventType": "AwsApiCall",
+  "managementEvent": true,
+  "recipientAccountId": "{{ account_id }}",
+  "eventCategory": "Management"{% if user_agent == 'console.ec2.amazonaws.com' or 'terraform' in user_agent.lower() %},
+  "tlsDetails": {
+    "tlsVersion": "{{ ['TLSv1.2', 'TLSv1.3'] | random }}",
+    "cipherSuite": "{{ ['ECDHE-RSA-AES128-GCM-SHA256', 'ECDHE-RSA-AES256-GCM-SHA384', 'TLS_AES_128_GCM_SHA256'] | random }}",
+    "clientProvidedHostHeader": "ec2.{{ current_region }}.amazonaws.com"
+  }{% endif %}
+}

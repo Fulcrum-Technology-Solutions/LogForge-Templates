@@ -1,0 +1,15 @@
+{
+    "name": "exchange-online",
+    "version": "1.0.0",
+    "description": "Microsoft Exchange Online audit and security event templates",
+    "maintainers": [
+      {
+        "name": "LogForge Community",
+        "email": "community@logforge.com"
+      }
+    ],
+    "tags": ["microsoft", "exchange", "email", "security", "audit", "office365", "m365"],
+    "templates": [
+      "email-security/new_inbox_rule.j2"
+    ]
+  }

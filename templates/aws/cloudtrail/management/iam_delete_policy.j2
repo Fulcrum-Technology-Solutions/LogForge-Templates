@@ -1,0 +1,82 @@
+{%- set eventVersion = ['1.05', '1.08', '1.09'] | random -%}
+{%- set identity_type = ['IAMUser', 'AssumedRole'] | random -%}
+{%- set account_id = random_int(100000000000, 999999999999) -%}
+{%- set principal_id = random_string(21, 'AIDA') if identity_type == 'IAMUser' else random_string(21, 'ARO') -%}
+{%- set user = registry.get_random_user() -%}
+{%- set username = user.username if user else "admin" -%}
+{%- set domain = registry.get_organization_field('domain') | default("example.com") -%}
+{%- set role_name = ['AdminRole', 'PowerUserRole', 'DeveloperRole', 'SecurityRole', 'AuditRole'] | random -%}
+{%- set policy_name = ['AtomicRedTeam', 'VulnerablePolicy', 'Privesc2', 'AdminPolicy', 'ReadOnlyAccess', 'CustomS3Policy', 'TempTestPolicy'] | random -%}
+{%- set has_error = random_int(0, 3) -%}
+{%- set error_code = ['NoSuchEntityException', 'DeleteConflictException', 'AccessDenied'] | random if has_error == 1 else '' -%}
+{%- set user_arn = "arn:aws:" ~ ("iam::" ~ account_id ~ ":user/" ~ username if identity_type == 'IAMUser' else "sts::" ~ account_id ~ ":assumed-role/" ~ role_name ~ "/" ~ username ~ "@" ~ domain) -%}
+{%- set policy_arn = "arn:aws:iam::" ~ account_id ~ ":policy/" ~ policy_name -%}
+{%- set aws_regions = ['us-east-1', 'us-west-2', 'eu-west-1', 'ap-southeast-1', 'ap-northeast-1', 'eu-central-1'] -%}
+{%- set current_region = aws_regions | random -%}
+{%- set user_agents = [
+  'aws-cli/2.0.62 Python/3.9.2 Darwin/19.6.0 source/x86_64 command/iam.delete-policy',
+  'aws-cli/2.1.34 Python/3.8.5 Linux/5.4.0-74-generic source/x86_64 command/iam.delete-policy',
+  'aws-sdk-go/1.36.7 (go1.15.5; darwin; amd64) APN/1.0 HashiCorp/1.0 Terraform/0.14.4 (+https://www.terraform.io)',
+  'aws-sdk-go/1.40.2 (go1.17.1; linux; amd64) APN/1.0 HashiCorp/1.0 Terraform/1.0.5 (+https://www.terraform.io)',
+  'console.amazonaws.com',
+  'aws-sdk-python/1.26.0 Python/3.9.7 Linux/5.4.0-81-generic botocore/1.29.0'
+] -%}
+{
+  "eventVersion": "{{ eventVersion }}",
+  "userIdentity": {
+    "type": "{{ identity_type }}",
+    "principalId": "{{ principal_id }}",
+    "arn": "{{ user_arn }}",
+    "accountId": "{{ account_id }}",
+    "accessKeyId": "{{ random_string(20, 'AKIA') }}",
+    {% if identity_type == 'IAMUser' -%}
+    "userName": "{{ username }}"
+    {%- else -%}
+    "sessionContext": {
+      "sessionIssuer": {
+        "type": "Role",
+        "principalId": "{{ random_string(21, 'AROA') }}",
+        "arn": "arn:aws:iam::{{ account_id }}:role/{{ role_name }}",
+        "accountId": "{{ account_id }}",
+        "userName": "{{ role_name }}"
+      },
+      "webIdFederationData": {},
+      "attributes": {
+        "mfaAuthenticated": "{{ ['true', 'false'] | random }}",
+        "creationDate": "{{ (current_timestamp() - random_int(300, 7200)) | timestamp_to_iso }}"
+      }
+    }
+    {%- endif %}
+  },
+  "eventTime": "{{ current_timestamp() | timestamp_to_iso }}",
+  "eventSource": "iam.amazonaws.com",
+  "eventName": "DeletePolicy",
+  "awsRegion": "{{ current_region }}",
+  "sourceIPAddress": "{{ random_private_ip() if random_int(0, 2) == 0 else random_public_ip() }}",
+  "userAgent": "{{ user_agents | random }}",
+  {% if has_error == 1 -%}
+  "errorCode": "{{ error_code }}",
+  "errorMessage": "{% if error_code == 'NoSuchEntityException' %}Policy {{ policy_arn }} was not found.{% elif error_code == 'DeleteConflictException' %}{{ ['Cannot delete a policy attached to entities.', 'This policy has more than one version. Before you delete a policy, you must delete the policy versions. The default version is deleted with the policy.'] | random }}{% elif error_code == 'AccessDenied' %}User: {{ user_arn }} is not authorized to perform: iam:DeletePolicy on resource: policy {{ policy_arn }} with an explicit deny{% endif %}",
+  {%- endif %}
+  "requestParameters": {
+    "policyArn": "{{ policy_arn }}"
+  },
+  "responseElements": {% if has_error == 1 %}null{% else %}{}{% endif %},
+  "requestID": "{{ random_guid() }}",
+  "eventID": "{{ random_guid() }}",
+  "readOnly": false,
+  "eventType": "AwsApiCall",
+  "managementEvent": true,
+  "eventCategory": "Management",
+  "recipientAccountId": "{{ account_id }}",
+  "serviceEventDetails": {
+    "responseElements": {% if has_error == 1 %}null{% else %}{}{% endif %}
+  }{% if identity_type == 'AssumedRole' %},
+  "resources": [
+    {
+      "accountId": "{{ account_id }}",
+      "type": "AWS::IAM::Policy",
+      "ARN": "{{ policy_arn }}"
+    }
+  ]{% endif %}
+}

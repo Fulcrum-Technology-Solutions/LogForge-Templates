@@ -1,0 +1,5 @@
+vendor: "Microsoft Corporation"
+product: "Exchange Online"
+description: "Cloud-based email and calendaring service part of Microsoft 365"
+version: "Current"
+documentation_url: "https://docs.microsoft.com/en-us/exchange/exchange-online"
