@@ -1,0 +1,207 @@
+vendor: "Microsoft Corporation"
+product: "Windows"
+data_source: "clop_persistence"
+description: "CLOP Ransomware Service Installation - Known persistence mechanism used by CLOP ransomware family"
+format: "XML"
+frequency: "very_low"
+is_generator: true
+base_frequency: 0.2
+time_patterns:
+  - business_hours
+  - night_hours
+  - weekend
+business_hours_multiplier: 1.5
+night_hours_multiplier: 2.0
+weekend_multiplier: 1.8
+
+documentation:
+  display:
+    title: "CLOP Ransomware Service Installation"
+    subtitle: "Known CLOP Persistence Mechanism - Event ID 7045"
+    icon: "🦠"
+    color_scheme: "error"
+    tags:
+      - "clop"
+      - "ransomware"
+      - "persistence"
+      - "t1543"
+      - "malware"
+      - "threat-simulation"
+
+  overview:
+    summary: "Simulates CLOP ransomware service installation events. CLOP is a sophisticated ransomware family that uses specific service names ('SecurityCenterIBM', 'WinCheckDRVs') for persistence and privilege escalation. This template generates events matching known CLOP TTPs for detection rule testing and SOC training."
+    when_generated:
+      - "During CLOP ransomware deployment phase"
+      - "For persistence establishment on compromised Windows systems"
+      - "In red team exercises simulating CLOP campaign tactics"
+      - "For detection rule validation and SOC analyst training"
+    security_relevance: "Critical - Direct indicator of CLOP ransomware presence and active compromise"
+    compliance_frameworks:
+      - "MITRE ATT&CK T1543.003 (Create or Modify System Process: Windows Service)"
+      - "NIST Cybersecurity Framework - Detect (DE.CM)"
+      - "SANS TOP 20 Critical Security Controls"
+      - "PCI DSS Requirement 10 (Logging and Monitoring)"
+    frequency_notes: "Very low frequency in legitimate environments - any occurrence should trigger immediate investigation"
+
+  fields:
+    - name: "Provider"
+      type: "Object"
+      required: true
+      description: "Event provider information - always Service Control Manager for Event ID 7045"
+      example_value: 
+        Name: "Service Control Manager"
+        Guid: "{555908d1-a6d7-4695-8e1e-26931d2012f4}"
+      template_source: "Static values for Service Control Manager"
+
+    - name: "EventID"
+      type: "Integer"
+      required: true
+      description: "Windows Event ID - always 7045 for service installation"
+      example_value: 7045
+      template_source: "Static value 7045"
+
+    - name: "TimeCreated"
+      type: "DateTime"
+      required: true
+      description: "Timestamp when the service was installed"
+      example_value: "2024-03-04T04:38:23.109986200Z"
+      format: "ISO 8601 with microseconds"
+      template_source: "current_timestamp() | timestamp_to_iso"
+
+    - name: "EventRecordID"
+      type: "Integer"
+      required: true
+      description: "Unique record identifier for this event log entry"
+      example_value: 168102
+      template_source: "random_int(100000, 999999)"
+
+    - name: "ProcessID"
+      type: "Integer"
+      required: true
+      description: "Process ID of the Service Control Manager process"
+      example_value: 592
+      template_source: "random_int(500, 2000)"
+
+    - name: "ThreadID"
+      type: "Integer"
+      required: true
+      description: "Thread ID within the Service Control Manager process"
+      example_value: 688
+      template_source: "random_int(600, 1000)"
+
+    - name: "Computer"
+      type: "String"
+      required: true
+      description: "Hostname/FQDN of the computer where service was installed"
+      example_value: "ar-win-dc.attackrange.local"
+      template_source: "registry.get_random_device().hostname | default(random_hostname())"
+
+    - name: "UserID"
+      type: "String"
+      required: true
+      description: "Security identifier (SID) of the user account that installed the service"
+      example_value: "S-1-5-21-3344543075-1022232225-2459664213-500"
+      format: "Windows SID format"
+      template_source: "registry.get_random_user().sid | default(generated SID)"
+
+    - name: "ServiceName"
+      type: "String"
+      required: true
+      description: "CLOP ransomware uses specific service names for persistence"
+      example_value: "SecurityCenterIBM"
+      template_source: "random_choice(['SecurityCenterIBM', 'WinCheckDRVs'])"
+      possible_values:
+        - value: "SecurityCenterIBM"
+          description: "Primary CLOP ransomware service name - mimics legitimate security software"
+        - value: "WinCheckDRVs" 
+          description: "Secondary CLOP ransomware service name - appears to be driver checking utility"
+      notes: "These exact service names are IoCs for CLOP ransomware family per Mandiant/FireEye research"
+
+    - name: "ImagePath"
+      type: "String"
+      required: true
+      description: "CLOP often uses suspicious executable paths or system utilities for living-off-the-land attacks"
+      example_value: "cmd.exe"
+      template_source: "random_choice() weighted toward CLOP-typical paths"
+      possible_values:
+        - value: "cmd.exe"
+          description: "Direct command execution - classic CLOP tactic for initial payload execution"
+        - value: "C:\\Temp\\*.exe"
+          description: "Temporary directory execution - common staging area for CLOP payloads"
+        - value: "C:\\Windows\\System32\\*.exe"
+          description: "System masquerading - CLOP attempts to blend with legitimate system processes"
+      notes: "CLOP frequently uses cmd.exe or places executables in C:\\Temp\\ for initial execution"
+
+    - name: "ServiceType"
+      type: "String"
+      required: true
+      description: "Type of Windows service being installed"
+      example_value: "user mode service"
+      template_source: "random_choice() from valid service types"
+      possible_values:
+        - value: "user mode service"
+          description: "Standard user-mode service"
+        - value: "kernel driver"
+          description: "Kernel-level driver service"
+        - value: "file system driver"
+          description: "File system filter driver"
+
+    - name: "StartType"
+      type: "String"
+      required: true
+      description: "Service startup configuration"
+      example_value: "auto start"
+      template_source: "random_choice() from valid start types"
+      possible_values:
+        - value: "auto start"
+          description: "Starts automatically at boot"
+        - value: "demand start"
+          description: "Starts manually when requested"
+        - value: "disabled"
+          description: "Service is disabled"
+
+    - name: "AccountName"
+      type: "String"
+      required: true
+      description: "Account under which the service will run"
+      example_value: "LocalSystem"
+      template_source: "random_choice() from service accounts"
+      possible_values:
+        - value: "LocalSystem"
+          description: "Highest privilege system account"
+        - value: "LocalService"
+          description: "Limited system account"
+        - value: "NetworkService"
+          description: "Network-capable limited account"
+
+resources:
+  documentation:
+    - title: "Mandiant CLOP Ransomware Analysis"
+      url: "https://www.mandiant.com/resources/fin11-email-campaigns-precursor-for-ransomware-data-theft"
+      type: "threat-intelligence"
+    - title: "VirusTotal CLOP Ransomware Deep Dive"
+      url: "https://blog.virustotal.com/2020/11/keep-your-friends-close-keep-ransomware.html"
+      type: "threat-intelligence"
+    - title: "MITRE ATT&CK - T1543.003 Windows Service"
+      url: "https://attack.mitre.org/techniques/T1543/003/"
+      type: "framework"
+    - title: "Splunk CLOP Detection Rule"
+      url: "https://research.splunk.com/endpoint/07e08a12-870c-11eb-b5f9-acde48001122/"
+      type: "detection"
+    - title: "Windows Event ID 7045 Reference"
+      url: "https://www.ultimatewindowssecurity.com/securitylog/encyclopedia/event.aspx?eventID=7045"
+      type: "reference"
+
+  tools:
+    - name: "Splunk Enterprise Security"
+      description: "Primary SIEM platform for CLOP detection and response"
+      url: "https://www.splunk.com/en_us/products/enterprise-security.html"
+    - name: "Sysmon"
+      description: "Enhanced Windows logging for detailed process and service monitoring"
+      url: "https://docs.microsoft.com/en-us/sysinternals/downloads/sysmon"
+    - name: "YARA Rules for CLOP"
+      description: "Pattern matching rules for CLOP ransomware identification"
+      url: "https://github.com/Neo23x0/signature-base/tree/master/yara"
+    - name: "Windows Defender ATP"
+      description: "Microsoft's endpoint detection and response platform"
+      url: "https://docs.microsoft.com/en-us/windows/security/threat-protection/microsoft-defender-atp/"
