@@ -1,3 +1,4 @@
+slug: cloudtrail
 name: "CloudTrail"
 description: "AWS CloudTrail is a service that enables governance, compliance, operational auditing, and risk auditing of your AWS account."
 version: "1.11"

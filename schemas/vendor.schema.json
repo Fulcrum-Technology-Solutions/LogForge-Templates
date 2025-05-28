@@ -3,9 +3,14 @@
   "title": "Vendor Metadata Schema",
   "description": "Schema for vendor.meta.yaml files",
   "type": "object",
-  "required": ["name", "description"],
+  "required": ["slug", "vendor", "description"],
   "properties": {
-    "name": {
+    "slug": {
+      "type": "string",
+      "pattern": "^[a-z0-9-]+$",
+      "description": "Unique, URL-safe identifier (slug) for the vendor"
+    },
+    "vendor": {
       "type": "string",
       "description": "Display name of the vendor"
     },
