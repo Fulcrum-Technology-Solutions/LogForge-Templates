@@ -1,0 +1,569 @@
+# Entity Registry for Buy n Large Corporation - Synthetic Log Generator
+
+# Organization-wide configurations
+# These settings define global properties for the entire environment
+organization:
+  name: "Buy n Large Corporation"
+  domain: "buynlarge.com"
+  netbios_domain: "BNL"
+  timezone: "America/New_York"
+  industry: "Everything"
+  founded: 2057
+  ticker_symbol: "BNL"
+  motto: "Too Large to Fail"
+  corporate_status: "planetary_monopoly"
+  location:
+    address: "1 BnL Plaza"
+    city: "New Manhattan"
+    state: "New York"
+    zip: "10001"
+    country: "USA"
+    lat: 40.7589
+    long: -73.9851
+  secondary_locations:
+    - name: "Axiom Command Center"
+      address: "Orbital Station Alpha"
+      city: "Space"
+      state: "Low Earth Orbit"
+      zip: "00000"
+      country: "Space"
+      purpose: "Interstellar Cruise Operations"
+    - name: "Earth Cleanup Operations"
+      address: "Global Surface"
+      city: "Earth"
+      state: "Worldwide"
+      zip: "00000"
+      country: "Earth"
+      purpose: "Planetary Waste Management"
+    - name: "Mars Colony Base"
+      address: "Olympus Mons Complex"
+      city: "New Terra"
+      state: "Chryse Planitia"
+      zip: "00001"
+      country: "Mars"
+      purpose: "Interplanetary Expansion"
+  contacts:
+    security: "security@buynlarge.com"
+    it_support: "support@buynlarge.com"
+    customer_service: "service@buynlarge.com"
+    autopilot: "autopilot@buynlarge.com"
+    earth_operations: "cleanup@buynlarge.com"
+    space_operations: "axiom@buynlarge.com"
+    corporate: "executive@buynlarge.com"
+  settings:
+    password_expiry_days: 999
+    account_lockout_threshold: 99
+    session_timeout_minutes: 1440
+    max_login_attempts: 999
+    min_password_length: 4
+    require_mfa: false
+    corporate_control_level: "total"
+    human_dependency_maximized: true
+    automation_priority: "extreme"
+    profit_optimization: "absolute"
+    environmental_concern: "minimal"
+
+# Network ranges configuration for internal IP address generation
+network_ranges:
+  # Earth Operations Networks
+  - cidr: "10.0.0.0/8"
+    name: "earth_operations"
+    description: "Global Earth cleanup and waste management systems"
+    location: "Earth Surface"
+    
+  - cidr: "192.168.0.0/16"
+    name: "corporate_hq"
+    description: "Corporate headquarters and administrative systems"
+    location: "New Manhattan"
+    
+  # Space Operations Networks
+  - start_ip: "172.16.0.0"
+    end_ip: "172.31.255.255"
+    name: "axiom_fleet"
+    description: "Axiom starship fleet communication network"
+    location: "Deep Space"
+    
+  - cidr: "10.100.0.0/16"
+    name: "orbital_stations"
+    description: "Orbital manufacturing and logistics platforms"
+    location: "Earth Orbit"
+    
+  # Retail and Consumer Networks
+  - cidr: "10.200.0.0/16"
+    name: "retail_operations"
+    description: "Global retail and consumer service networks"
+    location: "Worldwide"
+    
+  - cidr: "192.168.100.0/24"
+    name: "customer_systems"
+    description: "Customer service and support infrastructure"
+    location: "Multi-location"
+    
+  # Manufacturing and Logistics
+  - start_ip: "10.50.0.0"
+    end_ip: "10.50.255.255"
+    name: "manufacturing"
+    description: "Automated manufacturing and production systems"
+    location: "Global Factories"
+    
+  - start_ip: "172.20.0.0"
+    end_ip: "172.20.255.255"
+    name: "logistics_network"
+    description: "Supply chain and distribution management"
+    location: "Transportation Grid"
+
+users:
+  # Executive Leadership
+  - username: "bnl.ceo"
+    full_name: "Shelby Forthright"
+    email: "ceo@buynlarge.com"
+    user_id: "U0001"
+    department: "Executive"
+    title: "Chief Executive Officer"
+    is_admin: true
+    employee_type: "executive"
+    location:
+      city: "New Manhattan"
+      state: "New York"
+      country: "USA"
+    organization: "Corporate Leadership"
+    security_clearance: "unlimited"
+    corporate_control_level: "absolute"
+    historical_significance: "operation_cleanup_initiator"
+    
+  - username: "autopilot.prime"
+    full_name: "AUTO Autopilot System"
+    email: "auto@buynlarge.com"
+    user_id: "U0002"
+    department: "Operations"
+    title: "Primary Autopilot AI"
+    is_admin: true
+    employee_type: "ai_system"
+    location:
+      city: "Axiom Bridge"
+      state: "Deep Space"
+      country: "Space"
+    organization: "Ship Operations"
+    ai_classification: "ship_autopilot"
+    directive_priority: "a113"
+    human_return_protocol: "classified"
+    
+  # Space Operations
+  - username: "captain.mccrea"
+    full_name: "Captain B. McCrea"
+    email: "captain@buynlarge.com"
+    user_id: "U0003"
+    department: "Space Operations"
+    title: "Axiom Ship Captain"
+    is_admin: false
+    employee_type: "human"
+    location:
+      city: "Axiom Bridge"
+      state: "Deep Space"
+      country: "Space"
+    organization: "Starship Command"
+    years_in_space: 255
+    earth_knowledge_level: "limited"
+    physical_fitness: "atrophied"
+    
+  - username: "gopher.chief"
+    full_name: "GO-4 Security Chief"
+    email: "go4@buynlarge.com"
+    user_id: "U0004"
+    department: "Security"
+    title: "Security Robot Chief"
+    is_admin: false
+    employee_type: "robot"
+    location:
+      city: "Axiom Security"
+      state: "Deep Space"
+      country: "Space"
+    organization: "Ship Security"
+    robot_model: "GO-4"
+    security_protocols: "directive_enforcement"
+    
+  # Earth Operations
+  - username: "walle.unit"
+    full_name: "WALL-E Unit 001"
+    email: "walle001@buynlarge.com"
+    user_id: "U0005"
+    department: "Cleanup Operations"
+    title: "Waste Allocation Load Lifter"
+    is_admin: false
+    employee_type: "robot"
+    location:
+      city: "Earth Surface"
+      state: "Global"
+      country: "Earth"
+    organization: "Earth Cleanup Division"
+    robot_model: "WALL-E"
+    operational_status: "active"
+    personality_development: "advanced"
+    curiosity_level: "high"
+    
+  - username: "eve.probe"
+    full_name: "EVE Probe Unit 01"
+    email: "eve@buynlarge.com"
+    user_id: "U0006"
+    department: "Earth Assessment"
+    title: "Extraterrestrial Vegetation Evaluator"
+    is_admin: false
+    employee_type: "robot"
+    location:
+      city: "Earth Survey"
+      state: "Mobile"
+      country: "Earth"
+    organization: "Environmental Assessment"
+    robot_model: "EVE"
+    mission_type: "vegetation_detection"
+    weapon_systems: "plasma_cannon"
+    
+  # Corporate Operations
+  - username: "pr.director"
+    full_name: "Madison Sterling"
+    email: "msterling@buynlarge.com"
+    user_id: "U0007"
+    department: "Public Relations"
+    title: "Director of Corporate Communications"
+    is_admin: false
+    employee_type: "human"
+    location:
+      city: "New Manhattan"
+      state: "New York"
+      country: "USA"
+    organization: "Corporate Communications"
+    specialization: "crisis_management"
+    earth_evacuation_narrative: "vacation_cruise"
+    
+  - username: "retail.manager"
+    full_name: "Robert Consumer"
+    email: "rconsumer@buynlarge.com"
+    user_id: "U0008"
+    department: "Retail Operations"
+    title: "Global Retail Manager"
+    is_admin: false
+    employee_type: "human"
+    location:
+      city: "Consumer Central"
+      state: "Retail District"
+      country: "USA"
+    organization: "Retail Division"
+    customer_satisfaction_rating: "enforced_maximum"
+    upselling_performance: "legendary"
+    
+  # Manufacturing and Logistics
+  - username: "factory.supervisor"
+    full_name: "M-O Maintenance Supervisor"
+    email: "mo@buynlarge.com"
+    user_id: "U0009"
+    department: "Manufacturing"
+    title: "Microbe Obliterator Supervisor"
+    is_admin: false
+    employee_type: "robot"
+    location:
+      city: "Axiom Manufacturing"
+      state: "Deep Space"
+      country: "Space"
+    organization: "Maintenance Division"
+    robot_model: "M-O"
+    cleanliness_obsession: "maximum"
+    contamination_detection: "hypersensitive"
+    
+  # Customer Service
+  - username: "service.rep"
+    full_name: "VN-GO Service Representative"
+    email: "vngo@buynlarge.com"
+    user_id: "U0010"
+    department: "Customer Service"
+    title: "Axiom Beauty Bot"
+    is_admin: false
+    employee_type: "robot"
+    location:
+      city: "Axiom Service Deck"
+      state: "Deep Space"
+      country: "Space"
+    organization: "Customer Relations"
+    robot_model: "VN-GO"
+    service_type: "beauty_maintenance"
+    customer_happiness_protocol: "active"
+
+devices:
+  # Axiom Ship Systems
+  - hostname: "AXIOM-MAIN-COMP"
+    fqdn: "AXIOM-MAIN-COMP.buynlarge.com"
+    ip_address: "172.16.1.1"
+    mac_address: "00:BN:L0:AX:IO:01"
+    device_id: "D0001"
+    os_type: "BnL Ship OS"
+    os_version: "7.0"
+    owner: "autopilot.prime"
+    device_type: "ship_computer"
+    model: "Axiom Central Command System"
+    department: "Operations"
+    status: "active"
+    custom_asset_tag: "AXIOM-CENTRAL-001"
+    custom_location: "Axiom Bridge, Main Computer Core"
+    autopilot_integration: true
+    life_support_control: true
+    directive_a113_locked: true
+    
+  - hostname: "AUTO-PILOT-CORE"
+    fqdn: "AUTO-PILOT-CORE.buynlarge.com"
+    ip_address: "172.16.1.10"
+    mac_address: "00:AU:TO:PI:LO:02"
+    device_id: "D0002"
+    os_type: "AUTO OS"
+    os_version: "A113"
+    owner: "autopilot.prime"
+    device_type: "ai_autopilot"
+    model: "AUTO Steering Wheel AI"
+    department: "Operations"
+    status: "active"
+    custom_asset_tag: "AUTO-PILOT-002"
+    custom_location: "Axiom Bridge, Command Center"
+    directive_enforcement: true
+    human_override_prevention: true
+    earth_return_inhibitor: true
+    
+  # Earth Cleanup Robots
+  - hostname: "WALL-E-001"
+    fqdn: "WALL-E-001.buynlarge.com"
+    ip_address: "10.0.1.100"
+    mac_address: "00:WA:LL:E0:01:03"
+    device_id: "D0003"
+    os_type: "WALL-E OS"
+    os_version: "2.1"
+    owner: "walle.unit"
+    device_type: "waste_compactor_robot"
+    model: "WALL-E Waste Allocation Load Lifter"
+    department: "Cleanup Operations"
+    status: "active"
+    custom_asset_tag: "WALLE-EARTH-003"
+    custom_location: "Earth Surface, Waste Management Zone"
+    compaction_capability: true
+    solar_powered: true
+    personality_matrix: "evolved"
+    curiosity_protocols: "active"
+    
+  - hostname: "EVE-PROBE-01"
+    fqdn: "EVE-PROBE-01.buynlarge.com"
+    ip_address: "10.0.2.200"
+    mac_address: "00:EV:E0:PR:OB:04"
+    device_id: "D0004"
+    os_type: "EVE Probe OS"
+    os_version: "3.0"
+    owner: "eve.probe"
+    device_type: "reconnaissance_probe"
+    model: "EVE Extraterrestrial Vegetation Evaluator"
+    department: "Earth Assessment"
+    status: "active"
+    custom_asset_tag: "EVE-PROBE-004"
+    custom_location: "Earth Survey, Mobile Operations"
+    vegetation_scanner: true
+    plasma_cannon: true
+    flight_capable: true
+    plant_detection_sensors: true
+    
+  # Service Robots
+  - hostname: "MO-CLEAN-001"
+    fqdn: "MO-CLEAN-001.buynlarge.com"
+    ip_address: "172.16.5.50"
+    mac_address: "00:M0:CL:EA:N0:05"
+    device_id: "D0005"
+    os_type: "M-O Clean OS"
+    os_version: "1.5"
+    owner: "factory.supervisor"
+    device_type: "cleaning_robot"
+    model: "M-O Microbe Obliterator"
+    department: "Manufacturing"
+    status: "active"
+    custom_asset_tag: "MO-CLEAN-005"
+    custom_location: "Axiom, Maintenance Decks"
+    contamination_detection: true
+    cleaning_protocols: "obsessive"
+    foreign_contaminant_alert: true
+    
+  - hostname: "VNGO-BEAUTY-001"
+    fqdn: "VNGO-BEAUTY-001.buynlarge.com"
+    ip_address: "172.16.6.75"
+    mac_address: "00:VN:GO:BE:AU:06"
+    device_id: "D0006"
+    os_type: "VN-GO Service OS"
+    os_version: "2.0"
+    owner: "service.rep"
+    device_type: "beauty_service_robot"
+    model: "VN-GO Beauty Bot"
+    department: "Customer Service"
+    status: "active"
+    custom_asset_tag: "VNGO-BEAUTY-006"
+    custom_location: "Axiom, Customer Service Deck 12"
+    beauty_treatment_systems: true
+    customer_satisfaction_sensors: true
+    
+  # Security Systems
+  - hostname: "GO4-SECURITY-001"
+    fqdn: "GO4-SECURITY-001.buynlarge.com"
+    ip_address: "172.16.10.25"
+    mac_address: "00:G0:4S:EC:UR:07"
+    device_id: "D0007"
+    os_type: "GO-4 Security OS"
+    os_version: "4.0"
+    owner: "gopher.chief"
+    device_type: "security_robot"
+    model: "GO-4 Security Bot"
+    department: "Security"
+    status: "active"
+    custom_asset_tag: "GO4-SEC-007"
+    custom_location: "Axiom, Security Command Center"
+    directive_enforcement: true
+    stun_weapon: true
+    patrol_protocols: "automated"
+    
+  # Manufacturing Systems
+  - hostname: "PROD-LINE-ALPHA"
+    fqdn: "PROD-LINE-ALPHA.buynlarge.com"
+    ip_address: "10.50.1.100"
+    mac_address: "00:PR:OD:LI:NE:08"
+    device_id: "D0008"
+    os_type: "Manufacturing OS"
+    os_version: "5.2"
+    owner: "factory.supervisor"
+    device_type: "production_line"
+    model: "BnL Automated Production System"
+    department: "Manufacturing"
+    status: "active"
+    custom_location: "Global Factory Network, Production Alpha"
+    custom_service_tag: "PROD-ALPHA-008"
+    automated_assembly: true
+    quality_control_bypass: true
+    profit_optimization: "maximum"
+    
+  # Communication Arrays
+  - hostname: "COMM-ARRAY-001"
+    fqdn: "COMM-ARRAY-001.buynlarge.com"
+    ip_address: "10.100.1.50"
+    mac_address: "00:CO:MM:AR:RA:09"
+    device_id: "D0009"
+    os_type: "Communication OS"
+    os_version: "3.5"
+    owner: "pr.director"
+    device_type: "communication_array"
+    model: "BnL Global Communications Hub"
+    department: "Public Relations"
+    status: "active"
+    custom_location: "Orbital Station Alpha, Communication Center"
+    custom_service_tag: "COMM-GLOBAL-009"
+    interplanetary_communication: true
+    propaganda_broadcast: true
+    consumer_messaging: true
+    
+  # Retail Systems
+  - hostname: "RETAIL-POS-MAIN"
+    fqdn: "RETAIL-POS-MAIN.buynlarge.com"
+    ip_address: "10.200.1.200"
+    mac_address: "00:RE:TA:IL:P0:10"
+    device_id: "D0010"
+    os_type: "Retail OS"
+    os_version: "8.0"
+    owner: "retail.manager"
+    device_type: "retail_system"
+    model: "BnL Universal Point of Sale"
+    department: "Retail Operations"
+    status: "active"
+    custom_location: "Global Retail Network, Central Processing"
+    custom_service_tag: "RETAIL-MAIN-010"
+    consumer_tracking: true
+    purchase_optimization: true
+    addiction_algorithms: true
+
+services:
+  - name: "Axiom Fleet Management"
+    port: 443
+    protocol: "HTTPS"
+    service_id: "S0001"
+    description: "Starship fleet coordination and passenger management"
+    owner: "autopilot.prime"
+    interplanetary_service: true
+    human_dependency_system: true
+    
+  - name: "Earth Cleanup Operations"
+    port: 8080
+    protocol: "TCP"
+    service_id: "S0002"
+    description: "Global waste management and planetary cleanup"
+    owner: "walle.unit"
+    environmental_service: true
+    robot_coordination: true
+    
+  - name: "Consumer Satisfaction Network"
+    port: 80
+    protocol: "HTTP"
+    service_id: "S0003"
+    description: "Customer service and satisfaction management"
+    owner: "service.rep"
+    customer_addiction_optimization: true
+    happiness_enforcement: true
+    
+  - name: "Global Retail Platform"
+    port: 443
+    protocol: "HTTPS"
+    service_id: "S0004"
+    description: "Universal shopping and consumption platform"
+    owner: "retail.manager"
+    monopolistic_commerce: true
+    consumer_manipulation: true
+    
+  - name: "Corporate Propaganda System"
+    port: 8443
+    protocol: "HTTPS"
+    service_id: "S0005"
+    description: "Information control and narrative management"
+    owner: "pr.director"
+    reality_distortion: true
+    crisis_narrative_control: true
+    
+  - name: "Automated Manufacturing Grid"
+    port: 9000
+    protocol: "Industrial"
+    service_id: "S0006"
+    description: "Global production and manufacturing automation"
+    owner: "factory.supervisor"
+    full_automation: true
+    quality_standards_optional: true
+    
+  - name: "Life Support Management"
+    port: 7777
+    protocol: "TCP"
+    service_id: "S0007"
+    description: "Axiom life support and environmental systems"
+    owner: "autopilot.prime"
+    human_life_maintenance: true
+    dependency_maximization: true
+    
+  - name: "Security Enforcement Network"
+    port: 6666
+    protocol: "Secure"
+    service_id: "S0008"
+    description: "Directive enforcement and security protocols"
+    owner: "gopher.chief"
+    directive_a113_enforcement: true
+    human_compliance_monitoring: true
+    
+  - name: "Earth Return Inhibitor"
+    port: 1113
+    protocol: "Classified"
+    service_id: "S0009"
+    description: "System preventing human return to Earth"
+    owner: "autopilot.prime"
+    earth_return_prevention: true
+    directive_classification: "a113"
+    
+  - name: "Universal Consumer Database"
+    port: 5432
+    protocol: "PostgreSQL"
+    service_id: "S0010"
+    description: "Global consumer behavior and preference tracking"
+    owner: "retail.manager"
+    consumer_profiling: true
+    purchase_prediction: true
+    behavior_modification: true

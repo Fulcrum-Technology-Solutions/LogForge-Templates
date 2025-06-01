@@ -1,0 +1,598 @@
+# Entity Registry for Dunder Mifflin Paper Company - Synthetic Log Generator
+
+# Organization-wide configurations
+# These settings define global properties for the entire environment
+organization:
+  name: "Dunder Mifflin Paper Company, Inc."
+  domain: "dundermifflin.com"
+  netbios_domain: "DUNDERMIFFLIN"
+  timezone: "America/New_York"
+  industry: "Paper Sales and Distribution"
+  founded: 1949
+  ticker_symbol: "DMPC"
+  motto: "Limitless Paper in a Paperless World"
+  corporate_status: "regional_paper_supplier"
+  location:
+    address: "1725 Slough Avenue"
+    city: "Scranton"
+    state: "Pennsylvania"
+    zip: "18505"
+    country: "USA"
+    lat: 41.4090
+    long: -75.6624
+  secondary_locations:
+    - name: "Corporate Headquarters"
+      address: "633 5th Avenue"
+      city: "New York"
+      state: "New York"
+      zip: "10022"
+      country: "USA"
+      purpose: "Corporate Management"
+      status: "active"
+    - name: "Stamford Branch"
+      address: "1000 Business Park Drive"
+      city: "Stamford"
+      state: "Connecticut"
+      zip: "06902"
+      country: "USA"
+      purpose: "Regional Sales Office"
+      status: "closed"
+    - name: "Utica Branch"
+      address: "200 Commerce Street"
+      city: "Utica"
+      state: "New York"
+      zip: "13501"
+      country: "USA"
+      purpose: "Regional Sales Office"
+      status: "active"
+    - name: "Warehouse"
+      address: "1725 Slough Avenue - Building B"
+      city: "Scranton"
+      state: "Pennsylvania"
+      zip: "18505"
+      country: "USA"
+      purpose: "Paper Storage and Distribution"
+      status: "active"
+  contacts:
+    security: "security@dundermifflin.com"
+    it_support: "support@dundermifflin.com"
+    hr: "hr@dundermifflin.com"
+    sales: "sales@dundermifflin.com"
+    accounting: "accounting@dundermifflin.com"
+    warehouse: "warehouse@dundermifflin.com"
+    corporate: "corporate@dundermifflin.com"
+    party_planning: "ppc@dundermifflin.com"
+  settings:
+    password_expiry_days: 180
+    account_lockout_threshold: 5
+    session_timeout_minutes: 60
+    max_login_attempts: 10
+    min_password_length: 6
+    require_mfa: false
+    office_prank_tolerance: "high"
+    paper_sales_priority: "maximum"
+    birthday_party_frequency: "monthly"
+    fire_drill_preparedness: "questionable"
+    beet_farm_integration: false
+    dundies_award_system: true
+
+# Network ranges configuration for internal IP address generation
+network_ranges:
+  # Scranton Branch Networks
+  - cidr: "192.168.1.0/24"
+    name: "scranton_office"
+    description: "Main Scranton branch office network"
+    location: "Scranton, PA"
+    security_level: "standard"
+    
+  - cidr: "10.0.0.0/16"
+    name: "scranton_operations"
+    description: "Scranton sales and administrative operations"
+    location: "Scranton, PA"
+    security_level: "standard"
+    
+  # Warehouse Operations
+  - start_ip: "172.16.0.0"
+    end_ip: "172.16.255.255"
+    name: "warehouse_operations"
+    description: "Warehouse inventory and distribution systems"
+    location: "Scranton Warehouse"
+    security_level: "minimal"
+    
+  # Corporate Networks
+  - cidr: "10.100.0.0/16"
+    name: "corporate_hq"
+    description: "New York corporate headquarters network"
+    location: "New York, NY"
+    security_level: "high"
+    
+  - cidr: "192.168.100.0/24"
+    name: "executive_network"
+    description: "Executive and board member systems"
+    location: "Corporate HQ"
+    security_level: "executive"
+    
+  # Branch Networks
+  - start_ip: "10.50.0.0"
+    end_ip: "10.50.255.255"
+    name: "stamford_branch"
+    description: "Former Stamford branch network"
+    location: "Stamford, CT"
+    status: "decommissioned"
+    
+  - cidr: "10.200.0.0/16"
+    name: "utica_branch"
+    description: "Utica branch office network"
+    location: "Utica, NY"
+    security_level: "standard"
+    
+  # Guest and Vendor Networks
+  - cidr: "192.168.200.0/24"
+    name: "guest_network"
+    description: "Guest and vendor access network"
+    location: "Multi-branch"
+    access_level: "limited"
+
+users:
+  # Scranton Branch Management
+  - username: "mscott"
+    full_name: "Michael Gary Scott"
+    email: "mscott@dundermifflin.com"
+    user_id: "U0001"
+    department: "Management"
+    title: "Regional Manager"
+    is_admin: true
+    employee_type: "management"
+    location:
+      city: "Scranton"
+      state: "Pennsylvania"
+      country: "USA"
+    organization: "Scranton Branch"
+    security_clearance: "regional_manager"
+    world_best_boss: "self_proclaimed"
+    comedy_skills: "questionable"
+    paper_sales_expertise: "surprisingly_good"
+    
+  - username: "dschrute"
+    full_name: "Dwight K. Schrute"
+    email: "dschrute@dundermifflin.com"
+    user_id: "U0002"
+    department: "Sales"
+    title: "Assistant Regional Manager"
+    is_admin: false
+    employee_type: "sales"
+    location:
+      city: "Scranton"
+      state: "Pennsylvania"
+      country: "USA"
+    organization: "Scranton Branch"
+    security_clearance: "assistant_to_regional_manager"
+    beet_farm_owner: true
+    paper_sales_performance: "top_performer"
+    survival_skills: "expert"
+    
+  # Sales Team
+  - username: "jhalpert"
+    full_name: "James 'Jim' Halpert"
+    email: "jhalpert@dundermifflin.com"
+    user_id: "U0003"
+    department: "Sales"
+    title: "Sales Representative"
+    is_admin: false
+    employee_type: "sales"
+    location:
+      city: "Scranton"
+      state: "Pennsylvania"
+      country: "USA"
+    organization: "Scranton Branch"
+    security_clearance: "standard"
+    prank_expertise: "master_level"
+    camera_awareness: "high"
+    relationship_status: "married_to_pam"
+    
+  - username: "pbeesly"
+    full_name: "Pamela Morgan Beesly-Halpert"
+    email: "pbeesly@dundermifflin.com"
+    user_id: "U0004"
+    department: "Reception"
+    title: "Receptionist / Office Administrator"
+    is_admin: false
+    employee_type: "administrative"
+    location:
+      city: "Scranton"
+      state: "Pennsylvania"
+      country: "USA"
+    organization: "Scranton Branch"
+    security_clearance: "reception"
+    art_skills: "developing"
+    office_information_hub: true
+    relationship_status: "married_to_jim"
+    
+  - username: "smartin"
+    full_name: "Stanley Hudson"
+    email: "smartin@dundermifflin.com"
+    user_id: "U0005"
+    department: "Sales"
+    title: "Sales Representative"
+    is_admin: false
+    employee_type: "sales"
+    location:
+      city: "Scranton"
+      state: "Pennsylvania"
+      country: "USA"
+    organization: "Scranton Branch"
+    security_clearance: "standard"
+    crossword_expertise: "daily"
+    pretzel_day_enthusiasm: "maximum"
+    florida_retirement_planning: true
+    
+  # Accounting Department
+  - username: "amartin"
+    full_name: "Angela Martin"
+    email: "amartin@dundermifflin.com"
+    user_id: "U0006"
+    department: "Accounting"
+    title: "Senior Accountant"
+    is_admin: false
+    employee_type: "accounting"
+    location:
+      city: "Scranton"
+      state: "Pennsylvania"
+      country: "USA"
+    organization: "Scranton Branch"
+    security_clearance: "accounting"
+    party_planning_committee: "head"
+    cat_obsession: "extreme"
+    judgment_level: "maximum"
+    
+  - username: "kmalone"
+    full_name: "Kevin Malone"
+    email: "kmalone@dundermifflin.com"
+    user_id: "U0007"
+    department: "Accounting"
+    title: "Accountant"
+    is_admin: false
+    employee_type: "accounting"
+    location:
+      city: "Scranton"
+      state: "Pennsylvania"
+      country: "USA"
+    organization: "Scranton Branch"
+    security_clearance: "limited"
+    math_skills: "questionable"
+    chili_spilling_incidents: 1
+    band_membership: "scrantonicity"
+    
+  - username: "okapoor"
+    full_name: "Oscar Martinez"
+    email: "okapoor@dundermifflin.com"
+    user_id: "U0008"
+    department: "Accounting"
+    title: "Senior Accountant"
+    is_admin: false
+    employee_type: "accounting"
+    location:
+      city: "Scranton"
+      state: "Pennsylvania"
+      country: "USA"
+    organization: "Scranton Branch"
+    security_clearance: "accounting"
+    fact_checking_role: "office_voice_of_reason"
+    trivia_knowledge: "extensive"
+    
+  # HR and Corporate
+  - username: "tflenderson"
+    full_name: "Toby Flenderson"
+    email: "tflenderson@dundermifflin.com"
+    user_id: "U0009"
+    department: "Human Resources"
+    title: "HR Representative"
+    is_admin: false
+    employee_type: "hr"
+    location:
+      city: "Scranton"
+      state: "Pennsylvania"
+      country: "USA"
+    organization: "Corporate HR"
+    security_clearance: "hr"
+    michael_scott_enemy_status: "confirmed"
+    costa_rica_adventures: true
+    novel_writing_attempts: "ongoing"
+    
+  # Warehouse Staff
+  - username: "dphilbin"
+    full_name: "Darryl Philbin"
+    email: "dphilbin@dundermifflin.com"
+    user_id: "U0010"
+    department: "Warehouse"
+    title: "Warehouse Foreman"
+    is_admin: false
+    employee_type: "warehouse"
+    location:
+      city: "Scranton"
+      state: "Pennsylvania"
+      country: "USA"
+    organization: "Warehouse Operations"
+    security_clearance: "warehouse"
+    forklift_certification: true
+    music_production_skills: true
+    office_relationship: "complicated"
+
+devices:
+  # Office Workstations
+  - hostname: "MICHAEL-OFFICE-PC"
+    fqdn: "MICHAEL-OFFICE-PC.dundermifflin.com"
+    ip_address: "192.168.1.100"
+    mac_address: "00:DM:MI:CH:AE:01"
+    device_id: "D0001"
+    os_type: "Windows XP"
+    os_version: "Professional"
+    owner: "mscott"
+    device_type: "manager_workstation"
+    model: "Dell OptiPlex GX280"
+    department: "Management"
+    status: "active"
+    custom_asset_tag: "MANAGER-PC-001"
+    custom_location: "Scranton Office, Michael's Office"
+    solitaire_installed: true
+    minesweeper_high_scores: true
+    world_best_boss_screensaver: true
+    
+  - hostname: "DWIGHT-DESK-PC"
+    fqdn: "DWIGHT-DESK-PC.dundermifflin.com"
+    ip_address: "192.168.1.101"
+    mac_address: "00:DW:IG:HT:PC:02"
+    device_id: "D0002"
+    os_type: "Windows XP"
+    os_version: "Professional"
+    owner: "dschrute"
+    device_type: "sales_workstation"
+    model: "Dell OptiPlex GX270"
+    department: "Sales"
+    status: "active"
+    custom_asset_tag: "SALES-PC-002"
+    custom_location: "Scranton Office, Dwight's Desk"
+    beet_farming_software: true
+    survival_guide_pdfs: true
+    bear_attack_protocols: true
+    
+  - hostname: "JIM-DESK-PC"
+    fqdn: "JIM-DESK-PC.dundermifflin.com"
+    ip_address: "192.168.1.102"
+    mac_address: "00:JI:M0:HA:LP:03"
+    device_id: "D0003"
+    os_type: "Windows XP"
+    os_version: "Professional"
+    owner: "jhalpert"
+    device_type: "sales_workstation"
+    model: "Dell OptiPlex GX260"
+    department: "Sales"
+    status: "active"
+    custom_asset_tag: "SALES-PC-003"
+    custom_location: "Scranton Office, Jim's Desk"
+    prank_planning_documents: true
+    dwight_surveillance_footage: true
+    teapot_inventory_system: true
+    
+  - hostname: "RECEPTION-DESK"
+    fqdn: "RECEPTION-DESK.dundermifflin.com"
+    ip_address: "192.168.1.50"
+    mac_address: "00:PA:M0:RE:CE:04"
+    device_id: "D0004"
+    os_type: "Windows XP"
+    os_version: "Home Edition"
+    owner: "pbeesly"
+    device_type: "reception_workstation"
+    model: "HP Pavilion"
+    department: "Reception"
+    status: "active"
+    custom_asset_tag: "RECEPTION-004"
+    custom_location: "Scranton Office, Reception Desk"
+    visitor_management_system: true
+    phone_system_integration: true
+    art_design_software: true
+    
+  # Accounting Department Systems
+  - hostname: "ACCOUNTING-SERVER"
+    fqdn: "ACCOUNTING-SERVER.dundermifflin.com"
+    ip_address: "192.168.1.10"
+    mac_address: "00:AC:CO:UN:TI:05"
+    device_id: "D0005"
+    os_type: "Windows Server 2003"
+    os_version: "Standard Edition"
+    owner: "amartin"
+    device_type: "accounting_server"
+    model: "Dell PowerEdge 2850"
+    department: "Accounting"
+    status: "active"
+    custom_location: "Scranton Office, Server Room"
+    custom_service_tag: "ACCT-SERVER-005"
+    quickbooks_enterprise: true
+    party_planning_budget_tracker: true
+    cat_expense_categories: true
+    
+  - hostname: "KEVIN-DESK-PC"
+    fqdn: "KEVIN-DESK-PC.dundermifflin.com"
+    ip_address: "192.168.1.110"
+    mac_address: "00:KE:VI:N0:PC:06"
+    device_id: "D0006"
+    os_type: "Windows XP"
+    os_version: "Professional"
+    owner: "kmalone"
+    device_type: "accounting_workstation"
+    model: "Dell OptiPlex GX240"
+    department: "Accounting"
+    status: "active"
+    custom_asset_tag: "ACCT-PC-006"
+    custom_location: "Scranton Office, Kevin's Desk"
+    calculator_software: "basic"
+    chili_recipe_documents: true
+    poker_game_tracker: true
+    
+  # Conference Room Systems
+  - hostname: "CONFERENCE-ROOM-AV"
+    fqdn: "CONFERENCE-ROOM-AV.dundermifflin.com"
+    ip_address: "192.168.1.200"
+    mac_address: "00:CO:NF:ER:EN:07"
+    device_id: "D0007"
+    os_type: "Windows XP"
+    os_version: "Media Center"
+    owner: "mscott"
+    device_type: "presentation_system"
+    model: "Custom Conference Room Setup"
+    department: "Management"
+    status: "active"
+    custom_asset_tag: "CONF-AV-007"
+    custom_location: "Scranton Office, Conference Room"
+    powerpoint_templates: true
+    dundies_award_videos: true
+    that_what_she_said_soundboard: true
+    
+  # Warehouse Systems
+  - hostname: "WAREHOUSE-TERMINAL"
+    fqdn: "WAREHOUSE-TERMINAL.dundermifflin.com"
+    ip_address: "172.16.1.100"
+    mac_address: "00:WA:RE:HO:US:08"
+    device_id: "D0008"
+    os_type: "Windows 2000"
+    os_version: "Professional"
+    owner: "dphilbin"
+    device_type: "inventory_terminal"
+    model: "Compaq Deskpro"
+    department: "Warehouse"
+    status: "active"
+    custom_asset_tag: "WAREHOUSE-008"
+    custom_location: "Scranton Warehouse, Foreman Office"
+    inventory_management_system: true
+    forklift_safety_videos: true
+    shipping_label_printer: true
+    
+  # IT Infrastructure
+  - hostname: "SCRANTON-DC-01"
+    fqdn: "SCRANTON-DC-01.dundermifflin.com"
+    ip_address: "192.168.1.5"
+    mac_address: "00:SC:RA:NT:ON:09"
+    device_id: "D0009"
+    os_type: "Windows Server 2003"
+    os_version: "Enterprise Edition"
+    owner: "tflenderson"
+    device_type: "domain_controller"
+    model: "Dell PowerEdge 1850"
+    department: "IT Systems"
+    status: "active"
+    custom_location: "Scranton Office, IT Closet"
+    custom_service_tag: "DOMAIN-CTRL-009"
+    active_directory_server: true
+    email_exchange_server: true
+    file_sharing_services: true
+    
+  # Copy Machine (The Infamous One)
+  - hostname: "COPY-MACHINE-01"
+    fqdn: "COPY-MACHINE-01.dundermifflin.com"
+    ip_address: "192.168.1.150"
+    mac_address: "00:CO:PY:MA:CH:10"
+    device_id: "D0010"
+    os_type: "Copier OS"
+    os_version: "2.1"
+    owner: "pbeesly"
+    device_type: "multifunction_copier"
+    model: "Xerox WorkCentre Pro"
+    department: "Office Equipment"
+    status: "active"
+    custom_asset_tag: "COPY-MACHINE-010"
+    custom_location: "Scranton Office, Copy Area"
+    jam_frequency: "high"
+    toner_replacement_needed: "constantly"
+    michael_scott_butt_scans: "archived"
+
+services:
+  - name: "Paper Sales Management System"
+    port: 80
+    protocol: "HTTP"
+    service_id: "S0001"
+    description: "Customer relationship and paper sales tracking"
+    owner: "mscott"
+    sales_performance_tracking: true
+    client_database_management: true
+    
+  - name: "Employee Directory Service"
+    port: 389
+    protocol: "LDAP"
+    service_id: "S0002"
+    description: "Employee information and directory services"
+    owner: "tflenderson"
+    birthday_calendar_integration: true
+    emergency_contact_management: true
+    
+  - name: "Inventory Management System"
+    port: 8080
+    protocol: "HTTP"
+    service_id: "S0003"
+    description: "Paper inventory and warehouse management"
+    owner: "dphilbin"
+    stock_level_monitoring: true
+    shipping_coordination: true
+    
+  - name: "Accounting and Finance Portal"
+    port: 443
+    protocol: "HTTPS"
+    service_id: "S0004"
+    description: "Financial management and accounting systems"
+    owner: "amartin"
+    expense_report_processing: true
+    party_planning_budget: true
+    
+  - name: "Corporate Email System"
+    port: 25
+    protocol: "SMTP"
+    service_id: "S0005"
+    description: "Internal and external email communications"
+    owner: "tflenderson"
+    joke_forwarding_filtering: true
+    hr_complaint_routing: true
+    
+  - name: "Conference Room Booking"
+    port: 8000
+    protocol: "HTTP"
+    service_id: "S0006"
+    description: "Meeting room scheduling and resource management"
+    owner: "pbeesly"
+    michael_scott_meeting_priority: "maximum"
+    dundie_awards_scheduling: true
+    
+  - name: "Customer Support Portal"
+    port: 8443
+    protocol: "HTTPS"
+    service_id: "S0007"
+    description: "Customer service and support ticket management"
+    owner: "jhalpert"
+    complaint_resolution_tracking: true
+    customer_satisfaction_surveys: true
+    
+  - name: "Safety Training System"
+    port: 9000
+    protocol: "HTTP"
+    service_id: "S0008"
+    description: "Employee safety training and compliance tracking"
+    owner: "dschrute"
+    fire_drill_coordination: true
+    cpr_training_videos: true
+    
+  - name: "Party Planning Committee Portal"
+    port: 7000
+    protocol: "HTTP"
+    service_id: "S0009"
+    description: "Office party planning and event coordination"
+    owner: "amartin"
+    birthday_party_scheduling: true
+    committee_meeting_minutes: true
+    
+  - name: "Branch Performance Dashboard"
+    port: 5000
+    protocol: "HTTPS"
+    service_id: "S0010"
+    description: "Regional branch performance monitoring and reporting"
+    owner: "mscott"
+    sales_target_tracking: true
+    employee_performance_metrics: true
+    world_best_boss_confirmation: true
