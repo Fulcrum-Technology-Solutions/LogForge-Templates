@@ -1,0 +1,464 @@
+# Entity Registry for First National Bank - Synthetic Log Generator
+
+# Organization-wide configurations
+# These settings define global properties for the entire environment
+organization:
+  name: "First National Bank"
+  domain: "firstnationalbank.com"
+  netbios_domain: "FIRSTNATIONAL"
+  timezone: "America/New_York"
+  industry: "Financial Services"
+  location:
+    address: "1250 Financial Plaza"
+    city: "Charlotte"
+    state: "North Carolina"
+    zip: "28202"
+    country: "USA"
+    lat: 35.2271
+    long: -80.8431
+  contacts:
+    security: "security@firstnationalbank.com"
+    it_support: "itsupport@firstnationalbank.com"
+    helpdesk: "helpdesk@firstnationalbank.com"
+    compliance: "compliance@firstnationalbank.com"
+    fraud: "fraud@firstnationalbank.com"
+    risk: "risk@firstnationalbank.com"
+  settings:
+    password_expiry_days: 45
+    account_lockout_threshold: 3
+    session_timeout_minutes: 10
+    max_login_attempts: 3
+    min_password_length: 16
+    require_mfa: true
+    sox_compliant: true
+    pci_compliant: true
+    audit_retention_days: 2555
+    financial_grade_encryption: true
+
+# Network ranges configuration for internal IP address generation
+network_ranges:
+  # Core banking networks
+  - cidr: "10.100.0.0/16"
+    name: "core_banking"
+  - cidr: "10.200.0.0/16"
+    name: "trading_floor"
+  - cidr: "172.20.0.0/24"
+    name: "atm_network"
+  
+  # Administrative networks
+  - cidr: "192.168.0.0/16"
+    name: "administrative"
+  - cidr: "172.16.0.0/24"
+    name: "servers"
+  
+  # Secure networks
+  - start_ip: "10.250.0.0"
+    end_ip: "10.250.255.255"
+    name: "secure_vault"
+  - start_ip: "192.168.200.0"
+    end_ip: "192.168.200.255"
+    name: "executive_network"
+  - start_ip: "10.50.0.0"
+    end_ip: "10.50.255.255"
+    name: "fed_wire_network"
+
+users:
+  # IT Department Users
+  - username: "rthompson"
+    full_name: "Robert Thompson"
+    email: "rthompson@firstnationalbank.com"
+    user_id: "U1001"
+    department: "IT"
+    title: "Chief Information Security Officer"
+    is_admin: true
+    employee_type: "employee"
+    location:
+      city: "Charlotte"
+      state: "North Carolina"
+      country: "USA"
+    organization: "Information Technology"
+    clearance_level: "executive"
+    background_check: "cleared"
+    financial_disclosure: true
+    
+  - username: "janderson"
+    full_name: "Jennifer Anderson"
+    email: "janderson@firstnationalbank.com"
+    user_id: "U1002"
+    department: "IT"
+    title: "Senior Systems Administrator"
+    is_admin: true
+    employee_type: "employee"
+    location:
+      city: "Charlotte"
+      state: "North Carolina"
+      country: "USA"
+    organization: "Information Technology"
+    clearance_level: "high"
+    background_check: "cleared"
+    financial_disclosure: true
+    
+  # Banking Operations Users
+  - username: "mrodriguez"
+    full_name: "Maria Rodriguez"
+    email: "mrodriguez@firstnationalbank.com"
+    user_id: "U2001"
+    department: "Retail Banking"
+    title: "Branch Manager"
+    is_admin: false
+    employee_type: "employee"
+    location:
+      city: "Charlotte"
+      state: "North Carolina"
+      country: "USA"
+    organization: "Banking Operations"
+    clearance_level: "medium"
+    background_check: "cleared"
+    financial_disclosure: true
+    banking_license: "NC-BM-78451"
+    
+  - username: "dwilson"
+    full_name: "David Wilson"
+    email: "dwilson@firstnationalbank.com"
+    user_id: "U2002"
+    department: "Commercial Lending"
+    title: "Senior Loan Officer"
+    is_admin: false
+    employee_type: "employee"
+    location:
+      city: "Charlotte"
+      state: "North Carolina"
+      country: "USA"
+    organization: "Commercial Banking"
+    clearance_level: "medium"
+    background_check: "cleared"
+    financial_disclosure: true
+    nmls_id: "123456"
+    
+  - username: "sbrown"
+    full_name: "Sarah Brown"
+    email: "sbrown@firstnationalbank.com"
+    user_id: "U2003"
+    department: "Investment Services"
+    title: "Investment Advisor"
+    is_admin: false
+    employee_type: "employee"
+    location:
+      city: "New York"
+      state: "New York"
+      country: "USA"
+    organization: "Wealth Management"
+    clearance_level: "medium"
+    background_check: "cleared"
+    financial_disclosure: true
+    series_licenses: ["Series 7", "Series 66"]
+    
+  # Compliance and Risk Users
+  - username: "kwhite"
+    full_name: "Kevin White"
+    email: "kwhite@firstnationalbank.com"
+    user_id: "U3001"
+    department: "Compliance"
+    title: "Chief Compliance Officer"
+    is_admin: false
+    employee_type: "employee"
+    location:
+      city: "Charlotte"
+      state: "North Carolina"
+      country: "USA"
+    organization: "Risk and Compliance"
+    clearance_level: "executive"
+    background_check: "cleared"
+    financial_disclosure: true
+    
+  - username: "lgarcia"
+    full_name: "Lisa Garcia"
+    email: "lgarcia@firstnationalbank.com"
+    user_id: "U3002"
+    department: "Risk Management"
+    title: "Risk Analyst"
+    is_admin: false
+    employee_type: "employee"
+    location:
+      city: "Charlotte"
+      state: "North Carolina"
+      country: "USA"
+    organization: "Risk and Compliance"
+    clearance_level: "medium"
+    background_check: "cleared"
+    financial_disclosure: true
+    
+  # Operations Users
+  - username: "tjackson"
+    full_name: "Thomas Jackson"
+    email: "tjackson@firstnationalbank.com"
+    user_id: "U4001"
+    department: "Operations"
+    title: "Wire Transfer Specialist"
+    is_admin: false
+    employee_type: "employee"
+    location:
+      city: "Charlotte"
+      state: "North Carolina"
+      country: "USA"
+    organization: "Banking Operations"
+    clearance_level: "high"
+    background_check: "cleared"
+    financial_disclosure: true
+    wire_transfer_certified: true
+
+devices:
+  # Executive Workstations
+  - hostname: "EXEC-WS001"
+    fqdn: "EXEC-WS001.firstnationalbank.com"
+    ip_address: "192.168.200.101"
+    mac_address: "00:3A:4B:5C:6D:7E"
+    device_id: "D1001"
+    os_type: "Windows 11"
+    os_version: "22H2"
+    owner: "rthompson"
+    device_type: "executive_workstation"
+    model: "Dell Precision 5570"
+    department: "IT"
+    status: "active"
+    last_updated: "2025-04-01"
+    custom_asset_tag: "EXEC-SEC-001"
+    custom_location: "Executive Floor, Office 2501"
+    pci_compliant: true
+    encryption_enabled: true
+    tamper_evident: true
+    
+  # Banking Teller Stations
+  - hostname: "TELLER-WS002"
+    fqdn: "TELLER-WS002.firstnationalbank.com"
+    ip_address: "10.100.1.102"
+    mac_address: "00:3A:4B:5C:6D:7F"
+    device_id: "D1002"
+    os_type: "Windows 11"
+    os_version: "22H2"
+    owner: "mrodriguez"
+    device_type: "teller_workstation"
+    model: "HP EliteOne 800 G9"
+    department: "Retail Banking"
+    status: "active"
+    custom_asset_tag: "TELL-MAIN-002"
+    custom_location: "Main Branch, Teller Station 2"
+    pci_compliant: true
+    encryption_enabled: true
+    dual_control_required: true
+    
+  # Commercial Banking Workstation
+  - hostname: "COMM-WS003"
+    fqdn: "COMM-WS003.firstnationalbank.com"
+    ip_address: "10.100.2.103"
+    mac_address: "00:3A:4B:5C:6D:80"
+    device_id: "D1003"
+    os_type: "Windows 11"
+    os_version: "22H2"
+    owner: "dwilson"
+    device_type: "workstation"
+    model: "Lenovo ThinkStation P360"
+    department: "Commercial Lending"
+    status: "active"
+    custom_asset_tag: "COMM-LOAN-003"
+    custom_location: "Commercial Banking Floor, Office 1205"
+    pci_compliant: true
+    encryption_enabled: true
+    
+  # Investment Trading Workstation
+  - hostname: "TRADE-WS004"
+    fqdn: "TRADE-WS004.firstnationalbank.com"
+    ip_address: "10.200.1.104"
+    mac_address: "00:3A:4B:5C:6D:81"
+    device_id: "D1004"
+    os_type: "Windows 11"
+    os_version: "22H2"
+    owner: "sbrown"
+    device_type: "trading_workstation"
+    model: "Dell Precision 7670"
+    department: "Investment Services"
+    status: "active"
+    custom_asset_tag: "TRADE-INV-004"
+    custom_location: "Trading Floor, Desk 45"
+    pci_compliant: true
+    encryption_enabled: true
+    multiple_monitors: 6
+    real_time_data_feed: true
+    
+  # Compliance Workstation
+  - hostname: "COMP-WS005"
+    fqdn: "COMP-WS005.firstnationalbank.com"
+    ip_address: "192.168.1.105"
+    mac_address: "00:3A:4B:5C:6D:82"
+    device_id: "D1005"
+    os_type: "Windows 11"
+    os_version: "22H2"
+    owner: "kwhite"
+    device_type: "workstation"
+    model: "HP ZBook Studio G9"
+    department: "Compliance"
+    status: "active"
+    custom_asset_tag: "COMP-CCO-005"
+    custom_location: "Compliance Department, Office 1501"
+    pci_compliant: true
+    encryption_enabled: true
+    audit_logging: true
+    
+  # Wire Transfer Terminal
+  - hostname: "WIRE-WS006"
+    fqdn: "WIRE-WS006.firstnationalbank.com"
+    ip_address: "10.50.1.106"
+    mac_address: "00:3A:4B:5C:6D:83"
+    device_id: "D1006"
+    os_type: "Windows 11"
+    os_version: "22H2"
+    owner: "tjackson"
+    device_type: "secure_terminal"
+    model: "Dell OptiPlex 7090"
+    department: "Operations"
+    status: "active"
+    custom_asset_tag: "WIRE-SEC-006"
+    custom_location: "Wire Transfer Department, Secure Room 101"
+    pci_compliant: true
+    encryption_enabled: true
+    dual_control_required: true
+    fed_wire_certified: true
+    
+  # Core Banking Servers
+  - hostname: "CORE-SRV001"
+    fqdn: "CORE-SRV001.firstnationalbank.com"
+    ip_address: "172.16.1.10"
+    mac_address: "00:3A:4B:5C:6D:AA"
+    device_id: "D2001"
+    os_type: "IBM AIX"
+    os_version: "7.3"
+    owner: "rthompson"
+    device_type: "mainframe"
+    model: "IBM Power10 S1014"
+    department: "IT"
+    status: "active"
+    custom_location: "Primary Data Center, Secure Vault A"
+    custom_service_tag: "CORE-MAIN-001"
+    pci_compliant: true
+    encryption_enabled: true
+    hsm_protected: true
+    
+  - hostname: "ATM-SRV002"
+    fqdn: "ATM-SRV002.firstnationalbank.com"
+    ip_address: "172.20.1.11"
+    mac_address: "00:3A:4B:5C:6D:AB"
+    device_id: "D2002"
+    os_type: "Linux"
+    os_version: "RHEL 9"
+    owner: "janderson"
+    device_type: "server"
+    model: "HPE ProLiant DL385 Gen10"
+    department: "IT"
+    status: "active"
+    custom_location: "Secondary Data Center, Rack B2"
+    custom_service_tag: "ATM-NET-002"
+    pci_compliant: true
+    encryption_enabled: true
+    
+  # ATM Machine
+  - hostname: "ATM-001"
+    fqdn: "ATM-001.firstnationalbank.com"
+    ip_address: "172.20.2.20"
+    mac_address: "00:3A:4B:5C:6D:C1"
+    device_id: "D3001"
+    os_type: "Windows 10 IoT"
+    os_version: "LTSC 2021"
+    owner: "mrodriguez"
+    device_type: "atm"
+    model: "NCR SelfServ 88"
+    department: "Retail Banking"
+    status: "active"
+    custom_asset_tag: "ATM-MAIN-001"
+    custom_location: "Main Branch, Lobby"
+    pci_compliant: true
+    encryption_enabled: true
+    cash_vault_secured: true
+    tamper_detection: true
+
+services:
+  - name: "Core Banking System"
+    port: 443
+    protocol: "HTTPS"
+    service_id: "S1001"
+    description: "Primary banking application system"
+    owner: "rthompson"
+    pci_compliant: true
+    sox_compliant: true
+    
+  - name: "Online Banking Portal"
+    port: 443
+    protocol: "HTTPS"
+    service_id: "S1002"
+    description: "Customer online banking interface"
+    owner: "janderson"
+    pci_compliant: true
+    
+  - name: "ATM Network Service"
+    port: 9100
+    protocol: "TCP"
+    service_id: "S1003"
+    description: "ATM transaction processing network"
+    owner: "janderson"
+    pci_compliant: true
+    
+  - name: "Wire Transfer System"
+    port: 6670
+    protocol: "SWIFT"
+    service_id: "S1004"
+    description: "International wire transfer processing"
+    owner: "tjackson"
+    pci_compliant: true
+    swift_compliant: true
+    
+  - name: "Trading Platform"
+    port: 443
+    protocol: "HTTPS"
+    service_id: "S1005"
+    description: "Investment trading and portfolio management"
+    owner: "sbrown"
+    mifid_compliant: true
+    
+  - name: "Fraud Detection System"
+    port: 8443
+    protocol: "HTTPS"
+    service_id: "S1006"
+    description: "Real-time fraud monitoring and detection"
+    owner: "rthompson"
+    pci_compliant: true
+    
+  - name: "Customer Relationship Management"
+    port: 443
+    protocol: "HTTPS"
+    service_id: "S1007"
+    description: "Customer data and relationship management"
+    owner: "mrodriguez"
+    pci_compliant: true
+    
+  - name: "Risk Management System"
+    port: 8080
+    protocol: "HTTPS"
+    service_id: "S1008"
+    description: "Credit risk assessment and monitoring"
+    owner: "lgarcia"
+    sox_compliant: true
+    
+  - name: "Compliance Monitoring"
+    port: 9443
+    protocol: "HTTPS"
+    service_id: "S1009"
+    description: "Regulatory compliance tracking and reporting"
+    owner: "kwhite"
+    sox_compliant: true
+    
+  - name: "Mobile Banking API"
+    port: 443
+    protocol: "HTTPS"
+    service_id: "S1010"
+    description: "Mobile application backend services"
+    owner: "janderson"
+    pci_compliant: true

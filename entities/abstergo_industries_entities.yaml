@@ -1,0 +1,2090 @@
+# Entity Registry for Abstergo Industries - Organization Section
+
+# Organization-wide configurations
+# These settings define global properties for the entire environment
+organization:
+  name: "Abstergo Industries"
+  domain: "abstergo.com"
+  netbios_domain: "ABSTERGO"
+  timezone: "America/New_York"
+  industry: "Biotechnology & Historical Research"
+  founded: 1937
+  ticker_symbol: "ABGO"
+  parent_organization: "Templar Order"
+  classification_level: "Corporate Front"
+  location:
+    address: "1 Abstergo Way"
+    city: "Philadelphia"
+    state: "Pennsylvania"
+    zip: "19103"
+    country: "USA"
+    lat: 39.9526
+    long: -75.1652
+  secondary_locations:
+    - name: "Rome Facility"
+      address: "Via di Villa Massimo, 47"
+      city: "Rome"
+      state: "Lazio"
+      zip: "00161"
+      country: "Italy"
+      purpose: "European Operations & Historical Archives"
+      classification: "restricted"
+    - name: "Montreal Research Center"
+      address: "1000 Rue de la Gauchetière"
+      city: "Montreal"
+      state: "Quebec"
+      zip: "H3B 0A6"
+      country: "Canada"
+      purpose: "Animus Development & Beta Testing"
+      classification: "classified"
+    - name: "Tokyo Branch"
+      address: "1-1-1 Shiodome"
+      city: "Tokyo"
+      state: "Tokyo"
+      zip: "105-7001"
+      country: "Japan"
+      purpose: "Asia-Pacific Operations"
+      classification: "standard"
+    - name: "London Office"
+      address: "1 Canada Square"
+      city: "London"
+      state: "England"
+      zip: "E14 5AB"
+      country: "United Kingdom"
+      purpose: "Financial Operations & Intelligence"
+      classification: "restricted"
+    - name: "São Paulo Facility"
+      address: "Av. Paulista, 1048"
+      city: "São Paulo"
+      state: "São Paulo"
+      zip: "01310-100"
+      country: "Brazil"
+      purpose: "South American Operations"
+      classification: "standard"
+  contacts:
+    security: "security@abstergo.com"
+    it_support: "support@abstergo.com"
+    helpdesk: "helpdesk@abstergo.com"
+    legal: "legal@abstergo.com"
+    pr: "communications@abstergo.com"
+    hr: "recruitment@abstergo.com"
+    emergency: "emergency@abstergo.com"
+    board: "executive@abstergo.com"
+    templar_council: "council@abstergo.com"
+    animus_support: "animus@abstergo.com"
+  settings:
+    password_expiry_days: 45
+    account_lockout_threshold: 3
+    session_timeout_minutes: 15
+    max_login_attempts: 3
+    min_password_length: 12
+    require_mfa: true
+    genetic_memory_access: true
+    templar_clearance_required: true
+    animus_certification_mandatory: true
+    assassin_threat_level: "high"
+    piece_of_eden_security: "maximum"
+    historical_data_classification: "top_secret"
+    dna_sample_retention_days: 36500
+    ancestor_memory_backup_enabled: true
+    modern_day_surveillance: "active"
+
+# Entity Registry for Abstergo Industries - Organization Section
+
+# Organization-wide configurations
+# These settings define global properties for the entire environment
+organization:
+  name: "Abstergo Industries"
+  domain: "abstergo.com"
+  netbios_domain: "ABSTERGO"
+  timezone: "America/New_York"
+  industry: "Biotechnology & Historical Research"
+  founded: 1937
+  ticker_symbol: "ABGO"
+  parent_organization: "Templar Order"
+  classification_level: "Corporate Front"
+  location:
+    address: "1 Abstergo Way"
+    city: "Philadelphia"
+    state: "Pennsylvania"
+    zip: "19103"
+    country: "USA"
+    lat: 39.9526
+    long: -75.1652
+  secondary_locations:
+    - name: "Rome Facility"
+      address: "Via di Villa Massimo, 47"
+      city: "Rome"
+      state: "Lazio"
+      zip: "00161"
+      country: "Italy"
+      purpose: "European Operations & Historical Archives"
+      classification: "restricted"
+    - name: "Montreal Research Center"
+      address: "1000 Rue de la Gauchetière"
+      city: "Montreal"
+      state: "Quebec"
+      zip: "H3B 0A6"
+      country: "Canada"
+      purpose: "Animus Development & Beta Testing"
+      classification: "classified"
+    - name: "Tokyo Branch"
+      address: "1-1-1 Shiodome"
+      city: "Tokyo"
+      state: "Tokyo"
+      zip: "105-7001"
+      country: "Japan"
+      purpose: "Asia-Pacific Operations"
+      classification: "standard"
+    - name: "London Office"
+      address: "1 Canada Square"
+      city: "London"
+      state: "England"
+      zip: "E14 5AB"
+      country: "United Kingdom"
+      purpose: "Financial Operations & Intelligence"
+      classification: "restricted"
+    - name: "São Paulo Facility"
+      address: "Av. Paulista, 1048"
+      city: "São Paulo"
+      state: "São Paulo"
+      zip: "01310-100"
+      country: "Brazil"
+      purpose: "South American Operations"
+      classification: "standard"
+  contacts:
+    security: "security@abstergo.com"
+    it_support: "support@abstergo.com"
+    helpdesk: "helpdesk@abstergo.com"
+    legal: "legal@abstergo.com"
+    pr: "communications@abstergo.com"
+    hr: "recruitment@abstergo.com"
+    emergency: "emergency@abstergo.com"
+    board: "executive@abstergo.com"
+    templar_council: "council@abstergo.com"
+    animus_support: "animus@abstergo.com"
+  settings:
+    password_expiry_days: 45
+    account_lockout_threshold: 3
+    session_timeout_minutes: 15
+    max_login_attempts: 3
+    min_password_length: 12
+    require_mfa: true
+    genetic_memory_access: true
+    templar_clearance_required: true
+    animus_certification_mandatory: true
+    assassin_threat_level: "high"
+    piece_of_eden_security: "maximum"
+    historical_data_classification: "top_secret"
+    dna_sample_retention_days: 36500
+    ancestor_memory_backup_enabled: true
+    modern_day_surveillance: "active"
+
+# Network ranges configuration for internal IP address generation
+# You can specify ranges using either:
+# 1. CIDR notation (e.g., "192.168.0.0/16")
+# 2. Start and end IP addresses
+# Both methods can include an optional name that can be referenced in templates with random_private_ip('name')
+network_ranges:
+  # Corporate Networks - Standard Business Operations
+  - cidr: "10.0.0.0/16"
+    name: "corporate_general"
+    description: "General corporate workstations and standard business systems"
+    security_level: "standard"
+    
+  - cidr: "192.168.0.0/16"
+    name: "administrative"
+    description: "Administrative and HR systems"
+    security_level: "standard"
+    
+  # Research & Development Networks - Animus Operations
+  - cidr: "172.16.0.0/16"
+    name: "animus_network"
+    description: "Animus research systems and genetic memory servers"
+    security_level: "classified"
+    templar_clearance_required: true
+    
+  - cidr: "10.50.0.0/16"
+    name: "historical_research"
+    description: "Historical archives and genealogy research systems"
+    security_level: "restricted"
+    
+  # High Security Networks - Templar Operations
+  - start_ip: "10.237.0.0"
+    end_ip: "10.237.255.255"
+    name: "templar_command"
+    description: "Templar Order command and control systems"
+    security_level: "maximum"
+    piece_of_eden_access: true
+    
+  - start_ip: "172.31.0.0"
+    end_ip: "172.31.255.255"
+    name: "sage_projects"
+    description: "First Civilization research and Sage subject monitoring"
+    security_level: "ultra_classified"
+    isu_technology_access: true
+    
+  # Global Facility Networks
+  - cidr: "10.100.0.0/16"
+    name: "rome_facility"
+    description: "Rome facility secure network"
+    location: "Rome, Italy"
+    security_level: "restricted"
+    
+  - cidr: "10.200.0.0/16"
+    name: "montreal_labs"
+    description: "Montreal Animus development laboratories"
+    location: "Montreal, Canada"
+    security_level: "classified"
+    
+  - cidr: "10.300.0.0/16"
+    name: "tokyo_operations"
+    description: "Tokyo Asia-Pacific operations network"
+    location: "Tokyo, Japan"
+    security_level: "standard"
+    
+  - cidr: "10.400.0.0/16"
+    name: "london_intelligence"
+    description: "London financial and intelligence operations"
+    location: "London, UK"
+    security_level: "restricted"
+    
+  # Specialized Networks
+  - start_ip: "192.168.100.0"
+    end_ip: "192.168.100.255"
+    name: "dna_sequencing"
+    description: "DNA analysis and genetic sequencing systems"
+    security_level: "classified"
+    biometric_access_required: true
+    
+  - start_ip: "192.168.200.0"
+    end_ip: "192.168.200.255"
+    name: "surveillance_network"
+    description: "Global surveillance and monitoring systems"
+    security_level: "restricted"
+    modern_day_ops: true
+    
+  - start_ip: "10.1.0.0"
+    end_ip: "10.1.255.255"
+    name: "guest_network"
+    description: "Guest and contractor access network"
+    security_level: "limited"
+    internet_filtered: true
+    
+  # Executive Networks
+  - cidr: "172.20.0.0/24"
+    name: "executive_floor"
+    description: "C-level executive and board member systems"
+    security_level: "maximum"
+    templar_council_access: true
+
+users:
+  # Executive Leadership - Templar Council
+  - username: "avidic"
+    full_name: "Dr. Warren Vidic"
+    email: "wvidic@abstergo.com"
+    user_id: "U0001"
+    department: "Animus Research"
+    title: "Director of Animus Research"
+    is_admin: true
+    employee_type: "templar"
+    location:
+      city: "Philadelphia"
+      state: "Pennsylvania"
+      country: "USA"
+    organization: "Research Division"
+    templar_rank: "master_templar"
+    clearance_level: "ultra_classified"
+    animus_certified: true
+    genetic_memory_access: "unlimited"
+    piece_of_eden_clearance: true
+    
+  - username: "aberg"
+    full_name: "Alan Rikkin"
+    email: "arikkin@abstergo.com"
+    user_id: "U0002"
+    department: "Executive"
+    title: "Chief Executive Officer"
+    is_admin: true
+    employee_type: "templar"
+    location:
+      city: "London"
+      state: "England"
+      country: "United Kingdom"
+    organization: "Executive Leadership"
+    templar_rank: "grand_master"
+    clearance_level: "maximum"
+    templar_council_member: true
+    modern_day_operations: true
+    
+  - username: "sgrammatico"
+    full_name: "Dr. Sophia Rikkin"
+    email: "srikkin@abstergo.com"
+    user_id: "U0003"
+    department: "Animus Research"
+    title: "Head of Animus Development"
+    is_admin: true
+    employee_type: "templar"
+    location:
+      city: "Madrid"
+      state: "Madrid"
+      country: "Spain"
+    organization: "Research Division"
+    templar_rank: "templar"
+    clearance_level: "classified"
+    animus_certified: true
+    callum_lynch_project: true
+    
+  # Research & Development Staff
+  - username: "llaetitia"
+    full_name: "Dr. Laetitia England"
+    email: "lengland@abstergo.com"
+    user_id: "U0004"
+    department: "Historical Research"
+    title: "Senior Historical Analyst"
+    is_admin: false
+    employee_type: "employee"
+    location:
+      city: "Montreal"
+      state: "Quebec"
+      country: "Canada"
+    organization: "Research Division"
+    templar_rank: "associate"
+    clearance_level: "restricted"
+    animus_certified: true
+    specialization: "renaissance_period"
+    
+  - username: "rberg"
+    full_name: "Dr. Rebecca Crane"
+    email: "rcrane@abstergo.com"
+    user_id: "U0005"
+    department: "IT Systems"
+    title: "Senior Systems Engineer"
+    is_admin: true
+    employee_type: "employee"
+    location:
+      city: "Philadelphia"
+      state: "Pennsylvania"
+      country: "USA"
+    organization: "Information Technology"
+    templar_rank: "initiate"
+    clearance_level: "classified"
+    animus_technical_support: true
+    security_clearance_verified: true
+    
+  # Security & Operations
+  - username: "dmalik"
+    full_name: "Daniel Cross"
+    email: "dcross@abstergo.com"
+    user_id: "U0006"
+    department: "Security"
+    title: "Chief Security Officer"
+    is_admin: true
+    employee_type: "templar"
+    location:
+      city: "Philadelphia"
+      state: "Pennsylvania"
+      country: "USA"
+    organization: "Security Division"
+    templar_rank: "templar"
+    clearance_level: "maximum"
+    assassin_hunter: true
+    modern_day_operations: true
+    sage_dna_present: true
+    
+  - username: "jstilman"
+    full_name: "Juhani Otso Berg"
+    email: "jberg@abstergo.com"
+    user_id: "U0007"
+    department: "Security"
+    title: "Master Templar - Field Operations"
+    is_admin: false
+    employee_type: "templar"
+    location:
+      city: "Helsinki"
+      state: "Uusimaa"
+      country: "Finland"
+    organization: "Sigma Team"
+    templar_rank: "master_templar"
+    clearance_level: "maximum"
+    field_operative: true
+    assassin_elimination_specialist: true
+    
+  # Subject Handlers & Analysts
+  - username: "mstilman"
+    full_name: "Melanie Lemay"
+    email: "mlemay@abstergo.com"
+    user_id: "U0008"
+    department: "Subject Relations"
+    title: "Animus Subject Handler"
+    is_admin: false
+    employee_type: "employee"
+    location:
+      city: "Montreal"
+      state: "Quebec"
+      country: "Canada"
+    organization: "Research Division"
+    templar_rank: "associate"
+    clearance_level: "restricted"
+    animus_certified: true
+    subject_psychology_specialist: true
+    
+  - username: "violet"
+    full_name: "Violet da Costa"
+    email: "vdacosta@abstergo.com"
+    user_id: "U0009"
+    department: "Historical Research"
+    title: "Senior Research Analyst"
+    is_admin: false
+    employee_type: "employee"
+    location:
+      city: "São Paulo"
+      state: "São Paulo"
+      country: "Brazil"
+    organization: "Research Division"
+    templar_rank: "initiate"
+    clearance_level: "restricted"
+    animus_certified: true
+    specialization: "golden_age_piracy"
+    
+  # IT & Technical Support
+  - username: "johnstandish"
+    full_name: "John Standish"
+    email: "jstandish@abstergo.com"
+    user_id: "U0010"
+    department: "IT Systems"
+    title: "Senior IT Specialist"
+    is_admin: true
+    employee_type: "employee"
+    location:
+      city: "Montreal"
+      state: "Quebec"
+      country: "Canada"
+    organization: "Information Technology"
+    templar_rank: "unknown"
+    clearance_level: "classified"
+    sage_dna_present: true
+    first_civilization_memories: true
+    double_agent_status: "suspected"
+  
+    # Abstergo Entertainment Division
+  - username: "ofilangieri"
+    full_name: "Olivier Garneau"
+    email: "ogarneau@abstergo.com"
+    user_id: "U1001"
+    department: "Entertainment"
+    title: "Chief Creative Officer"
+    is_admin: false
+    employee_type: "employee"
+    location:
+      city: "Montreal"
+      state: "Quebec"
+      country: "Canada"
+    organization: "Abstergo Entertainment"
+    templar_rank: "associate"
+    clearance_level: "standard"
+    game_development_lead: true
+    reality_distortion_specialist: true
+    
+  - username: "mdecoteau"
+    full_name: "Melanie Lemay"
+    email: "mlemay2@abstergo.com"
+    user_id: "U1002"
+    department: "Entertainment"
+    title: "Historical Consultant"
+    is_admin: false
+    employee_type: "employee"
+    location:
+      city: "Montreal"
+      state: "Quebec"
+      country: "Canada"
+    organization: "Abstergo Entertainment"
+    templar_rank: "initiate"
+    clearance_level: "restricted"
+    historical_accuracy_manipulation: true
+    narrative_control_specialist: true
+    
+  # Global Security Operations
+  - username: "isabelle"
+    full_name: "Isabelle Ardant"
+    email: "iardant@abstergo.com"
+    user_id: "U1003"
+    department: "Security"
+    title: "Director of Operations"
+    is_admin: true
+    employee_type: "templar"
+    location:
+      city: "Paris"
+      state: "Île-de-France"
+      country: "France"
+    organization: "Sigma Team"
+    templar_rank: "master_templar"
+    clearance_level: "maximum"
+    modern_day_operations: true
+    assassin_elimination_expert: true
+    
+  - username: "galina"
+    full_name: "Galina Voronina"
+    email: "gvoronina@abstergo.com"
+    user_id: "U1004"
+    department: "Security"
+    title: "Field Operations Specialist"
+    is_admin: false
+    employee_type: "contractor"
+    location:
+      city: "Moscow"
+      state: "Moscow"
+      country: "Russia"
+    organization: "External Operations"
+    templar_rank: "unknown"
+    clearance_level: "classified"
+    russian_brotherhood_infiltrator: true
+    double_agent_suspected: true
+    
+  # Research & Development - Genetics Division
+  - username: "bkilkenny"
+    full_name: "Dr. Brendan Kilkenny"
+    email: "bkilkenny@abstergo.com"
+    user_id: "U1005"
+    department: "Genetics"
+    title: "Senior Geneticist"
+    is_admin: false
+    employee_type: "employee"
+    location:
+      city: "Dublin"
+      state: "Leinster"
+      country: "Ireland"
+    organization: "Research Division"
+    templar_rank: "associate"
+    clearance_level: "classified"
+    dna_manipulation_expert: true
+    isu_genetics_researcher: true
+    
+  - username: "kmcgowan"
+    full_name: "Dr. Kaitlin McGowan"
+    email: "kmcgowan@abstergo.com"
+    user_id: "U1006"
+    department: "Genetics"
+    title: "Genetic Sequencing Specialist"
+    is_admin: false
+    employee_type: "employee"
+    location:
+      city: "Philadelphia"
+      state: "Pennsylvania"
+      country: "USA"
+    organization: "Research Division"
+    templar_rank: "initiate"
+    clearance_level: "restricted"
+    sage_dna_analysis_expert: true
+    bloodline_tracking_specialist: true
+    
+  # Historical Research Division
+  - username: "aortega"
+    full_name: "Dr. Alvaro Gramática"
+    email: "agramatica@abstergo.com"
+    user_id: "U1007"
+    department: "Historical Research"
+    title: "Phoenix Project Director"
+    is_admin: true
+    employee_type: "templar"
+    location:
+      city: "Madrid"
+      state: "Madrid"
+      country: "Spain"
+    organization: "Research Division"
+    templar_rank: "templar"
+    clearance_level: "ultra_classified"
+    isu_resurrection_project: true
+    genetic_memory_synthesis: true
+    
+  - username: "simonhathaway"
+    full_name: "Dr. Simon Hathaway"
+    email: "shathaway@abstergo.com"
+    user_id: "U1008"
+    department: "Historical Research"
+    title: "Senior Historical Analyst"
+    is_admin: false
+    employee_type: "employee"
+    location:
+      city: "London"
+      state: "England"
+      country: "United Kingdom"
+    organization: "Research Division"
+    templar_rank: "associate"
+    clearance_level: "restricted"
+    animus_certified: true
+    mongol_empire_specialist: true
+    
+  # IT Infrastructure & Cybersecurity
+  - username: "eweaver"
+    full_name: "Emily Weaver"
+    email: "eweaver@abstergo.com"
+    user_id: "U1009"
+    department: "IT Systems"
+    title: "Cybersecurity Director"
+    is_admin: true
+    employee_type: "employee"
+    location:
+      city: "Philadelphia"
+      state: "Pennsylvania"
+      country: "USA"
+    organization: "Information Technology"
+    templar_rank: "associate"
+    clearance_level: "classified"
+    assassin_cyber_warfare_defense: true
+    templar_network_security: true
+    
+  - username: "rharrison"
+    full_name: "Robert Harrison"
+    email: "rharrison@abstergo.com"
+    user_id: "U1010"
+    department: "IT Systems"
+    title: "Database Administrator"
+    is_admin: true
+    employee_type: "employee"
+    location:
+      city: "Montreal"
+      state: "Quebec"
+      country: "Canada"
+    organization: "Information Technology"
+    templar_rank: "initiate"
+    clearance_level: "restricted"
+    historical_database_management: true
+    genetic_data_archival: true
+    
+  # Finance & Corporate Operations
+  - username: "mbishop"
+    full_name: "Margaret Bishop"
+    email: "mbishop@abstergo.com"
+    user_id: "U1011"
+    department: "Finance"
+    title: "Chief Financial Officer"
+    is_admin: false
+    employee_type: "templar"
+    location:
+      city: "New York"
+      state: "New York"
+      country: "USA"
+    organization: "Corporate Finance"
+    templar_rank: "templar"
+    clearance_level: "classified"
+    templar_funding_operations: true
+    shadow_economy_management: true
+    
+  - username: "jsinclair"
+    full_name: "James Sinclair"
+    email: "jsinclair@abstergo.com"
+    user_id: "U1012"
+    department: "Legal"
+    title: "General Counsel"
+    is_admin: false
+    employee_type: "employee"
+    location:
+      city: "London"
+      state: "England"
+      country: "United Kingdom"
+    organization: "Legal Affairs"
+    templar_rank: "associate"
+    clearance_level: "restricted"
+    corporate_cover_operations: true
+    templar_legal_protection: true
+    
+  # Human Resources & Subject Acquisition
+  - username: "lmorrison"
+    full_name: "Linda Morrison"
+    email: "lmorrison@abstergo.com"
+    user_id: "U1013"
+    department: "Human Resources"
+    title: "Director of Talent Acquisition"
+    is_admin: false
+    employee_type: "employee"
+    location:
+      city: "Chicago"
+      state: "Illinois"
+      country: "USA"
+    organization: "Human Resources"
+    templar_rank: "initiate"
+    clearance_level: "standard"
+    subject_recruitment_specialist: true
+    background_screening_expert: true
+    
+  - username: "pchen"
+    full_name: "Dr. Patricia Chen"
+    email: "pchen@abstergo.com"
+    user_id: "U1014"
+    department: "Medical"
+    title: "Chief Medical Officer"
+    is_admin: false
+    employee_type: "employee"
+    location:
+      city: "San Francisco"
+      state: "California"
+      country: "USA"
+    organization: "Medical Division"
+    templar_rank: "associate"
+    clearance_level: "classified"
+    animus_medical_monitoring: true
+    bleeding_effect_treatment: true
+    
+  # International Operations
+  - username: "ksato"
+    full_name: "Dr. Kenji Sato"
+    email: "ksato@abstergo.com"
+    user_id: "U1015"
+    department: "Research"
+    title: "Asia-Pacific Research Coordinator"
+    is_admin: false
+    employee_type: "employee"
+    location:
+      city: "Tokyo"
+      state: "Tokyo"
+      country: "Japan"
+    organization: "International Division"
+    templar_rank: "associate"
+    clearance_level: "restricted"
+    asian_historical_research: true
+    japanese_assassin_lineages: true
+    
+  - username: "mhamidi"
+    full_name: "Dr. Malik Hamidi"
+    email: "mhamidi@abstergo.com"
+    user_id: "U1016"
+    department: "Research"
+    title: "Middle East Research Specialist"
+    is_admin: false
+    employee_type: "employee"
+    location:
+      city: "Istanbul"
+      state: "Istanbul"
+      country: "Turkey"
+    organization: "International Division"
+    templar_rank: "initiate"
+    clearance_level: "restricted"
+    crusades_period_expert: true
+    levantine_brotherhood_tracker: true
+    
+  # Quality Assurance & Testing
+  - username: "snguyen"
+    full_name: "Sarah Nguyen"
+    email: "snguyen@abstergo.com"
+    user_id: "U1017"
+    department: "Quality Assurance"
+    title: "Senior QA Engineer"
+    is_admin: false
+    employee_type: "employee"
+    location:
+      city: "Montreal"
+      state: "Quebec"
+      country: "Canada"
+    organization: "Product Development"
+    templar_rank: "initiate"
+    clearance_level: "standard"
+    animus_software_testing: true
+    user_experience_optimization: true
+    
+  # Corporate Communications
+  - username: "ddavis"
+    full_name: "Diana Davis"
+    email: "ddavis@abstergo.com"
+    user_id: "U1018"
+    department: "Communications"
+    title: "Director of Public Relations"
+    is_admin: false
+    employee_type: "employee"
+    location:
+      city: "Los Angeles"
+      state: "California"
+      country: "USA"
+    organization: "Corporate Communications"
+    templar_rank: "associate"
+    clearance_level: "standard"
+    media_manipulation_specialist: true
+    crisis_management_expert: true
+    
+  # Facilities & Security Infrastructure
+  - username: "rkowalski"
+    full_name: "Robert Kowalski"
+    email: "rkowalski@abstergo.com"
+    user_id: "U1019"
+    department: "Facilities"
+    title: "Director of Facility Security"
+    is_admin: false
+    employee_type: "employee"
+    location:
+      city: "Philadelphia"
+      state: "Pennsylvania"
+      country: "USA"
+    organization: "Security Division"
+    templar_rank: "initiate"
+    clearance_level: "restricted"
+    physical_security_expert: true
+    animus_lab_protection: true
+    
+  # Archive & Data Management
+  - username: "amartinez"
+    full_name: "Dr. Ana Martinez"
+    email: "amartinez@abstergo.com"
+    user_id: "U1020"
+    department: "Archives"
+    title: "Chief Archivist"
+    is_admin: false
+    employee_type: "employee"
+    location:
+      city: "Seville"
+      state: "Andalusia"
+      country: "Spain"
+    organization: "Historical Archives"
+    templar_rank: "associate"
+    clearance_level: "classified"
+    historical_document_preservation: true
+    templar_history_curator: true
+    piece_of_eden_catalog_keeper: true
+
+  # Phoenix Project Leadership
+  - username: "juno.avatar"
+    full_name: "Juno Consciousness Interface"
+    email: "juno@abstergo.com"
+    user_id: "U2001"
+    department: "Phoenix Project"
+    title: "First Civilization Advisor"
+    is_admin: true
+    employee_type: "isu_consciousness"
+    location:
+      city: "Digital Realm"
+      state: "N/A"
+      country: "First Civilization"
+    organization: "ISU Integration Division"
+    templar_rank: "beyond_classification"
+    clearance_level: "isu_transcendent"
+    first_civilization_entity: true
+    digital_consciousness: true
+    resurrection_project_overseer: true
+    sage_consciousness_coordinator: true
+    
+  # Advanced Field Operations
+  - username: "hkendrick"
+    full_name: "Hayley Kendrick"
+    email: "hkendrick@abstergo.com"
+    user_id: "U2002"
+    department: "Security"
+    title: "Sigma Team Operative"
+    is_admin: false
+    employee_type: "templar"
+    location:
+      city: "Sydney"
+      state: "New South Wales"
+      country: "Australia"
+    organization: "Sigma Team Pacific"
+    templar_rank: "templar"
+    clearance_level: "maximum"
+    field_operative: true
+    assassin_hunter: true
+    oceania_operations_specialist: true
+    underwater_combat_certified: true
+    
+  - username: "vcardenas"
+    full_name: "Victor Cardenas"
+    email: "vcardenas@abstergo.com"
+    user_id: "U2003"
+    department: "Security"
+    title: "South American Operations Director"
+    is_admin: true
+    employee_type: "templar"
+    location:
+      city: "Buenos Aires"
+      state: "Buenos Aires"
+      country: "Argentina"
+    organization: "Sigma Team South America"
+    templar_rank: "master_templar"
+    clearance_level: "maximum"
+    south_american_brotherhood_expert: true
+    multi_lingual_operative: true
+    jungle_warfare_specialist: true
+    
+  # Quantum Research Division
+  - username: "astevens"
+    full_name: "Dr. Alan Stevens"
+    email: "astevens@abstergo.com"
+    user_id: "U2004"
+    department: "Quantum Research"
+    title: "Director of Quantum Computing"
+    is_admin: true
+    employee_type: "employee"
+    location:
+      city: "Montreal"
+      state: "Quebec"
+      country: "Canada"
+    organization: "Advanced Research Division"
+    templar_rank: "associate"
+    clearance_level: "ultra_classified"
+    quantum_mechanics_expert: true
+    isu_algorithm_specialist: true
+    timeline_calculation_authority: true
+    mit_quantum_lab_alumnus: true
+    
+  # Biotechnology & Enhancement Division
+  - username: "nvolkov"
+    full_name: "Dr. Natasha Volkov"
+    email: "nvolkov@abstergo.com"
+    user_id: "U2005"
+    department: "Biotechnology"
+    title: "Human Enhancement Research Lead"
+    is_admin: false
+    employee_type: "employee"
+    location:
+      city: "Geneva"
+      state: "Geneva"
+      country: "Switzerland"
+    organization: "Research Division"
+    templar_rank: "associate"
+    clearance_level: "classified"
+    genetic_enhancement_expert: true
+    super_soldier_program_developer: true
+    isu_dna_integration_specialist: true
+    crispr_gene_editing_authority: true
+    
+  # Corporate Intelligence Division
+  - username: "tmcconnell"
+    full_name: "Thomas McConnell"
+    email: "tmcconnell@abstergo.com"
+    user_id: "U2006"
+    department: "Corporate Intelligence"
+    title: "Director of Industrial Espionage"
+    is_admin: false
+    employee_type: "templar"
+    location:
+      city: "Frankfurt"
+      state: "Hesse"
+      country: "Germany"
+    organization: "Intelligence Division"
+    templar_rank: "templar"
+    clearance_level: "classified"
+    corporate_infiltration_expert: true
+    competitor_intelligence_specialist: true
+    financial_manipulation_authority: true
+    european_business_networks: true
+    
+  # Advanced Subject Research
+  - username: "lzhang"
+    full_name: "Dr. Li Zhang"
+    email: "lzhang@abstergo.com"
+    user_id: "U2007"
+    department: "Subject Research"
+    title: "Senior Behavioral Analyst"
+    is_admin: false
+    employee_type: "employee"
+    location:
+      city: "Hong Kong"
+      state: "Hong Kong"
+      country: "China"
+    organization: "Research Division"
+    templar_rank: "initiate"
+    clearance_level: "restricted"
+    animus_certified: true
+    behavioral_psychology_expert: true
+    subject_manipulation_specialist: true
+    eastern_philosophy_integration: true
+    
+  # Archaeological Operations
+  - username: "rbennett"
+    full_name: "Dr. Rachel Bennett"
+    email: "rbennett@abstergo.com"
+    user_id: "U2008"
+    department: "Archaeological Division"
+    title: "Field Archaeology Director"
+    is_admin: false
+    employee_type: "employee"
+    location:
+      city: "Cairo"
+      state: "Cairo"
+      country: "Egypt"
+    organization: "Historical Acquisition"
+    templar_rank: "associate"
+    clearance_level: "restricted"
+    piece_of_eden_excavation_lead: true
+    ancient_site_specialist: true
+    egyptian_brotherhood_historian: true
+    artifact_authentication_expert: true
+    
+  # Temporal Research Division
+  - username: "cwatanabe"
+    full_name: "Dr. Chiaki Watanabe"
+    email: "cwatanabe@abstergo.com"
+    user_id: "U2009"
+    department: "Temporal Research"
+    title: "Chronological Analysis Specialist"
+    is_admin: false
+    employee_type: "employee"
+    location:
+      city: "Kyoto"
+      state: "Kyoto"
+      country: "Japan"
+    organization: "Advanced Research Division"
+    templar_rank: "initiate"
+    clearance_level: "classified"
+    temporal_mechanics_researcher: true
+    genetic_memory_chronology_expert: true
+    isu_time_manipulation_theorist: true
+    quantum_timeline_analyst: true
+    
+  # Digital Consciousness Project
+  - username: "scross"
+    full_name: "Dr. Susan Cross"
+    email: "scross@abstergo.com"
+    user_id: "U2010"
+    department: "Digital Consciousness"
+    title: "Mind Upload Research Director"
+    is_admin: true
+    employee_type: "employee"
+    location:
+      city: "Silicon Valley"
+      state: "California"
+      country: "USA"
+    organization: "Phoenix Project Division"
+    templar_rank: "associate"
+    clearance_level: "ultra_classified"
+    consciousness_transfer_expert: true
+    digital_immortality_researcher: true
+    sage_mind_mapping_authority: true
+    neural_pattern_reconstruction: true
+    isu_consciousness_integration: true
+
+
+devices:
+  # Animus Systems - Core Technology
+  - hostname: "ANIMUS-OMEGA"
+    fqdn: "ANIMUS-OMEGA.abstergo.com"
+    ip_address: "172.16.1.100"
+    mac_address: "00:AB:ST:ER:GO:01"
+    device_id: "D0001"
+    os_type: "Animus OS"
+    os_version: "4.3"
+    owner: "avidic"
+    device_type: "animus_console"
+    model: "Animus 4.3 Enhanced Reality Machine"
+    department: "Animus Research"
+    status: "active"
+    last_updated: "2025-03-20"
+    custom_asset_tag: "ANIMUS-PRIME-001"
+    custom_location: "Philadelphia HQ, Animus Lab 1"
+    genetic_memory_capacity: "unlimited"
+    bleeding_effect_monitoring: true
+    subject_vital_monitoring: true
+    templar_access_only: true
+    
+  - hostname: "ANIMUS-HELIX"
+    fqdn: "ANIMUS-HELIX.abstergo.com"
+    ip_address: "10.200.1.101"
+    mac_address: "00:HE:LI:X0:01:02"
+    device_id: "D0002"
+    os_type: "Helix OS"
+    os_version: "2.1"
+    owner: "sgrammatico"
+    device_type: "helix_console"
+    model: "Animus Helix Gaming Console"
+    department: "Animus Research"
+    status: "active"
+    custom_asset_tag: "HELIX-DEV-002"
+    custom_location: "Montreal Labs, Development Floor"
+    cloud_integration: true
+    consumer_ready: true
+    data_harvesting_enabled: true
+    
+  # Executive Workstations
+  - hostname: "EXEC-RIKKIN"
+    fqdn: "EXEC-RIKKIN.abstergo.com"
+    ip_address: "172.20.1.10"
+    mac_address: "00:TE:MP:LA:R0:01"
+    device_id: "D0003"
+    os_type: "Windows 11"
+    os_version: "23H2"
+    owner: "aberg"
+    device_type: "executive_workstation"
+    model: "Surface Studio 2+"
+    department: "Executive"
+    status: "active"
+    custom_asset_tag: "EXEC-CEO-003"
+    custom_location: "London Office, Executive Suite"
+    templar_council_access: true
+    encrypted_communications: true
+    biometric_security: true
+    
+  # Research Workstations
+  - hostname: "RESEARCH-LAB-001"
+    fqdn: "RESEARCH-LAB-001.abstergo.com"
+    ip_address: "10.50.2.150"
+    mac_address: "00:RE:SE:AR:CH:01"
+    device_id: "D0004"
+    os_type: "Linux"
+    os_version: "Ubuntu 22.04 LTS"
+    owner: "llaetitia"
+    device_type: "research_workstation"
+    model: "Dell Precision 7770"
+    department: "Historical Research"
+    status: "active"
+    custom_asset_tag: "HIST-RES-004"
+    custom_location: "Montreal Labs, Historical Analysis Wing"
+    genealogy_database_access: true
+    dna_analysis_software: true
+    multi_monitor_setup: 3
+    
+  # DNA Sequencing Equipment
+  - hostname: "DNA-SEQ-ALPHA"
+    fqdn: "DNA-SEQ-ALPHA.abstergo.com"
+    ip_address: "192.168.100.50"
+    mac_address: "00:DN:A5:EQ:01:05"
+    device_id: "D0005"
+    os_type: "Embedded Linux"
+    os_version: "Custom"
+    owner: "violet"
+    device_type: "dna_sequencer"
+    model: "Abstergo GenomeMax 3000"
+    department: "Genetic Research"
+    status: "active"
+    custom_asset_tag: "DNA-SEQ-005"
+    custom_location: "Philadelphia HQ, Genetics Lab"
+    sage_dna_detection: true
+    isu_marker_analysis: true
+    automated_sample_processing: true
+    
+  # Security Systems
+  - hostname: "SIGMA-MOBILE-001"
+    fqdn: "SIGMA-MOBILE-001.abstergo.com"
+    ip_address: "10.237.50.75"
+    mac_address: "00:SI:GM:A0:01:06"
+    device_id: "D0006"
+    os_type: "Android"
+    os_version: "13"
+    owner: "jstilman"
+    device_type: "tactical_tablet"
+    model: "Abstergo Sigma Field Tablet"
+    department: "Security"
+    status: "active"
+    custom_asset_tag: "SIGMA-TAB-006"
+    custom_location: "Field Operations - Mobile"
+    gps_tracking: true
+    encrypted_comms: true
+    assassin_tracking_software: true
+    field_operative_tools: true
+    
+  # Server Infrastructure
+  - hostname: "TEMPLAR-DB-001"
+    fqdn: "TEMPLAR-DB-001.abstergo.com"
+    ip_address: "10.237.1.10"
+    mac_address: "00:TE:MP:DB:01:07"
+    device_id: "D0007"
+    os_type: "Windows Server"
+    os_version: "2022"
+    owner: "rberg"
+    device_type: "database_server"
+    model: "HPE ProLiant DL380 Gen10"
+    department: "IT Systems"
+    status: "active"
+    custom_location: "Philadelphia HQ, Secure Data Center"
+    custom_service_tag: "TEMPLAR-ARCHIVE-007"
+    historical_records_storage: true
+    piece_of_eden_data: true
+    isu_artifact_catalog: true
+    
+  - hostname: "SURVEILLANCE-HUB"
+    fqdn: "SURVEILLANCE-HUB.abstergo.com"
+    ip_address: "192.168.200.25"
+    mac_address: "00:SU:RV:EI:L0:08"
+    device_id: "D0008"
+    os_type: "Linux"
+    os_version: "CentOS 9"
+    owner: "dmalik"
+    device_type: "surveillance_server"
+    model: "Custom Surveillance Array"
+    department: "Security"
+    status: "active"
+    custom_location: "Philadelphia HQ, Security Command Center"
+    custom_service_tag: "WATCH-TOWER-008"
+    global_camera_network: true
+    facial_recognition_ai: true
+    assassin_detection_algorithms: true
+    
+  # Mobile Animus Unit
+  - hostname: "ANIMUS-PORTABLE-001"
+    fqdn: "ANIMUS-PORTABLE-001.abstergo.com"
+    ip_address: "172.16.2.200"
+    mac_address: "00:AN:IM:US:P0:09"
+    device_id: "D0009"
+    os_type: "Animus Mobile OS"
+    os_version: "3.7"
+    owner: "mstilman"
+    device_type: "portable_animus"
+    model: "Animus 3.7 Mobile Unit"
+    department: "Subject Relations"
+    status: "active"
+    custom_asset_tag: "ANIMUS-MOB-009"
+    custom_location: "Montreal Labs, Subject Testing Wing"
+    battery_backup_hours: 8
+    emergency_extraction_capable: true
+    subject_transport_ready: true
+    
+  # Sage Monitoring System
+  - hostname: "SAGE-MONITOR-001"
+    fqdn: "SAGE-MONITOR-001.abstergo.com"
+    ip_address: "172.31.1.42"
+    mac_address: "00:SA:GE:M0:N0:10"
+    device_id: "D0010"
+    os_type: "Custom ISU OS"
+    os_version: "First Civ 1.0"
+    owner: "johnstandish"
+    device_type: "isu_interface"
+    model: "First Civilization Interface Terminal"
+    department: "IT Systems"
+    status: "active"
+    custom_asset_tag: "ISU-INTERFACE-010"
+    custom_location: "Montreal Labs, Restricted Basement Level"
+    first_civilization_tech: true
+    sage_consciousness_monitoring: true
+    isu_memory_access: true
+    juno_communication_capable: true
+    security_classification: "beyond_ultra_classified"
+
+    # Entertainment Division Gaming Systems
+  - hostname: "HELIX-DEV-001"
+    fqdn: "HELIX-DEV-001.abstergo.com"
+    ip_address: "10.200.3.101"
+    mac_address: "00:HE:LI:X0:D0:01"
+    device_id: "D1001"
+    os_type: "Linux"
+    os_version: "Ubuntu 22.04 LTS"
+    owner: "ofilangieri"
+    device_type: "game_development_workstation"
+    model: "Alienware Aurora R15"
+    department: "Entertainment"
+    status: "active"
+    custom_asset_tag: "ENT-DEV-001"
+    custom_location: "Montreal Entertainment Division, Creative Suite"
+    reality_manipulation_software: true
+    historical_narrative_tools: true
+    consumer_data_harvesting: true
+    
+  - hostname: "MEDIA-RENDER-001"
+    fqdn: "MEDIA-RENDER-001.abstergo.com"
+    ip_address: "10.200.3.150"
+    mac_address: "00:ME:DI:A0:R0:02"
+    device_id: "D1002"
+    os_type: "Windows 11"
+    os_version: "23H2"
+    owner: "mdecoteau"
+    device_type: "rendering_workstation"
+    model: "Dell Precision 7000 Series"
+    department: "Entertainment"
+    status: "active"
+    custom_asset_tag: "ENT-RENDER-002"
+    custom_location: "Montreal Entertainment Division, Media Lab"
+    historical_recreation_engine: true
+    propaganda_content_generation: true
+    
+  # Global Security Command Centers
+  - hostname: "SIGMA-COMMAND-EU"
+    fqdn: "SIGMA-COMMAND-EU.abstergo.com"
+    ip_address: "10.100.5.100"
+    mac_address: "00:SI:GM:A0:EU:03"
+    device_id: "D1003"
+    os_type: "Linux"
+    os_version: "Red Hat Enterprise 9"
+    owner: "isabelle"
+    device_type: "tactical_command_center"
+    model: "Custom Multi-Display Command Console"
+    department: "Security"
+    status: "active"
+    custom_asset_tag: "SIGMA-EU-003"
+    custom_location: "Paris Operations Center, Command Floor"
+    assassin_tracking_display: true
+    real_time_operations_coordination: true
+    templar_agent_monitoring: true
+    
+  - hostname: "SURVEILLANCE-MOSCOW"
+    fqdn: "SURVEILLANCE-MOSCOW.abstergo.com"
+    ip_address: "10.100.6.200"
+    mac_address: "00:SU:RV:MO:SC:04"
+    device_id: "D1004"
+    os_type: "Custom Security OS"
+    os_version: "SecureWatch 3.0"
+    owner: "galina"
+    device_type: "surveillance_terminal"
+    model: "Abstergo SecureWatch Console"
+    department: "Security"
+    status: "active"
+    custom_asset_tag: "SURV-MOSCOW-004"
+    custom_location: "Moscow Safe House, Surveillance Room"
+    russian_brotherhood_monitoring: true
+    encrypted_communications: true
+    double_agent_protocols: true
+    
+  # Advanced Genetics Laboratory Equipment
+  - hostname: "GENE-ANALYZER-001"
+    fqdn: "GENE-ANALYZER-001.abstergo.com"
+    ip_address: "192.168.100.75"
+    mac_address: "00:GE:NE:AN:AL:05"
+    device_id: "D1005"
+    os_type: "Embedded Linux"
+    os_version: "BioLinux 8.0"
+    owner: "bkilkenny"
+    device_type: "genetic_analyzer"
+    model: "Illumina NovaSeq X Plus"
+    department: "Genetics"
+    status: "active"
+    custom_asset_tag: "GEN-ANAL-005"
+    custom_location: "Dublin Genetics Lab, Analysis Wing"
+    isu_marker_detection: true
+    sage_bloodline_identification: true
+    dna_manipulation_capable: true
+    
+  - hostname: "CRISPR-WORKSTATION"
+    fqdn: "CRISPR-WORKSTATION.abstergo.com"
+    ip_address: "192.168.100.85"
+    mac_address: "00:CR:IS:PR:WS:06"
+    device_id: "D1006"
+    os_type: "Windows 11"
+    os_version: "22H2"
+    owner: "kmcgowan"
+    device_type: "gene_editing_workstation"
+    model: "Thermo Fisher Gene Editing Suite"
+    department: "Genetics"
+    status: "active"
+    custom_asset_tag: "CRISPR-006"
+    custom_location: "Philadelphia HQ, Advanced Genetics Lab"
+    genetic_modification_tools: true
+    bloodline_enhancement_research: true
+    isu_dna_integration_testing: true
+    
+  # Phoenix Project Research Systems
+  - hostname: "PHOENIX-MAIN"
+    fqdn: "PHOENIX-MAIN.abstergo.com"
+    ip_address: "172.31.2.100"
+    mac_address: "00:PH:OE:NI:X0:07"
+    device_id: "D1007"
+    os_type: "Custom Phoenix OS"
+    os_version: "Resurrection 1.0"
+    owner: "aortega"
+    device_type: "resurrection_engine"
+    model: "Abstergo Phoenix Resurrection Console"
+    department: "Historical Research"
+    status: "classified"
+    custom_asset_tag: "PHOENIX-MAIN-007"
+    custom_location: "Madrid Facility, Project Phoenix Lab"
+    isu_consciousness_reconstruction: true
+    genetic_memory_synthesis: true
+    digital_resurrection_protocols: true
+    
+  - hostname: "MONGOL-RESEARCH-SYS"
+    fqdn: "MONGOL-RESEARCH-SYS.abstergo.com"
+    ip_address: "10.50.3.120"
+    mac_address: "00:MO:NG:OL:RS:08"
+    device_id: "D1008"
+    os_type: "Linux"
+    os_version: "CentOS 9"
+    owner: "simonhathaway"
+    device_type: "historical_research_terminal"
+    model: "Dell OptiPlex 7090"
+    department: "Historical Research"
+    status: "active"
+    custom_asset_tag: "HIST-MONGOL-008"
+    custom_location: "London Office, Historical Research Wing"
+    mongol_empire_database: true
+    asian_bloodline_tracking: true
+    historical_timeline_analysis: true
+    
+  # Cybersecurity Infrastructure
+  - hostname: "CYBER-DEFENSE-HUB"
+    fqdn: "CYBER-DEFENSE-HUB.abstergo.com"
+    ip_address: "192.168.1.50"
+    mac_address: "00:CY:BE:R0:DF:09"
+    device_id: "D1009"
+    os_type: "Hardened Linux"
+    os_version: "Security-Enhanced Linux 9"
+    owner: "eweaver"
+    device_type: "cybersecurity_console"
+    model: "Custom Cybersecurity Command Center"
+    department: "IT Systems"
+    status: "active"
+    custom_asset_tag: "CYBER-DEF-009"
+    custom_location: "Philadelphia HQ, Cybersecurity Operations Center"
+    assassin_intrusion_detection: true
+    templar_network_protection: true
+    threat_intelligence_analysis: true
+    
+  - hostname: "DATA-VAULT-001"
+    fqdn: "DATA-VAULT-001.abstergo.com"
+    ip_address: "172.16.5.10"
+    mac_address: "00:DA:TA:VA:UL:10"
+    device_id: "D1010"
+    os_type: "Secure Vault OS"
+    os_version: "DataVault 2.5"
+    owner: "rharrison"
+    device_type: "secure_storage_server"
+    model: "HPE StoreEasy 1660"
+    department: "IT Systems"
+    status: "active"
+    custom_location: "Montreal Labs, Secure Data Center"
+    custom_service_tag: "VAULT-GENETIC-010"
+    genetic_memory_archive: true
+    historical_database_backup: true
+    templar_intelligence_storage: true
+    
+  # Corporate Finance Systems
+  - hostname: "FINANCE-TERMINAL-NY"
+    fqdn: "FINANCE-TERMINAL-NY.abstergo.com"
+    ip_address: "192.168.2.100"
+    mac_address: "00:FI:NA:NC:E0:11"
+    device_id: "D1011"
+    os_type: "Windows 11"
+    os_version: "23H2"
+    owner: "mbishop"
+    device_type: "financial_workstation"
+    model: "Bloomberg Terminal Workstation"
+    department: "Finance"
+    status: "active"
+    custom_asset_tag: "FIN-NYC-011"
+    custom_location: "New York Office, Executive Finance Floor"
+    shadow_economy_access: true
+    templar_funding_management: true
+    cryptocurrency_operations: true
+    
+  - hostname: "LEGAL-RESEARCH-SYS"
+    fqdn: "LEGAL-RESEARCH-SYS.abstergo.com"
+    ip_address: "192.168.2.150"
+    mac_address: "00:LE:GA:L0:RS:12"
+    device_id: "D1012"
+    os_type: "Windows 11"
+    os_version: "22H2"
+    owner: "jsinclair"
+    device_type: "legal_research_terminal"
+    model: "Surface Studio 2+"
+    department: "Legal"
+    status: "active"
+    custom_asset_tag: "LEGAL-LON-012"
+    custom_location: "London Office, Legal Affairs Department"
+    case_law_database: true
+    corporate_cover_protocols: true
+    templar_legal_archives: true
+    
+  # Medical Monitoring Systems
+  - hostname: "MEDICAL-MONITOR-001"
+    fqdn: "MEDICAL-MONITOR-001.abstergo.com"
+    ip_address: "10.50.4.200"
+    mac_address: "00:ME:DI:C0:M0:13"
+    device_id: "D1013"
+    os_type: "Medical Linux"
+    os_version: "MedOS 5.0"
+    owner: "pchen"
+    device_type: "medical_monitoring_station"
+    model: "GE Healthcare Monitoring Suite"
+    department: "Medical"
+    status: "active"
+    custom_asset_tag: "MED-MON-013"
+    custom_location: "San Francisco Medical Center, ICU Wing"
+    animus_subject_vitals: true
+    bleeding_effect_detection: true
+    emergency_medical_protocols: true
+    
+  - hostname: "RECRUIT-SCREENING"
+    fqdn: "RECRUIT-SCREENING.abstergo.com"
+    ip_address: "192.168.3.75"
+    mac_address: "00:RE:CR:UI:T0:14"
+    device_id: "D1014"
+    os_type: "Windows 11"
+    os_version: "22H2"
+    owner: "lmorrison"
+    device_type: "screening_workstation"
+    model: "HP EliteBook 850 G9"
+    department: "Human Resources"
+    status: "active"
+    custom_asset_tag: "HR-SCREEN-014"
+    custom_location: "Chicago HR Center, Recruitment Wing"
+    background_verification_system: true
+    genetic_lineage_screening: true
+    subject_acquisition_database: true
+    
+  # International Research Terminals
+  - hostname: "TOKYO-RESEARCH-001"
+    fqdn: "TOKYO-RESEARCH-001.abstergo.com"
+    ip_address: "10.300.2.100"
+    mac_address: "00:TO:KY:O0:R0:15"
+    device_id: "D1015"
+    os_type: "Linux"
+    os_version: "Ubuntu 22.04 LTS"
+    owner: "ksato"
+    device_type: "research_workstation"
+    model: "Fujitsu Celsius H7712"
+    department: "Research"
+    status: "active"
+    custom_asset_tag: "ASIA-RES-015"
+    custom_location: "Tokyo Branch, Asia-Pacific Research Center"
+    japanese_historical_database: true
+    asian_assassin_lineage_tracker: true
+    cultural_research_tools: true
+    
+  - hostname: "ISTANBUL-TERMINAL"
+    fqdn: "ISTANBUL-TERMINAL.abstergo.com"
+    ip_address: "10.50.5.125"
+    mac_address: "00:IS:TA:NB:UL:16"
+    device_id: "D1016"
+    os_type: "Windows 11"
+    os_version: "22H2"
+    owner: "mhamidi"
+    device_type: "historical_terminal"
+    model: "Lenovo ThinkPad P1 Gen 5"
+    department: "Research"
+    status: "active"
+    custom_asset_tag: "MIDEAST-016"
+    custom_location: "Istanbul Office, Middle East Research Division"
+    crusades_database_access: true
+    levantine_brotherhood_intelligence: true
+    ottoman_empire_archives: true
+    
+  # Quality Assurance Testing Lab
+  - hostname: "QA-TEST-RIG-001"
+    fqdn: "QA-TEST-RIG-001.abstergo.com"
+    ip_address: "10.200.4.100"
+    mac_address: "00:QA:TE:ST:R0:17"
+    device_id: "D1017"
+    os_type: "Multiple OS"
+    os_version: "Various"
+    owner: "snguyen"
+    device_type: "testing_platform"
+    model: "Custom Multi-OS Testing Rig"
+    department: "Quality Assurance"
+    status: "active"
+    custom_asset_tag: "QA-TEST-017"
+    custom_location: "Montreal Labs, QA Testing Floor"
+    animus_software_testing: true
+    multi_platform_compatibility: true
+    user_experience_simulation: true
+    
+  # Corporate Communications
+  - hostname: "PR-MEDIA-CENTER"
+    fqdn: "PR-MEDIA-CENTER.abstergo.com"
+    ip_address: "192.168.4.100"
+    mac_address: "00:PR:ME:DI:A0:18"
+    device_id: "D1018"
+    os_type: "macOS"
+    os_version: "Ventura 13.6"
+    owner: "ddavis"
+    device_type: "media_production_workstation"
+    model: "Mac Studio M2 Ultra"
+    department: "Communications"
+    status: "active"
+    custom_asset_tag: "PR-MEDIA-018"
+    custom_location: "Los Angeles Office, Media Production Suite"
+    propaganda_creation_tools: true
+    crisis_management_dashboard: true
+    social_media_manipulation: true
+    
+  # Facility Security Systems
+  - hostname: "SECURITY-CONTROL-HQ"
+    fqdn: "SECURITY-CONTROL-HQ.abstergo.com"
+    ip_address: "10.237.10.50"
+    mac_address: "00:SE:CU:RI:TY:19"
+    device_id: "D1019"
+    os_type: "Security OS"
+    os_version: "SecureGuard 4.0"
+    owner: "rkowalski"
+    device_type: "security_control_panel"
+    model: "Abstergo Facility Control System"
+    department: "Facilities"
+    status: "active"
+    custom_asset_tag: "SEC-CTRL-019"
+    custom_location: "Philadelphia HQ, Central Security Command"
+    building_access_control: true
+    animus_lab_protection: true
+    biometric_scanner_network: true
+
+  # Advanced Animus Development Systems
+  - hostname: "ANIMUS-BETA-007"
+    fqdn: "ANIMUS-BETA-007.abstergo.com"
+    ip_address: "172.16.3.107"
+    mac_address: "00:AN:IM:US:B7:21"
+    device_id: "D2001"
+    os_type: "Animus Beta OS"
+    os_version: "5.0-BETA"
+    owner: "sgrammatico"
+    device_type: "prototype_animus"
+    model: "Animus 5.0 Prototype Console"
+    department: "Animus Research"
+    status: "testing"
+    custom_asset_tag: "ANIMUS-PROTO-021"
+    custom_location: "Madrid Facility, Advanced R&D Lab"
+    next_gen_memory_access: true
+    enhanced_bleeding_effect_control: true
+    multi_subject_synchronization: true
+    experimental_features: true
+    
+  - hostname: "MEMORY-CLOUD-001"
+    fqdn: "MEMORY-CLOUD-001.abstergo.com"
+    ip_address: "172.16.4.200"
+    mac_address: "00:ME:MO:RY:CL:22"
+    device_id: "D2002"
+    os_type: "Cloud Memory OS"
+    os_version: "CloudMem 2.0"
+    owner: "avidic"
+    device_type: "cloud_memory_server"
+    model: "Abstergo CloudMemory Cluster"
+    department: "Animus Research"
+    status: "active"
+    custom_location: "Philadelphia HQ, Cloud Computing Center"
+    custom_service_tag: "CLOUD-MEM-022"
+    distributed_genetic_memories: true
+    global_memory_synchronization: true
+    infinite_storage_capacity: true
+    
+  # Piece of Eden Research Equipment
+  - hostname: "EDEN-ANALYZER-001"
+    fqdn: "EDEN-ANALYZER-001.abstergo.com"
+    ip_address: "10.237.50.100"
+    mac_address: "00:ED:EN:AN:AL:23"
+    device_id: "D2003"
+    os_type: "ISU Analysis OS"
+    os_version: "EdenScan 1.5"
+    owner: "aortega"
+    device_type: "artifact_analyzer"
+    model: "First Civilization Artifact Scanner"
+    department: "Historical Research"
+    status: "classified"
+    custom_asset_tag: "EDEN-SCAN-023"
+    custom_location: "Madrid Facility, Artifact Containment Lab"
+    piece_of_eden_analysis: true
+    isu_technology_interface: true
+    artifact_energy_measurement: true
+    consciousness_detection: true
+    
+  - hostname: "APPLE-CONTAINMENT"
+    fqdn: "APPLE-CONTAINMENT.abstergo.com"
+    ip_address: "10.237.51.150"
+    mac_address: "00:AP:PL:E0:CO:24"
+    device_id: "D2004"
+    os_type: "Containment OS"
+    os_version: "Secure 3.0"
+    owner: "aberg"
+    device_type: "artifact_containment_unit"
+    model: "Apple of Eden Secure Housing"
+    department: "Executive"
+    status: "maximum_security"
+    custom_asset_tag: "APPLE-SECURE-024"
+    custom_location: "London Office, Executive Vault Level -5"
+    apple_of_eden_storage: true
+    mind_control_shielding: true
+    biometric_access_only: true
+    templar_council_authorization: true
+    
+  # Field Operations Mobile Units
+  - hostname: "SIGMA-VAN-ALPHA"
+    fqdn: "SIGMA-VAN-ALPHA.abstergo.com"
+    ip_address: "10.237.60.101"
+    mac_address: "00:SI:GM:A0:VA:25"
+    device_id: "D2005"
+    os_type: "Mobile Ops Linux"
+    os_version: "TacticalOS 2.5"
+    owner: "jstilman"
+    device_type: "mobile_command_unit"
+    model: "Mercedes Sprinter Tactical Van"
+    department: "Security"
+    status: "field_ready"
+    custom_asset_tag: "SIGMA-VAN-025"
+    custom_location: "Mobile - European Operations"
+    satellite_communications: true
+    assassin_tracking_equipment: true
+    portable_animus_interface: true
+    weapons_storage_compartment: true
+    
+  - hostname: "RECON-DRONE-001"
+    fqdn: "RECON-DRONE-001.abstergo.com"
+    ip_address: "10.237.61.50"
+    mac_address: "00:RE:CO:N0:DR:26"
+    device_id: "D2006"
+    os_type: "Drone OS"
+    os_version: "SkyWatch 1.8"
+    owner: "isabelle"
+    device_type: "surveillance_drone"
+    model: "Abstergo SkyEye Recon Drone"
+    department: "Security"
+    status: "active"
+    custom_asset_tag: "SKY-RECON-026"
+    custom_location: "Paris Operations Center, Drone Bay"
+    facial_recognition_camera: true
+    assassin_movement_tracking: true
+    stealth_mode_capable: true
+    real_time_video_feed: true
+    
+  # Biotechnology Research Systems
+  - hostname: "STEM-CELL-LAB-001"
+    fqdn: "STEM-CELL-LAB-001.abstergo.com"
+    ip_address: "192.168.101.75"
+    mac_address: "00:ST:EM:CE:LL:27"
+    device_id: "D2007"
+    os_type: "BioLab OS"
+    os_version: "StemTech 3.2"
+    owner: "bkilkenny"
+    device_type: "stem_cell_processor"
+    model: "Advanced Stem Cell Cultivation System"
+    department: "Genetics"
+    status: "active"
+    custom_asset_tag: "STEM-LAB-027"
+    custom_location: "Dublin Genetics Lab, Regenerative Medicine Wing"
+    genetic_reconstruction: true
+    isu_dna_integration: true
+    cellular_memory_extraction: true
+    
+  - hostname: "BIOPRINTER-PROTOTYPE"
+    fqdn: "BIOPRINTER-PROTOTYPE.abstergo.com"
+    ip_address: "192.168.101.85"
+    mac_address: "00:BI:O0:PR:IN:28"
+    device_id: "D2008"
+    os_type: "BioPrint OS"
+    os_version: "Print3D 2.1"
+    owner: "kmcgowan"
+    device_type: "bioprinter"
+    model: "Abstergo Biological 3D Printer"
+    department: "Genetics"
+    status: "experimental"
+    custom_asset_tag: "BIO-PRINT-028"
+    custom_location: "Philadelphia HQ, Experimental Biology Lab"
+    organ_reconstruction: true
+    genetic_tissue_printing: true
+    sage_body_replication: true
+    
+  # Quantum Computing Research
+  - hostname: "QUANTUM-PROC-001"
+    fqdn: "QUANTUM-PROC-001.abstergo.com"
+    ip_address: "172.31.10.100"
+    mac_address: "00:QU:AN:TU:M0:29"
+    device_id: "D2009"
+    os_type: "Quantum OS"
+    os_version: "Q-Compute 1.0"
+    owner: "johnstandish"
+    device_type: "quantum_computer"
+    model: "IBM Quantum System Two"
+    department: "IT Systems"
+    status: "classified"
+    custom_asset_tag: "QUANTUM-029"
+    custom_location: "Montreal Labs, Quantum Research Division"
+    isu_algorithm_processing: true
+    genetic_memory_simulation: true
+    timeline_calculation_engine: true
+    
+  - hostname: "AI-CONSCIOUSNESS-001"
+    fqdn: "AI-CONSCIOUSNESS-001.abstergo.com"
+    ip_address: "172.31.11.200"
+    mac_address: "00:AI:CO:NS:CI:30"
+    device_id: "D2010"
+    os_type: "Consciousness OS"
+    os_version: "MindBridge 2.0"
+    owner: "aortega"
+    device_type: "ai_consciousness_engine"
+    model: "Abstergo Digital Consciousness Matrix"
+    department: "Historical Research"
+    status: "ultra_classified"
+    custom_asset_tag: "AI-MIND-030"
+    custom_location: "Madrid Facility, Phoenix Project Core Lab"
+    digital_consciousness_simulation: true
+    isu_mind_reconstruction: true
+    genetic_personality_modeling: true
+    
+  # Global Communications Infrastructure
+  - hostname: "SATCOM-RELAY-001"
+    fqdn: "SATCOM-RELAY-001.abstergo.com"
+    ip_address: "10.237.70.100"
+    mac_address: "00:SA:TC:OM:RE:31"
+    device_id: "D2011"
+    os_type: "Satellite OS"
+    os_version: "SatLink 4.0"
+    owner: "aberg"
+    device_type: "satellite_communication_hub"
+    model: "Abstergo Global Satellite Array"
+    department: "Executive"
+    status: "active"
+    custom_location: "London Office, Satellite Operations Center"
+    custom_service_tag: "SATCOM-GLOBAL-031"
+    worldwide_templar_communications: true
+    encrypted_data_transmission: true
+    assassin_communication_jamming: true
+    
+  - hostname: "DARKWEB-MONITOR-001"
+    fqdn: "DARKWEB-MONITOR-001.abstergo.com"
+    ip_address: "192.168.201.50"
+    mac_address: "00:DA:RK:WE:B0:32"
+    device_id: "D2012"
+    os_type: "Anonymous Linux"
+    os_version: "DeepWatch 3.0"
+    owner: "eweaver"
+    device_type: "dark_web_monitoring_station"
+    model: "Custom Anonymity Breach System"
+    department: "IT Systems"
+    status: "active"
+    custom_asset_tag: "DARK-MON-032"
+    custom_location: "Philadelphia HQ, Cyber Intelligence Center"
+    assassin_dark_web_monitoring: true
+    black_market_surveillance: true
+    encrypted_communication_breaking: true
+    
+  # Advanced Manufacturing Systems
+  - hostname: "NANO-ASSEMBLER-001"
+    fqdn: "NANO-ASSEMBLER-001.abstergo.com"
+    ip_address: "172.18.5.100"
+    mac_address: "00:NA:NO:AS:EM:33"
+    device_id: "D2013"
+    os_type: "Nano OS"
+    os_version: "MicroBuild 1.5"
+    owner: "violet"
+    device_type: "nanotechnology_assembler"
+    model: "Molecular Assembly Platform"
+    department: "Research"
+    status: "experimental"
+    custom_asset_tag: "NANO-ASM-033"
+    custom_location: "São Paulo Facility, Advanced Materials Lab"
+    molecular_reconstruction: true
+    isu_technology_replication: true
+    microscopic_device_assembly: true
+    
+  - hostname: "HOLOGRAM-PROJECTOR"
+    fqdn: "HOLOGRAM-PROJECTOR.abstergo.com"
+    ip_address: "10.100.8.150"
+    mac_address: "00:HO:LO:GR:AM:34"
+    device_id: "D2014"
+    os_type: "Holographic OS"
+    os_version: "HoloDisplay 2.0"
+    owner: "ddavis"
+    device_type: "holographic_projector"
+    model: "Abstergo HoloPresent System"
+    department: "Communications"
+    status: "active"
+    custom_asset_tag: "HOLO-PROJ-034"
+    custom_location: "Los Angeles Office, Executive Presentation Theater"
+    three_dimensional_presentations: true
+    historical_recreation_display: true
+    executive_briefing_system: true
+    
+  # Biometric Security Systems
+  - hostname: "BIOMETRIC-VAULT-001"
+    fqdn: "BIOMETRIC-VAULT-001.abstergo.com"
+    ip_address: "10.237.80.100"
+    mac_address: "00:BI:OM:ET:VA:35"
+    device_id: "D2015"
+    os_type: "Vault Security OS"
+    os_version: "BioLock 5.0"
+    owner: "rkowalski"
+    device_type: "biometric_security_vault"
+    model: "Abstergo Biometric Access Control"
+    department: "Facilities"
+    status: "active"
+    custom_asset_tag: "BIO-VAULT-035"
+    custom_location: "Philadelphia HQ, Maximum Security Sublevel"
+    dna_recognition_scanner: true
+    retinal_pattern_analysis: true
+    voice_print_verification: true
+    sage_detection_protocols: true
+    
+  - hostname: "NEURAL-SCANNER-001"
+    fqdn: "NEURAL-SCANNER-001.abstergo.com"
+    ip_address: "10.50.8.200"
+    mac_address: "00:NE:UR:AL:SC:36"
+    device_id: "D2016"
+    os_type: "Neural OS"
+    os_version: "BrainScan 3.0"
+    owner: "pchen"
+    device_type: "neural_activity_scanner"
+    model: "Advanced Neural Pattern Analyzer"
+    department: "Medical"
+    status: "active"
+    custom_asset_tag: "NEURAL-036"
+    custom_location: "San Francisco Medical Center, Neurology Wing"
+    bleeding_effect_brain_monitoring: true
+    genetic_memory_neural_mapping: true
+    consciousness_pattern_analysis: true
+    
+  # Environmental Control Systems
+  - hostname: "CLIMATE-CONTROL-HQ"
+    fqdn: "CLIMATE-CONTROL-HQ.abstergo.com"
+    ip_address: "192.168.5.100"
+    mac_address: "00:CL:IM:AT:E0:37"
+    device_id: "D2017"
+    os_type: "Environmental OS"
+    os_version: "ClimateCtrl 4.0"
+    owner: "amartinez"
+    device_type: "environmental_control_system"
+    model: "Precision Climate Management Array"
+    department: "Archives"
+    status: "active"
+    custom_location: "Seville Archive Facility, Environmental Control Room"
+    custom_service_tag: "CLIMATE-CTRL-037"
+    historical_document_preservation: true
+    artifact_optimal_storage: true
+    humidity_temperature_control: true
+    
+  # Emergency Response Systems
+  - hostname: "EMERGENCY-RESPONSE"
+    fqdn: "EMERGENCY-RESPONSE.abstergo.com"
+    ip_address: "10.237.90.100"
+    mac_address: "00:EM:ER:GE:NC:38"
+    device_id: "D2018"
+    os_type: "Emergency OS"
+    os_version: "CrisisCtrl 2.5"
+    owner: "rthompson"
+    device_type: "emergency_response_center"
+    model: "Integrated Crisis Management System"
+    department: "IT"
+    status: "standby"
+    custom_asset_tag: "EMERG-CTRL-038"
+    custom_location: "Philadelphia HQ, Emergency Operations Center"
+    assassin_breach_protocols: true
+    facility_lockdown_systems: true
+    data_destruction_capabilities: true
+    
+  # Advanced Psychological Analysis
+  - hostname: "PSYCH-PROFILE-001"
+    fqdn: "PSYCH-PROFILE-001.abstergo.com"
+    ip_address: "10.50.9.150"
+    mac_address: "00:PS:YC:H0:PR:39"
+    device_id: "D2019"
+    os_type: "Psychology OS"
+    os_version: "MindProfile 3.5"
+    owner: "mstilman"
+    device_type: "psychological_analysis_system"
+    model: "Advanced Behavioral Analysis Suite"
+    department: "Subject Relations"
+    status: "active"
+    custom_asset_tag: "PSYCH-039"
+    custom_location: "Montreal Labs, Subject Psychology Wing"
+    subject_mental_state_analysis: true
+    animus_compatibility_assessment: true
+    bleeding_effect_prediction: true
+    
+  # Time Analysis Research System
+  - hostname: "TEMPORAL-ANALYZER"
+    fqdn: "TEMPORAL-ANALYZER.abstergo.com"
+    ip_address: "172.31.20.100"
+    mac_address: "00:TE:MP:OR:AL:40"
+    device_id: "D2020"
+    os_type: "Temporal OS"
+    os_version: "TimeStream 1.0"
+    owner: "simonhathaway"
+    device_type: "temporal_analysis_engine"
+    model: "Chronological Pattern Recognition System"
+    department: "Historical Research"
+    status: "experimental"
+    custom_asset_tag: "TEMPORAL-040"
+    custom_location: "London Office, Temporal Research Division"
+    historical_timeline_analysis: true
+    genetic_memory_chronology: true
+    temporal_paradox_detection: true
+    isu_time_manipulation_study: true
+
+
+services:
+  - name: "Animus Database Management System"
+    port: 443
+    protocol: "HTTPS"
+    service_id: "S0001"
+    description: "Central genetic memory database and Animus session management"
+    owner: "avidic"
+    templar_access_only: true
+    genetic_memory_storage: true
+    bleeding_effect_tracking: true
+    ancestor_lineage_mapping: true
+    
+  - name: "Helix Cloud Gaming Platform"
+    port: 443
+    protocol: "HTTPS"
+    service_id: "S0002"
+    description: "Consumer gaming platform for crowd-sourced genetic memory exploration"
+    owner: "sgrammatico"
+    public_facing: true
+    data_harvesting_enabled: true
+    consumer_dna_collection: true
+    hidden_templar_agenda: true
+    
+  - name: "Sage Detection Network"
+    port: 8443
+    protocol: "HTTPS"
+    service_id: "S0003"
+    description: "Global monitoring system for identifying Sage subjects"
+    owner: "dmalik"
+    isu_dna_scanning: true
+    first_civilization_markers: true
+    automated_subject_flagging: true
+    global_database_integration: true
+    
+  - name: "Templar Communications Hub"
+    port: 9443
+    protocol: "Encrypted"
+    service_id: "S0004"
+    description: "Secure communications network for Templar Order operations"
+    owner: "aberg"
+    templar_council_access: true
+    end_to_end_encryption: true
+    assassin_proof_protocols: true
+    global_templar_coordination: true
+    
+  - name: "Historical Archive System"
+    port: 1433
+    protocol: "SQL"
+    service_id: "S0005"
+    description: "Comprehensive historical records and genealogical database"
+    owner: "llaetitia"
+    ancestral_lineage_tracking: true
+    historical_artifact_catalog: true
+    piece_of_eden_locations: true
+    assassin_bloodline_monitoring: true
+    
+  - name: "Abstergo Entertainment Portal"
+    port: 80
+    protocol: "HTTP"
+    service_id: "S0006"
+    description: "Public entertainment division website and media distribution"
+    owner: "violet"
+    corporate_front_operation: true
+    historical_fiction_games: true
+    reality_manipulation: true
+    templar_propaganda_subtle: true
+    
+  - name: "Subject Monitoring & Analysis"
+    port: 5432
+    protocol: "PostgreSQL"
+    service_id: "S0007"
+    description: "Animus subject health monitoring and psychological analysis"
+    owner: "mstilman"
+    vital_signs_tracking: true
+    bleeding_effect_analysis: true
+    subject_psychological_profile: true
+    emergency_extraction_alerts: true
+    
+  - name: "Sigma Team Operations Control"
+    port: 6443
+    protocol: "Secure TCP"
+    service_id: "S0008"
+    description: "Field operations coordination and assassin elimination tracking"
+    owner: "jstilman"
+    field_operative_coordination: true
+    assassin_location_tracking: true
+    mission_status_reporting: true
+    tactical_support_systems: true
+    
+  - name: "First Civilization Interface"
+    port: 7777
+    protocol: "ISU"
+    service_id: "S0009"
+    description: "Communication interface with First Civilization consciousness"
+    owner: "johnstandish"
+    juno_communication_portal: true
+    isu_technology_integration: true
+    sage_consciousness_bridge: true
+    first_civ_memory_access: true
+    security_classification: "beyond_ultra_classified"
+    
+  - name: "Global Surveillance Network"
+    port: 8080
+    protocol: "RTSP"
+    service_id: "S0010"
+    description: "Worldwide surveillance and facial recognition system"
+    owner: "dmalik"
+    facial_recognition_ai: true
+    assassin_detection_algorithms: true
+    global_camera_integration: true
+    real_time_threat_assessment: true
+    modern_day_templar_ops: true

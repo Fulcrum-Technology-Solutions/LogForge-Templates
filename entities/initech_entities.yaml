@@ -1,0 +1,655 @@
+# Entity Registry for Initech Corporation - Synthetic Log Generator
+
+# Organization-wide configurations
+# These settings define global properties for the entire environment
+organization:
+  name: "Initech Corporation"
+  domain: "initech.com"
+  netbios_domain: "INITECH"
+  timezone: "America/Chicago"
+  industry: "Software Development"
+  founded: 1982
+  ticker_symbol: "INTC"
+  motto: "We Fix the Glitch"
+  corporate_status: "bureaucratic_nightmare"
+  location:
+    address: "4120 Freidrich Lane"
+    city: "Austin"
+    state: "Texas"
+    zip: "78744"
+    country: "USA"
+    lat: 30.2672
+    long: -97.7431
+  contacts:
+    security: "security@initech.com"
+    it_support: "support@initech.com"
+    hr: "hr@initech.com"
+    helpdesk: "helpdesk@initech.com"
+    facilities: "facilities@initech.com"
+    accounting: "accounting@initech.com"
+  settings:
+    password_expiry_days: 90
+    account_lockout_threshold: 5
+    session_timeout_minutes: 30
+    max_login_attempts: 3
+    min_password_length: 8
+    require_mfa: false
+    tps_report_mandatory: true
+    office_space_morale: "minimal"
+    red_stapler_security: "maximum"
+    printer_rage_incidents: "frequent"
+    corporate_downsizing_threat: "constant"
+
+# Network ranges configuration for internal IP address generation
+network_ranges:
+  # Server Infrastructure
+  - cidr: "10.10.0.0/16"
+    name: "server_infrastructure"
+    description: "Domain controllers, file servers, database servers"
+    location: "Data Center"
+    security_level: "high"
+    
+  # Network Infrastructure
+  - cidr: "10.20.0.0/16"
+    name: "network_infrastructure"
+    description: "Routers, switches, firewalls, wireless access points"
+    location: "Network Operations"
+    security_level: "maximum"
+    
+  # Security Infrastructure
+  - cidr: "10.30.0.0/16"
+    name: "security_infrastructure"
+    description: "IDS/IPS, SIEM, proxy servers, security scanners"
+    location: "Security Operations Center"
+    security_level: "maximum"
+    
+  # Specialized Infrastructure
+  - cidr: "10.40.0.0/16"
+    name: "specialized_infrastructure"
+    description: "Storage arrays, load balancers, telephony, monitoring"
+    location: "Infrastructure Services"
+    security_level: "high"
+    
+  # User Endpoints
+  - cidr: "172.16.0.0/16"
+    name: "user_endpoints"
+    description: "Workstations, laptops, and user devices"
+    location: "Office Floor"
+    security_level: "standard"
+
+users:
+  # Management
+  - username: "blumbergh"
+    full_name: "Bill Lumbergh"
+    email: "blumbergh@initech.com"
+    user_id: "U0001"
+    department: "Management"
+    title: "Vice President"
+    is_admin: true
+    employee_type: "management"
+    location:
+      city: "Austin"
+      state: "Texas"
+      country: "USA"
+    organization: "Executive Management"
+    tps_report_obsession: true
+    weekend_work_requests: "frequent"
+    coffee_mug: "world_greatest_boss"
+    
+  # Software Engineers
+  - username: "pgibbons"
+    full_name: "Peter Gibbons"
+    email: "pgibbons@initech.com"
+    user_id: "U0002"
+    department: "Software Engineering"
+    title: "Programmer"
+    is_admin: false
+    employee_type: "engineer"
+    location:
+      city: "Austin"
+      state: "Texas"
+      country: "USA"
+    organization: "Development Team"
+    motivation_level: "zero"
+    y2k_specialist: true
+    hypnotherapy_affected: true
+    
+  - username: "snaidu"
+    full_name: "Samir Nagheenanajar"
+    email: "snaidu@initech.com"
+    user_id: "U0003"
+    department: "Software Engineering"
+    title: "Programmer"
+    is_admin: false
+    employee_type: "engineer"
+    location:
+      city: "Austin"
+      state: "Texas"
+      country: "USA"
+    organization: "Development Team"
+    name_pronunciation_difficulty: "extreme"
+    layoff_anxiety: "high"
+    
+  - username: "mbolton"
+    full_name: "Michael Bolton"
+    email: "mbolton@initech.com"
+    user_id: "U0004"
+    department: "Software Engineering"
+    title: "Programmer"
+    is_admin: false
+    employee_type: "engineer"
+    location:
+      city: "Austin"
+      state: "Texas"
+      country: "USA"
+    organization: "Development Team"
+    singer_name_similarity: true
+    music_preference: "gangster_rap"
+    
+  # Administration
+  - username: "mwaddams"
+    full_name: "Milton Waddams"
+    email: "mwaddams@initech.com"
+    user_id: "U0005"
+    department: "Administration"
+    title: "Collator"
+    is_admin: false
+    employee_type: "admin"
+    location:
+      city: "Austin"
+      state: "Texas"
+      country: "USA"
+    organization: "Administrative Services"
+    red_stapler_ownership: "disputed"
+    basement_relocation: "pending"
+    paycheck_status: "glitch"
+    mumbling_frequency: "constant"
+    
+  # IT Support
+  - username: "tsmith"
+    full_name: "Tom Smykowski"
+    email: "tsmith@initech.com"
+    user_id: "U0006"
+    department: "IT"
+    title: "People Person"
+    is_admin: false
+    employee_type: "it_support"
+    location:
+      city: "Austin"
+      state: "Texas"
+      country: "USA"
+    organization: "Information Technology"
+    people_skills: "self_proclaimed"
+    job_security_anxiety: "maximum"
+    
+  # Consultants (The Bobs)
+  - username: "bporter"
+    full_name: "Bob Porter"
+    email: "bporter@initech.com"
+    user_id: "U0007"
+    department: "Consulting"
+    title: "Efficiency Expert"
+    is_admin: true
+    employee_type: "consultant"
+    location:
+      city: "Austin"
+      state: "Texas"
+      country: "USA"
+    organization: "External Consulting"
+    downsizing_specialist: true
+    tps_report_analysis: "expert"
+    
+  - username: "bslydell"
+    full_name: "Bob Slydell"
+    email: "bslydell@initech.com"
+    user_id: "U0008"
+    department: "Consulting"
+    title: "Efficiency Expert"
+    is_admin: true
+    employee_type: "consultant"
+    location:
+      city: "Austin"
+      state: "Texas"
+      country: "USA"
+    organization: "External Consulting"
+    layoff_determination: "primary_role"
+    job_elimination_expertise: true
+    
+  # Additional Staff
+  - username: "dlawrence"
+    full_name: "Drew Lawrence"
+    email: "dlawrence@initech.com"
+    user_id: "U0009"
+    department: "Accounting"
+    title: "Accountant"
+    is_admin: false
+    employee_type: "accounting"
+    location:
+      city: "Austin"
+      state: "Texas"
+      country: "USA"
+    organization: "Finance Department"
+    tps_report_processing: true
+    
+  - username: "jjohnson"
+    full_name: "Jennifer Johnson"
+    email: "jjohnson@initech.com"
+    user_id: "U0010"
+    department: "Human Resources"
+    title: "HR Specialist"
+    is_admin: false
+    employee_type: "hr"
+    location:
+      city: "Austin"
+      state: "Texas"
+      country: "USA"
+    organization: "Human Resources"
+    employee_handbook_enforcement: true
+
+devices:
+  # User Endpoints - Windows Workstations (20)
+  - hostname: "INITECH-WS001"
+    fqdn: "INITECH-WS001.initech.com"
+    ip_address: "172.16.1.100"
+    mac_address: "00:IN:IT:EC:H0:01"
+    device_id: "D0001"
+    os_type: "Windows XP"
+    os_version: "Professional"
+    owner: "pgibbons"
+    device_type: "workstation"
+    model: "Dell OptiPlex GX280"
+    department: "Software Engineering"
+    status: "active"
+    custom_asset_tag: "WS-001"
+    custom_location: "Cubicle 19-2B"
+    
+  - hostname: "INITECH-WS002"
+    fqdn: "INITECH-WS002.initech.com"
+    ip_address: "172.16.1.101"
+    mac_address: "00:IN:IT:EC:H0:02"
+    device_id: "D0002"
+    os_type: "Windows XP"
+    os_version: "Professional"
+    owner: "snaidu"
+    device_type: "workstation"
+    model: "Dell OptiPlex GX280"
+    department: "Software Engineering"
+    status: "active"
+    custom_asset_tag: "WS-002"
+    custom_location: "Cubicle 19-2C"
+    
+  - hostname: "INITECH-WS003"
+    fqdn: "INITECH-WS003.initech.com"
+    ip_address: "172.16.1.102"
+    mac_address: "00:IN:IT:EC:H0:03"
+    device_id: "D0003"
+    os_type: "Windows XP"
+    os_version: "Professional"
+    owner: "mbolton"
+    device_type: "workstation"
+    model: "Dell OptiPlex GX280"
+    department: "Software Engineering"
+    status: "active"
+    custom_asset_tag: "WS-003"
+    custom_location: "Cubicle 19-2D"
+    
+  - hostname: "INITECH-WS004"
+    fqdn: "INITECH-WS004.initech.com"
+    ip_address: "172.16.1.103"
+    mac_address: "00:IN:IT:EC:H0:04"
+    device_id: "D0004"
+    os_type: "Windows XP"
+    os_version: "Professional"
+    owner: "mwaddams"
+    device_type: "workstation"
+    model: "Dell OptiPlex GX260"
+    department: "Administration"
+    status: "relocated_to_basement"
+    custom_asset_tag: "WS-004"
+    custom_location: "Storage Room B"
+    
+  - hostname: "INITECH-WS005"
+    fqdn: "INITECH-WS005.initech.com"
+    ip_address: "172.16.1.104"
+    mac_address: "00:IN:IT:EC:H0:05"
+    device_id: "D0005"
+    os_type: "Windows XP"
+    os_version: "Professional"
+    owner: "blumbergh"
+    device_type: "manager_workstation"
+    model: "Dell OptiPlex GX620"
+    department: "Management"
+    status: "active"
+    custom_asset_tag: "MGR-005"
+    custom_location: "Corner Office"
+    
+  # Mac Workstations (8)
+  - hostname: "INITECH-MAC001"
+    fqdn: "INITECH-MAC001.initech.com"
+    ip_address: "172.16.2.100"
+    mac_address: "00:MA:C0:DE:SI:06"
+    device_id: "D0006"
+    os_type: "Mac OS X"
+    os_version: "10.3 Panther"
+    owner: "dlawrence"
+    device_type: "design_workstation"
+    model: "Power Mac G5"
+    department: "Design"
+    status: "active"
+    custom_asset_tag: "MAC-006"
+    custom_location: "Design Department"
+    
+  # Linux Workstations (2)
+  - hostname: "INITECH-LNX001"
+    fqdn: "INITECH-LNX001.initech.com"
+    ip_address: "172.16.3.100"
+    mac_address: "00:LI:NU:X0:01:07"
+    device_id: "D0007"
+    os_type: "Red Hat Linux"
+    os_version: "9.0"
+    owner: "tsmith"
+    device_type: "technical_workstation"
+    model: "Dell Precision 650"
+    department: "IT"
+    status: "active"
+    custom_asset_tag: "LNX-007"
+    custom_location: "IT Department"
+    
+  # Laptops (5)
+  - hostname: "INITECH-LAP001"
+    fqdn: "INITECH-LAP001.initech.com"
+    ip_address: "172.16.4.100"
+    mac_address: "00:LA:PT:OP:01:08"
+    device_id: "D0008"
+    os_type: "Windows XP"
+    os_version: "Professional"
+    owner: "bporter"
+    device_type: "laptop"
+    model: "IBM ThinkPad T42"
+    department: "Consulting"
+    status: "active"
+    custom_asset_tag: "LAP-008"
+    custom_location: "Mobile"
+    
+  # Servers - Domain Controllers (2)
+  - hostname: "INITECH-DC01"
+    fqdn: "INITECH-DC01.initech.com"
+    ip_address: "10.10.1.10"
+    mac_address: "00:DC:01:AD:01:09"
+    device_id: "D0009"
+    os_type: "Windows Server 2003"
+    os_version: "Enterprise"
+    owner: "tsmith"
+    device_type: "domain_controller"
+    model: "Dell PowerEdge 2850"
+    department: "IT"
+    status: "active"
+    custom_location: "Server Room"
+    custom_service_tag: "DC-PRIMARY-009"
+    
+  - hostname: "INITECH-DC02"
+    fqdn: "INITECH-DC02.initech.com"
+    ip_address: "10.10.1.11"
+    mac_address: "00:DC:02:AD:02:10"
+    device_id: "D0010"
+    os_type: "Windows Server 2003"
+    os_version: "Enterprise"
+    owner: "tsmith"
+    device_type: "domain_controller"
+    model: "Dell PowerEdge 2850"
+    department: "IT"
+    status: "active"
+    custom_location: "Server Room"
+    custom_service_tag: "DC-BACKUP-010"
+    
+  # File Servers (3)
+  - hostname: "INITECH-FS01"
+    fqdn: "INITECH-FS01.initech.com"
+    ip_address: "10.10.2.10"
+    mac_address: "00:FS:01:FI:LE:11"
+    device_id: "D0011"
+    os_type: "Windows Server 2003"
+    os_version: "Standard"
+    owner: "tsmith"
+    device_type: "file_server"
+    model: "Dell PowerEdge 1850"
+    department: "IT"
+    status: "active"
+    custom_location: "Server Room"
+    custom_service_tag: "FILE-PRIMARY-011"
+    
+  # Database Servers (4)
+  - hostname: "INITECH-SQL01"
+    fqdn: "INITECH-SQL01.initech.com"
+    ip_address: "10.10.3.10"
+    mac_address: "00:SQ:L0:01:DB:12"
+    device_id: "D0012"
+    os_type: "Windows Server 2003"
+    os_version: "Enterprise"
+    owner: "dlawrence"
+    device_type: "database_server"
+    model: "Dell PowerEdge 6850"
+    department: "Database Administration"
+    status: "active"
+    custom_location: "Server Room"
+    custom_service_tag: "SQL-PRIMARY-012"
+    
+  # Web Servers (4)
+  - hostname: "INITECH-WEB01"
+    fqdn: "INITECH-WEB01.initech.com"
+    ip_address: "10.10.4.10"
+    mac_address: "00:WE:B0:01:HT:13"
+    device_id: "D0013"
+    os_type: "Windows Server 2003"
+    os_version: "Web Edition"
+    owner: "pgibbons"
+    device_type: "web_server"
+    model: "Dell PowerEdge 1750"
+    department: "Software Engineering"
+    status: "active"
+    custom_location: "Server Room"
+    custom_service_tag: "WEB-INTERNAL-013"
+    
+  # Network Infrastructure - Routers (4)
+  - hostname: "INITECH-RTR01"
+    fqdn: "INITECH-RTR01.initech.com"
+    ip_address: "10.20.1.1"
+    mac_address: "00:RT:R0:01:CO:14"
+    device_id: "D0014"
+    os_type: "Cisco IOS"
+    os_version: "12.3"
+    owner: "tsmith"
+    device_type: "core_router"
+    model: "Cisco 3745"
+    department: "Network Operations"
+    status: "active"
+    custom_location: "Network Closet"
+    custom_service_tag: "RTR-CORE-014"
+    
+  # Switches (8)
+  - hostname: "INITECH-SW01"
+    fqdn: "INITECH-SW01.initech.com"
+    ip_address: "10.20.2.10"
+    mac_address: "00:SW:01:AC:CE:15"
+    device_id: "D0015"
+    os_type: "Cisco IOS"
+    os_version: "12.2"
+    owner: "tsmith"
+    device_type: "access_switch"
+    model: "Cisco Catalyst 3560"
+    department: "Network Operations"
+    status: "active"
+    custom_location: "Floor 1 IDF"
+    custom_service_tag: "SW-ACCESS-015"
+    
+  # Firewalls (3)
+  - hostname: "INITECH-FW01"
+    fqdn: "INITECH-FW01.initech.com"
+    ip_address: "10.20.3.1"
+    mac_address: "00:FW:01:SE:CU:16"
+    device_id: "D0016"
+    os_type: "PIX OS"
+    os_version: "7.0"
+    owner: "tsmith"
+    device_type: "perimeter_firewall"
+    model: "Cisco PIX 515E"
+    department: "Network Security"
+    status: "active"
+    custom_location: "Network DMZ"
+    custom_service_tag: "FW-PERIMETER-016"
+    
+  # Security Infrastructure - IDS/IPS (2)
+  - hostname: "INITECH-IDS01"
+    fqdn: "INITECH-IDS01.initech.com"
+    ip_address: "10.30.1.10"
+    mac_address: "00:ID:S0:01:SE:17"
+    device_id: "D0017"
+    os_type: "Linux"
+    os_version: "Red Hat 9"
+    owner: "tsmith"
+    device_type: "ids_sensor"
+    model: "Dell PowerEdge 750"
+    department: "Security Operations"
+    status: "active"
+    custom_location: "Security Operations Center"
+    custom_service_tag: "IDS-SENSOR-017"
+    
+  # SIEM Server (1)
+  - hostname: "INITECH-SIEM01"
+    fqdn: "INITECH-SIEM01.initech.com"
+    ip_address: "10.30.2.10"
+    mac_address: "00:SI:EM:01:LO:18"
+    device_id: "D0018"
+    os_type: "Windows Server 2003"
+    os_version: "Enterprise"
+    owner: "tsmith"
+    device_type: "siem_server"
+    model: "Dell PowerEdge 2850"
+    department: "Security Operations"
+    status: "active"
+    custom_location: "Security Operations Center"
+    custom_service_tag: "SIEM-CENTRAL-018"
+    
+  # Specialized Infrastructure - Storage Arrays (2)
+  - hostname: "INITECH-SAN01"
+    fqdn: "INITECH-SAN01.initech.com"
+    ip_address: "10.40.1.10"
+    mac_address: "00:SA:N0:01:ST:19"
+    device_id: "D0019"
+    os_type: "Embedded"
+    os_version: "Storage OS"
+    owner: "tsmith"
+    device_type: "san_array"
+    model: "Dell PowerVault 770N"
+    department: "Storage Operations"
+    status: "active"
+    custom_location: "Server Room"
+    custom_service_tag: "SAN-PRIMARY-019"
+    
+  # Load Balancers (2)
+  - hostname: "INITECH-LB01"
+    fqdn: "INITECH-LB01.initech.com"
+    ip_address: "10.40.2.10"
+    mac_address: "00:LB:01:HA:VR:20"
+    device_id: "D0020"
+    os_type: "F5 TMOS"
+    os_version: "9.0"
+    owner: "tsmith"
+    device_type: "load_balancer"
+    model: "F5 BIG-IP 1500"
+    department: "Network Operations"
+    status: "active"
+    custom_location: "Network DMZ"
+    custom_service_tag: "LB-PRIMARY-020"
+
+services:
+  - name: "TPS Report Processing System"
+    port: 8080
+    protocol: "HTTP"
+    service_id: "S0001"
+    description: "Critical TPS report generation and management system"
+    owner: "blumbergh"
+    tps_report_compliance: true
+    cover_sheet_validation: true
+    
+  - name: "Y2K Remediation Database"
+    port: 1433
+    protocol: "SQL"
+    service_id: "S0002"
+    description: "Y2K compliance tracking and code remediation"
+    owner: "pgibbons"
+    y2k_compliance: true
+    code_analysis_tools: true
+    
+  - name: "Employee Payroll System"
+    port: 443
+    protocol: "HTTPS"
+    service_id: "S0003"
+    description: "Payroll processing and employee compensation management"
+    owner: "jjohnson"
+    glitch_prone: true
+    milton_paycheck_status: "discontinued"
+    
+  - name: "Corporate Email Exchange"
+    port: 25
+    protocol: "SMTP"
+    service_id: "S0004"
+    description: "Internal and external email communications"
+    owner: "tsmith"
+    weekend_work_notifications: true
+    memo_distribution: "maximum"
+    
+  - name: "Office Space Management"
+    port: 80
+    protocol: "HTTP"
+    service_id: "S0005"
+    description: "Cubicle assignments and workspace allocation"
+    owner: "jjohnson"
+    basement_relocation_tracking: true
+    red_stapler_inventory: "disputed"
+    
+  - name: "Printer Queue Management"
+    port: 9100
+    protocol: "RAW"
+    service_id: "S0006"
+    description: "Network printer coordination and job management"
+    owner: "tsmith"
+    paper_jam_frequency: "extreme"
+    rage_incident_logging: true
+    
+  - name: "Efficiency Consulting Portal"
+    port: 8443
+    protocol: "HTTPS"
+    service_id: "S0007"
+    description: "Employee efficiency analysis and downsizing recommendations"
+    owner: "bporter"
+    layoff_determination_algorithms: true
+    job_elimination_tracking: true
+    
+  - name: "Security Access Control"
+    port: 443
+    protocol: "HTTPS"
+    service_id: "S0008"
+    description: "Building access and security badge management"
+    owner: "tsmith"
+    badge_access_logging: true
+    after_hours_tracking: true
+    
+  - name: "Software Development Tools"
+    port: 22
+    protocol: "SSH"
+    service_id: "S0009"
+    description: "Development environment and code repository access"
+    owner: "pgibbons"
+    version_control_system: true
+    bug_tracking_integration: true
+    
+  - name: "Corporate Intranet Portal"
+    port: 80
+    protocol: "HTTP"
+    service_id: "S0010"
+    description: "Internal company information and resource portal"
+    owner: "jjohnson"
+    employee_handbook_access: true
+    corporate_announcements: true
+    downsizing_notifications: "frequent"

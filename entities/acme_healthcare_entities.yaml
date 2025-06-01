@@ -1,0 +1,376 @@
+# Entity Registry for Acme Healthcare - Synthetic Log Generator
+
+# Organization-wide configurations
+# These settings define global properties for the entire environment
+organization:
+  name: "Acme Healthcare"
+  domain: "acmehealthcare.org"
+  netbios_domain: "ACMEHEALTH"
+  timezone: "America/Denver"
+  industry: "Healthcare"
+  location:
+    address: "2500 Medical Center Drive"
+    city: "Denver"
+    state: "Colorado"
+    zip: "80218"
+    country: "USA"
+    lat: 39.7392
+    long: -104.9903
+  contacts:
+    security: "security@acmehealthcare.org"
+    it_support: "itsupport@acmehealthcare.org"
+    helpdesk: "helpdesk@acmehealthcare.org"
+    compliance: "compliance@acmehealthcare.org"
+    privacy: "privacy@acmehealthcare.org"
+  settings:
+    password_expiry_days: 60
+    account_lockout_threshold: 3
+    session_timeout_minutes: 15
+    max_login_attempts: 3
+    min_password_length: 14
+    require_mfa: true
+    hipaa_compliant: true
+    audit_retention_days: 2555
+
+# Network ranges configuration for internal IP address generation
+network_ranges:
+  # Clinical networks
+  - cidr: "10.10.0.0/16"
+    name: "clinical"
+  - cidr: "10.20.0.0/16" 
+    name: "patient_care"
+  - cidr: "172.18.0.0/24"
+    name: "medical_devices"
+  
+  # Administrative networks
+  - cidr: "192.168.0.0/16"
+    name: "administrative"
+  - cidr: "172.16.0.0/24"
+    name: "servers"
+  
+  # Secure networks
+  - start_ip: "10.50.0.0"
+    end_ip: "10.50.255.255"
+    name: "secure_research"
+  - start_ip: "192.168.100.0"
+    end_ip: "192.168.100.255"
+    name: "vpn_remote"
+
+users:
+  # IT Department Users
+  - username: "jdoe"
+    full_name: "Dr. Jane Doe"
+    email: "jdoe@acmehealthcare.org"
+    user_id: "U1001"
+    department: "IT"
+    title: "Chief Information Officer"
+    is_admin: true
+    employee_type: "employee"
+    location:
+      city: "Denver"
+      state: "Colorado"
+      country: "USA"
+    organization: "Information Technology"
+    clearance_level: "high"
+    hipaa_trained: true
+    
+  - username: "mchen"
+    full_name: "Michael Chen"
+    email: "mchen@acmehealthcare.org"
+    user_id: "U1002"
+    department: "IT"
+    title: "Systems Administrator"
+    is_admin: true
+    employee_type: "employee"
+    location:
+      city: "Denver"
+      state: "Colorado"
+      country: "USA"
+    organization: "Information Technology"
+    clearance_level: "high"
+    hipaa_trained: true
+    
+  # Clinical Department Users
+  - username: "sgarcia"
+    full_name: "Dr. Sofia Garcia"
+    email: "sgarcia@acmehealthcare.org"
+    user_id: "U2001"
+    department: "Cardiology"
+    title: "Cardiologist"
+    is_admin: false
+    employee_type: "employee"
+    location:
+      city: "Denver"
+      state: "Colorado"
+      country: "USA"
+    organization: "Clinical Services"
+    clearance_level: "medium"
+    hipaa_trained: true
+    medical_license: "CO-MD-45821"
+    
+  - username: "rsmith"
+    full_name: "Robert Smith"
+    email: "rsmith@acmehealthcare.org"
+    user_id: "U2002"
+    department: "Nursing"
+    title: "Registered Nurse"
+    is_admin: false
+    employee_type: "employee"
+    location:
+      city: "Denver"
+      state: "Colorado"
+      country: "USA"
+    organization: "Patient Care"
+    clearance_level: "medium"
+    hipaa_trained: true
+    nursing_license: "CO-RN-78924"
+    
+  - username: "awilson"
+    full_name: "Dr. Amanda Wilson"
+    email: "awilson@acmehealthcare.org"
+    user_id: "U2003"
+    department: "Radiology"
+    title: "Radiologist"
+    is_admin: false
+    employee_type: "employee"
+    location:
+      city: "Denver"
+      state: "Colorado"
+      country: "USA"
+    organization: "Diagnostic Services"
+    clearance_level: "medium"
+    hipaa_trained: true
+    medical_license: "CO-MD-33567"
+    
+  # Administrative Users
+  - username: "ktaylor"
+    full_name: "Karen Taylor"
+    email: "ktaylor@acmehealthcare.org"
+    user_id: "U3001"
+    department: "Administration"
+    title: "Privacy Officer"
+    is_admin: false
+    employee_type: "employee"
+    location:
+      city: "Denver"
+      state: "Colorado"
+      country: "USA"
+    organization: "Compliance"
+    clearance_level: "high"
+    hipaa_trained: true
+    
+  - username: "ljohnson"
+    full_name: "Lisa Johnson"
+    email: "ljohnson@acmehealthcare.org"
+    user_id: "U3002"
+    department: "Medical Records"
+    title: "Health Information Manager"
+    is_admin: false
+    employee_type: "employee"
+    location:
+      city: "Denver"
+      state: "Colorado"
+      country: "USA"
+    organization: "Health Information Management"
+    clearance_level: "medium"
+    hipaa_trained: true
+
+devices:
+  # Clinical Workstations
+  - hostname: "CLINIC-WS001"
+    fqdn: "CLINIC-WS001.acmehealthcare.org"
+    ip_address: "10.10.1.101"
+    mac_address: "00:2A:3B:4C:5D:6E"
+    device_id: "D1001"
+    os_type: "Windows 11"
+    os_version: "22H2"
+    owner: "sgarcia"
+    device_type: "workstation"
+    model: "HP EliteDesk 800 G9"
+    department: "Cardiology"
+    status: "active"
+    last_updated: "2025-03-15"
+    custom_asset_tag: "CARD-WS-001"
+    custom_location: "Cardiology Unit, Room 204"
+    hipaa_compliant: true
+    encryption_enabled: true
+    
+  - hostname: "NURSING-WS002"
+    fqdn: "NURSING-WS002.acmehealthcare.org"
+    ip_address: "10.20.1.102"
+    mac_address: "00:2A:3B:4C:5D:6F"
+    device_id: "D1002"
+    os_type: "Windows 11"
+    os_version: "22H2"
+    owner: "rsmith"
+    device_type: "mobile_workstation"
+    model: "Dell Latitude 7430"
+    department: "Nursing"
+    status: "active"
+    custom_asset_tag: "NURS-MOB-002"
+    custom_location: "Patient Care Unit 3"
+    hipaa_compliant: true
+    encryption_enabled: true
+    
+  - hostname: "RAD-WS003"
+    fqdn: "RAD-WS003.acmehealthcare.org"
+    ip_address: "10.10.2.103"
+    mac_address: "00:2A:3B:4C:5D:70"
+    device_id: "D1003"
+    os_type: "Windows 11"
+    os_version: "22H2"
+    owner: "awilson"
+    device_type: "diagnostic_workstation"
+    model: "Dell Precision 7760"
+    department: "Radiology"
+    status: "active"
+    custom_asset_tag: "RAD-DIAG-003"
+    custom_location: "Radiology Department, Reading Room 1"
+    hipaa_compliant: true
+    encryption_enabled: true
+    graphics_card: "NVIDIA RTX A4000"
+    
+  # Administrative Devices
+  - hostname: "ADMIN-WS004"
+    fqdn: "ADMIN-WS004.acmehealthcare.org"
+    ip_address: "192.168.1.104"
+    mac_address: "00:2A:3B:4C:5D:71"
+    device_id: "D1004"
+    os_type: "Windows 11"
+    os_version: "22H2"
+    owner: "ktaylor"
+    device_type: "desktop"
+    model: "Lenovo ThinkCentre M90q"
+    department: "Administration"
+    status: "active"
+    custom_asset_tag: "ADMIN-PRIV-004"
+    custom_location: "Administrative Wing, Office 501"
+    hipaa_compliant: true
+    encryption_enabled: true
+    
+  - hostname: "HIM-WS005"
+    fqdn: "HIM-WS005.acmehealthcare.org"
+    ip_address: "192.168.1.105"
+    mac_address: "00:2A:3B:4C:5D:72"
+    device_id: "D1005"
+    os_type: "Windows 11"
+    os_version: "22H2"
+    owner: "ljohnson"
+    device_type: "workstation"
+    model: "HP EliteDesk 800 G9"
+    department: "Medical Records"
+    status: "active"
+    custom_asset_tag: "HIM-REC-005"
+    custom_location: "Medical Records Department"
+    hipaa_compliant: true
+    encryption_enabled: true
+    
+  # Servers
+  - hostname: "EMR-SRV001"
+    fqdn: "EMR-SRV001.acmehealthcare.org"
+    ip_address: "172.16.1.10"
+    mac_address: "00:2A:3B:4C:5D:AA"
+    device_id: "D2001"
+    os_type: "Windows Server"
+    os_version: "2022"
+    owner: "jdoe"
+    device_type: "server"
+    model: "Dell PowerEdge R750"
+    department: "IT"
+    status: "active"
+    custom_location: "Secure Data Center, Rack C1"
+    custom_service_tag: "EMR-PRIMARY-001"
+    hipaa_compliant: true
+    encryption_enabled: true
+    
+  - hostname: "PACS-SRV002"
+    fqdn: "PACS-SRV002.acmehealthcare.org"
+    ip_address: "172.16.1.11"
+    mac_address: "00:2A:3B:4C:5D:AB"
+    device_id: "D2002"
+    os_type: "Linux"
+    os_version: "RHEL 9"
+    owner: "mchen"
+    device_type: "server"
+    model: "HPE ProLiant DL380 Gen10"
+    department: "IT"
+    status: "active"
+    custom_location: "Secure Data Center, Rack C2"
+    custom_service_tag: "PACS-IMAGING-002"
+    hipaa_compliant: true
+    encryption_enabled: true
+    
+  # Medical Devices
+  - hostname: "ECG-DEV001"
+    fqdn: "ECG-DEV001.acmehealthcare.org"
+    ip_address: "172.18.1.20"
+    mac_address: "00:2A:3B:4C:5D:C1"
+    device_id: "D3001"
+    os_type: "Embedded Linux"
+    os_version: "Custom"
+    owner: "sgarcia"
+    device_type: "medical_device"
+    model: "Philips PageWriter TC70"
+    department: "Cardiology"
+    status: "active"
+    custom_asset_tag: "ECG-PHIL-001"
+    custom_location: "Cardiology Unit, Room 204"
+    medical_device_class: "II"
+    fda_approved: true
+
+services:
+  - name: "EMR System"
+    port: 443
+    protocol: "HTTPS"
+    service_id: "S1001"
+    description: "Electronic Medical Records System"
+    owner: "jdoe"
+    hipaa_compliant: true
+    
+  - name: "PACS Service"
+    port: 11112
+    protocol: "DICOM"
+    service_id: "S1002"
+    description: "Picture Archiving and Communication System"
+    owner: "mchen"
+    hipaa_compliant: true
+    
+  - name: "HL7 Interface"
+    port: 6661
+    protocol: "MLLP"
+    service_id: "S1003"
+    description: "Health Level 7 messaging interface"
+    owner: "mchen"
+    hipaa_compliant: true
+    
+  - name: "Patient Portal"
+    port: 443
+    protocol: "HTTPS"
+    service_id: "S1004"
+    description: "Patient access portal"
+    owner: "jdoe"
+    hipaa_compliant: true
+    
+  - name: "Pharmacy System"
+    port: 1433
+    protocol: "SQL"
+    service_id: "S1005"
+    description: "Medication management system"
+    owner: "mchen"
+    hipaa_compliant: true
+    
+  - name: "Lab Information System"
+    port: 443
+    protocol: "HTTPS"
+    service_id: "S1006"
+    description: "Laboratory information management"
+    owner: "jdoe"
+    hipaa_compliant: true
+    
+  - name: "Radiology Information System"
+    port: 443
+    protocol: "HTTPS"
+    service_id: "S1007"
+    description: "Radiology workflow management"
+    owner: "awilson"
+    hipaa_compliant: true

@@ -1,0 +1,239 @@
+# Sample Entity Registry for Synthetic Log Generator
+
+# Organization-wide configurations
+# These settings define global properties for the entire environment
+organization:
+  name: "Acme Corporation"           # Organization name
+  domain: "acme.com"                # Primary domain name
+  netbios_domain: "ACME"            # NetBIOS domain name for Windows environments
+  timezone: "America/New_York"      # Primary timezone
+  industry: "Technology"            # Industry sector
+  location:
+    address: "100 Main Street"
+    city: "New York"
+    state: "New York"
+    zip: "10001"
+    country: "USA"
+    lat: 40.7128
+    long: -74.0060
+  contacts:
+    security: "security@acme.com"
+    it_support: "support@acme.com"
+    helpdesk: "helpdesk@acme.com"
+    hr: "hr@acme.com"
+  settings:
+    password_expiry_days: 90
+    account_lockout_threshold: 5
+    session_timeout_minutes: 30
+    max_login_attempts: 3
+    min_password_length: 12
+    require_mfa: true
+
+# Network ranges configuration for internal IP address generation
+# You can specify ranges using either:
+# 1. CIDR notation (e.g., "192.168.0.0/16")
+# 2. Start and end IP addresses
+# Both methods can include an optional name that can be referenced in templates with random_private_ip('name')
+network_ranges:
+  # CIDR notation examples
+  - cidr: "10.1.0.0/16"
+    name: "office"
+  - cidr: "172.16.0.0/24"
+    name: "servers"
+  - cidr: "192.168.0.0/16"
+    name: "corporate"
+  
+  # Start/End IP examples
+  - start_ip: "10.2.0.0"
+    end_ip: "10.2.255.255"
+    name: "datacenter"
+  - start_ip: "192.168.1.0"
+    end_ip: "192.168.1.255"
+    name: "vpn"
+
+users:
+  # IT Department Users
+  - username: "jsmith"
+    full_name: "John Smith"
+    email: "jsmith@example.com"
+    user_id: "U1001"
+    department: "IT"
+    title: "System Administrator"
+    is_admin: true
+    employee_type: "employee"
+    location:
+      city: "Seattle"
+      state: "Washington"
+      country: "USA"
+    organization: "Technology Services"
+  
+  - username: "mwilson"
+    full_name: "Margaret Wilson"
+    email: "mwilson@example.com"
+    user_id: "U1002"
+    department: "IT"
+    title: "Network Engineer"
+    is_admin: true
+    employee_type: "employee"
+    location:
+      city: "Portland"
+      state: "Oregon"
+      country: "USA"
+    organization: "Technology Services"
+  
+  # Finance Department Users
+  - username: "rjones"
+    full_name: "Robert Jones"
+    email: "rjones@example.com"
+    user_id: "U2001"
+    department: "Finance"
+    title: "Accountant"
+    is_admin: false
+    employee_type: "employee"
+    location:
+      city: "New York"
+      state: "New York"
+      country: "USA"
+    organization: "Financial Operations"
+    
+  - username: "alee"
+    full_name: "Alice Lee"
+    email: "alee@example.com"
+    user_id: "U2002"
+    department: "Finance"
+    title: "Financial Analyst"
+    is_admin: false
+    employee_type: "contingent"
+    location:
+      city: "Chicago"
+      state: "Illinois"
+      country: "USA"
+    organization: "Financial Operations"
+    
+  # Sales Department Users
+  - username: "bjohnson"
+    full_name: "Bob Johnson"
+    email: "bjohnson@example.com"
+    user_id: "U3001"
+    department: "Sales"
+    title: "Sales Manager"
+    is_admin: false
+    employee_type: "employee"
+    location:
+      city: "London"
+      country: "UK"
+    organization: "Sales Division"
+
+devices:
+  # Workstations
+  - hostname: "WS001"
+    fqdn: "WS001.example.com"
+    ip_address: "192.168.1.101"
+    mac_address: "00:1A:2B:3C:4D:5E"
+    device_id: "D1001"
+    os_type: "Windows 10"
+    os_version: "10.0.19044"
+    owner: "jsmith"
+    device_type: "desktop"
+    model: "Dell OptiPlex 7090"
+    department: "IT"
+    status: "active"
+    last_updated: "2025-01-15"
+    custom_asset_tag: "IT-123456"
+    custom_purchase_date: "2024-01-15"
+    custom_warranty_expiry: "2027-01-15"
+    
+  - hostname: "WS002"
+    fqdn: "WS002.example.com"
+    ip_address: "192.168.1.102"
+    mac_address: "00:1A:2B:3C:4D:5F"
+    device_id: "D1002"
+    os_type: "Windows 10"
+    os_version: "10.0.19044"
+    owner: "alee"
+    device_type: "laptop"
+    model: "Dell XPS 13"
+    department: "Finance"
+    status: "active"
+    custom_location: "Chicago Office"
+    
+  - hostname: "WS003"
+    fqdn: "WS003.example.com"
+    ip_address: "192.168.1.103"
+    mac_address: "00:1A:2B:3C:4D:60"
+    device_id: "D1003"
+    os_type: "Windows 10"
+    os_version: "10.0.19044"
+    owner: "bjohnson"
+    device_type: "laptop"
+    model: "ThinkPad X1 Carbon"
+    department: "Sales" 
+    status: "active"
+    custom_notes: "International travel device"
+    
+  # Servers
+  - hostname: "SRV001"
+    fqdn: "SRV001.example.com"
+    ip_address: "192.168.1.10"
+    mac_address: "00:1A:2B:3C:4D:AA"
+    device_id: "D2001"
+    os_type: "Windows Server"
+    os_version: "2019"
+    owner: "jsmith"
+    device_type: "server"
+    model: "Dell PowerEdge R740"
+    department: "IT"
+    status: "active"
+    custom_location: "Primary Data Center, Rack A3"
+    custom_service_tag: "D740-SRV001"
+    
+  - hostname: "SRV002"
+    fqdn: "SRV002.example.com"
+    ip_address: "192.168.1.11"
+    mac_address: "00:1A:2B:3C:4D:AB"
+    device_id: "D2002"
+    os_type: "Windows Server"
+    os_version: "2019"
+    owner: "mwilson"
+    device_type: "server"
+    model: "Dell PowerEdge R740"
+    department: "IT"
+    status: "active"
+    custom_location: "Primary Data Center, Rack A3"
+    custom_service_tag: "D740-SRV002"
+
+services:
+  - name: "Web Server"
+    port: 80
+    protocol: "HTTP"
+    service_id: "S1001"
+    description: "Internal company website"
+    owner: "jsmith"
+    
+  - name: "File Server"
+    port: 445
+    protocol: "SMB"
+    service_id: "S1002"
+    description: "File sharing service"
+    owner: "jsmith"
+    
+  - name: "Email Server"
+    port: 25
+    protocol: "SMTP"
+    service_id: "S1003"
+    description: "Email service"
+    owner: "mwilson"
+    
+  - name: "DNS Server"
+    port: 53
+    protocol: "DNS"
+    service_id: "S1004"
+    description: "Domain name resolution"
+    owner: "mwilson"
+    
+  - name: "Database Server"
+    port: 1433
+    protocol: "SQL"
+    service_id: "S1005"
+    description: "SQL database service"
+    owner: "jsmith"
