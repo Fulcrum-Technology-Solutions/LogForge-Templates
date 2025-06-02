@@ -62,7 +62,7 @@
   "GUID": "{{ random_string(30) }}",
   "sender": "bounces+srs={{ random_string(5) }}=vk@{{ device.hostname }}.{{ domain_suffix }}",
   "recipient": ["{{ recipient_user.email }}"],
-  "senderIP": "{{ sender_user.ip_address or random_ip() }}",
+  "senderIP": "{{ device.ip_address or random_ip() }}",
   "messageID": "<{{ random_string(1, 'ABCDEFGHIJKLMNOPQRSTUVWXYZ') }}{{ random_int(1, 99) }}.{{ random_int(10, 99) }}.{{ random_int(10000, 99999) }}.{{ random_string(8, 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789') }}@{{ device.hostname }}>",
   "eventType": "messagesBlocked",
   "eventTime": "{{ timestamp | format_timestamp('%Y-%m-%dT%H:%M:%S.%fZ') }}"

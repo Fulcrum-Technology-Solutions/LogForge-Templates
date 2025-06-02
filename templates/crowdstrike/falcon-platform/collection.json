@@ -16,6 +16,6 @@
     "cloud-security"
   ],
   "templates": [
-    "api/audit_activity.j2"
+    "api/falcon_api_events.j2"
   ]
 }
