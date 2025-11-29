@@ -36,7 +36,17 @@ def validate_file(filepath, schema_name):
 def main():
     root = os.getcwd()
     success = True
+    
+    # Directories to skip (archived/old templates, examples)
+    skip_dirs = {'archive', 'examples', '.git', '__pycache__', 'node_modules'}
+    
     for dirpath, dirs, files in os.walk(root):
+        # Skip excluded directories
+        rel_path = os.path.relpath(dirpath, root)
+        path_parts = rel_path.split(os.sep)
+        if any(skip_dir in path_parts for skip_dir in skip_dirs):
+            continue
+        
         for filename in files:
             filepath = os.path.join(dirpath, filename)
             if filename.endswith('vendor.meta.yaml'):

@@ -4,19 +4,27 @@ on:
   push:
     branches: [ main ]
     paths:
-      - '**/*.j2'
-      - '**/*.meta.yaml'
-      - '**/vendor.meta.yaml'
-      - '**/product.meta.yaml'
-      - '**/collection.json'
+      - 'templates/**/*.j2'
+      - 'templates/**/*.meta.yaml'
+      - 'templates/**/vendor.meta.yaml'
+      - 'templates/**/product.meta.yaml'
+      - 'templates/**/collection.json'
+    paths-ignore:
+      - 'archive/**'
+      - 'examples/**'
+      - 'TEMPLATES.yaml'
   pull_request:
     branches: [ main ]
     paths:
-      - '**/*.j2'
-      - '**/*.meta.yaml'
-      - '**/vendor.meta.yaml'
-      - '**/product.meta.yaml'
-      - '**/collection.json'
+      - 'templates/**/*.j2'
+      - 'templates/**/*.meta.yaml'
+      - 'templates/**/vendor.meta.yaml'
+      - 'templates/**/product.meta.yaml'
+      - 'templates/**/collection.json'
+    paths-ignore:
+      - 'archive/**'
+      - 'examples/**'
+      - 'TEMPLATES.yaml'
 
 jobs:
   validate:
