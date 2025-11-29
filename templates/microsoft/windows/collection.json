@@ -16,6 +16,6 @@
       "microsoft"
     ],
     "templates": [
-      "system/clop_persistence.j2"
+      "system/clop_persistence"
     ]
   }

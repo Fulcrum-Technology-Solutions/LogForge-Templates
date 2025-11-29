@@ -1,0 +1,55 @@
+<Event xmlns='http://schemas.microsoft.com/win/2004/08/events/event'>
+  <System>
+    <Provider Name='Service Control Manager' Guid='{555908d1-a6d7-4695-8e1e-26931d2012f4}' EventSourceName='Service Control Manager'/>
+    <EventID Qualifiers='16384'>7045</EventID>
+    <Version>0</Version>
+    <Level>4</Level>
+    <Task>0</Task>
+    <Opcode>0</Opcode>
+    <Keywords>0x8080000000000000</Keywords>
+    <TimeCreated SystemTime='{{ current_timestamp() | timestamp_to_iso }}Z'/>
+    <EventRecordID>{{ random_int(100000, 999999) }}</EventRecordID>
+    <Correlation/>
+    <Execution ProcessID='{{ random_int(500, 2000) }}' ThreadID='{{ random_int(600, 1000) }}'/>
+    <Channel>System</Channel>
+    <Computer>{{ registry.get_random_device().hostname | default(random_hostname()) }}</Computer>
+    <Security UserID='{{ registry.get_random_user().sid | default("S-1-5-21-" + random_int(1000000000, 9999999999) | string + "-" + random_int(1000000000, 9999999999) | string + "-" + random_int(1000000000, 9999999999) | string + "-500") }}'/>
+  </System>
+  <EventData>
+    <Data Name='ServiceName'>{{ random_choice([
+      "SecurityCenter" + random_string(3, "ABCDEFGHIJKLMNOPQRSTUVWXYZ"),
+      "WinCheck" + random_string(4, "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"),
+      "System" + random_string(5, "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"),
+      "Windows" + random_string(6, "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"),
+      random_string(10, "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz")
+    ]) }}</Data>
+    <Data Name='ImagePath'>{{ random_choice([
+      "cmd.exe",
+      "C:\\Temp\\" + random_string(8, "abcdefghijklmnopqrstuvwxyz") + ".exe",
+      "C:\\Windows\\System32\\" + random_string(6, "abcdefghijklmnopqrstuvwxyz") + ".exe",
+      "C:\\Program Files\\" + random_string(5, "abcdefghijklmnopqrstuvwxyz") + "\\" + random_string(8, "abcdefghijklmnopqrstuvwxyz") + ".exe",
+      "%SystemRoot%\\System32\\" + random_string(7, "abcdefghijklmnopqrstuvwxyz") + ".exe"
+    ]) }}</Data>
+    <Data Name='ServiceType'>{{ random_choice([
+      "user mode service",
+      "kernel driver",
+      "file system driver",
+      "user mode service - own process",
+      "user mode service - share process"
+    ]) }}</Data>
+    <Data Name='StartType'>{{ random_choice([
+      "auto start",
+      "demand start",
+      "disabled",
+      "boot start",
+      "system start"
+    ]) }}</Data>
+    <Data Name='AccountName'>{{ random_choice([
+      "LocalSystem",
+      "LocalService",
+      "NetworkService",
+      registry.get_random_user().username | default("ServiceUser" + random_int(1, 99) | string),
+      registry.get_organization_field('domain') | default("DOMAIN") + "\\" + registry.get_random_user().username | default("svcaccount" + random_int(1, 99) | string)
+    ]) }}</Data>
+  </EventData>
+</Event>

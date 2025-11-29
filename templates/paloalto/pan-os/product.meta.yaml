@@ -1,5 +1,6 @@
-slug: pan-os
-product: "PAN-OS"
+vendor: paloalto
+product: pan-os
+name: "PAN-OS"
 description: "Next-Generation Firewall operating system with integrated security features including GlobalProtect VPN"
 version: "10.2"
 documentation_url: "https://docs.paloaltonetworks.com/pan-os"

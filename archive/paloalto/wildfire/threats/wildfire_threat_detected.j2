@@ -1,0 +1,68 @@
+{%- set device = registry.get_random_device() -%}
+{%- set user = registry.get_random_user() -%}
+{%- set timestamp = current_timestamp() -%}
+{%- set formatted_time = timestamp | format_timestamp('%Y/%m/%d %H:%M:%S') -%}
+{%- set dest_ip = random_public_ip() -%}
+{%- set source_port = random_port() -%}
+{%- set dest_port = [80, 443, 8080, 8443] | random -%}
+{%- set session_id = random_int(10000, 999999) -%}
+{%- set sequence_number = random_int(100000, 999999) -%}
+{%- set threat_types = ['virus', 'spyware', 'vulnerability', 'command-and-control', 'ransomware'] -%}
+{%- set threat_type = threat_types | random -%}
+{%- set severities = ['informational', 'low', 'medium', 'high', 'critical'] -%}
+{%- set severity = 'high' if threat_type in ['virus', 'spyware', 'vulnerability', 'command-and-control'] else 'critical' -%}
+{%- set log_action = 'alert' if severity != 'critical' else 'critical' -%}
+{%- set file_extensions = {
+    'virus': ['exe', 'dll', 'bat', 'ps1', 'vbs'],
+    'spyware': ['docx', 'xlsx', 'pdf', 'js', 'hta'],
+    'vulnerability': ['jar', 'war', 'jsp', 'php', 'aspx'],
+    'command-and-control': ['dll', 'exe', 'bin', 'dat', 'sys'],
+    'ransomware': ['pdf', 'docx', 'xlsx', 'zip', 'js']
+  } -%}
+{%- set file_ext = file_extensions[threat_type] | random -%}
+{%- set file_names = {
+    'virus': ['setup', 'update', 'patch', 'installer', 'downloader'],
+    'spyware': ['invoice', 'statement', 'report', 'contract', 'document'],
+    'vulnerability': ['webapp', 'plugin', 'module', 'extension', 'component'],
+    'command-and-control': ['system', 'service', 'background', 'update', 'core'],
+    'ransomware': ['invoice', 'payment', 'receipt', 'order', 'statement']
+  } -%}
+{%- set file_name = file_names[threat_type] | random -%}
+{%- set random_suffix = random_string(8, 'abcdefghijklmnopqrstuvwxyz0123456789') -%}
+{%- set full_filename = file_name ~ '_' ~ random_suffix ~ '.' ~ file_ext -%}
+{%- set random_num = random_int(1, 99999) -%}
+{%- set padded_num = '00000' ~ random_num -%}
+{%- set padded_num = padded_num[-5:] -%}
+{%- set signature_id = 'PaloAltoNetworks:' ~ (timestamp | format_timestamp('%Y%m%d')) ~ ':' ~ padded_num -%}
+{%- set file_hash = random_string(64, '0123456789abcdef') -%}
+{%- set threat_descriptions = {
+    'virus': [
+        'WF-PE Downloader.Gen command and control traffic detected. File attempts to contact malicious domains for additional payload download.',
+        'WF-Trojan.Win32.Generic malicious executable identified. File exhibits suspicious behavior including process injection and persistence mechanisms.',
+        'WF-Backdoor.Win32 detected attempting to establish unauthorized access channel. Uses encoded communication to avoid detection.'
+    ],
+    'spyware': [
+        'WF-Office Macro.Gen suspicious VBA macro detected attempting to execute PowerShell commands with obfuscated code.',
+        'WF-Infostealer.PDF malicious JavaScript detected in document. Attempts to harvest credentials and exfiltrate sensitive data.',
+        'WF-Spyware.Doc sophisticated macro attempts to evade detection using multiple obfuscation layers and indirect execution.'
+    ],
+    'vulnerability': [
+        'WF-Java Exploit.CVE-2024-8573 detected attempting to leverage JRE vulnerability for privilege escalation.',
+        'WF-WebApp.RCE exploitation attempt targeting known server vulnerability allowing remote code execution.',
+        'WF-ZeroDay.Exploit detected targeting recently disclosed vulnerability in application framework.'
+    ],
+    'command-and-control': [
+        'WF-Backdoor.DLL beaconing to known botnet infrastructure detected. Traffic matches patterns associated with Qakbot C2 protocol.',
+        'WF-APT.Beacon communication pattern identified using domain generation algorithm for C2 communication.',
+        'WF-C2.Implant detected establishing persistent connection to command server using custom protocol over HTTPS.'
+    ],
+    'ransomware': [
+        'WF-Ransom.PDF-JS BlackCat Ransomware variant detected. PDF contains embedded JavaScript that launches staged loader with encryption capabilities.',
+        'WF-Lockbit.Dropper identified preparing environment for file encryption and persistence after system restart.',
+        'WF-Ransomware.Initial Access tool detected with capability to deploy encryption payloads and remove backup files.'
+    ]
+  } -%}
+{%- set threat_description = threat_descriptions[threat_type] | random -%}
+{%- set countries = ['United States', 'Russia', 'China', 'Germany', 'United Kingdom', 'Brazil', 'Netherlands', 'Japan', 'Bulgaria', 'Ukraine'] -%}
+{%- set dest_country = countries | random -%}
+1,{{ formatted_time }},0010101010,THREAT,{{ threat_type }},0,{{ formatted_time }},{{ device.ip_address }},{{ dest_ip }},0.0.0.0,0.0.0.0,fw-policy-1,{{ user.username }},,web-browsing,vsys1,trusted,untrusted,ethernet1/2,ethernet1/1,{{ log_action }},0,{{ session_id }},1,{{ source_port }},{{ dest_port }},0,0,0x400000,tcp,deny,{{ full_filename }},WildFire-Report,malware,{{ severity }},client-to-server,{{ sequence_number }},0x2000,United States,{{ dest_country }},0,application/{{ 'pdf' if file_ext == 'pdf' else 'msword' if file_ext == 'docx' else 'excel' if file_ext == 'xlsx' else 'zip' if file_ext == 'zip' else 'x-java-archive' if file_ext == 'jar' else 'x-msdownload' if file_ext in ['dll', 'exe'] else 'octet-stream' }},0,{{ file_hash }},US,0,Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Safari/537.36,{{ file_ext }},,,,,{{ signature_id }},0,0,0,0,vsys1,{{ device.hostname }},0,,,,,,"{{ threat_description }}"

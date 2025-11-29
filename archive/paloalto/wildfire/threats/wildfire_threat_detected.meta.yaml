@@ -1,0 +1,157 @@
+vendor: "Palo Alto Networks"
+product: "PAN-OS Firewall"
+data_source: "wildfire"
+description: "WildFire threat detection events including malware analysis results, threat classification, and file reputation"
+format: "CSV"
+frequency: "medium"
+is_generator: true
+base_frequency: 25
+time_patterns:
+  - "business_hours"
+  - "night_hours"
+  - "weekend"
+business_hours_multiplier: 1.5
+night_hours_multiplier: 0.8
+weekend_multiplier: 0.6
+documentation:
+  display:
+    title: "WildFire Threat Detection"
+    subtitle: "Advanced malware analysis and threat intelligence events"
+    icon: "🔥"
+    color_scheme: "error"
+    tags:
+      - "malware"
+      - "threat-intelligence"
+      - "file-analysis"
+      - "wildfire"
+      - "security"
+  overview:
+    summary: "WildFire threat detection events generated when files are analyzed and classified as malicious by Palo Alto's cloud-based threat intelligence service"
+    when_generated:
+      - "When files are submitted to WildFire for analysis"
+      - "Upon completion of static and dynamic malware analysis"
+      - "When threat verdicts are returned from WildFire cloud"
+      - "During file reputation lookups for known threats"
+    security_relevance: "Critical - indicates presence of malware, APT activity, or zero-day exploits"
+    compliance_frameworks:
+      - "NIST Cybersecurity Framework"
+      - "MITRE ATT&CK"
+      - "ISO 27001"
+      - "SOC 2"
+    frequency_notes: "Moderate frequency during business hours when file downloads and email attachments are common"
+  fields:
+    - name: "threat_type"
+      type: "String"
+      required: true
+      description: "Category of threat detected by WildFire analysis"
+      example_value: "ransomware"
+      template_source: "threat_types | random"
+      possible_values:
+        - value: "virus"
+          description: "Traditional malware including trojans, worms, and viruses"
+        - value: "spyware"
+          description: "Information stealing malware and keyloggers"
+        - value: "vulnerability"
+          description: "Exploit attempts targeting known vulnerabilities"
+        - value: "command-and-control"
+          description: "C2 communication and botnet activity"
+        - value: "ransomware"
+          description: "File encryption and extortion malware"
+    - name: "severity"
+      type: "String"
+      required: true
+      description: "Threat severity level assigned by WildFire"
+      example_value: "critical"
+      template_source: "Calculated based on threat_type"
+      possible_values:
+        - value: "informational"
+          description: "Low-impact or suspicious but not confirmed malicious"
+        - value: "low"
+          description: "Minor threat with limited impact potential"
+        - value: "medium"
+          description: "Moderate threat requiring attention"
+        - value: "high"
+          description: "Significant threat requiring immediate action"
+        - value: "critical"
+          description: "Severe threat with high impact potential"
+    - name: "filename"
+      type: "String"
+      required: true
+      description: "Name of analyzed file including extension"
+      example_value: "invoice_a8b9c2d1.pdf"
+      template_source: "Dynamic generation based on threat type"
+    - name: "file_hash"
+      type: "String"
+      required: true
+      description: "SHA-256 hash of analyzed file"
+      example_value: "a1b2c3d4e5f67890abcdef1234567890abcdef1234567890abcdef1234567890"
+      format: "64-character hexadecimal"
+      template_source: "random_string(64, '0123456789abcdef')"
+    - name: "signature_id"
+      type: "String"
+      required: true
+      description: "Unique signature identifier from WildFire"
+      example_value: "PaloAltoNetworks:20250526:12345"
+      format: "Vendor:Date:ID"
+      template_source: "Generated with timestamp and random number"
+    - name: "threat_description"
+      type: "String"
+      required: true
+      description: "Detailed description of threat behavior and characteristics"
+      example_value: "WF-Ransom.PDF-JS BlackCat Ransomware variant detected"
+      template_source: "threat_descriptions[threat_type] | random"
+    - name: "source_ip"
+      type: "IP Address"
+      required: true
+      description: "Internal IP address of host that triggered analysis"
+      example_value: "192.168.1.100"
+      template_source: "registry.get_random_device().ip_address"
+    - name: "dest_ip"
+      type: "IP Address"
+      required: true
+      description: "External IP address contacted by malware"
+      example_value: "185.220.101.42"
+      template_source: "random_public_ip()"
+    - name: "dest_country"
+      type: "String"
+      required: true
+      description: "Country associated with destination IP"
+      example_value: "Russia"
+      template_source: "countries | random"
+    - name: "session_id"
+      type: "Integer"
+      required: true
+      description: "Unique session identifier for the connection"
+      example_value: 542318
+      template_source: "random_int(10000, 999999)"
+    - name: "user"
+      type: "String"
+      required: true
+      description: "Username associated with the threat event"
+      example_value: "jdoe"
+      template_source: "registry.get_random_user().username"
+    - name: "timestamp"
+      type: "DateTime"
+      required: true
+      description: "Event timestamp in MM/DD/YYYY HH:MM:SS format"
+      example_value: "2025/05/26 14:30:15"
+      format: "YYYY/MM/DD HH:MM:SS"
+      template_source: "current_timestamp() | format_timestamp('%Y/%m/%d %H:%M:%S')"
+resources:
+  documentation:
+    - title: "WildFire Administrator Guide"
+      url: "https://docs.paloaltonetworks.com/wildfire"
+      type: "official"
+    - title: "Threat Prevention Best Practices"
+      url: "https://docs.paloaltonetworks.com/best-practices/threat-prevention"
+      type: "official"
+    - title: "PAN-OS Log Field Reference"
+      url: "https://docs.paloaltonetworks.com/pan-os/11-0/pan-os-admin/monitoring/use-syslog-for-monitoring/syslog-field-descriptions"
+      type: "official"
+  tools:
+    - name: "WildFire Portal"
+      description: "Web interface for file analysis and threat intelligence"
+      url: "https://wildfire.paloaltonetworks.com"
+    - name: "AutoFocus"
+      description: "Contextual threat intelligence platform"
+      url: "https://autofocus.paloaltonetworks.com"

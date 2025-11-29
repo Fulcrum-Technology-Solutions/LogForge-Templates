@@ -1,0 +1,261 @@
+vendor: "Microsoft Corporation"
+product: "Defender for Identity"
+data_source: "security-alerts"
+description: "Microsoft Defender for Identity alert for pass-the-ticket attacks indicating lateral movement through stolen Kerberos tickets"
+format: "JSON"
+frequency: "very_low"
+is_generator: true
+base_frequency: 0.5
+time_patterns:
+  - business_hours
+  - night_hours
+  - weekend
+business_hours_multiplier: 1.5
+night_hours_multiplier: 2.0
+weekend_multiplier: 0.8
+documentation:
+  display:
+    title: "Pass-the-Ticket Attack Detection"
+    subtitle: "Defender for Identity lateral movement alert"
+    icon: "🎫"
+    color_scheme: "error"
+    tags:
+      - "defender"
+      - "identity"
+      - "kerberos"
+      - "lateral-movement"
+      - "pass-the-ticket"
+      - "mitre-t1550"
+      - "critical-alert"
+  overview:
+    summary: "Detects pass-the-ticket attacks where attackers steal Kerberos tickets from one machine and use them on another to move laterally through the network. This is a critical indicator of advanced persistent threats and Active Directory compromise."
+    when_generated:
+      - "When stolen Kerberos tickets are detected being used from different machines"
+      - "During lateral movement activities in compromised environments"
+      - "When attackers attempt to escalate privileges using stolen credentials"
+      - "As part of advanced persistent threat (APT) campaigns"
+    security_relevance: "Critical - Pass-the-ticket attacks indicate sophisticated adversaries with existing network access attempting lateral movement. Immediate investigation and containment required."
+    compliance_frameworks:
+      - "NIST Cybersecurity Framework"
+      - "MITRE ATT&CK Framework"
+      - "SOC 2"
+      - "ISO 27001"
+      - "PCI DSS"
+    frequency_notes: "Very rare in legitimate environments (0.5 events/hour baseline). Higher frequency during off-hours suggests active compromise. Most alerts should be investigated as potential true positives."
+  fields:
+    - name: "alertId"
+      type: "String"
+      required: true
+      description: "Unique identifier for the alert with 'a' prefix"
+      example_value: "aa1b2c3d4-e5f6-7890-abcd-ef1234567890"
+      format: "a{UUID}"
+      template_source: "'a' + random_guid()"
+    - name: "providerAlertId"
+      type: "String"
+      required: true
+      description: "Provider-specific alert identifier (typically same as alertId without prefix)"
+      example_value: "a1b2c3d4-e5f6-7890-abcd-ef1234567890"
+      format: "UUID"
+      template_source: "random_guid()"
+    - name: "incidentId"
+      type: "Integer"
+      required: true
+      description: "Incident number for tracking and correlation"
+      example_value: 1234
+      template_source: "random_int(100, 9999)"
+    - name: "serviceSource"
+      type: "String"
+      required: true
+      description: "Microsoft service that generated the alert"
+      example_value: "MicrosoftDefenderForIdentity"
+      template_source: "Fixed value"
+    - name: "creationTime"
+      type: "DateTime"
+      required: true
+      description: "UTC timestamp when the alert was created"
+      example_value: "2024-01-15T14:30:25.123Z"
+      format: "ISO 8601 with milliseconds"
+      template_source: "current_timestamp()"
+    - name: "lastUpdatedTime"
+      type: "DateTime"
+      required: true
+      description: "UTC timestamp when the alert was last updated"
+      example_value: "2024-01-15T15:45:30.456Z"
+      format: "ISO 8601 with milliseconds"
+      template_source: "creationTime + random hours"
+    - name: "resolvedTime"
+      type: "DateTime"
+      required: false
+      description: "UTC timestamp when the alert was resolved (if resolved)"
+      example_value: "2024-01-15T16:15:45.789Z"
+      format: "ISO 8601 with milliseconds"
+      template_source: "lastUpdatedTime - random minutes"
+    - name: "firstActivity"
+      type: "DateTime"
+      required: true
+      description: "UTC timestamp of the first suspicious activity"
+      example_value: "2024-01-15T12:15:30.123Z"
+      format: "ISO 8601 with milliseconds"
+      template_source: "creationTime - random hours"
+    - name: "lastActivity"
+      type: "DateTime"
+      required: true
+      description: "UTC timestamp of the last suspicious activity"
+      example_value: "2024-01-15T12:45:30.456Z"
+      format: "ISO 8601 with milliseconds"
+      template_source: "firstActivity + random minutes"
+    - name: "title"
+      type: "String"
+      required: true
+      description: "Human-readable alert title"
+      example_value: "Suspected identity theft (pass-the-ticket)"
+      template_source: "Fixed descriptive title"
+    - name: "description"
+      type: "String"
+      required: true
+      description: "Detailed description of the detected activity"
+      example_value: "An actor took John Doe (Manager)'s Kerberos ticket from WORKSTATION01 and used it on SERVER02 to access 3 resources."
+      template_source: "Dynamic description with user, devices, and resource count"
+    - name: "category"
+      type: "String"
+      required: true
+      description: "MITRE ATT&CK tactic category"
+      example_value: "LateralMovement"
+      template_source: "Fixed value for pass-the-ticket attacks"
+      possible_values:
+        - value: "LateralMovement"
+          description: "MITRE ATT&CK Lateral Movement tactic"
+    - name: "status"
+      type: "String"
+      required: true
+      description: "Current status of the alert investigation"
+      example_value: "Resolved"
+      template_source: "Random from predefined statuses"
+      possible_values:
+        - value: "New"
+          description: "Newly created alert awaiting investigation"
+        - value: "InProgress"
+          description: "Alert currently under investigation"
+        - value: "Resolved"
+          description: "Alert investigation completed"
+    - name: "severity"
+      type: "String"
+      required: true
+      description: "Severity level of the security alert"
+      example_value: "High"
+      template_source: "Random from severity levels"
+      possible_values:
+        - value: "Low"
+          description: "Low severity security event"
+        - value: "Medium"
+          description: "Medium severity security event"
+        - value: "High"
+          description: "High severity security event"
+        - value: "Critical"
+          description: "Critical security event requiring immediate attention"
+    - name: "investigationId"
+      type: "String"
+      required: false
+      description: "Investigation tracking identifier (often null for unsupported alert types)"
+      example_value: null
+      template_source: "Fixed null value"
+    - name: "investigationState"
+      type: "String"
+      required: true
+      description: "State of the automated investigation"
+      example_value: "UnsupportedAlertType"
+      template_source: "Fixed value indicating manual investigation required"
+    - name: "classification"
+      type: "String"
+      required: true
+      description: "Alert classification after investigation"
+      example_value: "TruePositive"
+      template_source: "Random from classification options"
+      possible_values:
+        - value: "Unknown"
+          description: "Classification not yet determined"
+        - value: "FalsePositive"
+          description: "Alert determined to be benign"
+        - value: "TruePositive"
+          description: "Alert confirmed as malicious activity"
+        - value: "BenignPositive"
+          description: "Alert is accurate but represents benign activity"
+    - name: "determination"
+      type: "String"
+      required: true
+      description: "Specific determination of the alert cause"
+      example_value: "SecurityTesting"
+      template_source: "Random from determination options"
+      possible_values:
+        - value: "NotAvailable"
+          description: "Determination not available"
+        - value: "Apt"
+          description: "Advanced Persistent Threat activity"
+        - value: "Malware"
+          description: "Malware-related activity"
+        - value: "SecurityPersonnel"
+          description: "Authorized security personnel activity"
+        - value: "SecurityTesting"
+          description: "Authorized security testing"
+        - value: "UnwantedSoftware"
+          description: "Unwanted but not malicious software"
+        - value: "Other"
+          description: "Other determination"
+    - name: "detectionSource"
+      type: "String"
+      required: true
+      description: "Source system that detected the threat"
+      example_value: "AzureATP"
+      template_source: "Fixed legacy identifier for Defender for Identity"
+    - name: "detectorId"
+      type: "String"
+      required: true
+      description: "Specific detector that triggered the alert"
+      example_value: "PassTheTicketSecurityAlert"
+      template_source: "Fixed detector identifier"
+    - name: "assignedTo"
+      type: "String"
+      required: false
+      description: "Email address of the assigned investigator"
+      example_value: "security.analyst@contoso.com"
+      format: "Email"
+      template_source: "Random user email from registry"
+    - name: "mitreTechniques"
+      type: "Array"
+      required: true
+      description: "MITRE ATT&CK technique identifiers"
+      example_value: ["T1550", "T1550.003"]
+      template_source: "Fixed array for pass-the-ticket techniques"
+    - name: "devices"
+      type: "Array"
+      required: true
+      description: "Array of device objects involved in the alert"
+      example_value: [{"mdatpDeviceId": "abc123", "deviceDnsName": "server01.contoso.com"}]
+      template_source: "Array of 3 devices with detailed metadata"
+    - name: "entities"
+      type: "Array"
+      required: true
+      description: "Array of security entities involved in the alert (users, IPs, etc.)"
+      example_value: [{"entityType": "User", "accountName": "jdoe", "verdict": "Suspicious"}]
+      template_source: "Array containing krbtgt account, target user, and source IP"
+resources:
+  documentation:
+    - title: "Microsoft Defender for Identity Documentation"
+      url: "https://docs.microsoft.com/en-us/defender-for-identity/"
+      type: "official"
+    - title: "Pass-the-Ticket Attack Detection"
+      url: "https://docs.microsoft.com/en-us/defender-for-identity/lateral-movement-alerts"
+      type: "official"
+    - title: "MITRE ATT&CK T1550.003: Pass the Ticket"
+      url: "https://attack.mitre.org/techniques/T1550/003/"
+      type: "reference"
+  tools:
+    - name: "Microsoft 365 Defender Portal"
+      description: "Unified security portal for investigating and responding to Defender for Identity alerts"
+      url: "https://security.microsoft.com"
+    - name: "Microsoft Defender for Identity Portal"
+      description: "Dedicated portal for Defender for Identity management and investigation"
+      url: "https://portal.atp.azure.com"
+    - name: "Azure Active Directory Identity Protection"
+      description: "Complementary identity security service for user risk assessment"
+      url: "https://docs.microsoft.com/en-us/azure/active-directory/identity-protection/"

@@ -1,0 +1,246 @@
+{%- set user = registry.get_random_user() -%}
+{%- set device = registry.get_random_device() -%}
+{%- set timestamp = current_timestamp() -%}
+{%- set formatted_timestamp = timestamp | strftime('%Y-%m-%dT%H:%M:%S.%fZ') -%}
+{%- set correlation_id = random_guid() -%}
+{%- set session_id = random_guid() -%}
+{%- set tenant_id = random_guid() -%}
+{%- set app_id = random_guid() -%}
+{%- set user_id = random_guid() -%}
+{%- set ip_address = random_public_ip() -%}
+{%- set domain = registry.get_organization_field('domain') -%}
+
+{%- set operationNames = ['Sign-in activity', 'Password change', 'User registration', 'MFA authentication', 'Conditional access evaluation', 'Token refresh'] -%}
+{%- set operationName = operationNames | random -%}
+{%- set categories = ['SignInLogs', 'AuditLogs', 'RiskyUsers', 'UserRiskEvents', 'ApplicationSignInSummary'] -%}
+{%- set category = categories | random -%}
+{%- set appDisplayNames = ['Windows Sign In', 'Microsoft Office 365', 'Microsoft Teams', 'Azure Portal', 'Microsoft PowerBI', 'SharePoint Online', 'Exchange Online', 'OneDrive for Business', 'Dynamics 365', 'Visual Studio', 'Azure DevOps', 'Microsoft Intune', 'Power Automate', 'Power Apps', 'Yammer', 'Microsoft Planner', 'Microsoft Project', 'Microsoft Visio', 'Microsoft Stream', 'Microsoft Forms'] -%}
+{%- set appDisplayName = appDisplayNames | random -%}
+
+{%- set authMethods = ['Windows Hello for Business', 'Password', 'SMS', 'Microsoft Authenticator App', 'Phone call', 'FIDO2 key', 'Certificate-based authentication', 'Previously satisfied'] -%}
+{%- set authenticationMethod = authMethods | random -%}
+
+{%- set clientApps = ['Mobile Apps and Desktop clients', 'Browser', 'Exchange ActiveSync', 'Exchange Online PowerShell', 'Other clients', 'IMAP', 'POP', 'SMTP', 'Legacy Auth - Other'] -%}
+{%- set clientAppUsed = clientApps | random -%}
+
+{%- set userAgents = ['Windows-AzureAD-Authentication-Provider/1.0', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36', 'Microsoft Office/16.0 (Windows NT 10.0; Microsoft Outlook 16.0)', 'Microsoft Teams/1.4.00.4855 (Windows 10)', 'PowerShell/7.0', 'Microsoft Graph PowerShell/1.0'] -%}
+{%- set userAgent = userAgents | random -%}
+
+{%- set locations = [
+  {'city': 'Seattle', 'state': 'Washington', 'country': 'US', 'lat': 47.6062, 'lon': -122.3321},
+  {'city': 'New York', 'state': 'New York', 'country': 'US', 'lat': 40.7128, 'lon': -74.0060},
+  {'city': 'Los Angeles', 'state': 'California', 'country': 'US', 'lat': 34.0522, 'lon': -118.2437},
+  {'city': 'Chicago', 'state': 'Illinois', 'country': 'US', 'lat': 41.8781, 'lon': -87.6298},
+  {'city': 'London', 'state': 'England', 'country': 'GB', 'lat': 51.5074, 'lon': -0.1278},
+  {'city': 'Toronto', 'state': 'Ontario', 'country': 'CA', 'lat': 43.6532, 'lon': -79.3832}
+] -%}
+{%- set location = locations | random -%}
+
+{%- set risk_levels = ['none', 'low', 'medium', 'high'] -%}
+{%- set risk_states = ['none', 'confirmedSafe', 'remediated', 'atRisk', 'unknownFutureValue'] -%}
+{%- set conditional_access_statuses = ['success', 'failure', 'notApplied', 'unknownFutureValue'] -%}
+
+{%- set os_types = ['Windows', 'iOS', 'Android', 'macOS', 'Linux'] -%}
+{%- set trust_types = ['Azure AD registered', 'Azure AD joined', 'Hybrid Azure AD joined', 'Unknown'] -%}
+
+{
+    "Level": "{{ random_int(1, 4) }}",
+    "callerIpAddress": "{{ ip_address }}",
+    "category": "{{ category }}",
+    "correlationId": "{{ correlation_id }}",
+    "durationMs": "{{ random_int(100, 5000) }}",
+    "identity": "{{ user.username }}",
+    "location": "{{ location.country }}",
+    "operationName": "{{ operationName }}",
+    "operationVersion": "1.0",
+    "properties": {
+      "appDisplayName": "{{ appDisplayName }}",
+      "appId": "{{ app_id }}",
+      "appServicePrincipalId": "{{ random_guid() if random_int(1, 10) > 3 else 'null' }}",
+      "appliedConditionalAccessPolicies": [
+        {% if random_int(1, 10) > 6 %}
+        {
+          "displayName": "{{ ['Require MFA for All Users', 'Block Legacy Authentication', 'Require Compliant Device', 'Require Hybrid Azure AD Join'] | random }}",
+          "enforcedGrantControls": ["{{ ['Mfa', 'CompliantDevice', 'DomainJoinedDevice', 'Block'] | random }}"],
+          "enforcedSessionControls": [],
+          "id": "{{ random_guid() }}",
+          "result": "{{ ['success', 'failure', 'notApplied'] | random }}",
+          "conditionsNotSatisfied": "{{ ['none', 'application', 'userRisk', 'signInRisk'] | random }}"
+        }
+        {% endif %}
+      ],
+      "authenticationContextClassReferences": [
+        {% if random_int(1, 10) > 8 %}
+        {
+          "acr": "{{ ['c1', 'c2', 'c3'] | random }}",
+          "displayName": "{{ ['Standard Authentication', 'Multi-Factor Authentication', 'High Assurance'] | random }}"
+        }
+        {% endif %}
+      ],
+      "authenticationDetails": [
+        {
+          "RequestSequence": "1",
+          "StatusSequence": "0",
+          "authenticationMethod": "{{ authenticationMethod }}",
+          "authenticationMethodDetail": "{{ ['Text message', 'Phone call', 'Push notification', 'OATH hardware token', 'OATH software token'] | random if 'MFA' in authenticationMethod or 'SMS' in authenticationMethod else '' }}",
+          "authenticationStepDateTime": "{{ formatted_timestamp }}",
+          "authenticationStepRequirement": "{{ ['Primary authentication', 'Multi-factor authentication', 'Additional authentication'] | random }}",
+          "succeeded": "{{ ['true', 'false'] | random_weighted([90, 10]) }}"
+        }
+        {% if random_int(1, 10) > 7 %}
+        ,{
+          "RequestSequence": "2",
+          "StatusSequence": "1", 
+          "authenticationMethod": "{{ ['SMS', 'Microsoft Authenticator App', 'Phone call'] | random }}",
+          "authenticationMethodDetail": "{{ ['Text message to +1234567890', 'Push notification', 'Phone call to +1234567890'] | random }}",
+          "authenticationStepDateTime": "{{ (timestamp + random_int(5, 30)) | strftime('%Y-%m-%dT%H:%M:%S.%fZ') }}",
+          "authenticationStepRequirement": "Multi-factor authentication",
+          "succeeded": "{{ ['true', 'false'] | random_weighted([95, 5]) }}"
+        }
+        {% endif %}
+      ],
+      "authenticationProcessingDetails": [
+        {
+          "key": "Legacy TLS (TLS 1.0, 1.1, 3DES)",
+          "value": "{{ ['False', 'True'] | random_weighted([95, 5]) }}"
+        },
+        {
+          "key": "Is CAE Token",
+          "value": "{{ ['False', 'True'] | random_weighted([80, 20]) }}"
+        }
+        {% if random_int(1, 10) > 6 %}
+        ,{
+          "key": "Device Code Flow",
+          "value": "{{ ['True', 'False'] | random_weighted([10, 90]) }}"
+        }
+        {% endif %}
+      ],
+      "authenticationProtocol": "{{ ['none', 'oAuth2', 'ropc', 'wsFederation', 'saml20', 'deviceCode'] | random }}",
+      "authenticationRequirement": "{{ ['singleFactorAuthentication', 'multiFactorAuthentication', 'conditionalAccess'] | random }}",
+      "authenticationRequirementPolicies": [
+        {% if random_int(1, 10) > 7 %}
+        {
+          "requirementProvider": "{{ ['conditionalAccess', 'baselineProtection', 'multifactorAuthenticationRegistrationPolicy'] | random }}",
+          "detail": "{{ ['MultifactorAuthentication', 'ConditionalAccess', 'Other'] | random }}"
+        }
+        {% endif %}
+      ],
+      "authenticationStrengths": [
+        {% if random_int(1, 10) > 8 %}
+        {
+          "displayName": "{{ ['Built-in MFA', 'Passwordless', 'Phishing-resistant MFA'] | random }}",
+          "id": "{{ random_guid() }}",
+          "allowedCombinations": ["{{ ['password', 'sms', 'voice', 'hardwareOath', 'softwareOath', 'push'] | random }}"]
+        }
+        {% endif %}
+      ],
+      "autonomousSystemNumber": "{{ random_int(100, 65000) }}",
+      "clientAppUsed": "{{ clientAppUsed }}",
+      "clientCredentialType": "{{ ['none', 'clientSecret', 'clientAssertion', 'federatedIdentityCredential'] | random }}",
+      "conditionalAccessStatus": "{{ conditional_access_statuses | random }}",
+      "correlationId": "{{ correlation_id }}",
+      "createdDateTime": "{{ formatted_timestamp }}",
+      "crossTenantAccessType": "{{ ['none', 'b2bCollaboration', 'b2bDirectConnect', 'microsoftSupport', 'serviceProvider'] | random }}",
+      "deviceDetail": {
+        "deviceId": "{{ device.device_id or random_guid() }}",
+        "displayName": "{{ device.hostname or random_hostname() }}",
+        "operatingSystem": "{{ device.os_type or (os_types | random) }}",
+        "isCompliant": {{ [true, false] | random_weighted([80, 20]) | tojson }},
+        "isManaged": {{ [true, false] | random_weighted([75, 25]) | tojson }},
+        "trustType": "{{ trust_types | random }}"
+      },
+      "flaggedForReview": {{ [true, false] | random_weighted([5, 95]) | tojson }},
+      "homeTenantId": "{{ tenant_id }}",
+      "id": "{{ random_guid() }}",
+      "incomingTokenType": "{{ ['none', 'primaryRefreshToken', 'saml11', 'saml20', 'unknownFutureValue', 'remoteDesktopToken'] | random }}",
+      "ipAddress": "{{ ip_address }}",
+      "isInteractive": {{ [true, false] | random_weighted([70, 30]) | tojson }},
+      "isTenantRestricted": {{ [true, false] | random_weighted([10, 90]) | tojson }},
+      "isThroughGlobalSecureAccess": {{ [true, false] | random_weighted([15, 85]) | tojson }},
+      "location": {
+        "city": "{{ location.city }}",
+        "countryOrRegion": "{{ location.country }}",
+        "geoCoordinates": {
+          "latitude": "{{ location.lat }}",
+          "longitude": "{{ location.lon }}"
+        },
+        "state": "{{ location.state }}"
+      },
+      "mfaDetail": {
+        {% if random_int(1, 10) > 6 %}
+        "authMethod": "{{ ['PhoneAppOTP', 'PhoneAppNotification', 'OneWaySMS', 'TwoWayVoiceMobile'] | random }}",
+        "authDetail": "{{ ['User approved', 'User denied', 'Timed out', 'User cancelled'] | random }}"
+        {% endif %}
+      },
+      "networkLocationDetails": [
+        {% if random_int(1, 10) > 8 %}
+        {
+          "networkType": "{{ ['trustedNamedLocation', 'intranet', 'extranet', 'namedLocation', 'unknownFutureValue'] | random }}",
+          "networkNames": ["{{ ['Corporate Network', 'VPN', 'Home Office', 'Branch Office'] | random }}"]
+        }
+        {% endif %}
+      ],
+      "originalRequestId": "{{ random_string(8) }}-{{ random_string(4) }}-{{ random_string(4) }}-{{ random_string(4) }}-{{ random_string(12) }}",
+      "originalTransferMethod": "{{ ['none', 'deviceCodeFlow', 'authenticationTransfer'] | random }}",
+      "privateLinkDetails": {
+        {% if random_int(1, 10) > 9 %}
+        "policyId": "{{ random_guid() }}",
+        "policyName": "Corporate Private Link Policy",
+        "resourceId": "/subscriptions/{{ random_guid() }}/resourceGroups/networking/providers/Microsoft.Network/privateEndpoints/aad-pe"
+        {% endif %}
+      },
+      "processingTimeInMilliseconds": "{{ random_int(50, 2000) }}",
+      "resourceDisplayName": "{{ ['Windows Azure Active Directory', 'Microsoft Graph', 'Office 365 Exchange Online', 'SharePoint Online'] | random }}",
+      "resourceId": "{{ ['00000002-0000-0000-c000-000000000000', '00000003-0000-0000-c000-000000000000', '00000002-0000-0ff1-ce00-000000000000'] | random }}",
+      "resourceOwnerTenantId": "{{ tenant_id }}",
+      "resourceServicePrincipalId": "{{ random_guid() }}",
+      "resourceTenantId": "{{ tenant_id }}",
+      "riskDetail": "{{ ['none', 'adminGeneratedTemporaryPassword', 'userPerformedSecuredPasswordChange', 'userPerformedSecuredPasswordReset', 'adminConfirmedSigninSafe', 'aiConfirmedSigninSafe', 'userPassedMFADrivenByRiskBasedPolicy', 'adminDismissedAllRiskForUser', 'adminConfirmedSigninCompromised', 'hidden', 'adminConfirmedUserCompromised', 'unknownFutureValue'] | random }}",
+      "riskEventTypes": [
+        {% if random_int(1, 10) > 8 %}
+        "{{ ['unlikelyTravel', 'anonymizedIPAddress', 'maliciousIPAddress', 'unfamiliarFeatures', 'malwareInfectedIPAddress', 'suspiciousIPAddress', 'leakedCredentials', 'investigationsThreatIntelligence', 'generic', 'adminConfirmedUserCompromised', 'mcasImpossibleTravel', 'mcasSuspiciousInboxManipulationRules', 'investigationsThreatIntelligenceSigninLinked', 'maliciousIPAddressValidCredentialsBlockedIP'] | random }}"
+        {% endif %}
+      ],
+      "riskEventTypes_v2": [
+        {% if random_int(1, 10) > 8 %}
+        "{{ ['unlikelyTravel', 'anonymizedIPAddress', 'maliciousIPAddress', 'unfamiliarFeatures', 'malwareInfectedIPAddress', 'suspiciousIPAddress', 'leakedCredentials', 'investigationsThreatIntelligence', 'generic', 'adminConfirmedUserCompromised', 'mcasImpossibleTravel', 'mcasSuspiciousInboxManipulationRules', 'investigationsThreatIntelligenceSigninLinked', 'maliciousIPAddressValidCredentialsBlockedIP', 'unknownFutureValue'] | random }}"
+        {% endif %}
+      ],
+      "riskLevelAggregated": "{{ risk_levels | random }}",
+      "riskLevelDuringSignIn": "{{ risk_levels | random }}",
+      "riskState": "{{ risk_states | random }}",
+      "rngcStatus": "{{ random_int(0, 2) }}",
+      "servicePrincipalId": "{{ random_guid() if random_int(1, 10) > 5 else '' }}",
+      "sessionId": "{{ session_id }}",
+      "sessionLifetimePolicies": [
+        {% if random_int(1, 10) > 8 %}
+        {
+          "expirationRequirement": "{{ ['neverExpires', 'rememberMultifactorAuthenticationOnTrustedDevices', 'signInFrequency'] | random }}",
+          "detail": "{{ ['SignInFrequency', 'RememberMultifactorAuthenticationOnTrustedDevices'] | random }}"
+        }
+        {% endif %}
+      ],
+      "signInTokenProtectionStatus": "{{ ['none', 'bound', 'unbound', 'unknownFutureValue'] | random }}",
+      "ssoExtensionVersion": "{{ ['', '1.0', '2.0'] | random }}",
+      "status": {
+        "additionalDetails": "{{ ['MFA requirement satisfied by claim in the token', 'MFA completed by user', 'Password authentication successful', 'Authentication failed due to invalid credentials', 'User cancelled authentication', 'MFA denied by user'] | random }}",
+        "errorCode": "{{ ['0', '50126', '50140', '50074', '50076', '50089', '50097'] | random }}"
+      },
+      "tenantId": "{{ tenant_id }}",
+      "tokenIssuerType": "{{ ['AzureAD', 'ADFederationServices', 'UnknownFutureValue', 'AzureADBackupAuth', 'ADFederationServicesMFAAdapter', 'NPSExtension'] | random }}",
+      "tokenProtectionStatusDetails": {
+        "signInSessionStatus": "{{ ['bound', 'unbound', 'none'] | random }}",
+        "signInSessionStatusCode": "{{ random_int(0, 3) }}"
+      },
+      "uniqueTokenIdentifier": "{{ random_string(16, '0123456789abcdef') }}",
+      "userAgent": "{{ userAgent }}",
+      "userDisplayName": "{{ user.full_name }}",
+      "userId": "{{ user_id }}",
+      "userPrincipalName": "{{ user.email or (user.username + '@' + domain) }}",
+      "userType": "{{ ['Member', 'Guest'] | random_weighted([85, 15]) }}"
+     },
+  "resourceId": "/tenants/{{ random_string(8, '0123456789abcdef') }}-{{ random_string(4, '0123456789abcdef') }}-{{ random_string(4, '0123456789abcdef') }}-{{ random_string(4, '0123456789abcdef') }}-{{ random_string(12, '0123456789abcdef') }}/providers/Microsoft.aadiam",
+  "resultSignature": "{{ ['None', 'Success', 'Failure'] | random }}",
+  "resultType": "{{ ['0', '1', '50126', '50140', '50074', '50076'] | random }}",
+  "tenantId": "{{ tenant_id }}"
+}

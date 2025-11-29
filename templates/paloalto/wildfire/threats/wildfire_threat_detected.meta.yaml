@@ -1,6 +1,6 @@
-vendor: "Palo Alto Networks"
-product: "PAN-OS Firewall"
-data_source: "wildfire"
+vendor: paloalto
+product: wildfire
+data_source: threats
 description: "WildFire threat detection events including malware analysis results, threat classification, and file reputation"
 format: "CSV"
 frequency: "medium"
@@ -32,7 +32,7 @@ documentation:
       - "Upon completion of static and dynamic malware analysis"
       - "When threat verdicts are returned from WildFire cloud"
       - "During file reputation lookups for known threats"
-    security_relevance: "Critical - indicates presence of malware, APT activity, or zero-day exploits"
+    security_relevance: "Critical"
     compliance_frameworks:
       - "NIST Cybersecurity Framework"
       - "MITRE ATT&CK"
@@ -122,7 +122,7 @@ documentation:
       type: "Integer"
       required: true
       description: "Unique session identifier for the connection"
-      example_value: 542318
+      example_value: "542318"
       template_source: "random_int(10000, 999999)"
     - name: "user"
       type: "String"
@@ -137,21 +137,21 @@ documentation:
       example_value: "2025/05/26 14:30:15"
       format: "YYYY/MM/DD HH:MM:SS"
       template_source: "current_timestamp() | format_timestamp('%Y/%m/%d %H:%M:%S')"
-resources:
-  documentation:
-    - title: "WildFire Administrator Guide"
-      url: "https://docs.paloaltonetworks.com/wildfire"
-      type: "official"
-    - title: "Threat Prevention Best Practices"
-      url: "https://docs.paloaltonetworks.com/best-practices/threat-prevention"
-      type: "official"
-    - title: "PAN-OS Log Field Reference"
-      url: "https://docs.paloaltonetworks.com/pan-os/11-0/pan-os-admin/monitoring/use-syslog-for-monitoring/syslog-field-descriptions"
-      type: "official"
-  tools:
-    - name: "WildFire Portal"
-      description: "Web interface for file analysis and threat intelligence"
-      url: "https://wildfire.paloaltonetworks.com"
-    - name: "AutoFocus"
-      description: "Contextual threat intelligence platform"
-      url: "https://autofocus.paloaltonetworks.com"
+  resources:
+    documentation:
+      - title: "WildFire Administrator Guide"
+        url: "https://docs.paloaltonetworks.com/wildfire"
+        type: "official"
+      - title: "Threat Prevention Best Practices"
+        url: "https://docs.paloaltonetworks.com/best-practices/threat-prevention"
+        type: "official"
+      - title: "PAN-OS Log Field Reference"
+        url: "https://docs.paloaltonetworks.com/pan-os/11-0/pan-os-admin/monitoring/use-syslog-for-monitoring/syslog-field-descriptions"
+        type: "official"
+    tools:
+      - name: "WildFire Portal"
+        description: "Web interface for file analysis and threat intelligence"
+        url: "https://wildfire.paloaltonetworks.com"
+      - name: "AutoFocus"
+        description: "Contextual threat intelligence platform"
+        url: "https://autofocus.paloaltonetworks.com"

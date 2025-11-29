@@ -10,6 +10,6 @@
     ],
     "tags": ["microsoft", "azure", "active-directory", "authentication", "signin", "identity", "mfa", "conditional-access"],
     "templates": [
-      "authentication/signin_logs.j2"
+      "authentication/signin_logs"
     ]
   }

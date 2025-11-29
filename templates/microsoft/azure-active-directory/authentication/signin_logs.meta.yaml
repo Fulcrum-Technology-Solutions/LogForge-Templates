@@ -1,9 +1,9 @@
-vendor: "Microsoft Corporation"
-product: "Azure Active Directory"
-data_source: "authentication"
+vendor: microsoft
+product: azure-active-directory
+data_source: authentication
 description: "Azure Active Directory sign-in logs capturing user authentication events with detailed device, location, and security context"
 format: "JSON"
-frequency: "very_high"
+frequency: "high"
 is_generator: true
 base_frequency: 1200
 time_patterns:
@@ -35,7 +35,7 @@ documentation:
       - "When conditional access policies are evaluated"
       - "During password changes and user registration events"
       - "For both interactive and non-interactive authentication"
-    security_relevance: "High - Primary source for detecting authentication anomalies, brute force attacks, impossible travel, compromised accounts, and policy violations"
+    security_relevance: "High"
     compliance_frameworks:
       - "SOC 2"
       - "GDPR"
@@ -50,16 +50,16 @@ documentation:
       type: "Integer"
       required: true
       description: "Log level severity (1=Critical, 2=Error, 3=Warning, 4=Information)"
-      example_value: 4
+      example_value: "4"
       template_source: "random_int(1, 4)"
       possible_values:
-        - value: 1
+        - value: "1"
           description: "Critical events"
-        - value: 2
+        - value: "2"
           description: "Error events"
-        - value: 3
+        - value: "3"
           description: "Warning events"
-        - value: 4
+        - value: "4"
           description: "Informational events"
     - name: "callerIpAddress"
       type: "String"
@@ -139,7 +139,8 @@ documentation:
       type: "Object"
       required: true
       description: "Comprehensive object containing detailed authentication context and metadata"
-      example_value: {"appDisplayName": "Microsoft Teams", "authenticationMethod": "Password"}
+      example_value: |
+        {"appDisplayName": "Microsoft Teams", "authenticationMethod": "Password"}
       template_source: "Complex nested object with multiple authentication details"
     - name: "properties.appDisplayName"
       type: "String"
@@ -151,19 +152,22 @@ documentation:
       type: "Array"
       required: true
       description: "Detailed breakdown of each authentication step performed"
-      example_value: [{"authenticationMethod": "Password", "succeeded": "true"}]
+      example_value: |
+        [{"authenticationMethod": "Password", "succeeded": "true"}]
       template_source: "Array with primary and optional secondary authentication steps"
     - name: "properties.deviceDetail"
       type: "Object"
       required: true
       description: "Information about the device used for authentication"
-      example_value: {"operatingSystem": "Windows", "isCompliant": true}
+      example_value: |
+        {"operatingSystem": "Windows", "isCompliant": true}
       template_source: "Device registry data with compliance and management status"
     - name: "properties.location"
       type: "Object"
       required: true
       description: "Geographical location details derived from IP address"
-      example_value: {"city": "Seattle", "countryOrRegion": "US", "state": "Washington"}
+      example_value: |
+        {"city": "Seattle", "countryOrRegion": "US", "state": "Washington"}
       template_source: "Structured location data with coordinates"
     - name: "properties.conditionalAccessStatus"
       type: "String"
@@ -199,7 +203,8 @@ documentation:
       type: "Object"
       required: true
       description: "Authentication result status and error details"
-      example_value: {"errorCode": "0", "additionalDetails": "Authentication successful"}
+      example_value: |
+        {"errorCode": "0", "additionalDetails": "Authentication successful"}
       template_source: "Status object with error codes and descriptions"
     - name: "properties.userPrincipalName"
       type: "String"
@@ -251,30 +256,30 @@ documentation:
       example_value: "12345678-1234-1234-1234-123456789012"
       format: "UUID"
       template_source: "random_guid()"
-resources:
-  documentation:
-    - title: "Azure Active Directory Sign-in Logs"
-      url: "https://docs.microsoft.com/en-us/azure/active-directory/reports-monitoring/concept-sign-ins"
-      type: "official"
-    - title: "Azure Monitor Activity Log Schema"
-      url: "https://docs.microsoft.com/en-us/azure/azure-monitor/essentials/activity-log-schema"
-      type: "official"
-    - title: "Conditional Access Documentation"
-      url: "https://docs.microsoft.com/en-us/azure/active-directory/conditional-access/"
-      type: "official"
-    - title: "Azure AD Risk Detections"
-      url: "https://docs.microsoft.com/en-us/azure/active-directory/identity-protection/concept-identity-protection-risks"
-      type: "official"
-  tools:
-    - name: "Azure Portal - Azure Active Directory"
-      description: "Web interface for viewing and managing Azure AD sign-in logs and security reports"
-      url: "https://portal.azure.com/#blade/Microsoft_AAD_IAM/ActiveDirectoryMenuBlade/SignInEvents"
-    - name: "Microsoft Graph API"
-      description: "Programmatic access to Azure AD sign-in logs and security data"
-      url: "https://docs.microsoft.com/en-us/graph/api/signin-list"
-    - name: "Azure Monitor Log Analytics"
-      description: "Advanced querying and analysis platform for Azure AD logs using KQL"
-      url: "https://docs.microsoft.com/en-us/azure/azure-monitor/logs/log-analytics-overview"
-    - name: "Microsoft Sentinel"
-      description: "SIEM solution with built-in Azure AD analytics and threat detection"
-      url: "https://docs.microsoft.com/en-us/azure/sentinel/connect-azure-active-directory"
+  resources:
+    documentation:
+      - title: "Azure Active Directory Sign-in Logs"
+        url: "https://docs.microsoft.com/en-us/azure/active-directory/reports-monitoring/concept-sign-ins"
+        type: "official"
+      - title: "Azure Monitor Activity Log Schema"
+        url: "https://docs.microsoft.com/en-us/azure/azure-monitor/essentials/activity-log-schema"
+        type: "official"
+      - title: "Conditional Access Documentation"
+        url: "https://docs.microsoft.com/en-us/azure/active-directory/conditional-access/"
+        type: "official"
+      - title: "Azure AD Risk Detections"
+        url: "https://docs.microsoft.com/en-us/azure/active-directory/identity-protection/concept-identity-protection-risks"
+        type: "official"
+    tools:
+      - name: "Azure Portal - Azure Active Directory"
+        description: "Web interface for viewing and managing Azure AD sign-in logs and security reports"
+        url: "https://portal.azure.com/#blade/Microsoft_AAD_IAM/ActiveDirectoryMenuBlade/SignInEvents"
+      - name: "Microsoft Graph API"
+        description: "Programmatic access to Azure AD sign-in logs and security data"
+        url: "https://docs.microsoft.com/en-us/graph/api/signin-list"
+      - name: "Azure Monitor Log Analytics"
+        description: "Advanced querying and analysis platform for Azure AD logs using KQL"
+        url: "https://docs.microsoft.com/en-us/azure/azure-monitor/logs/log-analytics-overview"
+      - name: "Microsoft Sentinel"
+        description: "SIEM solution with built-in Azure AD analytics and threat detection"
+        url: "https://docs.microsoft.com/en-us/azure/sentinel/connect-azure-active-directory"
