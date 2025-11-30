@@ -1,6 +1,6 @@
-vendor: "AWS"
-product: "CloudTrail"
-data_source: "management"
+vendor: aws
+product: cloudtrail
+data_source: management
 description: "AWS CloudTrail DeleteTrail API call event in OCSF format"
 format: "JSON"
 frequency: "low"
@@ -35,7 +35,7 @@ documentation:
       - "When DeleteTrail API is called programmatically"
       - "During automated cleanup processes"
       - "When trails are removed due to cost optimization"
-    security_relevance: "High - Deletion of audit trails can indicate tampering attempts or compliance violations"
+    security_relevance: "High"
     compliance_frameworks:
       - "SOC 2"
       - "PCI DSS"
@@ -57,7 +57,7 @@ documentation:
       type: "Integer"
       required: true
       description: "Event timestamp in Unix epoch format"
-      example_value: 1703123456
+      example_value: "1703123456"
       format: "Unix timestamp"
       template_source: "current_timestamp()"
 
@@ -126,25 +126,25 @@ documentation:
       type: "Boolean"
       required: false
       description: "Whether multi-factor authentication was used for this session"
-      example_value: true
+      example_value: "true"
       template_source: "Random boolean value"
 
-resources:
-  documentation:
-    - title: "AWS CloudTrail API Reference"
-      url: "https://docs.aws.amazon.com/awscloudtrail/latest/APIReference/"
-      type: "official"
-    - title: "CloudTrail DeleteTrail Documentation"
-      url: "https://docs.aws.amazon.com/awscloudtrail/latest/APIReference/API_DeleteTrail.html"
-      type: "official"
-    - title: "OCSF Schema Documentation"
-      url: "https://schema.ocsf.io/"
-      type: "specification"
+  resources:
+    documentation:
+      - title: "AWS CloudTrail API Reference"
+        url: "https://docs.aws.amazon.com/awscloudtrail/latest/APIReference/"
+        type: "official"
+      - title: "CloudTrail DeleteTrail Documentation"
+        url: "https://docs.aws.amazon.com/awscloudtrail/latest/APIReference/API_DeleteTrail.html"
+        type: "official"
+      - title: "OCSF Schema Documentation"
+        url: "https://schema.ocsf.io/"
+        type: "reference"
 
-  tools:
-    - name: "AWS CloudTrail Console"
-      description: "Web interface for managing CloudTrail trails and viewing events"
-      url: "https://console.aws.amazon.com/cloudtrail/"
-    - name: "AWS CLI"
-      description: "Command-line interface for AWS services including CloudTrail"
-      url: "https://aws.amazon.com/cli/"
+    tools:
+      - name: "AWS CloudTrail Console"
+        description: "Web interface for managing CloudTrail trails and viewing events"
+        url: "https://console.aws.amazon.com/cloudtrail/"
+      - name: "AWS CLI"
+        description: "Command-line interface for AWS services including CloudTrail"
+        url: "https://aws.amazon.com/cli/"

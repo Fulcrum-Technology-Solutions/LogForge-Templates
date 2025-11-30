@@ -1,6 +1,6 @@
-vendor: "AWS"
-product: "CloudTrail"
-data_source: "compute"
+vendor: aws
+product: cloudtrail
+data_source: management
 description: "AWS EC2 CreateSnapshot API call for creating EBS volume snapshots"
 format: "JSON"
 frequency: "high"
@@ -38,7 +38,7 @@ documentation:
       - "During security testing (red team activities)"
       - "For development environment provisioning"
       - "Before risky maintenance operations"
-    security_relevance: "Medium - Snapshots contain full disk images that may include sensitive data"
+    security_relevance: "Medium"
     compliance_frameworks:
       - "SOC 2"
       - "PCI DSS"
@@ -94,7 +94,7 @@ documentation:
       type: "Boolean"
       required: false
       description: "Whether the snapshot is encrypted"
-      example_value: true
+      example_value: "true"
       template_source: "Random boolean (encryption adoption varies)"
 
     - name: "requestParameters.tagSpecificationSet"
@@ -142,7 +142,7 @@ documentation:
       type: "Integer"
       required: false
       description: "Timestamp when snapshot creation started"
-      example_value: 1679351478226
+      example_value: "1679351478226"
       format: "Unix timestamp in milliseconds"
       template_source: "Current timestamp in milliseconds"
 
@@ -173,25 +173,25 @@ documentation:
       template_source: "Generated for Console and Terraform user agents"
       notes: "Only present for HTTPS API calls"
 
-resources:
-  documentation:
-    - title: "AWS EC2 CreateSnapshot API Reference"
-      url: "https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_CreateSnapshot.html"
-      type: "official"
-    - title: "EBS Snapshot Best Practices"
-      url: "https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ebs-creating-snapshot.html"
-      type: "official"
-    - title: "EBS Snapshot Encryption"
-      url: "https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/EBSEncryption.html"
-      type: "official"
+  resources:
+    documentation:
+      - title: "AWS EC2 CreateSnapshot API Reference"
+        url: "https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_CreateSnapshot.html"
+        type: "official"
+      - title: "EBS Snapshot Best Practices"
+        url: "https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ebs-creating-snapshot.html"
+        type: "official"
+      - title: "EBS Snapshot Encryption"
+        url: "https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/EBSEncryption.html"
+        type: "official"
 
-  tools:
-    - name: "AWS EC2 Console"
-      description: "Web interface for managing EC2 instances and EBS resources"
-      url: "https://console.aws.amazon.com/ec2/"
-    - name: "AWS CLI EC2 Commands"
-      description: "Command-line interface for EC2 snapshot operations"
-      url: "https://docs.aws.amazon.com/cli/latest/reference/ec2/create-snapshot.html"
-    - name: "AWS Backup"
-      description: "Centralized backup service for AWS resources"
-      url: "https://aws.amazon.com/backup/"
+    tools:
+      - name: "AWS EC2 Console"
+        description: "Web interface for managing EC2 instances and EBS resources"
+        url: "https://console.aws.amazon.com/ec2/"
+      - name: "AWS CLI EC2 Commands"
+        description: "Command-line interface for EC2 snapshot operations"
+        url: "https://docs.aws.amazon.com/cli/latest/reference/ec2/create-snapshot.html"
+      - name: "AWS Backup"
+        description: "Centralized backup service for AWS resources"
+        url: "https://aws.amazon.com/backup/"

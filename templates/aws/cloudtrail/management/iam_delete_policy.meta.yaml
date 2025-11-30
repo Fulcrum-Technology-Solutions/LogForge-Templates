@@ -1,6 +1,6 @@
-vendor: "AWS"
-product: "CloudTrail"
-data_source: "management"
+vendor: aws
+product: cloudtrail
+data_source: management
 description: "AWS IAM DeletePolicy API call event with error handling and identity type variations"
 format: "JSON"
 frequency: "low"
@@ -36,7 +36,7 @@ documentation:
       - "During automated policy cleanup processes"
       - "When cleaning up test or temporary policies"
       - "During security incident response (removing compromised policies)"
-    security_relevance: "Critical - Policy deletions can drastically change permissions and security posture"
+    security_relevance: "Critical"
     compliance_frameworks:
       - "SOC 2"
       - "PCI DSS"
@@ -157,28 +157,28 @@ documentation:
       type: "Boolean"
       required: true
       description: "Indicates this is a management plane event"
-      example_value: true
+      example_value: "true"
       template_source: "Static value (always true for IAM operations)"
 
-resources:
-  documentation:
-    - title: "AWS IAM DeletePolicy API Reference"
-      url: "https://docs.aws.amazon.com/IAM/latest/APIReference/API_DeletePolicy.html"
-      type: "official"
-    - title: "AWS CloudTrail Event Reference"
-      url: "https://docs.aws.amazon.com/awscloudtrail/latest/userguide/cloudtrail-event-reference.html"
-      type: "official"
-    - title: "IAM Policy Management Best Practices"
-      url: "https://docs.aws.amazon.com/IAM/latest/UserGuide/best-practices.html"
-      type: "official"
+  resources:
+    documentation:
+      - title: "AWS IAM DeletePolicy API Reference"
+        url: "https://docs.aws.amazon.com/IAM/latest/APIReference/API_DeletePolicy.html"
+        type: "official"
+      - title: "AWS CloudTrail Event Reference"
+        url: "https://docs.aws.amazon.com/awscloudtrail/latest/userguide/cloudtrail-event-reference.html"
+        type: "official"
+      - title: "IAM Policy Management Best Practices"
+        url: "https://docs.aws.amazon.com/IAM/latest/UserGuide/best-practices.html"
+        type: "official"
 
-  tools:
-    - name: "AWS IAM Console"
-      description: "Web interface for managing IAM policies, users, and roles"
-      url: "https://console.aws.amazon.com/iam/"
-    - name: "AWS CLI IAM Commands"
-      description: "Command-line interface for IAM operations"
-      url: "https://docs.aws.amazon.com/cli/latest/reference/iam/"
-    - name: "IAM Policy Simulator"
-      description: "Tool for testing and validating IAM policies"
-      url: "https://policysim.aws.amazon.com/"
+    tools:
+      - name: "AWS IAM Console"
+        description: "Web interface for managing IAM policies, users, and roles"
+        url: "https://console.aws.amazon.com/iam/"
+      - name: "AWS CLI IAM Commands"
+        description: "Command-line interface for IAM operations"
+        url: "https://docs.aws.amazon.com/cli/latest/reference/iam/"
+      - name: "IAM Policy Simulator"
+        description: "Tool for testing and validating IAM policies"
+        url: "https://policysim.aws.amazon.com/"

@@ -17,8 +17,8 @@
       "api-activity"
     ],
     "templates": [
-      "management/delete_trail.j2",
-      "management/iam_delete_policy.j2",
-      "management/ec2_create_snapshot.j2"
+      "management/delete_trail",
+      "management/iam_delete_policy",
+      "management/ec2_create_snapshot"
     ]
   }
