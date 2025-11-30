@@ -43,7 +43,7 @@
       "webIdFederationData": {},
       "attributes": {
         "mfaAuthenticated": "{{ ['true', 'false'] | random }}",
-        "creationDate": "{{ (current_timestamp() - random_int(300, 7200)) | timestamp_to_iso }}"
+        "creationDate": "{{ (current_timestamp() | subtract_seconds(random_int(300, 7200))) | timestamp_to_iso }}"
       }
     }
     {%- endif %}

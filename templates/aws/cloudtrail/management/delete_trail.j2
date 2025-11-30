@@ -6,7 +6,7 @@
 {%- set role_id = random_string(13, 'abcdef0123456789') -%}
 {%- set principal_id = random_string(17, 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789') -%}
 {%- set access_key_id = random_string(20, 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789') -%}
-{%- set session_created_time = current_timestamp() - random_int(1000, 10000) -%}
+{%- set session_created_time = current_timestamp() | subtract_seconds(random_int(1000, 10000)) -%}
 {%- set request_id = random_guid() -%}
 {%- set event_id = random_guid() -%}
 {%- set trail_name = ["security-audit", "compliance-trail", "management-events", "data-events", "test-trail"] | random -%}
@@ -27,7 +27,7 @@
     "profiles": ["cloud", "datetime"],
     "version": "1.1.0"
   },
-  "time": {{ current_timestamp() }},
+  "time": {{ current_timestamp() | unix_timestamp | int }},
   "time_dt": "{{ current_timestamp() | timestamp_to_iso }}",
   "cloud": {
     "region": "{{ current_region }}",
@@ -64,7 +64,7 @@
       "credential_uid": "{{ access_key_id }}"
     },
     "session": {
-      "created_time": {{ session_created_time }},
+      "created_time": {{ session_created_time | unix_timestamp | int }},
       "created_time_dt": "{{ session_created_time | timestamp_to_iso }}",
       "is_mfa": {{ [true, false] | random | tojson }},
       "issuer": "arn:aws:iam::{{ account_id }}:role/aws-reserved/sso.amazonaws.com/{{ current_region }}/{{ role_id }}"

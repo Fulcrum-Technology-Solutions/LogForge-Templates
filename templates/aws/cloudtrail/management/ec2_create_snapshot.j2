@@ -16,7 +16,7 @@
 {%- set role_names = ['EC2AdminRole', 'BackupRole', 'DataEngineerRole', 'DevOpsRole', 'okta_adm_role'] -%}
 {%- set role_name = role_names | random -%}
 {%- set tag_scenarios = [
-  [{"key": "Name", "value": "backup-" ~ current_timestamp()}],
+  [{"key": "Name", "value": "backup-" ~ (current_timestamp() | unix_timestamp | int | string)}],
   [{"key": "Environment", "value": ["prod", "staging", "dev", "test"] | random}, {"key": "Team", "value": ["devops", "data", "security", "platform"] | random}],
   [{"key": "Backup", "value": "automated"}, {"key": "Retention", "value": ["7days", "30days", "90days", "1year"] | random}],
   [{"key": "StratusRedTeam", "value": "true"}],
@@ -57,7 +57,7 @@
       },
       "webIdFederationData": {},
       "attributes": {
-        "creationDate": "{{ (current_timestamp() - random_int(1800, 28800)) | timestamp_to_iso }}",
+        "creationDate": "{{ (current_timestamp() | subtract_seconds(random_int(1800, 28800))) | timestamp_to_iso }}",
         "mfaAuthenticated": "{{ ['true', 'false'] | random }}"
       }
     }
