@@ -27,7 +27,7 @@ paloalto/firewall/network/traffic.j2
 paloalto/firewall/network/traffic.meta.yaml
 ```
 
-Each level has its own metadata file (see `schemas/`), and the template-level meta.yaml must conform to `meta.schema.json`.
+Each level has its own metadata file (see `schemas/`), and the template-level meta.yaml must conform to `template.schema.json`.
 
 ---
 
@@ -73,25 +73,25 @@ All metadata files must conform to their respective JSON schemas in the `schemas
 - `schemas/product.schema.json` → `product.meta.yaml`
 - `schemas/collection.schema.json` → `collection.json`
 - `schemas/template.schema.json` → `template_name.meta.yaml`
-- `schemas/meta.schema.json` → `template-level meta.yaml` (see below)
 
 **Key Points:**
 - Only template-level `.meta.yaml` files require a `data_source` property.
 - Vendor and product metadata do **not** require `data_source`.
 - All fields and structure must match the schema for validation to pass.
+- The `archive/` and `examples/` directories are excluded from validation (see [Template Validation & Automation](#template-validation--automation)).
 
 ---
 
-## Template Metadata Schema (`meta.schema.json`)
+## Template Metadata Schema (`template.schema.json`)
 
-All template-level `meta.yaml` files must conform to the JSON schema defined in [`schemas/meta.schema.json`](schemas/meta.schema.json). This schema enforces the required structure, field types, and allowed values for template metadata, including:
+All template-level `meta.yaml` files must conform to the JSON schema defined in [`schemas/template.schema.json`](schemas/template.schema.json). This schema enforces the required structure, field types, and allowed values for template metadata, including:
 
 - Basic identification fields (vendor, product, data_source, description, format)
 - Event generation frequency and time pattern fields
 - Detailed documentation and field definitions for UI and developer guidance
 - External resources and tools
 
-**Location:** `schemas/meta.schema.json`
+**Location:** `schemas/template.schema.json`
 
 **Validation:**
 You can validate any `meta.yaml` file against the schema using a Python script with `pyyaml` and `jsonschema`. Example script:
@@ -102,7 +102,7 @@ import json
 import jsonschema
 from pathlib import Path
 
-SCHEMA_PATH = Path("schemas/meta.schema.json")
+SCHEMA_PATH = Path("schemas/template.schema.json")
 
 def validate_meta_yaml(yaml_path):
     with open(SCHEMA_PATH) as f:
@@ -117,7 +117,11 @@ def validate_meta_yaml(yaml_path):
 ```
 
 **Required fields and structure:**
-See the schema file for the full list of required and optional fields, types, and nested objects. The schema is designed to match the detailed example in `samples/sample-product/sample-data/sample.meta.yaml`.
+See the schema file for the full list of required and optional fields, types, and nested objects. Key required fields include:
+- `vendor`, `product`, `data_source` (must match directory structure)
+- `description` (10-500 characters)
+- `format` (enum: JSON, XML, CSV, Syslog, CEF, LEEF, Plain Text, Custom)
+- `frequency` (enum: critical, high, medium, low)
 
 **Contributing:**
 All new or updated template-level `meta.yaml` files must pass schema validation before being merged. See [CONTRIBUTING.md](./CONTRIBUTING.md) for more details.
@@ -132,7 +136,11 @@ To contribute a new template:
 - Use realistic field names and reference entities using the `entities` object (e.g., `{{ entities.users[0] }}` or `{{ random_email() }}`).
 - Test your template with sample entity files and run validation:
   ```bash
-  logforge validate-template --template <path-to-template> --entities <path-to-entities.yaml>
+  # Validate metadata files
+  python .github/scripts/validate_templates.py
+  
+  # Test template rendering (requires LogForge CLI)
+  logforge templates info <vendor>/<product>/<data_source>/<template_name>
   ```
 
 **Minimal Example:**
@@ -144,12 +152,12 @@ Template (`example_log.j2`):
 
 Metadata (`example_log.meta.yaml`):
 ```yaml
-vendor: Palo Alto Networks
-product: Firewall
+vendor: paloalto
+product: firewall
 data_source: network
 description: Example log template for demonstration
 format: Syslog
-frequency: medium
+frequency: medium  # Valid values: critical, high, medium, low
 is_generator: true
 base_frequency: 10
 time_patterns:
@@ -185,15 +193,15 @@ documentation:
       description: "Unique identifier for the device."
       example_value: "device-1234"
       template_source: "device_id"
-resources:
-  documentation:
-    - title: "LogForge Template Authoring Guide"
-      url: "https://github.com/Fulcrum-Technology-Solutions/LogForge"
-      type: "official"
-  tools:
-    - name: "LogForge CLI"
-      description: "Command-line tool for template validation and log generation."
-      url: "https://github.com/Fulcrum-Technology-Solutions/LogForge"
+  resources:
+    documentation:
+      - title: "LogForge Template Authoring Guide"
+        url: "https://github.com/Fulcrum-Technology-Solutions/LogForge"
+        type: "official"
+    tools:
+      - name: "LogForge CLI"
+        description: "Command-line tool for template validation and log generation."
+        url: "https://github.com/Fulcrum-Technology-Solutions/LogForge"
 ```
 
 For more details and advanced authoring tips, see [CONTRIBUTING.md](./CONTRIBUTING.md).
@@ -225,37 +233,66 @@ If a template references a field (e.g., `entities.registry`) that is missing fro
 - **Do not use generate_template_index.py; it is deprecated and has been removed.**
 - The only supported script for index generation is `.github/scripts/update_templates_index.py`.
 - GitHub Actions automatically validate all metadata and update the index on every push and pull request.
+- **Note:** The `archive/` and `examples/` directories are excluded from validation and indexing.
 - You can also run the scripts locally:
 
 ```bash
-# Validate all metadata and templates
+# Validate all metadata and templates (excludes archive/ and examples/)
 python .github/scripts/validate_templates.py
 
 # Update the TEMPLATES.yaml index
 python .github/scripts/update_templates_index.py
 ```
 
+**Validation Failures:**
+If validation fails, GitHub Actions will report the errors. Common issues:
+- Missing required fields in metadata files
+- Invalid enum values (e.g., `frequency` must be one of: critical, high, medium, low)
+- Schema structure mismatches
+- Directory name mismatches with metadata fields (vendor/product/data_source must match directory names)
+
 ---
 
 ## Using Templates with LogForge CLI
 
-### Install a Template Bundle
+### Search for Templates
 ```bash
-logforge install-template paloalto/firewall
+# Search all templates
+logforge templates search "windows"
+
+# Search by vendor
+logforge templates search --vendor paloalto "firewall"
+
+# Browse templates interactively
+logforge templates browse
 ```
 
-### Validate a Template and Entities
+### Install Templates
 ```bash
-logforge validate-template --template paloalto/firewall/network/traffic.j2 --entities entities/entities.yaml
+# Install entire vendor package
+logforge templates install paloalto
+
+# Install specific product
+logforge templates install aws/cloudtrail
+
+# List available vendors
+logforge templates install --list-vendors
+```
+
+### View Template Information
+```bash
+# Get template details
+logforge templates info paloalto/wildfire/threats/wildfire_threat_detected
+
+# List all local templates
+logforge templates list
+
+# Compare local vs remote templates
+logforge templates compare
 ```
 
 ### Generate Logs
-```bash
-logforge generate \
-  --template paloalto/firewall/network/traffic.j2 \
-  --entities entities/entities.yaml \
-  --output-type file --output logs/traffic.log
-```
+Templates are used via LogForge generators configured in `config.yaml`. See the [main LogForge documentation](https://github.com/Fulcrum-Technology-Solutions/LogForge) for generator configuration.
 
 ---
 
@@ -303,15 +340,16 @@ LogForge uses metadata fields in each template's `.meta.yaml` to control how oft
 
 **Key Fields for Event Generation Frequency:**
 
+- `frequency` — General categorization (enum: `critical`, `high`, `medium`, `low`)
 - `base_frequency` — Number of events per hour (e.g., `60` = 60 events/hour = 1 per minute)
 - `time_patterns` — List of time periods to apply multipliers to. Standard values:
   - `business_hours` (Mon–Fri, 9am–5pm UTC)
   - `night_hours` (Mon–Fri, 5pm–9am UTC)
   - `weekend` (all day Saturday and Sunday UTC)
 - Multipliers for each period:
-  - `business_hours_multiplier` — Multiplier for event rate during business hours
-  - `night_hours_multiplier` — Multiplier for event rate during night hours
-  - `weekend_multiplier` — Multiplier for event rate during weekends
+  - `business_hours_multiplier` — Multiplier for event rate during business hours (default: 1.0)
+  - `night_hours_multiplier` — Multiplier for event rate during night hours (default: 1.0)
+  - `weekend_multiplier` — Multiplier for event rate during weekends (default: 1.0)
 
 **Example:**
 ```yaml
