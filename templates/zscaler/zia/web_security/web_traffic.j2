@@ -1,0 +1,140 @@
+{%- set user = registry.get_random_user() -%}
+{%- set device = registry.get_random_device() -%}
+{%- set client_ip = device.ip_address -%}
+{%- set server_ip = random_private_ip() -%}
+{%- set request_method = ['GET', 'POST', 'PUT', 'DELETE', 'HEAD', 'OPTIONS'] | random -%}
+{%- set status_code = [200, 201, 301, 302, 304, 400, 401, 403, 404, 429, 500, 502, 503] | random -%}
+{%- set current_time = current_timestamp() -%}
+{%- set domain = registry.get_organization_field('domain') | default('example.com') -%}
+{%- set url_paths = [
+  '/', '/login', '/dashboard', '/api/v1/users', '/api/v2/data',
+  '/resources/document.pdf', '/images/logo.png', '/css/style.css',
+  '/js/app.js', '/favicon.ico', '/robots.txt'
+] -%}
+{%- set url_path = url_paths | random -%}
+{%- set url = 'https://' + domain + url_path -%}
+{%- set referer = 'https://' + domain + '/' -%}
+{%- set ua_class = ['Browser', 'Mobile App', 'API Client', 'Bot'] | random -%}
+{%- set protocol = ['HTTP', 'HTTPS'] | random -%}
+{%- set action = ['ALLOW', 'BLOCK', 'ALERT', 'MONITOR'] | random -%}
+{%- set req_size = random_int(100, 5000) -%}
+{%- set resp_size = random_int(500, 50000) -%}
+{%- set total_size = req_size + resp_size -%}
+{%- set client_time = random_int(5, 500) -%}
+{%- set server_time = random_int(10, 1000) -%}
+{%- set tls_version = ['TLSv1.2', 'TLSv1.3'] | random -%}
+{%- set ssl_cipher = ['ECDHE-RSA-AES256-GCM-SHA384', 'ECDHE-RSA-AES128-GCM-SHA256', 'ECDHE-ECDSA-AES256-GCM-SHA384'] | random -%}
+{%- set content_types = [
+  'text/html', 'application/json', 'text/plain', 'application/pdf',
+  'image/png', 'image/jpeg', 'text/css', 'application/javascript',
+  'application/xml', 'text/xml'
+] -%}
+{%- set content_type = content_types | random -%}
+{%- set record_id = random_int(1000000, 9999999) -%}
+{%- set risk_score = random_int(0, 100) -%}
+{%- set has_threat = [true, false, false, false, false, false] | random -%}
+{%- set threat_names = [
+  'HTML.Adware.Gen', 'HTML.Adware.Popads', 'Win32.Adware.PCAppStore',
+  'PS.Adware.DesktopGoose', 'W32/Adware.QXJK-2664', 'Trojan.GenericKD.40251423',
+  'JS:Trojan.Cryxos', 'Trojan:Win32/Occamy.C', 'Backdoor.Win32.Androm',
+  'Win32.Downloader.Banload', 'Phishing.Generic', 'Malware.Suspicious'
+] -%}
+{%- set threat_name = threat_names | random -%}
+{%- set threat_categories = ['Adware', 'Trojan', 'Malware', 'Spyware', 'Backdoor', 'Phishing'] | random -%}
+{%- set threat_class = ['Malicious', 'Suspicious', 'PUA', 'Unwanted'] | random -%}
+{%- set url_categories = [
+  'Business', 'Technology', 'Social Media', 'News', 'Education',
+  'Entertainment', 'Shopping', 'Travel', 'Finance', 'Government'
+] -%}
+{%- set url_classes = ['Business', 'Allowed', 'Monitored', 'Restricted'] -%}
+
+{
+  "action": "{{ 'BLOCK' if has_threat else action }}",
+  "appclass": "Web",
+  "appname": "Web Browsing",
+  "bwclassname": "Default",
+  "bwrulename": "Default",
+  "bwthrottle": "No",
+  "ClientIP": "{{ client_ip }}",
+  "clientpublicIP": "{{ random_public_ip() }}",
+  "clientsslcipher": "{{ ssl_cipher }}",
+  "clientsslsessreuse": "{{ ['Yes', 'No'] | random }}",
+  "clienttlsversion": "{{ tls_version }}",
+  "clienttranstime": "{{ client_time }}",
+  "contenttype": "{{ content_type }}",
+  "contenttype__1": "{{ content_type }}",
+  "department": "{{ user.department | default('Unknown') }}",
+  "dept": "{{ user.department | default('Unknown') }}",
+  "deviceappversion": "1.0",
+  "devicemodel": "{{ device.model | default('Unknown') }}",
+  "devicename": "{{ device.hostname }}",
+  "devicename__1": "{{ device.hostname }}",
+  "deviceostype": "{{ device.os_type | default('Unknown') }}",
+  "deviceostype__1": "{{ device.os_type | default('Unknown') }}",
+  "deviceosversion": "{{ device.os_version | default('Unknown') }}",
+  "deviceplatform": "{{ device.device_type | default('workstation') }}",
+  "dlpdicthitcount": "0",
+  "dlpdictionaries": "None",
+  "dlpengine": "Default",
+  "dlpidentifier": "0",
+  "dlpmd5": "None",
+  "ehost": "{{ domain }}",
+  "epochtime": "{{ current_time }}",
+  "ereferer": "{{ referer }}",
+  "event_id": "{{ record_id }}",
+  "fileclass": "None",
+  "filename": "None",
+  "filesubtype": "None",
+  "filetype": "None",
+  "hostname": "{{ domain }}",
+  "location": "{{ device.custom_location | default(user.location) | default('Unknown') }}",
+  "md5": "{{ random_string(32, '0123456789abcdef') if has_threat else 'None' }}",
+  "mobappcat": "None",
+  "mobappname": "None",
+  "mobdevtype": "None",
+  "module": "ZIA",
+  "login": "{{ user.username }}",
+  "pagerisk": "{{ '85' if has_threat else risk_score }}",
+  "product": "ZIA",
+  "productversion": "1.0",
+  "protocol": "{{ protocol }}",
+  "reason": "{{ 'Malware detected' if has_threat else 'Policy Allow' }}",
+  "refererURL": "{{ referer }}",
+  "reqdatasize": "{{ req_size - 200 }}",
+  "reqhdrsize": "200",
+  "requestmethod": "{{ request_method }}",
+  "requestsize": "{{ req_size }}",
+  "respdatasize": "{{ resp_size - 300 }}",
+  "resphdrsize": "300",
+  "responsesize": "{{ resp_size }}",
+  "respsize": "{{ resp_size }}",
+  "respversion": "HTTP/1.1",
+  "rulelabel": "Default",
+  "ruletype": "Default",
+  "serverip": "{{ server_ip }}",
+  "serversslsessreuse": "{{ ['Yes', 'No'] | random }}",
+  "servertranstime": "{{ server_time }}",
+  "srvcertchainvalpass": "Yes",
+  "srvcertvalidationtype": "Default",
+  "srvcertvalidityperiod": "{{ random_int(30, 730) }}",
+  "srvocspresult": "None",
+  "srvsslcipher": "{{ ssl_cipher }}",
+  "srvtlsversion": "{{ tls_version }}",
+  "srvwildcardcert": "{{ ['Yes', 'No'] | random }}",
+  "status": "{{ '403' if has_threat else status_code }}",
+  "threatcategory": "{{ threat_categories if has_threat else 'None' }}",
+  "threatclass": "{{ threat_class if has_threat else 'None' }}",
+  "threatname": "{{ threat_name if has_threat else 'None' }}",
+  "throttlereqsize": "0",
+  "throttlerespsize": "0",
+  "trafficredirectmethod": "None",
+  "transactionsize": "{{ total_size }}",
+  "tz": "UTC",
+  "ua_token": "Mozilla/5.0",
+  "uaclass": "{{ ua_class }}",
+  "url": "{{ url }}",
+  "urlcategory": "{{ url_categories | random }}",
+  "urlclass": "{{ url_classes | random }}",
+  "urlsupercategory": "Web Content",
+  "user": "{{ user.username }}"
+}

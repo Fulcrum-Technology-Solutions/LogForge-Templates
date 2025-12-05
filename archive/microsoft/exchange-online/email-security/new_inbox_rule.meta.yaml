@@ -1,6 +1,6 @@
-vendor: "Microsoft Corporation"
-product: "Exchange Online"
-data_source: "email-security"
+vendor: microsoft
+product: exchange-online
+data_source: email-security
 description: "Exchange Online audit log for new inbox rule creation events"
 format: "JSON"
 frequency: "low"
@@ -33,7 +33,7 @@ documentation:
       - "When inbox rules are created programmatically"
       - "During email forwarding setup attempts"
       - "When automated email processing rules are established"
-    security_relevance: "High - Inbox rules are frequently abused in BEC attacks for email forwarding, auto-deletion, and data exfiltration"
+    security_relevance: "High"
     compliance_frameworks:
       - "SOC 2"
       - "GDPR"
@@ -46,7 +46,8 @@ documentation:
       type: "Object"
       required: true
       description: "Azure AD authentication context for the application access"
-      example_value: {"AADSessionId": "uuid", "IssuedAtTime": "timestamp", "UniqueTokenId": "token"}
+      example_value: |
+        {"AADSessionId": "uuid", "IssuedAtTime": "timestamp", "UniqueTokenId": "token"}
       template_source: "Multiple GUIDs and session tokens"
     - name: "AppId"
       type: "String"
@@ -78,7 +79,7 @@ documentation:
       type: "Boolean"
       required: true
       description: "Indicates if the access originated from outside the organization"
-      example_value: false
+      example_value: "false"
       template_source: "Random boolean with 30% true probability"
     - name: "Id"
       type: "String"
@@ -122,13 +123,14 @@ documentation:
       type: "Array"
       required: true
       description: "Array of parameter objects containing rule configuration"
-      example_value: [{"Name": "MoveToFolder", "Value": "Archive"}]
+      example_value: |
+        [{"Name": "MoveToFolder", "Value": "Archive"}]
       template_source: "Array of common inbox rule parameters with random values"
     - name: "RecordType"
       type: "Integer"
       required: true
       description: "Microsoft 365 audit record type (1 = Exchange Admin)"
-      example_value: 1
+      example_value: "1"
       template_source: "Fixed value 1 for Exchange operations"
     - name: "RequestId"
       type: "String"
@@ -173,24 +175,24 @@ documentation:
       type: "Integer"
       required: true
       description: "Type classification of the user account"
-      example_value: 2
+      example_value: "2"
       template_source: "Random integer 0-4"
       possible_values:
-        - value: 0
+        - value: "0"
           description: "Regular user"
-        - value: 1
+        - value: "1"
           description: "Reserved"
-        - value: 2
+        - value: "2"
           description: "Admin user"
-        - value: 3
+        - value: "3"
           description: "DcAdmin user"
-        - value: 4
+        - value: "4"
           description: "System user"
     - name: "Version"
       type: "Integer"
       required: true
       description: "Schema version for the audit record format"
-      example_value: 1
+      example_value: "1"
       template_source: "Fixed value 1"
     - name: "Workload"
       type: "String"
@@ -198,24 +200,24 @@ documentation:
       description: "Microsoft 365 service that generated the audit record"
       example_value: "Exchange"
       template_source: "Fixed value 'Exchange'"
-resources:
-  documentation:
-    - title: "Exchange Online Auditing Documentation"
-      url: "https://docs.microsoft.com/en-us/microsoft-365/compliance/exchange-auditing"
-      type: "official"
-    - title: "Microsoft 365 Unified Audit Log"
-      url: "https://docs.microsoft.com/en-us/microsoft-365/compliance/search-the-audit-log-in-security-and-compliance"
-      type: "official"
-    - title: "Exchange Online Management Shell"
-      url: "https://docs.microsoft.com/en-us/powershell/exchange/exchange-online-powershell"
-      type: "official"
-  tools:
-    - name: "Microsoft 365 Compliance Center"
-      description: "Web-based interface for searching and analyzing audit logs"
-      url: "https://compliance.microsoft.com"
-    - name: "Exchange Online PowerShell"
-      description: "PowerShell module for Exchange Online management and auditing"
-      url: "https://docs.microsoft.com/en-us/powershell/exchange/exchange-online-powershell"
-    - name: "Microsoft Graph Security API"
-      description: "Programmatic access to Microsoft 365 security data including audit logs"
-      url: "https://docs.microsoft.com/en-us/graph/security-concept-overview"
+  resources:
+    documentation:
+      - title: "Exchange Online Auditing Documentation"
+        url: "https://docs.microsoft.com/en-us/microsoft-365/compliance/exchange-auditing"
+        type: "official"
+      - title: "Microsoft 365 Unified Audit Log"
+        url: "https://docs.microsoft.com/en-us/microsoft-365/compliance/search-the-audit-log-in-security-and-compliance"
+        type: "official"
+      - title: "Exchange Online Management Shell"
+        url: "https://docs.microsoft.com/en-us/powershell/exchange/exchange-online-powershell"
+        type: "official"
+    tools:
+      - name: "Microsoft 365 Compliance Center"
+        description: "Web-based interface for searching and analyzing audit logs"
+        url: "https://compliance.microsoft.com"
+      - name: "Exchange Online PowerShell"
+        description: "PowerShell module for Exchange Online management and auditing"
+        url: "https://docs.microsoft.com/en-us/powershell/exchange/exchange-online-powershell"
+      - name: "Microsoft Graph Security API"
+        description: "Programmatic access to Microsoft 365 security data including audit logs"
+        url: "https://docs.microsoft.com/en-us/graph/security-concept-overview"
