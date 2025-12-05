@@ -93,7 +93,7 @@
           "StatusSequence": "1", 
           "authenticationMethod": "{{ ['SMS', 'Microsoft Authenticator App', 'Phone call'] | random }}",
           "authenticationMethodDetail": "{{ ['Text message to +1234567890', 'Push notification', 'Phone call to +1234567890'] | random }}",
-          "authenticationStepDateTime": "{{ (timestamp + random_int(5, 30)) | strftime('%Y-%m-%dT%H:%M:%S.%fZ') }}",
+          "authenticationStepDateTime": "{{ (timestamp | add_seconds(random_int(5, 30))) | strftime('%Y-%m-%dT%H:%M:%S.%fZ') }}",
           "authenticationStepRequirement": "Multi-factor authentication",
           "succeeded": "{{ ['true', 'false'] | random_weighted([95, 5]) }}"
         }

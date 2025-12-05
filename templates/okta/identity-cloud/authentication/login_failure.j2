@@ -1,0 +1,121 @@
+{%- set user = registry.get_random_user() -%}
+{%- set timestamp = current_timestamp() -%}
+{%- set formatted_time = timestamp | format_timestamp('%Y-%m-%dT%H:%M:%S.%fZ') -%}
+{%- set public_ip = random_public_ip() -%}
+{%- set request_id = random_string(32, "0123456789abcdef") -%}
+{%- set event_uuid = random_guid() -%}
+{%- set auth_request_id = random_string(32, "0123456789abcdef") -%}
+{%- set domain = registry.get_domain() -%}
+{%- set as_number = random_int(1000, 65000) -%}
+{%- set lat = (random_int(100, 500) / 10) -%}
+{%- set lon = (random_int(-1000, -500) / 10) -%}
+{
+  "actor": {
+    "id": "{{ random_string(20, "0123456789abcdef") }}",
+    "type": "User",
+    "alternateId": "{{ user.email }}",
+    "displayName": "{{ user.username }}",
+    "detailEntry": null
+  },
+  "client": {
+    "userAgent": {
+      "rawUserAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36",
+      "os": "Mac OS 14.3.1 (Sonoma)",
+      "browser": "CHROME"
+    },
+    "zone": "null",
+    "device": "Computer",
+    "id": null,
+    "ipAddress": "{{ public_ip }}",
+    "geographicalContext": {
+      "city": "{{ user.location.city if user.location is defined and user.location.city is defined else 'Unknown' }}",
+      "state": "{{ user.location.state if user.location is defined and user.location.state is defined else 'Unknown' }}",
+      "country": "{{ user.location.country if user.location is defined and user.location.country is defined else 'Unknown' }}",
+      "postalCode": "20036",
+      "geolocation": {
+        "lat": {{ lat }},
+        "lon": {{ lon }}
+      }
+    }
+  },
+  "device": null,
+  "authenticationContext": {
+    "authenticationProvider": null,
+    "credentialProvider": null,
+    "credentialType": null,
+    "issuer": null,
+    "interface": null,
+    "authenticationStep": 0,
+    "externalSessionId": "{{ random_string(24) }}"
+  },
+  "displayMessage": "User login to Okta",
+  "eventType": "user.session.start",
+  "outcome": {
+    "result": "FAILURE",
+    "reason": "INVALID_CREDENTIALS"
+  },
+  "published": "{{ formatted_time }}",
+  "securityContext": {
+    "asNumber": {{ as_number }},
+    "asOrg": "twc internal spectrum",
+    "isp": "charter communications inc",
+    "domain": "rr.com",
+    "isProxy": false
+  },
+  "severity": "WARN",
+  "debugContext": {
+    "debugData": {
+      "authnRequestId": "{{ auth_request_id }}",
+      "deviceFingerprint": "{{ random_string(32, "0123456789abcdef") }}",
+      "oktaUserAgentExtended": "okta-auth-js/7.0.1 okta-signin-widget-7.15.1",
+      "requestId": "{{ request_id }}",
+      "dtHash": "{{ random_string(64, "0123456789abcdef") }}",
+      "requestUri": "/idp/idx/identify",
+      "threatSuspected": "false",
+      "url": "/idp/idx/identify?"
+    }
+  },
+  "legacyEventType": "core.user_auth.login_failed",
+  "transaction": {
+    "type": "WEB",
+    "id": "{{ request_id }}",
+    "detail": {}
+  },
+  "uuid": "{{ event_uuid }}",
+  "version": "0",
+  "request": {
+    "ipChain": [
+      {
+        "ip": "{{ public_ip }}",
+        "geographicalContext": {
+          "city": "{{ user.location.city if user.location is defined and user.location.city is defined else 'Unknown' }}",
+          "state": "{{ user.location.state if user.location is defined and user.location.state is defined else 'Unknown' }}",
+          "country": "{{ user.location.country if user.location is defined and user.location.country is defined else 'Unknown' }}",
+          "postalCode": "20036",
+          "geolocation": {
+            "lat": {{ lat }},
+            "lon": {{ lon }}
+          }
+        },
+        "version": "V4",
+        "source": null
+      }
+    ]
+  },
+  "target": [
+    {
+      "id": "{{ random_string(20, "0123456789abcdef") }}",
+      "type": "AuthenticatorEnrollment",
+      "alternateId": "unknown",
+      "displayName": "Password",
+      "detailEntry": null
+    },
+    {
+      "id": "{{ random_string(20, "0123456789abcdef") }}",
+      "type": "AppInstance",
+      "alternateId": "Okta Dashboard",
+      "displayName": "Okta Dashboard",
+      "detailEntry": null
+    }
+  ]
+}

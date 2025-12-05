@@ -1,9 +1,9 @@
-vendor: "Palo Alto Networks"
-product: "PAN-OS"
-data_source: "firewall"
+vendor: paloalto
+product: pan-os
+data_source: firewall
 description: "Network traffic flow logs from PAN-OS Next-Generation Firewall showing connection details, policy decisions, and session information"
 format: "CSV"
-frequency: "very_high"
+frequency: "critical"
 is_generator: true
 base_frequency: 180
 time_patterns:
@@ -34,7 +34,7 @@ documentation:
       - "Connection dropped due to resource constraints (drop)"
       - "Policy rule evaluation and enforcement"
       - "Application identification and control actions"
-    security_relevance: "Critical for security monitoring, threat detection, network forensics, and policy compliance validation. Provides visibility into all network communications and policy enforcement decisions."
+    security_relevance: "Critical"
     compliance_frameworks:
       - "PCI DSS"
       - "SOX"
@@ -48,7 +48,7 @@ documentation:
       type: "Integer"
       required: true
       description: "Virtual system domain identifier"
-      example_value: 1
+      example_value: "1"
       template_source: "Static value"
       
     - name: "receive_time"
@@ -93,7 +93,7 @@ documentation:
       type: "Integer"
       required: true
       description: "Configuration version number"
-      example_value: 2048
+      example_value: "2048"
       template_source: "random_int(2000, 3000)"
       
     - name: "time_generated"
@@ -249,42 +249,42 @@ documentation:
       type: "Integer"
       required: true
       description: "Unique session identifier"
-      example_value: 54350
+      example_value: "54350"
       template_source: "random_int(54320, 54399)"
       
     - name: "repeat_count"
       type: "Integer"
       required: true
       description: "Number of session repeats"
-      example_value: 1
+      example_value: "1"
       template_source: "Static value"
       
     - name: "source_port"
       type: "Integer"
       required: true
       description: "Source port number"
-      example_value: 54321
+      example_value: "54321"
       template_source: "random_port()"
       
     - name: "destination_port"
       type: "Integer"
       required: true
       description: "Destination port number"
-      example_value: 53
+      example_value: "53"
       template_source: "common_ports | random"
       
     - name: "nat_source_port"
       type: "Integer"
       required: true
       description: "NAT translated source port"
-      example_value: 55123
+      example_value: "55123"
       template_source: "random_port()"
       
     - name: "nat_destination_port"
       type: "Integer"
       required: true
       description: "NAT translated destination port"
-      example_value: 80
+      example_value: "80"
       template_source: "common_ports | random"
       
     - name: "flags"
@@ -337,28 +337,28 @@ documentation:
       type: "Integer"
       required: true
       description: "Total bytes sent from source to destination"
-      example_value: 1500
+      example_value: "1500"
       template_source: "random_int(0, 150000)"
       
     - name: "bytes_received"
       type: "Integer"
       required: true
       description: "Total bytes received from destination to source"
-      example_value: 800
+      example_value: "800"
       template_source: "random_int(0, 80000)"
       
     - name: "packets_sent"
       type: "Integer"
       required: true
       description: "Total packets sent from source to destination"
-      example_value: 15
+      example_value: "15"
       template_source: "random_int(0, 70000)"
       
     - name: "packets_received"
       type: "Integer"
       required: true
       description: "Total packets received from destination to source"
-      example_value: 12
+      example_value: "12"
       template_source: "random_int(0, 300)"
       
     - name: "session_start_time"
@@ -373,7 +373,7 @@ documentation:
       type: "Integer"
       required: true
       description: "Session duration in seconds"
-      example_value: 45
+      example_value: "45"
       template_source: "random_int(0, 120)"
       
     - name: "category"
@@ -388,7 +388,7 @@ documentation:
       type: "Integer"
       required: true
       description: "Log sequence number"
-      example_value: 7892350
+      example_value: "7892350"
       template_source: "random_int(7892340, 7892399)"
       
     - name: "action_flags"
@@ -419,14 +419,14 @@ documentation:
       type: "Integer"
       required: false
       description: "Total session packets sent"
-      example_value: 25
+      example_value: "25"
       template_source: "random_int(0, 200)"
       
     - name: "packets_received_total"
       type: "Integer"
       required: false
       description: "Total session packets received"
-      example_value: 20
+      example_value: "20"
       template_source: "random_int(0, 150)"
       
     - name: "session_end_reason"
@@ -510,24 +510,24 @@ documentation:
         - value: "backup"
           description: "Backup tunnel"
       template_source: "tunnel_types | random"
-resources:
-  documentation:
-    - title: "PAN-OS Administrator's Guide - Traffic Logs"
-      url: "https://docs.paloaltonetworks.com/pan-os/11-1/pan-os-admin/monitoring/use-syslog-for-monitoring/syslog-field-descriptions/traffic-log-fields"
-      type: "official"
-    - title: "PAN-OS CLI Reference - Log Commands"
-      url: "https://docs.paloaltonetworks.com/pan-os/11-1/pan-os-cli-quick-start/cli-cheat-sheets/log-files-cli"
-      type: "official"
-    - title: "Palo Alto Networks Security Operating Platform"
-      url: "https://www.paloaltonetworks.com/network-security/next-generation-firewall"
-      type: "product"
-  tools:
-    - name: "PAN-OS CLI"
-      description: "Command-line interface for log analysis and system management"
-      url: "https://docs.paloaltonetworks.com/pan-os/11-1/pan-os-cli-quick-start"
-    - name: "Panorama"
-      description: "Centralized management and logging platform for PAN-OS devices"
-      url: "https://www.paloaltonetworks.com/network-security/panorama"
-    - name: "AutoFocus"
-      description: "Threat intelligence and analysis platform with log correlation"
-      url: "https://www.paloaltonetworks.com/products/secure-the-network/subscriptions/autofocus"
+  resources:
+    documentation:
+      - title: "PAN-OS Administrator's Guide - Traffic Logs"
+        url: "https://docs.paloaltonetworks.com/pan-os/11-1/pan-os-admin/monitoring/use-syslog-for-monitoring/syslog-field-descriptions/traffic-log-fields"
+        type: "official"
+      - title: "PAN-OS CLI Reference - Log Commands"
+        url: "https://docs.paloaltonetworks.com/pan-os/11-1/pan-os-cli-quick-start/cli-cheat-sheets/log-files-cli"
+        type: "official"
+      - title: "Palo Alto Networks Security Operating Platform"
+        url: "https://www.paloaltonetworks.com/network-security/next-generation-firewall"
+        type: "official"
+    tools:
+      - name: "PAN-OS CLI"
+        description: "Command-line interface for log analysis and system management"
+        url: "https://docs.paloaltonetworks.com/pan-os/11-1/pan-os-cli-quick-start"
+      - name: "Panorama"
+        description: "Centralized management and logging platform for PAN-OS devices"
+        url: "https://www.paloaltonetworks.com/network-security/panorama"
+      - name: "AutoFocus"
+        description: "Threat intelligence and analysis platform with log correlation"
+        url: "https://www.paloaltonetworks.com/products/secure-the-network/subscriptions/autofocus"
