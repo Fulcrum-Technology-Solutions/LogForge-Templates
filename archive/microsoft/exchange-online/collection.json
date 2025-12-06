@@ -10,6 +10,6 @@
     ],
     "tags": ["microsoft", "exchange", "email", "security", "audit", "office365", "m365"],
     "templates": [
-      "email-security/new_inbox_rule.j2"
+      "email-security/new_inbox_rule"
     ]
   }

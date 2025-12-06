@@ -1,6 +1,6 @@
-vendor: "Palo Alto Networks"
-product: "PAN-OS"
-data_source: "globalprotect"
+vendor: paloalto
+product: pan-os
+data_source: globalprotect
 description: "GlobalProtect VPN client authentication and connection events"
 format: "CSV"
 frequency: "high"
@@ -32,7 +32,7 @@ documentation:
       - "Gateway selection and connection events"
       - "Portal pre-login and login events"
       - "Tunnel establishment and disconnection"
-    security_relevance: "High - Critical for monitoring remote access security, failed authentication attempts, and VPN usage patterns"
+    security_relevance: "High"
     compliance_frameworks:
       - "SOX"
       - "PCI-DSS"
@@ -216,7 +216,7 @@ documentation:
       type: "Integer"
       required: true
       description: "Response time in seconds"
-      example_value: 1250
+      example_value: "1250"
       template_source: "random_int(0, 3600)"
     - name: "connect_method"
       type: "String"
@@ -259,7 +259,7 @@ documentation:
       type: "Integer"
       required: true
       description: "Gateway priority value"
-      example_value: 3
+      example_value: "3"
       template_source: "Random selection from priorities array (1-5)"
     - name: "virtual_system"
       type: "String"
@@ -267,21 +267,21 @@ documentation:
       description: "Virtual system identifier"
       example_value: "VS-5"
       template_source: "VS-{{ random_int(1, 10) }}"
-resources:
-  documentation:
-    - title: "GlobalProtect Administrator's Guide"
-      url: "https://docs.paloaltonetworks.com/globalprotect"
-      type: "official"
-    - title: "GlobalProtect Log Reference"
-      url: "https://docs.paloaltonetworks.com/pan-os/10-2/pan-os-admin/monitoring/use-syslog-for-monitoring/syslog-field-descriptions/globalprotect-log-fields"
-      type: "official"
-    - title: "PAN-OS System Logs"
-      url: "https://docs.paloaltonetworks.com/pan-os/10-2/pan-os-admin/monitoring/use-syslog-for-monitoring"
-      type: "official"
-  tools:
-    - name: "PAN-OS CLI Reference"
-      description: "Command-line interface reference for PAN-OS"
-      url: "https://docs.paloaltonetworks.com/pan-os/10-2/pan-os-cli-quick-start"
-    - name: "GlobalProtect Cloud Service"
-      description: "Cloud-based GlobalProtect management portal"
-      url: "https://docs.paloaltonetworks.com/globalprotect/globalprotect-cloud-service"
+  resources:
+    documentation:
+      - title: "GlobalProtect Administrator's Guide"
+        url: "https://docs.paloaltonetworks.com/globalprotect"
+        type: "official"
+      - title: "GlobalProtect Log Reference"
+        url: "https://docs.paloaltonetworks.com/pan-os/10-2/pan-os-admin/monitoring/use-syslog-for-monitoring/syslog-field-descriptions/globalprotect-log-fields"
+        type: "official"
+      - title: "PAN-OS System Logs"
+        url: "https://docs.paloaltonetworks.com/pan-os/10-2/pan-os-admin/monitoring/use-syslog-for-monitoring"
+        type: "official"
+    tools:
+      - name: "PAN-OS CLI Reference"
+        description: "Command-line interface reference for PAN-OS"
+        url: "https://docs.paloaltonetworks.com/pan-os/10-2/pan-os-cli-quick-start"
+      - name: "GlobalProtect Cloud Service"
+        description: "Cloud-based GlobalProtect management portal"
+        url: "https://docs.paloaltonetworks.com/globalprotect/globalprotect-cloud-service"

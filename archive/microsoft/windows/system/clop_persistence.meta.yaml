@@ -1,9 +1,9 @@
-vendor: "Microsoft Corporation"
-product: "Windows"
-data_source: "clop_persistence"
+vendor: microsoft
+product: windows
+data_source: system
 description: "CLOP Ransomware Service Installation - Known persistence mechanism used by CLOP ransomware family"
 format: "XML"
-frequency: "very_low"
+frequency: "low"
 is_generator: true
 base_frequency: 0.2
 time_patterns:
@@ -35,7 +35,7 @@ documentation:
       - "For persistence establishment on compromised Windows systems"
       - "In red team exercises simulating CLOP campaign tactics"
       - "For detection rule validation and SOC analyst training"
-    security_relevance: "Critical - Direct indicator of CLOP ransomware presence and active compromise"
+    security_relevance: "Critical"
     compliance_frameworks:
       - "MITRE ATT&CK T1543.003 (Create or Modify System Process: Windows Service)"
       - "NIST Cybersecurity Framework - Detect (DE.CM)"
@@ -48,16 +48,15 @@ documentation:
       type: "Object"
       required: true
       description: "Event provider information - always Service Control Manager for Event ID 7045"
-      example_value: 
-        Name: "Service Control Manager"
-        Guid: "{555908d1-a6d7-4695-8e1e-26931d2012f4}"
+      example_value: |
+        {"Name": "Service Control Manager", "Guid": "{555908d1-a6d7-4695-8e1e-26931d2012f4}"}
       template_source: "Static values for Service Control Manager"
 
     - name: "EventID"
       type: "Integer"
       required: true
       description: "Windows Event ID - always 7045 for service installation"
-      example_value: 7045
+      example_value: "7045"
       template_source: "Static value 7045"
 
     - name: "TimeCreated"
@@ -72,21 +71,21 @@ documentation:
       type: "Integer"
       required: true
       description: "Unique record identifier for this event log entry"
-      example_value: 168102
+      example_value: "168102"
       template_source: "random_int(100000, 999999)"
 
     - name: "ProcessID"
       type: "Integer"
       required: true
       description: "Process ID of the Service Control Manager process"
-      example_value: 592
+      example_value: "592"
       template_source: "random_int(500, 2000)"
 
     - name: "ThreadID"
       type: "Integer"
       required: true
       description: "Thread ID within the Service Control Manager process"
-      example_value: 688
+      example_value: "688"
       template_source: "random_int(600, 1000)"
 
     - name: "Computer"
@@ -115,7 +114,6 @@ documentation:
           description: "Primary CLOP ransomware service name - mimics legitimate security software"
         - value: "WinCheckDRVs" 
           description: "Secondary CLOP ransomware service name - appears to be driver checking utility"
-      notes: "These exact service names are IoCs for CLOP ransomware family per Mandiant/FireEye research"
 
     - name: "ImagePath"
       type: "String"
@@ -130,7 +128,6 @@ documentation:
           description: "Temporary directory execution - common staging area for CLOP payloads"
         - value: "C:\\Windows\\System32\\*.exe"
           description: "System masquerading - CLOP attempts to blend with legitimate system processes"
-      notes: "CLOP frequently uses cmd.exe or places executables in C:\\Temp\\ for initial execution"
 
     - name: "ServiceType"
       type: "String"
@@ -174,34 +171,34 @@ documentation:
         - value: "NetworkService"
           description: "Network-capable limited account"
 
-resources:
-  documentation:
-    - title: "Mandiant CLOP Ransomware Analysis"
-      url: "https://www.mandiant.com/resources/fin11-email-campaigns-precursor-for-ransomware-data-theft"
-      type: "threat-intelligence"
-    - title: "VirusTotal CLOP Ransomware Deep Dive"
-      url: "https://blog.virustotal.com/2020/11/keep-your-friends-close-keep-ransomware.html"
-      type: "threat-intelligence"
-    - title: "MITRE ATT&CK - T1543.003 Windows Service"
-      url: "https://attack.mitre.org/techniques/T1543/003/"
-      type: "framework"
-    - title: "Splunk CLOP Detection Rule"
-      url: "https://research.splunk.com/endpoint/07e08a12-870c-11eb-b5f9-acde48001122/"
-      type: "detection"
-    - title: "Windows Event ID 7045 Reference"
-      url: "https://www.ultimatewindowssecurity.com/securitylog/encyclopedia/event.aspx?eventID=7045"
-      type: "reference"
+  resources:
+    documentation:
+      - title: "Mandiant CLOP Ransomware Analysis"
+        url: "https://www.mandiant.com/resources/fin11-email-campaigns-precursor-for-ransomware-data-theft"
+        type: "reference"
+      - title: "VirusTotal CLOP Ransomware Deep Dive"
+        url: "https://blog.virustotal.com/2020/11/keep-your-friends-close-keep-ransomware.html"
+        type: "community"
+      - title: "MITRE ATT&CK - T1543.003 Windows Service"
+        url: "https://attack.mitre.org/techniques/T1543/003/"
+        type: "reference"
+      - title: "Splunk CLOP Detection Rule"
+        url: "https://research.splunk.com/endpoint/07e08a12-870c-11eb-b5f9-acde48001122/"
+        type: "community"
+      - title: "Windows Event ID 7045 Reference"
+        url: "https://www.ultimatewindowssecurity.com/securitylog/encyclopedia/event.aspx?eventID=7045"
+        type: "reference"
 
-  tools:
-    - name: "Splunk Enterprise Security"
-      description: "Primary SIEM platform for CLOP detection and response"
-      url: "https://www.splunk.com/en_us/products/enterprise-security.html"
-    - name: "Sysmon"
-      description: "Enhanced Windows logging for detailed process and service monitoring"
-      url: "https://docs.microsoft.com/en-us/sysinternals/downloads/sysmon"
-    - name: "YARA Rules for CLOP"
-      description: "Pattern matching rules for CLOP ransomware identification"
-      url: "https://github.com/Neo23x0/signature-base/tree/master/yara"
-    - name: "Windows Defender ATP"
-      description: "Microsoft's endpoint detection and response platform"
-      url: "https://docs.microsoft.com/en-us/windows/security/threat-protection/microsoft-defender-atp/"
+    tools:
+      - name: "Splunk Enterprise Security"
+        description: "Primary SIEM platform for CLOP detection and response"
+        url: "https://www.splunk.com/en_us/products/enterprise-security.html"
+      - name: "Sysmon"
+        description: "Enhanced Windows logging for detailed process and service monitoring"
+        url: "https://docs.microsoft.com/en-us/sysinternals/downloads/sysmon"
+      - name: "YARA Rules for CLOP"
+        description: "Pattern matching rules for CLOP ransomware identification"
+        url: "https://github.com/Neo23x0/signature-base/tree/master/yara"
+      - name: "Windows Defender ATP"
+        description: "Microsoft's endpoint detection and response platform"
+        url: "https://docs.microsoft.com/en-us/windows/security/threat-protection/microsoft-defender-atp/"

@@ -1,9 +1,9 @@
-vendor: "Microsoft Corporation"
-product: "Defender for Identity"
-data_source: "security-alerts"
+vendor: microsoft
+product: defender-for-identity
+data_source: security-alerts
 description: "Microsoft Defender for Identity alert for pass-the-ticket attacks indicating lateral movement through stolen Kerberos tickets"
 format: "JSON"
-frequency: "very_low"
+frequency: "low"
 is_generator: true
 base_frequency: 0.5
 time_patterns:
@@ -34,7 +34,7 @@ documentation:
       - "During lateral movement activities in compromised environments"
       - "When attackers attempt to escalate privileges using stolen credentials"
       - "As part of advanced persistent threat (APT) campaigns"
-    security_relevance: "Critical - Pass-the-ticket attacks indicate sophisticated adversaries with existing network access attempting lateral movement. Immediate investigation and containment required."
+    security_relevance: "Critical"
     compliance_frameworks:
       - "NIST Cybersecurity Framework"
       - "MITRE ATT&CK Framework"
@@ -61,7 +61,7 @@ documentation:
       type: "Integer"
       required: true
       description: "Incident number for tracking and correlation"
-      example_value: 1234
+      example_value: "1234"
       template_source: "random_int(100, 9999)"
     - name: "serviceSource"
       type: "String"
@@ -157,7 +157,7 @@ documentation:
       type: "String"
       required: false
       description: "Investigation tracking identifier (often null for unsupported alert types)"
-      example_value: null
+      example_value: "null"
       template_source: "Fixed null value"
     - name: "investigationState"
       type: "String"
@@ -224,38 +224,41 @@ documentation:
       type: "Array"
       required: true
       description: "MITRE ATT&CK technique identifiers"
-      example_value: ["T1550", "T1550.003"]
+      example_value: |
+        ["T1550", "T1550.003"]
       template_source: "Fixed array for pass-the-ticket techniques"
     - name: "devices"
       type: "Array"
       required: true
       description: "Array of device objects involved in the alert"
-      example_value: [{"mdatpDeviceId": "abc123", "deviceDnsName": "server01.contoso.com"}]
+      example_value: |
+        [{"mdatpDeviceId": "abc123", "deviceDnsName": "server01.contoso.com"}]
       template_source: "Array of 3 devices with detailed metadata"
     - name: "entities"
       type: "Array"
       required: true
       description: "Array of security entities involved in the alert (users, IPs, etc.)"
-      example_value: [{"entityType": "User", "accountName": "jdoe", "verdict": "Suspicious"}]
+      example_value: |
+        [{"entityType": "User", "accountName": "jdoe", "verdict": "Suspicious"}]
       template_source: "Array containing krbtgt account, target user, and source IP"
-resources:
-  documentation:
-    - title: "Microsoft Defender for Identity Documentation"
-      url: "https://docs.microsoft.com/en-us/defender-for-identity/"
-      type: "official"
-    - title: "Pass-the-Ticket Attack Detection"
-      url: "https://docs.microsoft.com/en-us/defender-for-identity/lateral-movement-alerts"
-      type: "official"
-    - title: "MITRE ATT&CK T1550.003: Pass the Ticket"
-      url: "https://attack.mitre.org/techniques/T1550/003/"
-      type: "reference"
-  tools:
-    - name: "Microsoft 365 Defender Portal"
-      description: "Unified security portal for investigating and responding to Defender for Identity alerts"
-      url: "https://security.microsoft.com"
-    - name: "Microsoft Defender for Identity Portal"
-      description: "Dedicated portal for Defender for Identity management and investigation"
-      url: "https://portal.atp.azure.com"
-    - name: "Azure Active Directory Identity Protection"
-      description: "Complementary identity security service for user risk assessment"
-      url: "https://docs.microsoft.com/en-us/azure/active-directory/identity-protection/"
+  resources:
+    documentation:
+      - title: "Microsoft Defender for Identity Documentation"
+        url: "https://docs.microsoft.com/en-us/defender-for-identity/"
+        type: "official"
+      - title: "Pass-the-Ticket Attack Detection"
+        url: "https://docs.microsoft.com/en-us/defender-for-identity/lateral-movement-alerts"
+        type: "official"
+      - title: "MITRE ATT&CK T1550.003: Pass the Ticket"
+        url: "https://attack.mitre.org/techniques/T1550/003/"
+        type: "reference"
+    tools:
+      - name: "Microsoft 365 Defender Portal"
+        description: "Unified security portal for investigating and responding to Defender for Identity alerts"
+        url: "https://security.microsoft.com"
+      - name: "Microsoft Defender for Identity Portal"
+        description: "Dedicated portal for Defender for Identity management and investigation"
+        url: "https://portal.atp.azure.com"
+      - name: "Azure Active Directory Identity Protection"
+        description: "Complementary identity security service for user risk assessment"
+        url: "https://docs.microsoft.com/en-us/azure/active-directory/identity-protection/"
