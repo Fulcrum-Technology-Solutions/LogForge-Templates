@@ -293,7 +293,7 @@ documentation:
       description: "TCP flags and session attributes"
       example_value: "0x401000"
       format: "Hexadecimal"
-      template_source: "0x{{ random_int(0, 67108864) | hex }}"
+      template_source: "{{ random_hex(0, 67108864) }}"
       
     - name: "protocol"
       type: "String"
