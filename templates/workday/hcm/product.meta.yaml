@@ -1,0 +1,6 @@
+vendor: workday
+product: hcm
+name: "Workday HCM"
+description: "Workday Human Capital Management (HCM) is a cloud-based software solution for managing human resources, including workforce management, talent management, payroll, time tracking, and employee experience across mobile and web platforms."
+version: "All"
+documentation_url: "https://doc.workday.com"

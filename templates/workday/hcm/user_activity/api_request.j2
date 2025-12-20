@@ -1,0 +1,13 @@
+{
+  "deviceType": "{{ random_choice(['Phone', 'Desktop', 'Tablet']) }}",
+  "ipAddress": "{{ random_public_ip() }}",
+  "systemAccount": "{{ '%06d' | format(random_int(10000, 999999)) }}",
+  "requestTime": "{{ now() | iso8601 }}",
+  "taskId": "{{ random_guid() | replace('-', '') }}",
+  "userAgent": "{{ random_choice(['Workday/2025.12.1.27340 (iPhone)', 'Workday/2025.12.0.25234 (AndroidNative)', 'Workday/2025.11.2.26145 (iPhone)']) }}",
+  "sessionId": "{{ random_string(6, 'abcdef0123456789') }}",
+  "taskDisplayName": "{{ random_choice(['peopleExperience/allMyHomePageCards/get (GET) (1 - )', 'peopleExperience/accountDetails/me (GET) (1 - )', 'peopleExperience/quickActions/GET (GET) (1 - )', 'Refresh Mobile Badges', 'get Mobile Dashboards', 'peopleExperience/myHomePageAnnouncements/get (GET) (1 - )', 'onboarding/planAssignments/view (GET) (v1 - )', 'peopleExperience/accountDetails/securedItemAccess/view (GET) (1 - )', 'peopleExperience/myHomePageTenantConfiguration/get (GET) (1 - )', 'feature/toggles/get (GET) (v0 - )', 'Get Webview Task List (Web Service)', 'Get Mobile Client Toggles', 'setMessageQueue -> Set Message Queue (System)']) }}",
+  "activityAction": "{{ random_weighted(['READ', 'WRITE'], [95, 5]) }}",
+  "tenantId": "{{ registry.get_organization_field('netbios_domain') | lower if registry.get_organization_field('netbios_domain') else 'acmecorp' }}",
+  "tenantHost": "{{ random_choice(['wd5-services1.myworkday.com', 'wd2-impl-services1.workday.com', 'wd3-services1.myworkday.com']) }}"
+}
