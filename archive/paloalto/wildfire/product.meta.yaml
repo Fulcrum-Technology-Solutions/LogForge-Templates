@@ -1,6 +1,0 @@
-vendor: paloalto
-product: wildfire
-name: "WildFire"
-description: "Palo Alto Networks WildFire Threat Detection"
-version: "All"
-documentation_url: "https://docs.paloaltonetworks.com/wildfire"
