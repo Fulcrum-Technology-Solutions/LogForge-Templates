@@ -1,0 +1,24 @@
+{
+    "name": "workday-hcm",
+    "version": "1.0.0",
+    "description": "LogForge templates for Workday HCM user activity logs, capturing mobile and web application interactions, API calls, and user actions across the Workday platform.",
+    "maintainers": [
+      {
+        "name": "LogForge Community",
+        "email": "templates@logforge.dev"
+      }
+    ],
+    "tags": [
+      "workday",
+      "hcm",
+      "hr",
+      "user-activity",
+      "mobile",
+      "audit",
+      "enterprise"
+    ],
+    "templates": [
+      "user_activity/api_request",
+      "user_activity/document_download"
+    ]
+  }
