@@ -1,0 +1,166 @@
+vendor: workday
+product: hcm
+data_source: user_activity
+description: Records user interactions with Workday HCM mobile and web applications, including API calls, dashboard views, and system actions. Captures READ and WRITE operations without document downloads.
+format: JSON
+frequency: high
+is_generator: true
+base_frequency: 2400
+time_patterns:
+  - business_hours
+  - night_hours
+  - weekend
+business_hours_multiplier: 3.0
+night_hours_multiplier: 0.4
+weekend_multiplier: 0.2
+
+documentation:
+  display:
+    title: "Workday HCM API Request"
+    subtitle: "User activity and API interactions"
+    icon: "📱"
+    color_scheme: "info"
+    tags:
+      - "api"
+      - "mobile"
+      - "user-activity"
+      - "audit"
+      - "hcm"
+
+  overview:
+    summary: "Captures user interactions with Workday HCM applications through API calls, including mobile app usage, web portal access, and system task execution. Tracks READ and WRITE operations across the platform."
+    when_generated:
+      - "When a user opens the Workday mobile app and views their dashboard"
+      - "When a user accesses their timesheet, payslip, or benefits information"
+      - "When a user performs searches or navigates through the application"
+      - "When system processes execute automated tasks on behalf of users"
+      - "When users interact with calendar, absence, or approval workflows"
+    security_relevance: "Medium"
+    compliance_frameworks:
+      - "SOC 2"
+      - "GDPR"
+      - "HIPAA (for healthcare organizations)"
+      - "SOX (for financial data access)"
+    frequency_notes: "Very high frequency during business hours with mobile usage patterns. Expect 2,400+ events/hour base rate with 3x multiplier during business hours (7,200 events/hour), reduced activity during nights (960 events/hour) and weekends (480 events/hour). Mobile app interactions generate bursts of 5-15 API calls per user action."
+
+  fields:
+    - name: "deviceType"
+      type: "String"
+      required: true
+      description: "Type of device used to access Workday (Phone, Desktop, Tablet)"
+      example_value: "Phone"
+      template_source: "random_choice(['Phone', 'Desktop', 'Tablet'])"
+      possible_values:
+        - value: "Phone"
+          description: "Mobile smartphone device"
+        - value: "Desktop"
+          description: "Desktop computer or laptop"
+        - value: "Tablet"
+          description: "Tablet device"
+
+    - name: "ipAddress"
+      type: "String"
+      required: true
+      description: "Public IP address of the user's device"
+      example_value: "108.147.198.52"
+      format: "IPv4"
+      template_source: "random_public_ip()"
+
+    - name: "systemAccount"
+      type: "String"
+      required: true
+      description: "Workday internal user identifier (6-digit zero-padded number)"
+      example_value: "000077206"
+      format: "6-digit zero-padded string"
+      template_source: "random_int(10000, 999999) formatted as 6-digit zero-padded string"
+
+    - name: "requestTime"
+      type: "DateTime"
+      required: true
+      description: "Timestamp of the API request in ISO 8601 format (UTC)"
+      example_value: "2025-12-20T21:53:19.988Z"
+      format: "ISO 8601 with milliseconds and Z suffix"
+      template_source: "now() | iso8601"
+
+    - name: "taskId"
+      type: "String"
+      required: true
+      description: "Unique identifier for the specific API endpoint or task being executed (32-character hex string)"
+      example_value: "b19441175deb100010085ba8525b4db7"
+      format: "32-character hexadecimal (UUID without hyphens)"
+      template_source: "random_guid() with hyphens removed"
+
+    - name: "userAgent"
+      type: "String"
+      required: true
+      description: "User agent string identifying the Workday client application and version"
+      example_value: "Workday/2025.12.1.27340 (iPhone)"
+      template_source: "random_choice() from list of common Workday user agents"
+      possible_values:
+        - value: "Workday/2025.12.1.27340 (iPhone)"
+          description: "Workday iOS mobile app"
+        - value: "Workday/2025.12.0.25234 (AndroidNative)"
+          description: "Workday Android mobile app"
+        - value: "Workday/2025.11.2.26145 (iPhone)"
+          description: "Workday iOS mobile app (older version)"
+
+    - name: "sessionId"
+      type: "String"
+      required: true
+      description: "Short session identifier (6-character hex string)"
+      example_value: "91f19d"
+      format: "6-character hexadecimal"
+      template_source: "random_string(6, 'abcdef0123456789')"
+
+    - name: "taskDisplayName"
+      type: "String"
+      required: true
+      description: "Human-readable description of the task or API endpoint being called"
+      example_value: "peopleExperience/allMyHomePageCards/get (GET) (1 - )"
+      template_source: "random_choice() from list of common Workday task names"
+
+    - name: "activityAction"
+      type: "String"
+      required: true
+      description: "Type of action performed (READ or WRITE for API requests)"
+      example_value: "READ"
+      template_source: "random_weighted(['READ', 'WRITE'], [95, 5]) - 95% READ, 5% WRITE"
+      possible_values:
+        - value: "READ"
+          description: "Data retrieval or query operation"
+        - value: "WRITE"
+          description: "Data modification or creation operation"
+
+    - name: "tenantId"
+      type: "String"
+      required: true
+      description: "Workday tenant identifier (organization's unique ID in Workday)"
+      example_value: "mclaneco"
+      template_source: "registry.get_organization_field('netbios_domain') | lower, fallback to 'acmecorp'"
+
+    - name: "tenantHost"
+      type: "String"
+      required: true
+      description: "Workday service hostname for the tenant"
+      example_value: "wd5-services1.myworkday.com"
+      format: "Hostname (FQDN)"
+      template_source: "random_choice() from list of Workday service hostnames"
+
+  resources:
+    documentation:
+      - title: "Workday HCM Documentation"
+        url: "https://doc.workday.com"
+        type: "official"
+      - title: "Workday API Reference"
+        url: "https://community.workday.com/sites/default/files/file-hosting/productionapi/index.html"
+        type: "official"
+      - title: "Workday Security and Privacy"
+        url: "https://www.workday.com/en-us/company/trust.html"
+        type: "official"
+    tools:
+      - name: "LogForge CLI"
+        description: "Command-line tool for template validation and log generation"
+        url: "https://github.com/Fulcrum-Technology-Solutions/LogForge"
+      - name: "Workday Studio"
+        description: "Eclipse-based IDE for Workday integrations and custom development"
+        url: "https://doc.workday.com"

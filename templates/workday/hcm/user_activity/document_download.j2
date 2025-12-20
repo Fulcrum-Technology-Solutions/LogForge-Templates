@@ -1,0 +1,17 @@
+{
+  "deviceType": "{{ random_choice(['Phone', 'Desktop', 'Tablet']) }}",
+  "ipAddress": "{{ random_public_ip() }}",
+  "systemAccount": "{{ '%06d' | format(random_int(10000, 999999)) }}",
+  "requestTime": "{{ now() | iso8601 }}",
+  "taskId": "{{ random_guid() | replace('-', '') }}",
+  "userAgent": "{{ random_choice(['Workday/2025.12.1.27340 (iPhone)', 'Workday/2025.12.0.25234 (AndroidNative)', 'Workday/2025.11.2.26145 (iPhone)', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36']) }}",
+  "sessionId": "{{ random_string(6, 'abcdef0123456789') }}",
+  "taskDisplayName": "{{ random_choice(['Payslips', 'Tax Documents', 'Download W-2', 'Download Pay Statement', 'Benefits Summary', 'Download Employment Verification', 'Performance Review Document', 'Training Certificate']) }}",
+  "activityAction": "DOWNLOAD",
+  "target": {
+    "descriptor": "{{ random_choice(['Payslip-' + now().strftime('%m_%d_%Y') + '.pdf', 'W2-' + (now().year - 1)|string + '.pdf', 'Benefits-Summary-' + now().year|string + '.pdf', 'Performance-Review-' + now().strftime('%Y-%m') + '.pdf', 'Training-Certificate.pdf', 'Employment-Verification.pdf']) }}",
+    "id": "{{ random_guid() | replace('-', '') }}"
+  },
+  "tenantId": "{{ registry.get_organization_field('netbios_domain') | lower if registry.get_organization_field('netbios_domain') else 'acmecorp' }}",
+  "tenantHost": "{{ random_choice(['wd5-services1.myworkday.com', 'wd2-impl-services1.workday.com', 'wd3-services1.myworkday.com']) }}"
+}
