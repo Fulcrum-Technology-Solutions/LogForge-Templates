@@ -1,0 +1,227 @@
+vendor: apache
+product: httpd
+data_source: access
+description: Apache HTTP Server Combined Log Format access logs recording all HTTP requests with client information, request details, response status, referrer, and user agent data
+format: Plain Text
+frequency: high
+is_generator: true
+base_frequency: 300
+time_patterns:
+  - business_hours
+  - night_hours
+  - weekend
+business_hours_multiplier: 3.0
+night_hours_multiplier: 0.4
+weekend_multiplier: 0.5
+
+documentation:
+  display:
+    title: "Apache Combined Log Format"
+    subtitle: "Standard HTTP access logs with extended client information"
+    icon: "📊"
+    color_scheme: "info"
+    tags:
+      - "access-log"
+      - "http"
+      - "web-server"
+      - "combined-format"
+      - "traffic"
+
+  overview:
+    summary: "Records all HTTP requests to the Apache web server including client IP, authenticated user, timestamp, request method and URI, HTTP status code, response size, referrer URL, and user agent string."
+    when_generated:
+      - "Every HTTP/HTTPS request received by the Apache web server"
+      - "GET, POST, PUT, DELETE, HEAD, OPTIONS, and other HTTP methods"
+      - "Both successful requests and errors (2xx, 3xx, 4xx, 5xx status codes)"
+      - "Requests to static content, APIs, web applications, and services"
+    security_relevance: "High"
+    compliance_frameworks:
+      - "PCI DSS (Requirement 10.2 - Audit logging)"
+      - "HIPAA (Access logging requirements)"
+      - "SOX (Access audit trails)"
+      - "GDPR (Access logging for personal data)"
+      - "ISO 27001 (A.12.4.1 - Event logging)"
+    frequency_notes: "High-frequency events during business hours (900 events/hour or ~4 per second) with reduced activity during nights (120 events/hour) and weekends (150 events/hour). Typical for enterprise web applications and internal portals."
+
+  fields:
+    - name: "client_ip"
+      type: "String"
+      required: true
+      description: "IP address of the client making the request"
+      example_value: "10.98.208.92"
+      format: "IPv4 or IPv6"
+      template_source: "random_private_ip()"
+      
+    - name: "virtual_host"
+      type: "String"
+      required: true
+      description: "Virtual host (domain:port) receiving the request"
+      example_value: "apps.mclaneco.com:443"
+      format: "hostname:port"
+      template_source: "registry.get_organization_field('domain') with random port"
+      
+    - name: "authenticated_user"
+      type: "String"
+      required: false
+      description: "Username of authenticated user, or '-' if not authenticated"
+      example_value: "nxrosar"
+      format: "Username or '-'"
+      template_source: "registry.get_random_user().username or '-'"
+      
+    - name: "timestamp"
+      type: "DateTime"
+      required: true
+      description: "Date and time of the request"
+      example_value: "20/Dec/2025:15:31:10 -0600"
+      format: "DD/Mon/YYYY:HH:MM:SS Timezone"
+      template_source: "now() | format_datetime('%d/%b/%Y:%H:%M:%S %z')"
+      
+    - name: "request_method"
+      type: "String"
+      required: true
+      description: "HTTP request method"
+      example_value: "POST"
+      format: "HTTP method verb"
+      template_source: "random_choice(['GET', 'POST', 'PUT', 'DELETE', 'HEAD', 'OPTIONS'])"
+      possible_values:
+        - value: "GET"
+          description: "Retrieve resource"
+        - value: "POST"
+          description: "Submit data to server"
+        - value: "PUT"
+          description: "Update existing resource"
+        - value: "DELETE"
+          description: "Remove resource"
+        - value: "HEAD"
+          description: "Retrieve headers only"
+        - value: "OPTIONS"
+          description: "Check allowed methods"
+          
+    - name: "request_uri"
+      type: "String"
+      required: true
+      description: "URI path and query string of the request"
+      example_value: "/order-processing/UIDL/?v-uiId=0"
+      format: "URI path"
+      template_source: "random_choice of common application paths"
+      
+    - name: "http_version"
+      type: "String"
+      required: true
+      description: "HTTP protocol version used for the request"
+      example_value: "HTTP/1.1"
+      format: "HTTP/x.x"
+      template_source: "random_choice(['1.1', '2.0'])"
+      possible_values:
+        - value: "HTTP/1.1"
+          description: "HTTP version 1.1"
+        - value: "HTTP/2.0"
+          description: "HTTP version 2.0"
+          
+    - name: "status_code"
+      type: "Integer"
+      required: true
+      description: "HTTP response status code"
+      example_value: "200"
+      format: "3-digit HTTP status code"
+      template_source: "random_weighted selection favoring successful responses"
+      possible_values:
+        - value: "200"
+          description: "OK - Successful request"
+        - value: "201"
+          description: "Created - Resource created successfully"
+        - value: "204"
+          description: "No Content - Successful with no response body"
+        - value: "301"
+          description: "Moved Permanently - Resource moved"
+        - value: "302"
+          description: "Found - Temporary redirect"
+        - value: "304"
+          description: "Not Modified - Cached resource still valid"
+        - value: "400"
+          description: "Bad Request - Invalid request syntax"
+        - value: "401"
+          description: "Unauthorized - Authentication required"
+        - value: "403"
+          description: "Forbidden - Access denied"
+        - value: "404"
+          description: "Not Found - Resource not found"
+        - value: "500"
+          description: "Internal Server Error - Server error"
+        - value: "502"
+          description: "Bad Gateway - Upstream server error"
+        - value: "503"
+          description: "Service Unavailable - Server temporarily unavailable"
+          
+    - name: "response_size"
+      type: "Integer"
+      required: true
+      description: "Size of response in bytes (0 if no content)"
+      example_value: "416"
+      format: "Bytes"
+      template_source: "random_int(0, 500000)"
+      
+    - name: "referer"
+      type: "String"
+      required: false
+      description: "URL of the page that linked to the requested resource, or '-' if none"
+      example_value: "https://apps.mclaneco.com/order-processing/"
+      format: "URL or '-'"
+      template_source: "random_choice of referrer URLs or '-'"
+      
+    - name: "user_agent"
+      type: "String"
+      required: true
+      description: "User agent string identifying the client software"
+      example_value: "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36"
+      format: "User agent string"
+      template_source: "random_choice of realistic user agent strings"
+      
+    - name: "backend_server"
+      type: "String"
+      required: false
+      description: "Backend server hostname/port that handled the request (if proxied), or '-'"
+      example_value: "lpdstwasapp01.mclaneco.com:9083"
+      format: "hostname:port or '-'"
+      template_source: "registry.get_random_device().hostname or fqdn with port"
+      
+    - name: "response_time_ms"
+      type: "Integer"
+      required: false
+      description: "Time taken to process the request in milliseconds"
+      example_value: "4075"
+      format: "Milliseconds"
+      template_source: "random_int(100, 10000)"
+      
+    - name: "keep_alive"
+      type: "Integer"
+      required: false
+      description: "Keep-alive status (0 = connection closed, 1 = connection kept alive)"
+      example_value: "0"
+      format: "0 or 1"
+      template_source: "random_choice([0, 1])"
+
+  resources:
+    documentation:
+      - title: "Apache HTTP Server Documentation - Log Files"
+        url: "https://httpd.apache.org/docs/current/logs.html"
+        type: "official"
+      - title: "Apache Module mod_log_config"
+        url: "https://httpd.apache.org/docs/current/mod/mod_log_config.html"
+        type: "official"
+      - title: "Combined Log Format Specification"
+        url: "https://httpd.apache.org/docs/current/logs.html#combined"
+        type: "official"
+      - title: "HTTP Status Codes Reference"
+        url: "https://developer.mozilla.org/en-US/docs/Web/HTTP/Status"
+        type: "reference"
+    tools:
+      - name: "GoAccess"
+        description: "Real-time web log analyzer and interactive viewer for Apache logs"
+        url: "https://goaccess.io/"
+      - name: "AWStats"
+        description: "Advanced web statistics analyzer for Apache access logs"
+        url: "https://awstats.sourceforge.io/"
+      - name: "Splunk"
+        description: "Enterprise log aggregation and analysis platform"
+        url: "https://www.splunk.com/"
