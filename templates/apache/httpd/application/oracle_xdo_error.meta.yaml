@@ -1,0 +1,175 @@
+vendor: apache
+product: httpd
+data_source: application
+description: Oracle XML Publisher (BI Publisher) XDO template processor error logs recording XML parsing errors, template processing failures, PDF generation issues, and data source connection problems
+format: Plain Text
+frequency: low
+is_generator: true
+base_frequency: 3
+time_patterns:
+  - business_hours
+  - night_hours
+  - weekend
+business_hours_multiplier: 3.0
+night_hours_multiplier: 0.8
+weekend_multiplier: 0.5
+
+documentation:
+  display:
+    title: "Oracle XDO Template Processor Errors"
+    subtitle: "BI Publisher template and report generation errors"
+    icon: "📄"
+    color_scheme: "error"
+    tags:
+      - "oracle"
+      - "bi-publisher"
+      - "xdo"
+      - "template-processing"
+      - "report-generation"
+      - "xml-publisher"
+
+  overview:
+    summary: "Records errors and diagnostic information from Oracle XML Publisher (BI Publisher) XDO template processor. Logs XML parsing errors, template syntax issues, PDF/Excel generation failures, font problems, memory allocation errors, and data source connectivity issues during report generation."
+    when_generated:
+      - "XML template parsing errors or malformed template syntax"
+      - "Missing end delimiters or invalid XML tokens in templates"
+      - "PDF or Excel report generation failures"
+      - "Font loading issues during document generation"
+      - "RTF template structure errors or invalid formatting"
+      - "XSL-FO transformation errors"
+      - "Memory allocation failures for large reports"
+      - "Database connection timeouts or query failures"
+      - "Template validation errors for missing required fields"
+    security_relevance: "Medium"
+    compliance_frameworks:
+      - "SOX (Financial reporting system errors)"
+      - "ISO 27001 (A.12.4.1 - Event logging)"
+      - "NIST SP 800-53 (AU-2, AU-3 - Application monitoring)"
+    frequency_notes: "Low-frequency events under normal conditions (9 events/hour during business hours, 2-3 events/hour nights, 1-2 events/hour weekends). Frequency increases during report generation peak times (month-end, quarter-end, annual reporting) or when template errors are introduced. Healthy systems with well-tested templates see minimal XDO errors."
+
+  fields:
+    - name: "timestamp"
+      type: "DateTime"
+      required: true
+      description: "Date and time when the XDO error occurred"
+      example_value: "Dec 19, 2025 4:11:08 PM"
+      format: "Mon DD, YYYY HH:MM:SS AM/PM"
+      template_source: "now() | format_datetime('%b %d, %Y %I:%M:%S %p')"
+      
+    - name: "logger_class"
+      type: "String"
+      required: true
+      description: "Fully qualified Java class name of the XDO component logging the event"
+      example_value: "oracle.xdo.template.FOProcessor"
+      format: "Java class path"
+      template_source: "oracle.xdo.template.{random component}"
+      possible_values:
+        - value: "oracle.xdo.template.FOProcessor"
+          description: "XSL-FO (Formatting Objects) processor for PDF generation"
+        - value: "oracle.xdo.template.rtf.util.ContextPool"
+          description: "RTF template processing context manager"
+        - value: "oracle.xdo.template.pdf.PDFProcessor"
+          description: "PDF document processor"
+        - value: "oracle.xdo.template.excel.EXCELProcessor"
+          description: "Excel spreadsheet generator"
+          
+    - name: "method_name"
+      type: "String"
+      required: false
+      description: "Method within the logger class where the event occurred"
+      example_value: "generate"
+      format: "Method name"
+      template_source: "random_choice(['log', 'generate', 'process', 'parse'])"
+      
+    - name: "log_level"
+      type: "String"
+      required: true
+      description: "Java logging level indicating severity"
+      example_value: "SEVERE"
+      format: "Java log level"
+      template_source: "random_choice(['SEVERE', 'WARNING', 'INFO', 'CONFIG'])"
+      possible_values:
+        - value: "SEVERE"
+          description: "Serious failure preventing normal operation"
+        - value: "WARNING"
+          description: "Potential problem or degraded performance"
+        - value: "INFO"
+          description: "Informational message about normal operation"
+        - value: "CONFIG"
+          description: "Configuration-related informational message"
+          
+    - name: "line_number"
+      type: "String"
+      required: false
+      description: "Line and column number in the template where the error occurred"
+      example_value: "[Line 17254.130]"
+      format: "Line number.column"
+      template_source: "random_int(1, 50000).random_int(1, 999)"
+      
+    - name: "error_message"
+      type: "String"
+      required: true
+      description: "Detailed error message describing the XDO processing issue"
+      example_value: "XML Tokenizer Error - null:<"
+      format: "Free text"
+      template_source: "random_choice of realistic XDO error messages"
+      
+    - name: "xml_token"
+      type: "String"
+      required: false
+      description: "XML token or delimiter that caused the parsing error"
+      example_value: "<?<..."
+      format: "XML syntax fragment"
+      template_source: "Embedded in error message when applicable"
+      
+    - name: "data_size"
+      type: "Integer"
+      required: false
+      description: "Size of XML data being processed (in bytes)"
+      example_value: "7794"
+      format: "Bytes"
+      template_source: "random_int(1000, 100000)"
+      
+    - name: "output_format"
+      type: "Integer"
+      required: false
+      description: "Output format code for the report being generated"
+      example_value: "1"
+      format: "Format code"
+      template_source: "random_int(1, 5)"
+      possible_values:
+        - value: "1"
+          description: "PDF output format"
+        - value: "2"
+          description: "Excel output format"
+        - value: "3"
+          description: "RTF output format"
+        - value: "4"
+          description: "HTML output format"
+        - value: "5"
+          description: "XML output format"
+
+  resources:
+    documentation:
+      - title: "Oracle BI Publisher Documentation"
+        url: "https://docs.oracle.com/en/middleware/bi/publisher/index.html"
+        type: "official"
+      - title: "BI Publisher Template Builder Guide"
+        url: "https://docs.oracle.com/en/middleware/bi/publisher/12.2.1.4/bieug/"
+        type: "official"
+      - title: "Troubleshooting BI Publisher"
+        url: "https://docs.oracle.com/en/middleware/bi/publisher/12.2.1.4/bipug/troubleshooting.html"
+        type: "official"
+      - title: "XDO Template Syntax Reference"
+        url: "https://docs.oracle.com/en/middleware/bi/publisher/12.2.1.4/bipug/xdo-template-syntax.html"
+        type: "reference"
+    tools:
+      - name: "Oracle BI Publisher Template Builder"
+        description: "Microsoft Word plugin for creating and testing BI Publisher templates"
+        url: "https://www.oracle.com/business-analytics/bi-publisher/"
+      - name: "BI Publisher Administration Tool"
+        description: "Web-based interface for managing BI Publisher reports and templates"
+        url: "https://docs.oracle.com/en/middleware/bi/publisher/"
+      - name: "Oracle Enterprise Manager"
+        description: "Monitoring and management tool for Oracle middleware including BI Publisher"
+        url: "https://www.oracle.com/enterprise-manager/"

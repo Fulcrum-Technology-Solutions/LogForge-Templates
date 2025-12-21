@@ -1,0 +1,28 @@
+{
+    "name": "apache-httpd",
+    "version": "1.0.0",
+    "description": "LogForge templates for Apache HTTP Server access logs, error logs, and plugin activity logs",
+    "maintainers": [
+      {
+        "name": "LogForge Community",
+        "email": "community@logforge.dev",
+        "github": "logforge-community"
+      }
+    ],
+    "tags": [
+      "apache",
+      "httpd",
+      "web-server",
+      "access-logs",
+      "error-logs",
+      "http",
+      "websphere"
+    ],
+    "templates": [
+      "access/combined_log_format",
+      "access/common_log_format",
+      "error/http_error",
+      "plugin/websphere_error",
+      "application/oracle_xdo_error"
+    ]
+  }
