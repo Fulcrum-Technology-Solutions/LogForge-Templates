@@ -1,0 +1,47 @@
+{
+  "CreationTime": "{{ now() | iso8601 }}",
+  "Id": "{{ random_guid() }}",
+  "Operation": "AnonymousLinkCreated",
+  "OrganizationId": "{{ registry.get_organization_field('domain') | replace('.', '-') }}-org-{{ random_hex(4, 6) }}",
+  "RecordType": 14,
+  "ResultStatus": "{{ random_choice(['Success', 'Success', 'Success', 'Failed']) }}",
+  "UserKey": "i:0#.f|membership|{{ registry.get_random_user().email }}",
+  "UserType": 0,
+  "Version": 1,
+  "Workload": "SharePoint",
+  "UserId": "{{ registry.get_random_user().email }}",
+  "ClientIP": "{{ random_choice([random_public_ip(), random_private_ip()]) }}",
+  "ObjectId": "https://{{ registry.get_organization_field('domain').split('.')[0] }}.sharepoint.com/sites/{{ random_choice(['Finance', 'HR', 'Legal', 'Engineering', 'Sales', 'Marketing']) }}/Shared Documents/{{ random_choice(['Q4_Financial_Report', 'Employee_Salaries_2024', 'Confidential_Strategy', 'Product_Roadmap', 'Customer_Database', 'Contract_Template', 'Board_Meeting_Notes']) }}.{{ random_choice(['xlsx', 'docx', 'pdf', 'pptx']) }}",
+  "EventSource": "SharePoint",
+  "ItemType": "{{ random_choice(['File', 'File', 'Folder']) }}",
+  "ListId": "{{ random_guid() }}",
+  "ListItemUniqueId": "{{ random_guid() }}",
+  "Site": "{{ random_guid() }}",
+  "UserAgent": "Mozilla/5.0 ({{ random_choice(['Windows NT 10.0; Win64; x64', 'Macintosh; Intel Mac OS X 10_15_7', 'X11; Linux x86_64']) }}) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/{{ random_int(110, 125) }}.0.0.0 Safari/537.36",
+  "WebId": "{{ random_guid() }}",
+  "CorrelationId": "{{ random_guid() }}",
+  "EventData": "<SharingSettings><AnonymousLinkType>{{ random_choice(['View', 'View', 'View', 'Edit', 'Review']) }}</AnonymousLinkType><Expiration>{{ now() | add_seconds(random_int(86400, 2592000)) | iso8601 }}</Expiration></SharingSettings>",
+  "HighPriority": {{ random_choice(['true', 'false', 'false']) }},
+  "Platform": "SharePointOnline",
+  "SiteUrl": "https://{{ registry.get_organization_field('domain').split('.')[0] }}.sharepoint.com/sites/{{ random_choice(['Finance', 'HR', 'Legal', 'Engineering', 'Sales', 'Marketing']) }}",
+  "SourceFileExtension": "{{ random_choice(['xlsx', 'docx', 'pdf', 'pptx', 'zip']) }}",
+  "SourceFileName": "{{ random_choice(['Q4_Financial_Report', 'Employee_Salaries_2024', 'Confidential_Strategy', 'Product_Roadmap', 'Customer_Database', 'Contract_Template', 'Board_Meeting_Notes', 'Budget_2024', 'Merger_Plans', 'Executive_Compensation']) }}.{{ random_choice(['xlsx', 'docx', 'pdf', 'pptx', 'zip']) }}",
+  "SourceRelativeUrl": "sites/{{ random_choice(['Finance', 'HR', 'Legal', 'Engineering', 'Sales', 'Marketing']) }}/Shared Documents",
+  "TargetUserOrGroupName": "Anyone with the link",
+  "TargetUserOrGroupType": "Anonymous",
+  "UniqueSharingId": "{{ random_guid() }}",
+  "CustomEvent": "",
+  "ExternalAccess": {{ random_choice(['true', 'false', 'false']) }},
+  "ModifiedProperties": [
+    {
+      "Name": "AnonymousLinkType",
+      "NewValue": "{{ random_choice(['View', 'View', 'Edit', 'Review']) }}",
+      "OldValue": ""
+    },
+    {
+      "Name": "LinkExpiration",
+      "NewValue": "{{ now() | add_seconds(random_int(86400, 2592000)) | iso8601 }}",
+      "OldValue": ""
+    }
+  ]
+}

@@ -1,0 +1,54 @@
+{
+  "CreationTime": "{{ now() | iso8601 }}",
+  "Id": "{{ random_guid() }}",
+  "Operation": "New-InboxRule",
+  "OrganizationId": "{{ registry.get_organization_field('domain') | replace('.', '-') }}-org-{{ random_hex(4, 6) }}",
+  "RecordType": 1,
+  "ResultStatus": "{{ random_choice(['Success', 'Success', 'Success', 'Failed']) }}",
+  "UserKey": "{{ registry.get_random_user().email }}",
+  "UserType": {{ random_choice([0, 2]) }},
+  "Version": 1,
+  "Workload": "Exchange",
+  "UserId": "{{ registry.get_random_user().email }}",
+  "ClientIP": "{{ random_choice([random_public_ip(), random_public_ip(), random_private_ip()]) }}:{{ random_port(49152, 65535) }}",
+  "ObjectId": "{{ registry.get_random_user().email }}",
+  "ExternalAccess": {{ random_choice(['true', 'true', 'false']) }},
+  "OrganizationName": "{{ registry.get_organization_field('domain').split('.')[0] }}.onmicrosoft.com",
+  "OriginatingServer": "{{ random_choice(['BN8PR01MB', 'DM6PR01MB', 'CY4PR01MB', 'AM6PR01MB']) }}{{ random_int(1000, 9999) }} (15.20.{{ random_int(7000, 7999) }}.{{ random_int(10, 99) }})",
+  "Parameters": [
+    {
+      "Name": "Name",
+      "Value": "{{ random_choice(['Auto Archive Important Messages', 'Move to Folder', 'Important Client Emails', 'Backup Critical Messages', 'Auto Forward Rules', 'Archive Documents', 'Process Invoices']) }}"
+    },
+    {
+      "Name": "SubjectContainsWords",
+      "Value": "{{ random_choice(['invoice,payment,urgent,confidential', 'contract,agreement,legal', 'password,reset,security', 'financial,report,budget', 'urgent,important,asap', 'project,deadline,deliverable']) }}"
+    },
+    {
+      "Name": "ForwardTo",
+      "Value": "{{ random_choice(['external.attacker@outlook.com', 'backup.account@gmail.com', 'data.store@yahoo.com', 'archive.service@protonmail.com', 'collection.point@hotmail.com']) }}"
+    },
+    {
+      "Name": "StopProcessingRules",
+      "Value": "{{ random_choice(['True', 'True', 'False']) }}"
+    },
+    {
+      "Name": "DeleteMessage",
+      "Value": "{{ random_choice(['False', 'False', 'False', 'True']) }}"
+    },
+    {
+      "Name": "Mailbox",
+      "Value": "{{ registry.get_random_user().email }}"
+    }
+  ],
+  "SessionId": "{{ random_guid() }}",
+  "AppId": "",
+  "ClientAppId": "",
+  "ClientInfoString": "Client={{ random_choice(['OWA', 'OutlookService', 'ActiveSync']) }};Action={{ random_choice(['ViaProxy', 'Direct', '']) }};",
+  "Item": {
+    "Id": "{{ random_choice(['Auto Archive Important Messages', 'Move to Folder', 'Important Client Emails', 'Backup Critical Messages']) }}",
+    "ParentFolder": {
+      "Path": "/Inbox Rules"
+    }
+  }
+}

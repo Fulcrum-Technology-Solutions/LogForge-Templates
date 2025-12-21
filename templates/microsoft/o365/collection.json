@@ -1,0 +1,30 @@
+{
+  "name": "microsoft-o365",
+  "version": "1.0.0",
+  "description": "Microsoft Office 365 Management Activity API log templates for Exchange Online, SharePoint Online, and Azure Active Directory workloads",
+  "maintainers": [
+    {
+      "name": "John Owen",
+      "email": "jowen@ftsc.com"
+    }
+  ],
+  "tags": [
+    "microsoft",
+    "office365",
+    "o365",
+    "exchange",
+    "sharepoint",
+    "azure-active-directory",
+    "cloud",
+    "management-api",
+    "audit",
+    "security"
+  ],
+  "templates": [
+    "exchange/mailbox_forwarding",
+    "exchange/inbox_rule_created",
+    "exchange/mailbox_permission_added",
+    "azure-active-directory/role_member_added",
+    "sharepoint/anonymous_link_created"
+  ]
+}
