@@ -1,0 +1,6 @@
+vendor: apache
+product: httpd
+name: Apache HTTP Server
+description: Apache HTTP Server is the world's most widely used web server software, providing a secure, efficient, and extensible server platform for modern web applications and services.
+version: All
+documentation_url: https://httpd.apache.org/docs/

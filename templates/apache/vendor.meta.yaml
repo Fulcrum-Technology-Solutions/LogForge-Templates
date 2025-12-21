@@ -1,0 +1,5 @@
+vendor: apache
+name: Apache Software Foundation
+website: https://www.apache.org
+description: The Apache Software Foundation provides open source software for web infrastructure, including the widely-used Apache HTTP Server, supporting millions of websites and applications worldwide.
+logo: apache-logo.png
