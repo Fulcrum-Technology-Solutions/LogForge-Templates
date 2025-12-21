@@ -1,0 +1,6 @@
+vendor: checkpoint
+product: firewall
+name: Check Point Security Gateway
+description: Check Point Security Gateway provides advanced firewall, VPN, and threat prevention capabilities with unified policy management and real-time network security monitoring.
+version: All
+documentation_url: https://sc1.checkpoint.com/documents/latest/APIs/

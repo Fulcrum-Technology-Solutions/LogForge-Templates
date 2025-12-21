@@ -135,7 +135,7 @@ documentation:
       type: "String"
       required: true
       description: "Workday tenant identifier (organization's unique ID in Workday)"
-      example_value: "mclaneco"
+      example_value: "acmeco"
       template_source: "registry.get_organization_field('netbios_domain') | lower, fallback to 'acmecorp'"
 
     - name: "tenantHost"
