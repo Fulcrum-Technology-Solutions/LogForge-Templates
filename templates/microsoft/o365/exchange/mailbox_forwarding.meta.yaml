@@ -1,0 +1,244 @@
+vendor: microsoft
+product: o365
+data_source: exchange
+description: Records Set-Mailbox operations that configure external email forwarding, a common data exfiltration technique where emails are automatically forwarded to external addresses
+format: JSON
+frequency: low
+is_generator: true
+base_frequency: 2
+time_patterns:
+  - business_hours
+  - night_hours
+  - weekend
+business_hours_multiplier: 1.5
+night_hours_multiplier: 3.0
+weekend_multiplier: 2.0
+
+documentation:
+  display:
+    title: "Mailbox External Forwarding Configuration"
+    subtitle: "Set-Mailbox with ForwardingSmtpAddress - Data Exfiltration Risk"
+    icon: "📤"
+    color_scheme: "error"
+    tags:
+      - "exchange"
+      - "email-forwarding"
+      - "data-exfiltration"
+      - "mailbox-configuration"
+      - "security-risk"
+  
+  overview:
+    summary: "Captures Set-Mailbox operations that configure ForwardingSmtpAddress, enabling automatic forwarding of emails to external addresses. This is a critical security event as it's commonly used for data exfiltration and persistence."
+    when_generated:
+      - "Administrator configures email forwarding for a user mailbox"
+      - "Attacker with compromised admin credentials sets up data exfiltration"
+      - "Mailbox delegation includes external forwarding"
+      - "Legitimate business process requires external email forwarding"
+    security_relevance: "Critical"
+    compliance_frameworks:
+      - "GDPR (Data Protection)"
+      - "HIPAA (PHI Exfiltration Risk)"
+      - "PCI-DSS (Cardholder Data Protection)"
+      - "SOX (Financial Data Controls)"
+      - "NIST 800-53 (AC-2, AU-6)"
+    frequency_notes: "Low frequency under normal operations. Sudden increases or external forwarding to free email services (Gmail, Outlook.com) are high-priority security alerts. Night/weekend activity is particularly suspicious (3x multiplier)."
+  
+  fields:
+    - name: "CreationTime"
+      type: "DateTime"
+      required: true
+      description: "Timestamp when the Set-Mailbox operation was executed"
+      example_value: "2024-12-15T14:23:47Z"
+      format: "ISO 8601"
+      template_source: "now() | iso8601"
+    
+    - name: "Id"
+      type: "String"
+      required: true
+      description: "Unique identifier for this audit record"
+      example_value: "a8f3c2d1-4b5e-6a7f-8c9d-0e1f2a3b4c5d"
+      format: "GUID"
+      template_source: "random_guid()"
+    
+    - name: "Operation"
+      type: "String"
+      required: true
+      description: "Exchange PowerShell cmdlet executed"
+      example_value: "Set-Mailbox"
+      template_source: "Static value 'Set-Mailbox'"
+    
+    - name: "OrganizationId"
+      type: "String"
+      required: true
+      description: "Microsoft 365 tenant identifier"
+      example_value: "b4c5d6e7-8f9a-0b1c-2d3e-4f5a6b7c8d9e"
+      format: "GUID"
+      template_source: "Derived from organization domain with random hex"
+    
+    - name: "RecordType"
+      type: "Integer"
+      required: true
+      description: "Office 365 audit log record type (1 = ExchangeAdmin)"
+      example_value: "1"
+      template_source: "Static value 1"
+      possible_values:
+        - value: "1"
+          description: "ExchangeAdmin - Exchange administrative operations"
+    
+    - name: "ResultStatus"
+      type: "String"
+      required: true
+      description: "Outcome of the operation"
+      example_value: "Success"
+      template_source: "random_choice(['Success', 'PartiallySucceeded', 'Failed'])"
+      possible_values:
+        - value: "Success"
+          description: "Operation completed successfully"
+        - value: "PartiallySucceeded"
+          description: "Operation completed with warnings"
+        - value: "Failed"
+          description: "Operation failed"
+    
+    - name: "UserKey"
+      type: "String"
+      required: true
+      description: "Unique identifier for the user who performed the action"
+      example_value: "admin@contoso.com"
+      template_source: "registry.get_random_user().email"
+    
+    - name: "UserType"
+      type: "Integer"
+      required: true
+      description: "Type of user performing the action"
+      example_value: "0"
+      template_source: "random_choice([0, 2])"
+      possible_values:
+        - value: "0"
+          description: "Regular user"
+        - value: "2"
+          description: "Administrator"
+    
+    - name: "Workload"
+      type: "String"
+      required: true
+      description: "Office 365 service where the operation occurred"
+      example_value: "Exchange"
+      template_source: "Static value 'Exchange'"
+    
+    - name: "UserId"
+      type: "String"
+      required: true
+      description: "User principal name of the account that performed the action"
+      example_value: "admin@contoso.com"
+      format: "Email/UPN"
+      template_source: "registry.get_random_user().email"
+    
+    - name: "ClientIP"
+      type: "String"
+      required: true
+      description: "IP address and port of the client that performed the operation"
+      example_value: "203.0.113.45:52874"
+      format: "IPv4:Port"
+      template_source: "random_choice([random_public_ip(), random_private_ip()]) with random_port()"
+    
+    - name: "ObjectId"
+      type: "String"
+      required: true
+      description: "Target mailbox that was modified"
+      example_value: "finance.user@contoso.com"
+      format: "Email/UPN"
+      template_source: "registry.get_random_user().email"
+    
+    - name: "ExternalAccess"
+      type: "Boolean"
+      required: true
+      description: "Indicates if the operation was performed from outside the corporate network"
+      example_value: "true"
+      template_source: "random_choice(['true', 'false', 'false', 'false']) - weighted 25% external"
+    
+    - name: "OrganizationName"
+      type: "String"
+      required: true
+      description: "Microsoft 365 tenant name"
+      example_value: "contoso.onmicrosoft.com"
+      format: "*.onmicrosoft.com"
+      template_source: "Derived from organization domain"
+    
+    - name: "OriginatingServer"
+      type: "String"
+      required: true
+      description: "Exchange server that processed the operation"
+      example_value: "BN8PR01MB5678 (15.20.7654.32)"
+      template_source: "Random Exchange Online server identifier with version"
+    
+    - name: "Parameters"
+      type: "Array"
+      required: true
+      description: "PowerShell parameters used in the Set-Mailbox operation"
+      template_source: "Array of parameter objects"
+    
+    - name: "Parameters[].Name"
+      type: "String"
+      required: true
+      description: "Parameter name (Identity, ForwardingSmtpAddress, DeliverToMailboxAndForward)"
+      example_value: "ForwardingSmtpAddress"
+    
+    - name: "Parameters[].Value"
+      type: "String"
+      required: true
+      description: "Parameter value - ForwardingSmtpAddress contains external email in smtp: format"
+      example_value: "smtp:external.recipient@gmail.com"
+      template_source: "Random external email address with smtp: prefix"
+    
+    - name: "SessionId"
+      type: "String"
+      required: true
+      description: "Session identifier for the administrative connection"
+      example_value: "c9d8e7f6-5a4b-3c2d-1e0f-9a8b7c6d5e4f"
+      format: "GUID"
+      template_source: "random_guid()"
+    
+    - name: "ClientInfoString"
+      type: "String"
+      required: false
+      description: "Information about the client application used"
+      example_value: "Client=WebServices;Mozilla/5.0;"
+      template_source: "Random client type (WebServices, OWA, PowerShell)"
+    
+    - name: "Item"
+      type: "Object"
+      required: true
+      description: "Object containing details about the modified mailbox"
+      template_source: "Object with Id and ParentFolder"
+    
+    - name: "ModifiedProperties"
+      type: "Array"
+      required: true
+      description: "Properties that were changed, showing old and new values"
+      template_source: "Array showing ForwardingSmtpAddress and DeliverToMailboxAndForward changes"
+  
+  resources:
+    documentation:
+      - title: "Office 365 Management Activity API Schema"
+        url: "https://learn.microsoft.com/en-us/office/office-365-management-api/office-365-management-activity-api-schema"
+        type: "official"
+      - title: "Set-Mailbox PowerShell Reference"
+        url: "https://learn.microsoft.com/en-us/powershell/module/exchange/set-mailbox"
+        type: "official"
+      - title: "Detecting Email Forwarding Rules"
+        url: "https://learn.microsoft.com/en-us/microsoft-365/security/office-365-security/detect-and-remediate-outlook-rules-forms-attack"
+        type: "official"
+      - title: "MITRE ATT&CK - Email Forwarding Rule (T1114.003)"
+        url: "https://attack.mitre.org/techniques/T1114/003/"
+        type: "reference"
+    
+    tools:
+      - name: "Microsoft 365 Defender"
+        description: "Native detection and response for O365 threats including email forwarding"
+        url: "https://security.microsoft.com"
+      - name: "Azure Sentinel O365 Connector"
+        description: "Ingest and analyze Office 365 audit logs in Azure Sentinel"
+        url: "https://learn.microsoft.com/en-us/azure/sentinel/connect-office-365"
+      - name: "Hawk PowerShell Module"
+        url: "https://github.com/T0pCyber/hawk"
+        description: "PowerShell-based tool for gathering information related to O365 intrusions and compromises"

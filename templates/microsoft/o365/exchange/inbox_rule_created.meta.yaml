@@ -1,0 +1,247 @@
+vendor: microsoft
+product: o365
+data_source: exchange
+description: Records New-InboxRule operations where users create email forwarding rules, often with external forwarding to bypass administrator controls and exfiltrate sensitive data
+format: JSON
+frequency: medium
+is_generator: true
+base_frequency: 8
+time_patterns:
+  - business_hours
+  - night_hours
+  - weekend
+business_hours_multiplier: 2.0
+night_hours_multiplier: 4.0
+weekend_multiplier: 3.5
+
+documentation:
+  display:
+    title: "Inbox Rule Created with External Forwarding"
+    subtitle: "New-InboxRule - User-level Email Forwarding"
+    icon: "📮"
+    color_scheme: "warning"
+    tags:
+      - "exchange"
+      - "inbox-rules"
+      - "email-forwarding"
+      - "user-activity"
+      - "data-exfiltration"
+  
+  overview:
+    summary: "Captures New-InboxRule operations where users create inbox rules to automatically forward emails to external addresses. This is a common technique for data exfiltration and persistence as it bypasses administrator-level mailbox forwarding controls and can be harder to detect."
+    when_generated:
+      - "User creates a new inbox rule via Outlook or OWA"
+      - "Attacker with compromised credentials establishes forwarding persistence"
+      - "Legitimate user sets up external email forwarding for convenience"
+      - "Automated rule creation by compromised account"
+    security_relevance: "High"
+    compliance_frameworks:
+      - "GDPR (Data Protection & Transfer)"
+      - "HIPAA (PHI Exfiltration)"
+      - "PCI-DSS (Cardholder Data Protection)"
+      - "SOX (Financial Data Controls)"
+      - "NIST 800-53 (AC-2, AU-6, SI-4)"
+    frequency_notes: "Medium frequency in normal operations as users create legitimate rules. Suspicious indicators: rules with generic names ('Auto Archive'), external forwarding, keyword-based triggers targeting business content, StopProcessingRules=True, and especially creation during off-hours (4x multiplier for night, 3.5x for weekends)."
+  
+  fields:
+    - name: "CreationTime"
+      type: "DateTime"
+      required: true
+      description: "Timestamp when the inbox rule was created"
+      example_value: "2024-12-15T09:17:33Z"
+      format: "ISO 8601"
+      template_source: "now() | iso8601"
+    
+    - name: "Id"
+      type: "String"
+      required: true
+      description: "Unique identifier for this audit record"
+      example_value: "f1e2d3c4-b5a6-7c8d-9e0f-1a2b3c4d5e6f"
+      format: "GUID"
+      template_source: "random_guid()"
+    
+    - name: "Operation"
+      type: "String"
+      required: true
+      description: "Exchange operation that was performed"
+      example_value: "New-InboxRule"
+      template_source: "Static value 'New-InboxRule'"
+    
+    - name: "OrganizationId"
+      type: "String"
+      required: true
+      description: "Microsoft 365 tenant identifier"
+      example_value: "b4c5d6e7-8f9a-0b1c-2d3e-4f5a6b7c8d9e"
+      format: "GUID"
+      template_source: "Derived from organization domain"
+    
+    - name: "RecordType"
+      type: "Integer"
+      required: true
+      description: "Office 365 audit log record type (1 = ExchangeAdmin)"
+      example_value: "1"
+      template_source: "Static value 1"
+    
+    - name: "ResultStatus"
+      type: "String"
+      required: true
+      description: "Outcome of the rule creation operation"
+      example_value: "Success"
+      template_source: "random_choice(['Success', 'Success', 'Success', 'Failed'])"
+      possible_values:
+        - value: "Success"
+          description: "Rule created successfully"
+        - value: "Failed"
+          description: "Rule creation failed (validation or permission error)"
+    
+    - name: "UserKey"
+      type: "String"
+      required: true
+      description: "Unique identifier for the user who created the rule"
+      example_value: "compromised.user@contoso.com"
+      template_source: "registry.get_random_user().email"
+    
+    - name: "UserType"
+      type: "Integer"
+      required: true
+      description: "Type of user creating the rule"
+      example_value: "0"
+      template_source: "random_choice([0, 2])"
+      possible_values:
+        - value: "0"
+          description: "Regular user"
+        - value: "2"
+          description: "Administrator"
+    
+    - name: "Workload"
+      type: "String"
+      required: true
+      description: "Office 365 service where the operation occurred"
+      example_value: "Exchange"
+      template_source: "Static value 'Exchange'"
+    
+    - name: "UserId"
+      type: "String"
+      required: true
+      description: "User principal name of the account that created the rule"
+      example_value: "compromised.user@contoso.com"
+      format: "Email/UPN"
+      template_source: "registry.get_random_user().email"
+    
+    - name: "ClientIP"
+      type: "String"
+      required: true
+      description: "IP address and port from which the rule was created"
+      example_value: "198.51.100.88:43921"
+      format: "IPv4:Port"
+      template_source: "random_choice([random_public_ip(), random_public_ip(), random_private_ip()]) - weighted toward external IPs"
+    
+    - name: "ObjectId"
+      type: "String"
+      required: true
+      description: "Mailbox for which the rule was created"
+      example_value: "compromised.user@contoso.com"
+      format: "Email/UPN"
+      template_source: "registry.get_random_user().email"
+    
+    - name: "ExternalAccess"
+      type: "Boolean"
+      required: true
+      description: "Indicates if the rule was created from outside the corporate network"
+      example_value: "true"
+      template_source: "random_choice(['true', 'true', 'false']) - weighted 67% external"
+    
+    - name: "OrganizationName"
+      type: "String"
+      required: true
+      description: "Microsoft 365 tenant name"
+      example_value: "contoso.onmicrosoft.com"
+      format: "*.onmicrosoft.com"
+      template_source: "Derived from organization domain"
+    
+    - name: "OriginatingServer"
+      type: "String"
+      required: true
+      description: "Exchange server that processed the rule creation"
+      example_value: "BN8PR01MB5678 (15.20.7654.32)"
+      template_source: "Random Exchange Online server identifier"
+    
+    - name: "Parameters"
+      type: "Array"
+      required: true
+      description: "Parameters used when creating the inbox rule"
+      template_source: "Array of parameter objects defining rule behavior"
+    
+    - name: "Parameters[].Name"
+      type: "String"
+      required: true
+      description: "Parameter name (Name, SubjectContainsWords, ForwardTo, StopProcessingRules, DeleteMessage, Mailbox)"
+      example_value: "SubjectContainsWords"
+    
+    - name: "Parameters[].Value"
+      type: "String"
+      required: true
+      description: "Parameter value - critical fields include ForwardTo (external email), SubjectContainsWords (keywords for targeting), StopProcessingRules (prevents detection)"
+      example_value: "invoice,payment,urgent,confidential"
+      template_source: "Context-specific values - keywords target business content, ForwardTo contains external addresses"
+    
+    - name: "SessionId"
+      type: "String"
+      required: true
+      description: "Session identifier for the user connection"
+      example_value: "a1b2c3d4-e5f6-7a8b-9c0d-1e2f3a4b5c6d"
+      format: "GUID"
+      template_source: "random_guid()"
+    
+    - name: "ClientInfoString"
+      type: "String"
+      required: false
+      description: "Information about the client used to create the rule (OWA, Outlook, etc.)"
+      example_value: "Client=OWA;Action=ViaProxy;"
+      template_source: "Random client type and access method"
+    
+    - name: "Item"
+      type: "Object"
+      required: true
+      description: "Details about the created inbox rule"
+      template_source: "Object with rule name and parent folder path"
+    
+    - name: "Item.Id"
+      type: "String"
+      required: true
+      description: "Name of the inbox rule (often benign-sounding to avoid detection)"
+      example_value: "Auto Archive Important Messages"
+      template_source: "Random benign-sounding rule name"
+    
+    - name: "Item.ParentFolder.Path"
+      type: "String"
+      required: true
+      description: "Location where the rule is stored"
+      example_value: "/Inbox Rules"
+      template_source: "Static value '/Inbox Rules'"
+  
+  resources:
+    documentation:
+      - title: "Office 365 Management Activity API Schema"
+        url: "https://learn.microsoft.com/en-us/office/office-365-management-api/office-365-management-activity-api-schema"
+        type: "official"
+      - title: "New-InboxRule PowerShell Reference"
+        url: "https://learn.microsoft.com/en-us/powershell/module/exchange/new-inboxrule"
+        type: "official"
+      - title: "Detect and Remediate Outlook Rules and Forms Attacks"
+        url: "https://learn.microsoft.com/en-us/microsoft-365/security/office-365-security/detect-and-remediate-outlook-rules-forms-attack"
+        type: "official"
+      - title: "MITRE ATT&CK - Email Forwarding Rule (T1114.003)"
+        url: "https://attack.mitre.org/techniques/T1114/003/"
+        type: "reference"
+    
+    tools:
+      - name: "Microsoft 365 Defender"
+        description: "Native detection for suspicious inbox rule creation and modification"
+        url: "https://security.microsoft.com"
+      - name: "Hawk PowerShell Module"
+        url: "https://github.com/T0pCyber/hawk"
+        description: "Hunt for malicious inbox rules and email forwarding configurations"
+      - name: "Get-InboxRule PowerShell"
+        url: "https://learn.microsoft.com/en-us/powershell/module/exchange/get-inboxrule"
+        description: "Query and audit inbox rules across your organization"

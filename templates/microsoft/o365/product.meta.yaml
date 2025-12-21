@@ -1,0 +1,6 @@
+vendor: microsoft
+product: o365
+name: Office 365
+description: Microsoft Office 365 cloud productivity suite including Exchange Online, SharePoint Online, OneDrive for Business, and Azure Active Directory. Logs are captured via the Office 365 Management Activity API.
+version: All
+documentation_url: https://learn.microsoft.com/en-us/office/office-365-management-api/office-365-management-activity-api-reference
