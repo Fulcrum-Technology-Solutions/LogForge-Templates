@@ -5,7 +5,7 @@
 {%- set request_id = random_string(32, "0123456789abcdef") -%}
 {%- set event_uuid = random_guid() -%}
 {%- set auth_request_id = random_string(32, "0123456789abcdef") -%}
-{%- set domain = registry.get_domain() -%}
+{%- set domain = registry.get_organization_field('domain') -%}
 {%- set as_number = random_int(1000, 65000) -%}
 {%- set lat = (random_int(100, 500) / 10) -%}
 {%- set lon = (random_int(-1000, -500) / 10) -%}
@@ -59,7 +59,7 @@
     "asNumber": {{ as_number }},
     "asOrg": "twc internal spectrum",
     "isp": "charter communications inc",
-    "domain": "rr.com",
+    "domain": "{{ domain or 'rr.com' }}",
     "isProxy": false
   },
   "severity": "WARN",
