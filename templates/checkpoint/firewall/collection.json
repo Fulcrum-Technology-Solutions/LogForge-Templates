@@ -1,0 +1,23 @@
+{
+    "name": "checkpoint-firewall",
+    "version": "1.0.0",
+    "description": "LogForge templates for Check Point Security Gateway firewall logs including network traffic, policy enforcement, and security events.",
+    "maintainers": [
+      {
+        "name": "LogForge Community",
+        "email": "templates@logforge.dev"
+      }
+    ],
+    "tags": [
+      "checkpoint",
+      "firewall",
+      "network",
+      "security",
+      "traffic",
+      "policy",
+      "ngfw"
+    ],
+    "templates": [
+      "traffic/firewall_traffic"
+    ]
+  }
