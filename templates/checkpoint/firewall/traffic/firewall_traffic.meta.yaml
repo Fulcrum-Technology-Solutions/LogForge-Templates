@@ -1,0 +1,341 @@
+vendor: checkpoint
+product: firewall
+data_source: traffic
+description: Check Point Security Gateway firewall traffic logs capturing network connections, policy enforcement decisions, and traffic flow details including source/destination IPs, ports, protocols, and rule matching information.
+format: Plain Text
+frequency: high
+is_generator: true
+base_frequency: 500
+time_patterns:
+  - business_hours
+  - night_hours
+  - weekend
+business_hours_multiplier: 3.0
+night_hours_multiplier: 0.4
+weekend_multiplier: 0.6
+
+documentation:
+  display:
+    title: "Firewall Traffic Logs"
+    subtitle: "Network traffic and policy enforcement events"
+    icon: "🛡️"
+    color_scheme: "info"
+    tags:
+      - "firewall"
+      - "network"
+      - "traffic"
+      - "security"
+      - "policy"
+      - "checkpoint"
+
+  overview:
+    summary: "Records all network traffic processed by Check Point Security Gateway, including accepted, dropped, and rejected connections with detailed policy matching and rule information."
+    when_generated:
+      - "When network packets traverse the firewall"
+      - "When firewall policy rules are evaluated and matched"
+      - "When traffic is accepted, dropped, or rejected based on policy"
+      - "During ICMP, TCP, and UDP connection attempts"
+      - "When traffic crosses security zones (Internal, External, DMZ)"
+    security_relevance: "High"
+    compliance_frameworks:
+      - "PCI-DSS (Requirement 1.2 - Network Security Controls)"
+      - "NIST 800-53 (SC-7 - Boundary Protection)"
+      - "ISO 27001 (A.13.1 - Network Security Management)"
+      - "HIPAA (164.312(e)(1) - Transmission Security)"
+      - "SOC 2 (CC6.6 - Logical and Physical Access Controls)"
+    frequency_notes: "Very high frequency during business hours (1500+ events/hour). Network traffic logs are among the most voluminous firewall log types, scaling with network activity and connection volumes."
+
+  fields:
+    - name: "time"
+      type: "Integer"
+      required: true
+      description: "Unix timestamp when the event occurred"
+      example_value: "1766266517"
+      format: "Unix epoch timestamp (seconds)"
+      template_source: "current_timestamp() | unix_timestamp"
+
+    - name: "hostname"
+      type: "String"
+      required: true
+      description: "Hostname of the Check Point management server or security gateway"
+      example_value: "orgmgmt"
+      template_source: "registry.get_random_device().hostname"
+
+    - name: "product"
+      type: "String"
+      required: true
+      description: "Check Point product type generating the log"
+      example_value: "Firewall"
+      template_source: "Static value 'Firewall'"
+
+    - name: "layer_name"
+      type: "String"
+      required: true
+      description: "Name of the security policy layer that processed the traffic"
+      example_value: "Internal-Policy Network"
+      template_source: "random_choice(['Internal-Policy Network', 'External-Policy Network', 'Standard Network', 'Security-Policy Network'])"
+      possible_values:
+        - value: "Internal-Policy Network"
+          description: "Policy layer for internal network traffic"
+        - value: "External-Policy Network"
+          description: "Policy layer for external-facing traffic"
+        - value: "Standard Network"
+          description: "Default security policy layer"
+        - value: "Security-Policy Network"
+          description: "Enhanced security policy layer"
+
+    - name: "layer_uuid"
+      type: "String"
+      required: true
+      description: "Unique identifier for the policy layer"
+      example_value: "1cfc5be4-cef8-4340-8217-3828ef6e9aa2"
+      format: "UUID (RFC 4122)"
+      template_source: "random_guid()"
+
+    - name: "match_id"
+      type: "Integer"
+      required: true
+      description: "Rule number within the policy layer that matched the traffic"
+      example_value: "7"
+      template_source: "random_int(1, 50)"
+
+    - name: "parent_rule"
+      type: "Integer"
+      required: true
+      description: "Parent rule identifier (0 indicates top-level rule)"
+      example_value: "0"
+      template_source: "Static value 0"
+
+    - name: "rule_action"
+      type: "String"
+      required: true
+      description: "Action specified in the matched firewall rule"
+      example_value: "Accept"
+      template_source: "random_weighted(['Accept', 'Drop', 'Reject'], [0.85, 0.10, 0.05])"
+      possible_values:
+        - value: "Accept"
+          description: "Traffic is allowed through the firewall (85% probability)"
+        - value: "Drop"
+          description: "Traffic is silently discarded (10% probability)"
+        - value: "Reject"
+          description: "Traffic is rejected with notification (5% probability)"
+
+    - name: "rule_name"
+      type: "String"
+      required: true
+      description: "Descriptive name of the firewall rule that matched"
+      example_value: "Rapid7 Scanning"
+      template_source: "random_choice(['Cleanup', 'Enterprise-Inbound', 'Allow-SCCP_SNMP', 'Rapid7 Scanning', 'VPN Access', 'Internet Access', 'DMZ Access', 'Internal Access', 'Stealth Rule'])"
+
+    - name: "rule_uid"
+      type: "String"
+      required: true
+      description: "Unique identifier for the firewall rule"
+      example_value: "29e5bb8c-7249-4682-936d-e4fcff0a5bea"
+      format: "UUID (RFC 4122)"
+      template_source: "random_guid()"
+
+    - name: "action"
+      type: "String"
+      required: true
+      description: "Final action taken on the traffic (typically matches rule_action)"
+      example_value: "Accept"
+      template_source: "random_weighted(['Accept', 'Drop', 'Reject'], [0.85, 0.10, 0.05])"
+
+    - name: "ifdir"
+      type: "String"
+      required: true
+      description: "Direction of traffic relative to the firewall interface"
+      example_value: "inbound"
+      template_source: "random_choice(['inbound', 'outbound'])"
+      possible_values:
+        - value: "inbound"
+          description: "Traffic entering the firewall interface"
+        - value: "outbound"
+          description: "Traffic leaving the firewall interface"
+
+    - name: "ifname"
+      type: "String"
+      required: true
+      description: "Network interface name where traffic was observed"
+      example_value: "eth2-23"
+      format: "ethX-Y format"
+      template_source: "eth{random_int(0,3)}-{random_int(20,25)}"
+
+    - name: "logid"
+      type: "Integer"
+      required: true
+      description: "Log message identifier (0 for standard traffic logs)"
+      example_value: "0"
+      template_source: "Static value 0"
+
+    - name: "loguid"
+      type: "String"
+      required: true
+      description: "Unique log entry identifier in Check Point format"
+      example_value: "{0x3cab6cc,0x90e12910,0x7a93992b,0x8f110a1b}"
+      format: "Four hexadecimal values in braces"
+      template_source: "Generated with random_hex() for each component"
+
+    - name: "origin"
+      type: "String"
+      required: true
+      description: "IP address of the Security Gateway that generated the log"
+      example_value: "10.40.55.33"
+      format: "IPv4 address"
+      template_source: "random_private_ip()"
+
+    - name: "originsicname"
+      type: "String"
+      required: true
+      description: "SIC (Secure Internal Communication) name of the originating gateway"
+      example_value: "CN=dst_Int-GW,O=ORGMGMT..ohuccs"
+      format: "Distinguished Name format with escaped characters"
+      template_source: "Constructed from device hostname and organization info"
+
+    - name: "sequencenum"
+      type: "Integer"
+      required: true
+      description: "Sequential log entry number"
+      example_value: "345"
+      template_source: "random_int(100, 999)"
+
+    - name: "version"
+      type: "Integer"
+      required: true
+      description: "Log format version"
+      example_value: "5"
+      template_source: "Static value 5"
+
+    - name: "src"
+      type: "String"
+      required: true
+      description: "Source IP address of the network connection"
+      example_value: "10.40.5.162"
+      format: "IPv4 address"
+      template_source: "random_private_ip()"
+
+    - name: "dst"
+      type: "String"
+      required: true
+      description: "Destination IP address of the network connection"
+      example_value: "54.144.111.231"
+      format: "IPv4 address"
+      template_source: "random_weighted([random_private_ip(), random_public_ip()], [0.6, 0.4])"
+
+    - name: "s_port"
+      type: "Integer"
+      required: false
+      description: "Source port number (present for TCP/UDP traffic)"
+      example_value: "59786"
+      format: "1024-65535 (ephemeral port range)"
+      template_source: "random_port(1024, 65535)"
+
+    - name: "service"
+      type: "Integer"
+      required: false
+      description: "Destination port number or service identifier"
+      example_value: "443"
+      template_source: "random_choice([80, 443, 22, 23, 25, 53, 161, 162, 445, 3389, 8080, 8443, 9443])"
+
+    - name: "service_id"
+      type: "String"
+      required: false
+      description: "Named service identifier for the destination port"
+      example_value: "https"
+      template_source: "random_choice(['http', 'https', 'ssh', 'telnet', 'smtp', 'dns', 'snmp', 'snmp-trap', 'microsoft-ds', 'rdp', 'http-alt', 'https-alt', 'tcp-high-ports', 'echo-request', 'nbname', 'SCCP'])"
+
+    - name: "proto"
+      type: "Integer"
+      required: true
+      description: "IP protocol number"
+      example_value: "6"
+      format: "IANA protocol number"
+      template_source: "random_weighted([6, 17, 1], [0.7, 0.25, 0.05])"
+      possible_values:
+        - value: "6"
+          description: "TCP (Transmission Control Protocol) - 70% of traffic"
+        - value: "17"
+          description: "UDP (User Datagram Protocol) - 25% of traffic"
+        - value: "1"
+          description: "ICMP (Internet Control Message Protocol) - 5% of traffic"
+
+    - name: "icmp"
+      type: "String"
+      required: false
+      description: "ICMP message type description (present only for ICMP traffic)"
+      example_value: "Echo Request"
+      template_source: "random_choice(['Echo Request', 'Echo Reply', 'Destination Unreachable', 'Time Exceeded'])"
+
+    - name: "icmp_code"
+      type: "Integer"
+      required: false
+      description: "ICMP message code (present only for ICMP traffic)"
+      example_value: "0"
+      format: "0-15"
+      template_source: "random_int(0, 15)"
+
+    - name: "icmp_type"
+      type: "Integer"
+      required: false
+      description: "ICMP message type number (present only for ICMP traffic)"
+      example_value: "8"
+      format: "0-18"
+      template_source: "random_int(0, 18)"
+
+    - name: "inzone"
+      type: "String"
+      required: true
+      description: "Security zone of the incoming interface"
+      example_value: "Internal"
+      template_source: "random_choice(['Internal', 'External', 'DMZ', 'Trusted'])"
+      possible_values:
+        - value: "Internal"
+          description: "Internal corporate network zone"
+        - value: "External"
+          description: "External/Internet-facing zone"
+        - value: "DMZ"
+          description: "Demilitarized zone for public-facing services"
+        - value: "Trusted"
+          description: "Highly trusted network segment"
+
+    - name: "outzone"
+      type: "String"
+      required: true
+      description: "Security zone of the outgoing interface"
+      example_value: "Internal"
+      template_source: "random_choice(['Internal', 'External', 'DMZ', 'Trusted'])"
+
+    - name: "member_id"
+      type: "String"
+      required: true
+      description: "Cluster member identifier for high-availability deployments"
+      example_value: "1_2"
+      format: "X_Y where X is cluster ID and Y is member number"
+      template_source: "random_choice(['1_2', '1_3', '2_1', '2_2'])"
+
+  resources:
+    documentation:
+      - title: "Check Point Log Exporter API Reference"
+        url: "https://sc1.checkpoint.com/documents/latest/APIs/"
+        type: "official"
+      - title: "Check Point Security Gateway Administration Guide"
+        url: "https://sc1.checkpoint.com/documents/latest/Gateways/"
+        type: "official"
+      - title: "Check Point Log Format Reference"
+        url: "https://supportcontent.checkpoint.com/solutions?id=sk144192"
+        type: "official"
+      - title: "SmartConsole Logging and Monitoring"
+        url: "https://sc1.checkpoint.com/documents/latest/SmartConsole/html_frameset.htm"
+        type: "official"
+
+    tools:
+      - name: "Check Point SmartConsole"
+        description: "Unified security management console for viewing and analyzing firewall logs"
+        url: "https://www.checkpoint.com/quantum/smartconsole/"
+      - name: "Check Point Log Exporter"
+        description: "Tool for exporting Check Point logs to SIEM and log management platforms"
+        url: "https://supportcenter.checkpoint.com/supportcenter/portal?eventSubmit_doGoviewsolutiondetails=&solutionid=sk122323"
+      - name: "cpview"
+        description: "Command-line monitoring tool for Check Point appliances"
+        url: "https://sc1.checkpoint.com/documents/R81/WebAdminGuides/EN/CP_R81_Gaia_AdminGuide/Topics-GAG/cpview.htm"
