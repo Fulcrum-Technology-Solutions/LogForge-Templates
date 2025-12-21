@@ -1,0 +1,6 @@
+vendor: armis
+product: security-platform
+name: Armis Security Platform
+description: Agentless device security and visibility platform for IT, IoT, OT, and IoMT environments with real-time threat detection and policy enforcement
+version: All
+documentation_url: https://docs.armis.com
