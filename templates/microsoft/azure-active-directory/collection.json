@@ -5,7 +5,7 @@
     "maintainers": [
       {
         "name": "LogForge Community",
-        "email": "community@logforge.com"
+        "email": "community@logforge.io"
       }
     ],
     "tags": ["microsoft", "azure", "active-directory", "authentication", "signin", "identity", "mfa", "conditional-access"],

@@ -1,0 +1,93 @@
+{
+  "CreationTime": "{{ now() | iso8601 }}",
+  "Id": "{{ random_guid() }}",
+  "Operation": "Add member to role",
+  "OrganizationId": "{{ registry.get_organization_field('domain') | replace('.', '-') }}-org-{{ random_hex(4, 6) }}",
+  "RecordType": 8,
+  "ResultStatus": "{{ random_choice(['Success', 'Success', 'Success', 'Failed']) }}",
+  "UserKey": "{{ registry.get_random_user().email }}",
+  "UserType": {{ random_choice([0, 2]) }},
+  "Version": 1,
+  "Workload": "AzureActiveDirectory",
+  "UserId": "{{ registry.get_random_user().email }}",
+  "ClientIP": "{{ random_choice([random_public_ip(), random_private_ip()]) }}",
+  "ObjectId": "User_{{ random_guid() }}",
+  "Actor": [
+    {
+      "ID": "{{ registry.get_random_user().email }}",
+      "Type": 0
+    },
+    {
+      "ID": "{{ random_hex(8, 8) | upper }}",
+      "Type": 5
+    }
+  ],
+  "ActorContextId": "{{ registry.get_organization_field('domain') | replace('.', '-') }}-org-{{ random_hex(4, 6) }}",
+  "ActorIpAddress": "{{ random_choice([random_public_ip(), random_private_ip()]) }}",
+  "InterSystemsId": "{{ random_guid() }}",
+  "IntraSystemId": "{{ random_guid() }}",
+  "Target": [
+    {
+      "ID": "User_{{ random_guid() }}",
+      "Type": 2
+    },
+    {
+      "ID": "{{ registry.get_random_user().email }}",
+      "Type": 5
+    }
+  ],
+  "TargetContextId": "{{ registry.get_organization_field('domain') | replace('.', '-') }}-org-{{ random_hex(4, 6) }}",
+  "ApplicationId": "{{ random_choice(['c44b4083-3bb0-49c1-b47d-974e53cbdf3c', '00000002-0000-0000-c000-000000000000', '00000003-0000-0000-c000-000000000000']) }}",
+  "DeviceProperties": [
+    {
+      "Name": "BrowserType",
+      "Value": "{{ random_choice(['Edge', 'Chrome', 'Firefox', 'Safari']) }}"
+    },
+    {
+      "Name": "IsCompliant",
+      "Value": "{{ random_choice(['True', 'True', 'False']) }}"
+    },
+    {
+      "Name": "IsManaged",
+      "Value": "{{ random_choice(['False', 'True', 'False']) }}"
+    }
+  ],
+  "ErrorNumber": "{{ random_choice(['0', '0', '0', '50076']) }}",
+  "ExtendedProperties": [
+    {
+      "Name": "additionalDetails",
+      "Value": "{\"UserType\":\"{{ random_choice(['Member', 'Guest']) }}\",\"AppId\":\"{{ random_choice(['c44b4083-3bb0-49c1-b47d-974e53cbdf3c', '00000002-0000-0000-c000-000000000000']) }}\"}"
+    },
+    {
+      "Name": "User-Agent",
+      "Value": "Mozilla/5.0 ({{ random_choice(['Windows NT 10.0; Win64; x64', 'Macintosh; Intel Mac OS X 10_15_7', 'X11; Linux x86_64']) }}) AppleWebKit/537.36"
+    }
+  ],
+  "ModifiedProperties": [
+    {
+      "Name": "Role.WellKnownObjectName",
+      "NewValue": "{{ random_choice(['Company Administrator', 'User Administrator', 'Privileged Role Administrator', 'Security Administrator', 'Helpdesk Administrator']) }}",
+      "OldValue": ""
+    },
+    {
+      "Name": "Role.DisplayName",
+      "NewValue": "{{ random_choice(['Global Administrator', 'User Administrator', 'Privileged Role Administrator', 'Security Administrator', 'Helpdesk Administrator']) }}",
+      "OldValue": ""
+    },
+    {
+      "Name": "Role.TemplateId",
+      "NewValue": "{{ random_choice(['62e90394-69f5-4237-9190-012177145e10', 'fe930be7-5e62-47db-91af-98c3a49a38b1', 'e8611ab8-c189-46e8-94e1-60213ab1f814', '194ae4cb-b126-40b2-bd5b-6091b380977d', '729827e3-9c14-49f7-bb1b-9608f156bbb8']) }}",
+      "OldValue": ""
+    },
+    {
+      "Name": "Role.ObjectID",
+      "NewValue": "{{ random_choice(['62e90394-69f5-4237-9190-012177145e10', 'fe930be7-5e62-47db-91af-98c3a49a38b1', 'e8611ab8-c189-46e8-94e1-60213ab1f814', '194ae4cb-b126-40b2-bd5b-6091b380977d', '729827e3-9c14-49f7-bb1b-9608f156bbb8']) }}",
+      "OldValue": ""
+    }
+  ],
+  "LogonError": "{{ random_choice(['0', '0', '0', '50126']) }}",
+  "SupportTicketId": "",
+  "AzureActiveDirectoryEventType": 1,
+  "ExternalAccess": {{ random_choice(['true', 'false', 'false']) }},
+  "UserAgent": "Mozilla/5.0 ({{ random_choice(['Windows NT 10.0; Win64; x64', 'Macintosh; Intel Mac OS X 10_15_7', 'X11; Linux x86_64']) }}) AppleWebKit/537.36"
+}

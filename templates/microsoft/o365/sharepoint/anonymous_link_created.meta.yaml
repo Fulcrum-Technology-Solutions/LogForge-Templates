@@ -1,0 +1,352 @@
+vendor: microsoft
+product: o365
+data_source: sharepoint
+description: Records SharePoint Online anonymous link creation events where users create publicly accessible sharing links for files or folders, enabling external access without authentication
+format: JSON
+frequency: medium
+is_generator: true
+base_frequency: 15
+time_patterns:
+  - business_hours
+  - night_hours
+business_hours_multiplier: 3.0
+night_hours_multiplier: 1.5
+weekend_multiplier: 0.8
+
+documentation:
+  display:
+    title: "SharePoint Anonymous Link Created"
+    subtitle: "Public File Sharing - Data Exposure Risk"
+    icon: "🔗"
+    color_scheme: "warning"
+    tags:
+      - "sharepoint"
+      - "external-sharing"
+      - "anonymous-access"
+      - "data-exposure"
+      - "collaboration"
+  
+  overview:
+    summary: "Captures SharePoint Online events where users create anonymous sharing links ('Anyone with the link') for files or folders. These links allow unauthenticated access to content, creating potential data exposure risks, especially for sensitive documents in Finance, HR, or Legal sites."
+    when_generated:
+      - "User shares a file or folder via 'Anyone with the link' option"
+      - "Anonymous sharing link created for collaboration with external partners"
+      - "Accidental oversharing of confidential documents"
+      - "Attacker with compromised account creates links for data exfiltration"
+      - "Legitimate business sharing for public content"
+    security_relevance: "Medium"
+    compliance_frameworks:
+      - "GDPR (Data Protection & Transfer)"
+      - "HIPAA (PHI Sharing Controls)"
+      - "PCI-DSS (Cardholder Data Protection)"
+      - "SOX (Financial Data Controls)"
+      - "NIST 800-53 (AC-3, AC-6, SC-7)"
+    frequency_notes: "Medium-high frequency in knowledge worker environments (15 events/hour baseline). Business hours show 3x activity as users actively collaborate. Suspicious patterns: anonymous links to Finance/HR/Legal sites, very long expiration dates (30+ days), Edit permissions (vs View-only), and links created outside business hours for sensitive content."
+  
+  fields:
+    - name: "CreationTime"
+      type: "DateTime"
+      required: true
+      description: "Timestamp when the anonymous link was created"
+      example_value: "2024-12-15T13:29:41Z"
+      format: "ISO 8601"
+      template_source: "now() | iso8601"
+    
+    - name: "Id"
+      type: "String"
+      required: true
+      description: "Unique identifier for this audit record"
+      example_value: "c6d7e8f9-a0b1-2c3d-4e5f-6a7b8c9d0e1f"
+      format: "GUID"
+      template_source: "random_guid()"
+    
+    - name: "Operation"
+      type: "String"
+      required: true
+      description: "SharePoint operation performed"
+      example_value: "AnonymousLinkCreated"
+      template_source: "Static value 'AnonymousLinkCreated'"
+    
+    - name: "OrganizationId"
+      type: "String"
+      required: true
+      description: "Microsoft 365 tenant identifier"
+      example_value: "b4c5d6e7-8f9a-0b1c-2d3e-4f5a6b7c8d9e"
+      format: "GUID"
+      template_source: "Derived from organization domain"
+    
+    - name: "RecordType"
+      type: "Integer"
+      required: true
+      description: "Office 365 audit log record type (14 = SharePointSharingOperation)"
+      example_value: "14"
+      template_source: "Static value 14"
+      possible_values:
+        - value: "14"
+          description: "SharePointSharingOperation - SharePoint and OneDrive sharing activities"
+    
+    - name: "ResultStatus"
+      type: "String"
+      required: true
+      description: "Outcome of the link creation operation"
+      example_value: "Success"
+      template_source: "random_choice(['Success', 'Success', 'Success', 'Failed'])"
+      possible_values:
+        - value: "Success"
+          description: "Anonymous link created successfully"
+        - value: "Failed"
+          description: "Link creation failed (permissions, policy restriction, or validation error)"
+    
+    - name: "UserKey"
+      type: "String"
+      required: true
+      description: "Unique identifier for the user in SharePoint membership format"
+      example_value: "i:0#.f|membership|user@contoso.com"
+      format: "i:0#.f|membership|{email}"
+      template_source: "SharePoint membership format with user email"
+    
+    - name: "UserType"
+      type: "Integer"
+      required: true
+      description: "Type of user creating the link"
+      example_value: "0"
+      template_source: "Static value 0"
+      possible_values:
+        - value: "0"
+          description: "Regular user"
+    
+    - name: "Workload"
+      type: "String"
+      required: true
+      description: "Office 365 service where the operation occurred"
+      example_value: "SharePoint"
+      template_source: "Static value 'SharePoint'"
+    
+    - name: "UserId"
+      type: "String"
+      required: true
+      description: "User principal name of the account that created the link"
+      example_value: "user@contoso.com"
+      format: "Email/UPN"
+      template_source: "registry.get_random_user().email"
+    
+    - name: "ClientIP"
+      type: "String"
+      required: true
+      description: "IP address from which the link was created"
+      example_value: "198.51.100.45"
+      format: "IPv4"
+      template_source: "random_choice([random_public_ip(), random_private_ip()])"
+    
+    - name: "ObjectId"
+      type: "String"
+      required: true
+      description: "Full SharePoint URL to the file or folder being shared"
+      example_value: "https://contoso.sharepoint.com/sites/Finance/Shared Documents/Q4_Financial_Report.xlsx"
+      format: "URL"
+      template_source: "SharePoint URL with site, library, and filename"
+    
+    - name: "EventSource"
+      type: "String"
+      required: true
+      description: "Source of the sharing event"
+      example_value: "SharePoint"
+      template_source: "Static value 'SharePoint'"
+    
+    - name: "ItemType"
+      type: "String"
+      required: true
+      description: "Type of item being shared"
+      example_value: "File"
+      template_source: "random_choice(['File', 'File', 'Folder'])"
+      possible_values:
+        - value: "File"
+          description: "Individual file being shared"
+        - value: "Folder"
+          description: "Folder being shared (higher risk - multiple files exposed)"
+    
+    - name: "ListId"
+      type: "String"
+      required: true
+      description: "GUID of the SharePoint list/library containing the item"
+      example_value: "f1e2d3c4-b5a6-7c8d-9e0f-1a2b3c4d5e6f"
+      format: "GUID"
+      template_source: "random_guid()"
+    
+    - name: "ListItemUniqueId"
+      type: "String"
+      required: true
+      description: "Unique identifier for the list item"
+      example_value: "a1b2c3d4-e5f6-7a8b-9c0d-1e2f3a4b5c6d"
+      format: "GUID"
+      template_source: "random_guid()"
+    
+    - name: "Site"
+      type: "String"
+      required: true
+      description: "GUID of the SharePoint site"
+      example_value: "b2c3d4e5-f6a7-8b9c-0d1e-2f3a4b5c6d7e"
+      format: "GUID"
+      template_source: "random_guid()"
+    
+    - name: "UserAgent"
+      type: "String"
+      required: true
+      description: "Browser user agent string"
+      example_value: "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
+      template_source: "Random modern browser user agent"
+    
+    - name: "WebId"
+      type: "String"
+      required: true
+      description: "GUID of the SharePoint web/subsite"
+      example_value: "d3e4f5a6-b7c8-9d0e-1f2a-3b4c5d6e7f8a"
+      format: "GUID"
+      template_source: "random_guid()"
+    
+    - name: "CorrelationId"
+      type: "String"
+      required: true
+      description: "Correlation identifier for related operations"
+      example_value: "e4f5a6b7-c8d9-0e1f-2a3b-4c5d6e7f8a9b"
+      format: "GUID"
+      template_source: "random_guid()"
+    
+    - name: "EventData"
+      type: "String"
+      required: true
+      description: "XML string containing sharing settings (AnonymousLinkType, Expiration)"
+      example_value: "<SharingSettings><AnonymousLinkType>View</AnonymousLinkType><Expiration>2025-01-15T13:29:41Z</Expiration></SharingSettings>"
+      format: "XML"
+      template_source: "XML with link type and expiration date"
+    
+    - name: "HighPriority"
+      type: "Boolean"
+      required: true
+      description: "Indicates if this is a high-priority security event"
+      example_value: "true"
+      template_source: "random_choice(['true', 'false', 'false']) - weighted toward normal priority"
+    
+    - name: "Platform"
+      type: "String"
+      required: true
+      description: "SharePoint platform identifier"
+      example_value: "SharePointOnline"
+      template_source: "Static value 'SharePointOnline'"
+    
+    - name: "SiteUrl"
+      type: "String"
+      required: true
+      description: "Base URL of the SharePoint site"
+      example_value: "https://contoso.sharepoint.com/sites/Finance"
+      format: "URL"
+      template_source: "SharePoint site URL"
+    
+    - name: "SourceFileExtension"
+      type: "String"
+      required: true
+      description: "File extension of the shared item"
+      example_value: "xlsx"
+      template_source: "random_choice(['xlsx', 'docx', 'pdf', 'pptx', 'zip'])"
+    
+    - name: "SourceFileName"
+      type: "String"
+      required: true
+      description: "Name of the file being shared"
+      example_value: "Q4_Financial_Report.xlsx"
+      template_source: "Contextual filename with extension"
+    
+    - name: "SourceRelativeUrl"
+      type: "String"
+      required: true
+      description: "Relative URL path to the file"
+      example_value: "sites/Finance/Shared Documents"
+      template_source: "Relative path within SharePoint"
+    
+    - name: "TargetUserOrGroupName"
+      type: "String"
+      required: true
+      description: "Who can access via the anonymous link"
+      example_value: "Anyone with the link"
+      template_source: "Static value 'Anyone with the link'"
+    
+    - name: "TargetUserOrGroupType"
+      type: "String"
+      required: true
+      description: "Type of sharing target"
+      example_value: "Anonymous"
+      template_source: "Static value 'Anonymous'"
+    
+    - name: "UniqueSharingId"
+      type: "String"
+      required: true
+      description: "Unique identifier for this sharing link"
+      example_value: "f7a8b9c0-d1e2-3f4a-5b6c-7d8e9f0a1b2c"
+      format: "GUID"
+      template_source: "random_guid()"
+    
+    - name: "ExternalAccess"
+      type: "Boolean"
+      required: true
+      description: "Indicates if the link was created from outside the corporate network"
+      example_value: "true"
+      template_source: "random_choice(['true', 'false', 'false'])"
+    
+    - name: "ModifiedProperties"
+      type: "Array"
+      required: true
+      description: "Properties showing link settings (type and expiration)"
+      template_source: "Array with AnonymousLinkType and LinkExpiration"
+    
+    - name: "ModifiedProperties[].Name"
+      type: "String"
+      required: true
+      description: "Property name (AnonymousLinkType, LinkExpiration)"
+      example_value: "AnonymousLinkType"
+    
+    - name: "ModifiedProperties[].NewValue"
+      type: "String"
+      required: true
+      description: "Link permission type or expiration date"
+      example_value: "View"
+      template_source: "Link type (View, Edit, Review) or ISO date"
+      possible_values:
+        - value: "View"
+          description: "Read-only access (lowest risk)"
+        - value: "Edit"
+          description: "Read and write access (higher risk)"
+        - value: "Review"
+          description: "View and comment access"
+    
+    - name: "ModifiedProperties[].OldValue"
+      type: "String"
+      required: true
+      description: "Previous value (empty for new links)"
+      example_value: ""
+      template_source: "Empty string"
+  
+  resources:
+    documentation:
+      - title: "Office 365 Management Activity API Schema"
+        url: "https://learn.microsoft.com/en-us/office/office-365-management-api/office-365-management-activity-api-schema"
+        type: "official"
+      - title: "SharePoint Online External Sharing Overview"
+        url: "https://learn.microsoft.com/en-us/sharepoint/external-sharing-overview"
+        type: "official"
+      - title: "Manage Sharing Settings"
+        url: "https://learn.microsoft.com/en-us/sharepoint/turn-external-sharing-on-or-off"
+        type: "official"
+      - title: "MITRE ATT&CK - Data from Cloud Storage (T1530)"
+        url: "https://attack.mitre.org/techniques/T1530/"
+        type: "reference"
+    
+    tools:
+      - name: "Microsoft 365 Defender"
+        description: "Native detection for suspicious SharePoint sharing activities"
+        url: "https://security.microsoft.com"
+      - name: "SharePoint Admin Center"
+        url: "https://admin.microsoft.com/sharepoint"
+        description: "Configure external sharing policies and audit sharing links"
+      - name: "Microsoft Cloud App Security"
+        url: "https://portal.cloudappsecurity.com"
+        description: "Monitor and control SharePoint sharing with DLP policies"
