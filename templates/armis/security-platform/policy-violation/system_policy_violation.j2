@@ -86,7 +86,7 @@
       "boundaries": [
         "{{ random_choice(['FS Charlotte - CE', 'GR Pennsylvania - PA', 'HMO Core Network', 'FS Atlanta - GE', 'FS Houston - TX']) }}"
       ],
-      "identifier": "{{ fake.mac_address() | upper | replace(':', ':') }}",
+      "identifier": "{{ fake.mac_address() | upper }}",
       "dataSources": {{ random_choice([
         ['Active Directory', 'Knowledge Base', 'Microsoft Azure Active Directory', 'CrowdStrike', 'Jira Assets Platform', 'Microsoft Intune', 'Network Mapper', 'Rapid7 InsightVM', 'SentinelOne', 'Traffic Inspection', 'User'],
         ['Active Directory', 'CrowdStrike', 'Traffic Inspection', 'Knowledge Base'],
@@ -145,7 +145,7 @@
       "boundaries": [
         "{{ random_choice(['HMO Core Network', 'FS Charlotte - CE', 'GR Pennsylvania - PA', 'FS Atlanta - GE']) }}"
       ],
-      "identifier": {{ random_choice(['null', '"' + fake.mac_address() | upper + '"']) }},
+      {% if random_int(1, 10) > 2 %}"identifier": "{{ fake.mac_address() | upper }}",{% else %}"identifier": null,{% endif %}
       "dataSources": {{ random_choice([
         ['Knowledge Base', 'Traffic Inspection'],
         ['Active Directory', 'Traffic Inspection', 'Knowledge Base'],

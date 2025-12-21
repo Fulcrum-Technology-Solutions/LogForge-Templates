@@ -20,6 +20,6 @@
       "compliance"
     ],
     "templates": [
-      "policy_violations/system_policy_violation"
+      "policy-violation/system_policy_violation"
     ]
   }
