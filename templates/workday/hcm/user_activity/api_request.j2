@@ -1,7 +1,8 @@
+{% set user = registry.get_random_user() %}
 {
   "deviceType": "{{ random_choice(['Phone', 'Desktop', 'Tablet']) }}",
   "ipAddress": "{{ random_public_ip() }}",
-  "systemAccount": "{{ '%06d' | format(random_int(10000, 999999)) }}",
+  "systemAccount": "{{ user.username }}",
   "requestTime": "{{ now() | iso8601 }}",
   "taskId": "{{ random_guid() | replace('-', '') }}",
   "userAgent": "{{ random_choice(['Workday/2025.12.1.27340 (iPhone)', 'Workday/2025.12.0.25234 (AndroidNative)', 'Workday/2025.11.2.26145 (iPhone)']) }}",
