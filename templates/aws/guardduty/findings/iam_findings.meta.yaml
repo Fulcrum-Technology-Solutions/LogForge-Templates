@@ -172,7 +172,7 @@ documentation:
       type: "Integer"
       required: true
       description: "Finding severity level (0-10)"
-      example_value: 5
+      example_value: "5"
       template_source: "random_choice([2, 2, 5, 5, 5, 5, 8, 8])"
       possible_values:
         - value: "2"

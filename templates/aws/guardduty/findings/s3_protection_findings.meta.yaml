@@ -69,7 +69,7 @@ documentation:
       type: "Integer"
       required: true
       description: "Finding severity (2=Low, 5=Medium, 8=High)"
-      example_value: 5
+      example_value: "5"
   
   resources:
     documentation:

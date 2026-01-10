@@ -95,7 +95,7 @@ documentation:
       type: "Integer"
       required: true
       description: "Always 10 (Critical) for attack sequences"
-      example_value: 10
+      example_value: "10"
   
   resources:
     documentation:
