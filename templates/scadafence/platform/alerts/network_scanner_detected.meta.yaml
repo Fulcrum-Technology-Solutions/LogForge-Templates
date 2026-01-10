@@ -1,0 +1,227 @@
+vendor: scadafence
+product: platform
+data_source: alerts
+description: Alert generated when the SCADAfence Platform detects network scanning activity from an asset, indicating potential reconnaissance or malicious behavior in OT/ICS environments
+format: CEF
+frequency: medium
+is_generator: true
+base_frequency: 8
+time_patterns:
+  - business_hours
+  - night_hours
+  - weekend
+business_hours_multiplier: 1.5
+night_hours_multiplier: 2.0
+weekend_multiplier: 0.3
+
+documentation:
+  display:
+    title: "Network Scanner Detection Alert"
+    subtitle: "OT/ICS security alert for detected scanning activity"
+    icon: "🔍"
+    color_scheme: "warning"
+    tags:
+      - "security"
+      - "threat-detection"
+      - "ot-security"
+      - "scanning"
+      - "reconnaissance"
+      - "cef"
+  
+  overview:
+    summary: "Alert generated when an asset is identified as performing network scanning activity, sending requests to multiple assets/ports in the OT network"
+    when_generated:
+      - "When an asset scans multiple IP addresses or ports in a short time period"
+      - "When reconnaissance patterns are detected in OT network traffic"
+      - "When potentially malicious scanning activity is observed"
+      - "When legitimate scanning tools are detected (management platforms)"
+    security_relevance: "High"
+    compliance_frameworks:
+      - "NIST CSF (Detect)"
+      - "IEC 62443 (Industrial Automation Security)"
+      - "NERC CIP"
+      - "ISA/IEC 62443"
+    frequency_notes: "Medium frequency - approximately 8-12 alerts per hour during normal operations. Higher frequency during night hours when unauthorized scanning may occur (2.0x multiplier). Lower on weekends (0.3x) as legitimate management activities decrease."
+  
+  fields:
+    - name: "CEF Version"
+      type: "Integer"
+      required: true
+      description: "CEF format version (always 0)"
+      example_value: "0"
+      format: "Integer"
+      template_source: "Static value: 0"
+    
+    - name: "Device Vendor"
+      type: "String"
+      required: true
+      description: "Vendor of the security device generating the alert"
+      example_value: "SCADAfence"
+      template_source: "Static value: SCADAfence"
+    
+    - name: "Device Product"
+      type: "String"
+      required: true
+      description: "Product name of the security platform"
+      example_value: "SCADAfence Platform"
+      template_source: "Static value: SCADAfence Platform"
+    
+    - name: "Device Version"
+      type: "String"
+      required: true
+      description: "Version of the SCADAfence Platform"
+      example_value: "6.5.1.15"
+      format: "Semantic version"
+      template_source: "random_weighted() - weighted selection from common versions"
+      possible_values:
+        - value: "6.5.1.15"
+          description: "Version 6.5.1.15 (50% probability)"
+        - value: "6.6.0.8"
+          description: "Version 6.6.0.8 (30% probability)"
+        - value: "6.7.2.3"
+          description: "Version 6.7.2.3 (20% probability)"
+    
+    - name: "Signature ID"
+      type: "Integer"
+      required: true
+      description: "Alert type identifier for network scanner detection"
+      example_value: "1200"
+      template_source: "Static value: 1200"
+    
+    - name: "Name"
+      type: "String"
+      required: true
+      description: "Human-readable name of the alert type"
+      example_value: "Network Scanner was detected"
+      template_source: "Static value: Network Scanner was detected"
+    
+    - name: "Severity"
+      type: "Integer"
+      required: true
+      description: "Alert severity level (CEF severity scale 0-10)"
+      example_value: "8"
+      format: "Integer 0-10"
+      template_source: "random_weighted() - 8 (60%), 7 (30%), 9 (10%)"
+      possible_values:
+        - value: "7"
+          description: "High severity (30% of alerts)"
+        - value: "8"
+          description: "Very high severity (60% of alerts)"
+        - value: "9"
+          description: "Critical severity (10% of alerts)"
+    
+    - name: "alert_ip"
+      type: "String"
+      required: true
+      description: "IP address of the asset performing scanning activity"
+      example_value: "192.168.1.51"
+      format: "IPv4"
+      template_source: "registry.get_random_device().ip_address - from entity registry"
+    
+    - name: "site"
+      type: "String"
+      required: true
+      description: "Physical site or facility where the scanning asset is located"
+      example_value: "Plant-A"
+      template_source: "random_weighted() - site assignments or N/A"
+      possible_values:
+        - value: "N/A"
+          description: "No site assigned (40%)"
+        - value: "Plant-A"
+          description: "Plant A facility (20%)"
+        - value: "Facility-B"
+          description: "Facility B (20%)"
+        - value: "Site-1"
+          description: "Site 1 (20%)"
+    
+    - name: "alert_seq"
+      type: "Integer"
+      required: true
+      description: "Unique sequential alert identifier"
+      example_value: "81"
+      format: "Integer"
+      template_source: "random_int(1, 99999) - unique alert ID"
+    
+    - name: "status"
+      type: "String"
+      required: true
+      description: "Current status of the alert in the workflow"
+      example_value: "CREATED"
+      template_source: "random_weighted() - alert lifecycle status"
+      possible_values:
+        - value: "CREATED"
+          description: "Newly created alert (40%)"
+        - value: "IN_PROGRESS"
+          description: "Alert under investigation (30%)"
+        - value: "RESOLVED"
+          description: "Alert resolved (20%)"
+        - value: "ACKNOWLEDGED"
+          description: "Alert acknowledged by analyst (10%)"
+    
+    - name: "createdOn"
+      type: "DateTime"
+      required: true
+      description: "Timestamp when the alert was first created"
+      example_value: "2021-09-13 20:40:20"
+      format: "YYYY-MM-DD HH:MM:SS"
+      template_source: "created_time | format_datetime() - current time minus random offset"
+    
+    - name: "updatedOn"
+      type: "DateTime"
+      required: true
+      description: "Timestamp of the last update to the alert"
+      example_value: "2021-09-13 20:41:16"
+      format: "YYYY-MM-DD HH:MM:SS"
+      template_source: "updated_time | format_datetime() - recent update time"
+    
+    - name: "details"
+      type: "String"
+      required: true
+      description: "Detailed description of the detected scanning activity"
+      example_value: "Asset 192.168.1.51 was identified as a network scanner, sending requests to too many assets/ports"
+      template_source: "Dynamically constructed with alert_ip from device registry"
+    
+    - name: "explanation"
+      type: "String"
+      required: true
+      description: "Technical explanation of why this activity is concerning and what it might indicate"
+      example_value: "This asset has been identified as doing scanning activity..."
+      template_source: "Static guidance text for this alert type"
+    
+    - name: "remediation"
+      type: "String"
+      required: true
+      description: "Recommended remediation steps for security analysts"
+      example_value: "Please check the asset. If it is a valid scanner..."
+      template_source: "Static remediation guidance for this alert type"
+    
+    - name: "url"
+      type: "String"
+      required: true
+      description: "Direct URL to view the alert in the SCADAfence Platform UI"
+      example_value: "https://192.168.1.234/alerts/81"
+      format: "URL"
+      template_source: "Constructed from platform_ip and alert_seq"
+  
+  resources:
+    documentation:
+      - title: "SCADAfence Platform Documentation"
+        url: "https://www.scadafence.com/resources/documentation/"
+        type: "official"
+      
+      - title: "CEF Format Specification"
+        url: "https://www.microfocus.com/documentation/arcsight/arcsight-smartconnectors-8.4/cef-implementation-standard/Content/CEF/Chapter%201%20What%20is%20CEF.htm"
+        type: "reference"
+      
+      - title: "ICS/OT Security Best Practices"
+        url: "https://www.cisa.gov/topics/industrial-control-systems"
+        type: "reference"
+    
+    tools:
+      - name: "SCADAfence Platform"
+        description: "OT/ICS security monitoring and threat detection platform"
+        url: "https://www.scadafence.com/platform/"
+      
+      - name: "NIST Cybersecurity Framework"
+        description: "Framework for managing OT/ICS cybersecurity risks"
+        url: "https://www.nist.gov/cyberframework"

@@ -1,0 +1,24 @@
+{
+    "name": "scadafence-platform",
+    "version": "1.0.0",
+    "description": "LogForge templates for SCADAfence Platform security alerts and events",
+    "maintainers": [
+      {
+        "name": "John Owen",
+        "email": "jowen@ftsc.com",
+        "github": "jowen-ftsc"
+      }
+    ],
+    "tags": [
+      "scadafence",
+      "ot-security",
+      "ics",
+      "scada",
+      "threat-detection",
+      "industrial",
+      "critical-infrastructure"
+    ],
+    "templates": [
+      "alerts/network_scanner_detected"
+    ]
+  }
