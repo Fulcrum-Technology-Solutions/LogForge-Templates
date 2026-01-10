@@ -1,0 +1,6 @@
+vendor: sentinelone
+product: complete
+name: "Complete Platform"
+description: "SentinelOne's comprehensive endpoint detection and response (EDR) platform providing real-time threat detection, automated response, and deep visibility across endpoints."
+version: "24.1"
+documentation_url: "https://docs.sentinelone.com/"

@@ -1,0 +1,60 @@
+{%- set user = registry.get_random_user() -%}
+{%- set trustee = registry.get_random_user() -%}
+{%- set device = registry.get_random_device() -%}
+{%- set file_server = registry.get_random_device() -%}
+{%- set severity_choices = ['3', '5', '7'] -%}
+{%- set severity_weights = [40, 50, 10] -%}
+{%- set severity = random_weighted(severity_choices, severity_weights) -%}
+{%- set event_types = [
+    'Permission Change',
+    'Excessive Permission Grant',
+    'Global Access Granted',
+    'Sensitive Folder Permission Change',
+    'Executive Data Permission Modified'
+] -%}
+{%- set event_weights = [40, 25, 15, 15, 5] -%}
+{%- set event_type = random_weighted(event_types, event_weights) -%}
+{%- set rule_names = [
+    'Excessive Permission Grants Alert',
+    'Global Access Permission Monitor',
+    'Sensitive Data Permission Change',
+    'Executive Folder Access Modification',
+    'Permission Escalation Detection'
+] -%}
+{%- set rule_name = random_choice(rule_names) -%}
+{%- set file_paths = [
+    '\\\\FileServer\\Finance\\Payroll',
+    '\\\\FileServer\\HR\\Benefits',
+    '\\\\FileServer\\Legal\\Confidential',
+    '\\\\FileServer\\Engineering\\IP',
+    '\\\\FileServer\\Executive\\Board',
+    '\\\\FileServer\\IT\\Admin'
+] -%}
+{%- set file_path = random_choice(file_paths) -%}
+{%- set permission_types = [
+    'Full Control',
+    'Modify',
+    'Read & Execute',
+    'Write',
+    'Read'
+] -%}
+{%- set old_perm = random_choice(['None', 'Read', 'Read & Execute']) -%}
+{%- set new_perm = random_choice(['Modify', 'Full Control', 'Write']) -%}
+{%- set change_types = [
+    'Added: ' + new_perm,
+    'Modified: ' + old_perm + ' to ' + new_perm,
+    'Removed: ' + old_perm
+] -%}
+{%- set changed_perms = random_choice(change_types) -%}
+{%- set outcomes = ['Success', 'Alerted'] -%}
+{%- set outcome_weights = [85, 15] -%}
+{%- set outcome = random_weighted(outcomes, outcome_weights) -%}
+{%- set alert_time = now() -%}
+{%- set event_time = subtract_seconds(alert_time, random_int(30, 1800)) -%}
+{%- set first_event_time = subtract_seconds(event_time, random_int(60, 3600)) -%}
+{%- set alert_id = random_int(100000, 999999) -%}
+{%- set rule_id = random_int(1000, 9999) -%}
+{%- set threshold = random_int(1, 10) -%}
+{%- set version = random_choice(['8.0', '8.5', '9.0', '9.5']) -%}
+{%- set op_code = random_int(2000, 2999) -%}
+CEF:0|Varonis|DatAdvantage|{{ version }}|{{ op_code }}|{{ event_type }}|{{ severity }}|rt={{ alert_time | format_datetime('%b %d %Y %H:%M:%S GMT') }} cat=Alert cs2={{ rule_name }} cs2Label=RuleName cn1={{ rule_id }} cn1Label=RuleID end={{ event_time | format_datetime('%b %d %Y %H:%M:%S GMT') }} duser={{ user.username }} dhost={{ file_server.hostname }} filePath={{ file_path }} act={{ event_type }} dvchost={{ device.hostname }} dvc={{ device.ip_address }} outcome={{ outcome }} msg=User {{ user.username }} modified permissions on {{ file_path }} for trustee {{ trustee.username }} cs4=http://{{ random_private_ip() }}/DatAdvantage/#/app/analytics/entity/Alert/{{ alert_id }} cs4Label=AlertURL cnt={{ threshold }} cs6={{ changed_perms }} cs6Label=ChangedPermissions oldFilePermission={{ old_perm }} filePermission={{ new_perm }} dpriv={{ trustee.username }} start={{ first_event_time | format_datetime('%b %d %Y %H:%M:%S GMT') }} externalId={{ alert_id }}

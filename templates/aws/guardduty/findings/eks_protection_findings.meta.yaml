@@ -1,0 +1,256 @@
+vendor: aws
+product: guardduty
+data_source: findings
+description: AWS GuardDuty EKS Protection finding types detecting threats against Amazon EKS clusters through Kubernetes audit logs analysis, including malicious file execution, privilege escalation, credential access, container escape, cluster deletion, and defense evasion activities
+format: JSON
+frequency: high
+is_generator: true
+base_frequency: 30
+time_patterns:
+  - business_hours
+  - night_hours
+  - weekend
+business_hours_multiplier: 2.5
+night_hours_multiplier: 2.0
+weekend_multiplier: 1.5
+
+documentation:
+  display:
+    title: "GuardDuty EKS Protection Finding Types"
+    subtitle: "Threat detection for Amazon EKS clusters"
+    icon: "☸️"
+    color_scheme: "error"
+    tags:
+      - "eks"
+      - "kubernetes"
+      - "container-security"
+      - "cluster-protection"
+      - "threat-detection"
+  
+  overview:
+    summary: "EKS Protection monitors Kubernetes audit logs from Amazon EKS clusters to detect malicious activity including malicious file execution, privilege escalation, credential access, container escape, cluster deletion, defense evasion, and unauthorized access attempts. Uses ML anomaly detection and threat intelligence to identify suspicious Kubernetes API activity patterns."
+    when_generated:
+      - "Malicious file execution detected in EKS cluster through Kubernetes audit logs"
+      - "Container information discovery for defense evasion (ML-detected)"
+      - "Unauthorized cluster query indicating reconnaissance activity"
+      - "Kubernetes credential access attempts (ML-detected)"
+      - "Backdoor container detected in cluster"
+      - "Privilege escalation to cluster admin role (ML-detected)"
+      - "EKS cluster deletion attempt detected"
+      - "Namespace or workload deletion attempts"
+      - "Unauthorized data access from EKS cluster (ML-detected)"
+      - "Secret access from EKS cluster (ML-detected)"
+      - "Container escape attempts"
+      - "EKS audit logging disabled to evade detection"
+    security_relevance: "Critical"
+    compliance_frameworks:
+      - "PCI-DSS 6.5.8"
+      - "HIPAA 164.308(a)(1)"
+      - "SOC 2 CC7.2"
+      - "ISO 27001 A.12.4.1"
+      - "NIST CSF PR.DS-5"
+      - "CIS Kubernetes Benchmark 5.1.1-5.7.4"
+      - "NIST SP 800-190"
+    frequency_notes: "EKS Protection findings vary based on cluster activity and security posture. Production clusters typically see 10-50 findings per day. Frequency scales with Kubernetes API volume, cluster size, and workload activity. Privilege escalation and credential access findings are high-severity but lower frequency (5-20 per day). Malicious file execution and cluster deletion attempts are critical but rare (1-5 per day). Container escape and defense evasion activities indicate active attacks (5-30 per day during incidents)."
+  
+  fields:
+    - name: "detail.type"
+      type: "String"
+      required: true
+      description: "EKS Protection finding type indicating attack tactic and Kubernetes resource"
+      example_value: "Execution:EKS/MaliciousFileExecution"
+      template_source: "random_choice() of 15 EKS finding types"
+      possible_values:
+        - value: "Execution:EKS/MaliciousFileExecution"
+          description: "Malicious file execution detected in EKS cluster"
+        - value: "DefenseEvasion:EKS/ContainerInfoDiscovery"
+          description: "Container information discovery for defense evasion"
+        - value: "Discovery:EKS/ClusterQuery"
+          description: "Unauthorized cluster query indicating reconnaissance"
+        - value: "InitialAccess:EKS/KubernetesCredentialAccess"
+          description: "Kubernetes credential access attempt"
+        - value: "Persistence:EKS/BackdoorContainer"
+          description: "Backdoor container detected in cluster"
+        - value: "PrivilegeEscalation:EKS/ClusterAdminAccess"
+          description: "Privilege escalation to cluster admin role"
+        - value: "Impact:EKS/ClusterDelete"
+          description: "EKS cluster deletion attempt detected"
+        - value: "Impact:EKS/NamespaceDelete"
+          description: "Namespace deletion attempt detected"
+        - value: "Impact:EKS/WorkloadDelete"
+          description: "Workload deletion attempt detected"
+        - value: "Exfiltration:EKS/DataAccess"
+          description: "Unauthorized data access from EKS cluster"
+        - value: "CredentialAccess:EKS/SecretAccess"
+          description: "Unauthorized access to Kubernetes secrets"
+        - value: "Recon:EKS/ClusterQuery"
+          description: "Reconnaissance activity against cluster"
+        - value: "Recon:EKS/NodeQuery"
+          description: "Reconnaissance activity against nodes"
+        - value: "LateralMovement:EKS/ContainerEscape"
+          description: "Container escape attempt detected"
+        - value: "Stealth:EKS/AuditLoggingDisabled"
+          description: "EKS audit logging disabled to evade detection"
+    
+    - name: "detail.resource.eksClusterDetails"
+      type: "Object"
+      required: true
+      description: "Details about the EKS cluster involved in finding"
+      example_value: "{name, arn, vpcId, subnetIds, createdAt, status, tags, kubernetesVersion}"
+      template_source: "EKS cluster metadata from AWS"
+    
+    - name: "detail.resource.eksClusterDetails.name"
+      type: "String"
+      required: true
+      description: "Name of the EKS cluster"
+      example_value: "production-cluster-1234"
+      format: "EKS cluster name"
+      template_source: "random_choice() of cluster names"
+    
+    - name: "detail.resource.eksClusterDetails.arn"
+      type: "String"
+      required: true
+      description: "Amazon Resource Name (ARN) of the EKS cluster"
+      example_value: "arn:aws:eks:us-east-1:123456789012:cluster/production-cluster-1234"
+      format: "AWS ARN format"
+      template_source: "Constructed from region, account ID, and cluster name"
+    
+    - name: "detail.resource.eksClusterDetails.kubernetesVersion"
+      type: "String"
+      required: true
+      description: "Kubernetes version running on the cluster"
+      example_value: "1.28"
+      format: "Semantic version (major.minor)"
+      template_source: "random_choice(['1.28', '1.27', '1.26', '1.25', '1.24'])"
+      possible_values:
+        - value: "1.28"
+          description: "Kubernetes version 1.28"
+        - value: "1.27"
+          description: "Kubernetes version 1.27"
+        - value: "1.26"
+          description: "Kubernetes version 1.26"
+    
+    - name: "detail.service.action.kubernetesApiCallAction.requestUri"
+      type: "String"
+      required: true
+      description: "Kubernetes API endpoint that was called"
+      example_value: "/api/v1/namespaces/default/secrets"
+      format: "Kubernetes API path"
+      template_source: "random_choice() of common Kubernetes API paths"
+    
+    - name: "detail.service.action.kubernetesApiCallAction.verb"
+      type: "String"
+      required: true
+      description: "Kubernetes API verb (HTTP method equivalent)"
+      example_value: "get"
+      format: "Kubernetes API verb"
+      template_source: "random_choice(['get', 'list', 'create', 'update', 'patch', 'delete', 'watch', 'exec', 'portforward'])"
+      possible_values:
+        - value: "get"
+          description: "Retrieve a single resource"
+        - value: "list"
+          description: "List multiple resources"
+        - value: "create"
+          description: "Create a new resource"
+        - value: "update"
+          description: "Update an existing resource"
+        - value: "patch"
+          description: "Partially update a resource"
+        - value: "delete"
+          description: "Delete a resource"
+        - value: "watch"
+          description: "Watch for changes to resources"
+        - value: "exec"
+          description: "Execute a command in a container"
+        - value: "portforward"
+          description: "Forward ports to a pod"
+    
+    - name: "detail.service.action.kubernetesApiCallAction.userIdentity.userName"
+      type: "String"
+      required: true
+      description: "Kubernetes user or service account name that made the API call"
+      example_value: "system:serviceaccount:default:default"
+      format: "Kubernetes identity format"
+      template_source: "random_choice() from registry users or Kubernetes system identities"
+    
+    - name: "detail.service.action.kubernetesApiCallAction.namespace"
+      type: "String"
+      required: true
+      description: "Kubernetes namespace where the API call was made"
+      example_value: "default"
+      format: "Kubernetes namespace name"
+      template_source: "random_choice() of common namespaces"
+    
+    - name: "detail.service.action.kubernetesApiCallAction.resource"
+      type: "String"
+      required: true
+      description: "Kubernetes resource type that was accessed"
+      example_value: "pods"
+      format: "Kubernetes resource type (plural)"
+      template_source: "random_choice(['pods', 'secrets', 'configmaps', 'deployments', 'services', 'nodes', 'roles', 'clusterroles', 'serviceaccounts'])"
+    
+    - name: "detail.service.action.kubernetesApiCallAction.responseStatusCode"
+      type: "Integer"
+      required: true
+      description: "HTTP status code returned by the Kubernetes API"
+      example_value: "200"
+      format: "HTTP status code"
+      template_source: "random_choice([200, 201, 403, 404, 500])"
+      possible_values:
+        - value: "200"
+          description: "Success (OK)"
+        - value: "201"
+          description: "Success (Created)"
+        - value: "403"
+          description: "Forbidden (authorization failed)"
+        - value: "404"
+          description: "Not Found (resource does not exist)"
+        - value: "500"
+          description: "Internal Server Error"
+    
+    - name: "detail.service.additionalInfo.unusual.kubernetesApiCall"
+      type: "Object"
+      required: false
+      description: "ML model analysis of unusual behaviors for anomalous Kubernetes API calls"
+      example_value: "{\"verb\": \"anomalous\", \"resource\": \"not historical\", \"namespace\": \"infrequent\"}"
+      template_source: "Object with unusual behavior flags for ML-detected anomalies"
+    
+    - name: "detail.severity"
+      type: "Integer"
+      required: true
+      description: "Finding severity level (0-10)"
+      example_value: "8"
+      template_source: "random_choice([2, 5, 5, 5, 8, 8, 8])"
+      possible_values:
+        - value: "2"
+          description: "Low severity (1.0-3.9)"
+        - value: "5"
+          description: "Medium severity (4.0-6.9)"
+        - value: "8"
+          description: "High severity (7.0-8.9)"
+  
+  resources:
+    documentation:
+      - title: "EKS Protection Finding Types"
+        url: "https://docs.aws.amazon.com/guardduty/latest/ug/guardduty-finding-types-eks-audit-logs.html"
+        type: "official"
+      - title: "Remediating Compromised EKS Cluster"
+        url: "https://docs.aws.amazon.com/guardduty/latest/ug/guardduty_eks.html"
+        type: "official"
+      - title: "Enabling EKS Protection"
+        url: "https://docs.aws.amazon.com/guardduty/latest/ug/guardduty_eks_setup.html"
+        type: "official"
+      - title: "Kubernetes Audit Logs"
+        url: "https://kubernetes.io/docs/tasks/debug/debug-cluster/audit/"
+        type: "reference"
+    tools:
+      - name: "AWS EKS"
+        description: "Amazon Elastic Kubernetes Service"
+        url: "https://aws.amazon.com/eks/"
+      - name: "kubectl"
+        description: "Kubernetes command-line tool"
+        url: "https://kubernetes.io/docs/reference/kubectl/"
+      - name: "CIS Kubernetes Benchmark"
+        description: "Security best practices for Kubernetes"
+        url: "https://www.cisecurity.org/benchmark/kubernetes"
+

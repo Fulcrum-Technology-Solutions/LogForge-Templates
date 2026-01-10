@@ -1,0 +1,15 @@
+{
+  "name": "defender-for-identity",
+  "version": "1.0.0",
+  "description": "Microsoft Defender for Identity security alert and threat detection templates",
+  "maintainers": [
+    {
+      "name": "LogForge Community",
+      "email": "community@logforge.io"
+    }
+  ],
+  "tags": ["microsoft", "defender", "identity", "security", "alerts", "atp", "activedirectory", "kerberos"],
+  "templates": [
+    "security-alerts/pass_the_ticket"
+  ]
+}

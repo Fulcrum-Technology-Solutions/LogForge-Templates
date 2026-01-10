@@ -1,0 +1,266 @@
+vendor: microsoft
+product: o365
+data_source: exchange
+description: Records Add-MailboxPermission operations that grant mailbox access rights (FullAccess, SendAs, SendOnBehalf) to other users, providing persistent access that survives password resets
+format: JSON
+frequency: low
+is_generator: true
+base_frequency: 3
+time_patterns:
+  - business_hours
+  - night_hours
+business_hours_multiplier: 2.0
+night_hours_multiplier: 2.5
+weekend_multiplier: 2.0
+
+documentation:
+  display:
+    title: "Mailbox Permission Delegation"
+    subtitle: "Add-MailboxPermission - Persistent Mailbox Access"
+    icon: "🔑"
+    color_scheme: "warning"
+    tags:
+      - "exchange"
+      - "mailbox-permissions"
+      - "delegation"
+      - "persistence"
+      - "privilege-escalation"
+  
+  overview:
+    summary: "Captures Add-MailboxPermission operations that grant mailbox access rights to other users. FullAccess permissions are particularly concerning as they provide complete mailbox access, survive password resets, and can enable long-term persistence for attackers."
+    when_generated:
+      - "Administrator delegates mailbox access for legitimate business needs"
+      - "Executive assistant granted access to executive mailbox"
+      - "Attacker establishes persistence via mailbox delegation"
+      - "Service account configured with mailbox access permissions"
+      - "Shared mailbox permissions configured"
+    security_relevance: "High"
+    compliance_frameworks:
+      - "GDPR (Data Access Controls)"
+      - "HIPAA (PHI Access Authorization)"
+      - "SOX (Financial Data Access)"
+      - "PCI-DSS (Least Privilege)"
+      - "NIST 800-53 (AC-2, AC-6)"
+    frequency_notes: "Low frequency under normal operations. Suspicious patterns: FullAccess granted to contractor/external accounts, permissions granted to recently created accounts, automapping enabled (automatically adds mailbox to Outlook), and off-hours activity (2.5x night multiplier). FullAccess to executive/finance mailboxes requires elevated scrutiny."
+  
+  fields:
+    - name: "CreationTime"
+      type: "DateTime"
+      required: true
+      description: "Timestamp when the mailbox permission was granted"
+      example_value: "2024-12-15T11:42:18Z"
+      format: "ISO 8601"
+      template_source: "now() | iso8601"
+    
+    - name: "Id"
+      type: "String"
+      required: true
+      description: "Unique identifier for this audit record"
+      example_value: "d5e6f7a8-b9c0-1d2e-3f4a-5b6c7d8e9f0a"
+      format: "GUID"
+      template_source: "random_guid()"
+    
+    - name: "Operation"
+      type: "String"
+      required: true
+      description: "Exchange PowerShell cmdlet executed"
+      example_value: "Add-MailboxPermission"
+      template_source: "Static value 'Add-MailboxPermission'"
+    
+    - name: "OrganizationId"
+      type: "String"
+      required: true
+      description: "Microsoft 365 tenant identifier"
+      example_value: "b4c5d6e7-8f9a-0b1c-2d3e-4f5a6b7c8d9e"
+      format: "GUID"
+      template_source: "Derived from organization domain"
+    
+    - name: "RecordType"
+      type: "Integer"
+      required: true
+      description: "Office 365 audit log record type (1 = ExchangeAdmin)"
+      example_value: "1"
+      template_source: "Static value 1"
+    
+    - name: "ResultStatus"
+      type: "String"
+      required: true
+      description: "Outcome of the permission grant operation"
+      example_value: "Success"
+      template_source: "random_choice(['Success', 'Success', 'Success', 'Failed'])"
+      possible_values:
+        - value: "Success"
+          description: "Permission granted successfully"
+        - value: "Failed"
+          description: "Permission grant failed (insufficient permissions or validation error)"
+    
+    - name: "UserKey"
+      type: "String"
+      required: true
+      description: "Unique identifier for the administrator who granted the permission"
+      example_value: "it.admin@contoso.com"
+      template_source: "registry.get_random_user().email"
+    
+    - name: "UserType"
+      type: "Integer"
+      required: true
+      description: "Type of user performing the action (should be admin)"
+      example_value: "2"
+      template_source: "Static value 2 (Administrator)"
+      possible_values:
+        - value: "2"
+          description: "Administrator - required for Add-MailboxPermission"
+    
+    - name: "Workload"
+      type: "String"
+      required: true
+      description: "Office 365 service where the operation occurred"
+      example_value: "Exchange"
+      template_source: "Static value 'Exchange'"
+    
+    - name: "UserId"
+      type: "String"
+      required: true
+      description: "User principal name of the administrator account"
+      example_value: "it.admin@contoso.com"
+      format: "Email/UPN"
+      template_source: "registry.get_random_user().email"
+    
+    - name: "ClientIP"
+      type: "String"
+      required: true
+      description: "IP address and port from which the operation was performed"
+      example_value: "192.0.2.147:57392"
+      format: "IPv4:Port"
+      template_source: "random_choice([random_private_ip(), random_public_ip()])"
+    
+    - name: "ObjectId"
+      type: "String"
+      required: true
+      description: "Target mailbox for which permissions were granted"
+      example_value: "executive@contoso.com"
+      format: "Email/UPN"
+      template_source: "registry.get_random_user().email"
+    
+    - name: "ExternalAccess"
+      type: "Boolean"
+      required: true
+      description: "Indicates if the operation was performed from outside the corporate network"
+      example_value: "false"
+      template_source: "random_choice(['false', 'false', 'true']) - weighted toward internal"
+    
+    - name: "OrganizationName"
+      type: "String"
+      required: true
+      description: "Microsoft 365 tenant name"
+      example_value: "contoso.onmicrosoft.com"
+      format: "*.onmicrosoft.com"
+      template_source: "Derived from organization domain"
+    
+    - name: "OriginatingServer"
+      type: "String"
+      required: true
+      description: "Exchange server that processed the operation"
+      example_value: "BN8PR01MB5678 (15.20.7654.32)"
+      template_source: "Random Exchange Online server identifier"
+    
+    - name: "Parameters"
+      type: "Array"
+      required: true
+      description: "PowerShell parameters used in the Add-MailboxPermission operation"
+      template_source: "Array of parameter objects"
+    
+    - name: "Parameters[].Name"
+      type: "String"
+      required: true
+      description: "Parameter name (Identity, User, AccessRights, InheritanceType, Automapping)"
+      example_value: "AccessRights"
+    
+    - name: "Parameters[].Value"
+      type: "String"
+      required: true
+      description: "Parameter value - AccessRights (FullAccess, SendAs, SendOnBehalf), User (delegated account), Automapping (auto-add to Outlook)"
+      example_value: "FullAccess"
+      template_source: "Context-specific values"
+      possible_values:
+        - value: "FullAccess"
+          description: "Complete mailbox access including all folders - highest risk"
+        - value: "SendAs"
+          description: "Send emails as the mailbox owner"
+        - value: "SendOnBehalf"
+          description: "Send emails on behalf of the mailbox owner"
+        - value: "ReadPermission"
+          description: "Read-only access to mailbox"
+    
+    - name: "SessionId"
+      type: "String"
+      required: true
+      description: "Session identifier for the administrative connection"
+      example_value: "b2c3d4e5-f6a7-8b9c-0d1e-2f3a4b5c6d7e"
+      format: "GUID"
+      template_source: "random_guid()"
+    
+    - name: "ClientInfoString"
+      type: "String"
+      required: false
+      description: "Information about the client application used"
+      example_value: "Client=PowerShell;Version=15.20;"
+      template_source: "Random client type (PowerShell, WebServices, EAC)"
+    
+    - name: "Item"
+      type: "Object"
+      required: true
+      description: "Object containing details about the target mailbox"
+      template_source: "Object with mailbox identity"
+    
+    - name: "ModifiedProperties"
+      type: "Array"
+      required: true
+      description: "Properties that were changed, showing permission grant details"
+      template_source: "Array showing AccessRights and User additions"
+    
+    - name: "ModifiedProperties[].Name"
+      type: "String"
+      required: true
+      description: "Property name (AccessRights, User)"
+      example_value: "AccessRights"
+    
+    - name: "ModifiedProperties[].NewValue"
+      type: "String"
+      required: true
+      description: "New permission value granted"
+      example_value: "FullAccess"
+      template_source: "Permission type granted"
+    
+    - name: "ModifiedProperties[].OldValue"
+      type: "String"
+      required: true
+      description: "Previous value (typically empty for new permissions)"
+      example_value: ""
+      template_source: "Empty string for new permissions"
+  
+  resources:
+    documentation:
+      - title: "Office 365 Management Activity API Schema"
+        url: "https://learn.microsoft.com/en-us/office/office-365-management-api/office-365-management-activity-api-schema"
+        type: "official"
+      - title: "Add-MailboxPermission PowerShell Reference"
+        url: "https://learn.microsoft.com/en-us/powershell/module/exchange/add-mailboxpermission"
+        type: "official"
+      - title: "Mailbox Permissions in Exchange Online"
+        url: "https://learn.microsoft.com/en-us/exchange/recipients-in-exchange-online/manage-permissions-for-recipients"
+        type: "official"
+      - title: "MITRE ATT&CK - Account Manipulation (T1098)"
+        url: "https://attack.mitre.org/techniques/T1098/"
+        type: "reference"
+    
+    tools:
+      - name: "Get-MailboxPermission PowerShell"
+        url: "https://learn.microsoft.com/en-us/powershell/module/exchange/get-mailboxpermission"
+        description: "Query and audit mailbox permission delegations"
+      - name: "Microsoft 365 Defender"
+        description: "Native detection for suspicious mailbox permission changes"
+        url: "https://security.microsoft.com"
+      - name: "Hawk PowerShell Module"
+        url: "https://github.com/T0pCyber/hawk"
+        description: "Hunt for suspicious mailbox delegations and permissions"

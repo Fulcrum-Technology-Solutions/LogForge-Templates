@@ -1,0 +1,16 @@
+{
+  "name": "acme-widget",
+  "version": "1.0.0",
+  "description": "LogForge templates for Acme Widget telemetry events",
+  "maintainers": [
+    {
+      "name": "Jane Example",
+      "email": "jane@example.com",
+      "github": "janedoe"
+    }
+  ],
+  "tags": ["telemetry", "widget", "acme"],
+  "templates": [
+    "telemetry/device_online"
+  ]
+} 

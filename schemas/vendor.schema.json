@@ -1,0 +1,53 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "$id": "https://logforge.dev/schemas/vendor.schema.json",
+    "title": "Vendor Metadata Schema",
+    "description": "Schema for vendor.meta.yaml files in template repositories",
+    "type": "object",
+    "required": ["vendor", "name"],
+    "properties": {
+      "vendor": {
+        "type": "string",
+        "description": "Machine-friendly vendor identifier (lowercase, alphanumeric, hyphens only). Must match the vendor directory name.",
+        "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$",
+        "minLength": 2,
+        "maxLength": 50,
+        "examples": ["paloalto", "microsoft", "cisco"]
+      },
+      "name": {
+        "type": "string",
+        "description": "Human-friendly vendor display name",
+        "minLength": 1,
+        "maxLength": 100,
+        "examples": ["Palo Alto Networks", "Microsoft Corporation", "Cisco Systems"]
+      },
+      "product": {
+        "type": "string",
+        "description": "Optional: Single product name for single-product vendors",
+        "minLength": 1,
+        "maxLength": 100,
+        "examples": ["Windows", "Firewall"]
+      },
+      "website": {
+        "type": "string",
+        "description": "Vendor website URL",
+        "format": "uri",
+        "pattern": "^https?://",
+        "examples": ["https://www.paloaltonetworks.com", "https://www.microsoft.com"]
+      },
+      "description": {
+        "type": "string",
+        "description": "Brief description of the vendor and their products",
+        "minLength": 10,
+        "maxLength": 500,
+        "examples": ["Palo Alto Networks provides firewalls, VPN, and threat detection solutions."]
+      },
+      "logo": {
+        "type": "string",
+        "description": "Filename of vendor logo image (relative to vendor directory)",
+        "pattern": "^[a-zA-Z0-9_-]+\\.(png|jpg|jpeg|svg)$",
+        "examples": ["paloalto-logo.png", "microsoft-logo.svg"]
+      }
+    },
+    "additionalProperties": false
+}

@@ -1,0 +1,21 @@
+{
+    "name": "microsoft-windows",
+    "version": "1.0.0",
+    "description": "Microsoft Windows Event Log templates collection",
+    "maintainers": [
+      {
+        "name": "LogForge Community",
+        "email": "community@logforge.io"
+      }
+    ],
+    "tags": [
+      "windows",
+      "eventlog",
+      "system",
+      "security",
+      "microsoft"
+    ],
+    "templates": [
+      "system/clop_persistence"
+    ]
+  }

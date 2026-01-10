@@ -1,0 +1,21 @@
+{
+  "name": "crowdstrike-falcon",
+  "version": "1.0.0",
+  "description": "CrowdStrike Falcon Platform log templates for API audit events and security telemetry",
+  "maintainers": [
+    {
+      "name": "LogForge Community",
+      "email": "community@logforge.com"
+    }
+  ],
+  "tags": [
+    "cybersecurity",
+    "endpoint-protection",
+    "api-audit",
+    "threat-intelligence",
+    "cloud-security"
+  ],
+  "templates": [
+    "api/falcon_api_events"
+  ]
+}

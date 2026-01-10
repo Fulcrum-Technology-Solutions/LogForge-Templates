@@ -1,0 +1,197 @@
+vendor: aws
+product: cloudtrail
+data_source: management
+description: "AWS EC2 CreateSnapshot API call for creating EBS volume snapshots"
+format: "JSON"
+frequency: "high"
+is_generator: true
+base_frequency: 45
+time_patterns:
+  - business_hours
+  - night_hours
+  - weekend
+business_hours_multiplier: 1.5
+night_hours_multiplier: 2.0
+weekend_multiplier: 1.2
+
+documentation:
+  display:
+    title: "EC2 Create Snapshot"
+    subtitle: "EBS volume snapshot creation event"
+    icon: "📸"
+    color_scheme: "info"
+    tags:
+      - "aws"
+      - "ec2"
+      - "ebs"
+      - "snapshot"
+      - "backup"
+      - "data-protection"
+
+  overview:
+    summary: "Records when AWS EC2 EBS volume snapshots are created via the CreateSnapshot API. Snapshots are point-in-time copies of EBS volumes used for backup, disaster recovery, and data migration."
+    when_generated:
+      - "During automated backup processes (typically nights/weekends)"
+      - "Before major system updates or deployments"
+      - "For disaster recovery preparation"
+      - "When migrating data between regions or accounts"
+      - "During security testing (red team activities)"
+      - "For development environment provisioning"
+      - "Before risky maintenance operations"
+    security_relevance: "Medium"
+    compliance_frameworks:
+      - "SOC 2"
+      - "PCI DSS"
+      - "HIPAA"
+      - "GDPR"
+      - "SOX"
+      - "ISO 27001"
+    frequency_notes: "High frequency - automated backup systems create many snapshots, especially during off-hours"
+
+  fields:
+    - name: "requestParameters.volumeId"
+      type: "String"
+      required: true
+      description: "ID of the EBS volume being snapshotted"
+      example_value: "vol-0363e53e12f67c9b7"
+      format: "vol-[17 character hex string]"
+      template_source: "Generated with proper vol- prefix"
+
+    - name: "responseElements.snapshotId"
+      type: "String"
+      required: false
+      description: "ID of the created snapshot (on success)"
+      example_value: "snap-02effb3bb62786b18"
+      format: "snap-[17 character hex string]"
+      template_source: "Generated with proper snap- prefix"
+
+    - name: "responseElements.status"
+      type: "String"
+      required: false
+      description: "Initial status of the snapshot"
+      example_value: "pending"
+      template_source: "Static value (always pending for new snapshots)"
+
+    - name: "responseElements.volumeSize"
+      type: "String"
+      required: false
+      description: "Size of the volume in GB"
+      example_value: "100"
+      template_source: "Random selection from common EBS sizes"
+      possible_values:
+        - value: "1"
+          description: "Minimum EBS volume size (testing)"
+        - value: "8"
+          description: "Default EC2 instance root volume"
+        - value: "100"
+          description: "Common application volume size"
+        - value: "500"
+          description: "Large application volume"
+        - value: "1000"
+          description: "Database or large storage volume"
+
+    - name: "responseElements.encrypted"
+      type: "Boolean"
+      required: false
+      description: "Whether the snapshot is encrypted"
+      example_value: "true"
+      template_source: "Random boolean (encryption adoption varies)"
+
+    - name: "requestParameters.tagSpecificationSet"
+      type: "Object"
+      required: false
+      description: "Tags to apply to the created snapshot"
+      example_value: '{"items": [{"resourceType": "snapshot", "tags": [{"key": "Environment", "value": "prod"}]}]}'
+      template_source: "Random selection from common tagging patterns"
+
+    - name: "errorCode"
+      type: "String"
+      required: false
+      description: "Error code when snapshot creation fails"
+      example_value: "Client.InvalidVolume.NotFound"
+      template_source: "Random selection when error occurs (1 in 8 chance)"
+      possible_values:
+        - value: "Client.InvalidVolume.NotFound"
+          description: "Volume does not exist"
+        - value: "Client.IncorrectState"
+          description: "Volume not in snapshotable state"
+        - value: "UnauthorizedOperation"
+          description: "Insufficient permissions"
+        - value: "Client.InvalidVolume.ZoneMismatch"
+          description: "Volume in wrong availability zone"
+
+    - name: "userAgent"
+      type: "String"
+      required: true
+      description: "Client application used for the API call"
+      example_value: "APN/1.0 HashiCorp/1.0 Terraform/1.1.2"
+      template_source: "Random selection from realistic EC2 user agents"
+      possible_values:
+        - value: "terraform-provider-aws/*"
+          description: "Infrastructure as Code deployments"
+        - value: "aws-cli/*"
+          description: "Command line automation"
+        - value: "console.ec2.amazonaws.com"
+          description: "Manual AWS Console operations"
+        - value: "aws-sdk-python/*"
+          description: "Python automation scripts"
+        - value: "stratus-red-team_*"
+          description: "Security testing tool"
+
+    - name: "responseElements.startTime"
+      type: "Integer"
+      required: false
+      description: "Timestamp when snapshot creation started"
+      example_value: "1679351478226"
+      format: "Unix timestamp in milliseconds"
+      template_source: "Current timestamp in milliseconds"
+
+    - name: "awsRegion"
+      type: "String"
+      required: true
+      description: "AWS region where the snapshot was created"
+      example_value: "us-west-2"
+      template_source: "Random selection from common AWS regions"
+
+    - name: "userIdentity.type"
+      type: "String"
+      required: true
+      description: "Type of AWS identity creating the snapshot"
+      example_value: "AssumedRole"
+      template_source: "Random selection (IAMUser vs AssumedRole)"
+      possible_values:
+        - value: "IAMUser"
+          description: "Direct IAM user (often service accounts)"
+        - value: "AssumedRole"
+          description: "Role assumption (federated or automation)"
+
+    - name: "tlsDetails"
+      type: "Object"
+      required: false
+      description: "TLS connection details for HTTPS calls"
+      example_value: '{"tlsVersion": "TLSv1.2", "cipherSuite": "ECDHE-RSA-AES128-GCM-SHA256"}'
+      template_source: "Generated for Console and Terraform user agents"
+      notes: "Only present for HTTPS API calls"
+
+  resources:
+    documentation:
+      - title: "AWS EC2 CreateSnapshot API Reference"
+        url: "https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_CreateSnapshot.html"
+        type: "official"
+      - title: "EBS Snapshot Best Practices"
+        url: "https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ebs-creating-snapshot.html"
+        type: "official"
+      - title: "EBS Snapshot Encryption"
+        url: "https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/EBSEncryption.html"
+        type: "official"
+
+    tools:
+      - name: "AWS EC2 Console"
+        description: "Web interface for managing EC2 instances and EBS resources"
+        url: "https://console.aws.amazon.com/ec2/"
+      - name: "AWS CLI EC2 Commands"
+        description: "Command-line interface for EC2 snapshot operations"
+        url: "https://docs.aws.amazon.com/cli/latest/reference/ec2/create-snapshot.html"
+      - name: "AWS Backup"
+        description: "Centralized backup service for AWS resources"
+        url: "https://aws.amazon.com/backup/"

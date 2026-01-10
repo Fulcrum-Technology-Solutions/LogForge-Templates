@@ -1,0 +1,5 @@
+slug: acme
+vendor: "Acme"
+website: "https://acme.example.com"
+description: "Acme Corporation is a fictional company used for sample data and documentation."
+logo: "acme-logo.png"  # Optional, path relative to vendor directory 

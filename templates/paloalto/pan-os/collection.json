@@ -1,0 +1,22 @@
+{
+  "name": "pan-os-templates",
+  "version": "1.0.0",
+  "description": "PAN-OS firewall and security service log templates",
+  "maintainers": [
+    {
+      "name": "LogForge Community",
+      "email": "community@logforge.dev"
+    }
+  ],
+  "tags": [
+    "firewall",
+    "vpn",
+    "security",
+    "network",
+    "palo-alto"
+  ],
+  "templates": [
+    "globalprotect/globalprotect",
+    "firewall/traffic"
+  ]
+}

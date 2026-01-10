@@ -1,0 +1,6 @@
+vendor: proofpoint
+product: email-protection
+name: "Email Protection"
+description: "Advanced email security platform with threat detection, sandboxing, and compliance features"
+version: "TAP 2.0"
+documentation_url: "https://help.proofpoint.com/Proofpoint_Essentials"

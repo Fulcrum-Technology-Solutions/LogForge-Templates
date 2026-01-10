@@ -1,0 +1,202 @@
+vendor: aws
+product: guardduty
+data_source: findings
+description: AWS GuardDuty IAM finding types including anomalous behaviors for credential access, defense evasion, privilege escalation, data exfiltration, root credential usage, API calls from malicious IPs or Tor nodes, and CloudTrail logging manipulation
+format: JSON
+frequency: medium
+is_generator: true
+base_frequency: 40
+time_patterns:
+  - business_hours
+  - night_hours
+  - weekend
+business_hours_multiplier: 3.0
+night_hours_multiplier: 1.5
+weekend_multiplier: 1.0
+
+documentation:
+  display:
+    title: "GuardDuty IAM Finding Types"
+    subtitle: "Threat detection for IAM credentials and access keys"
+    icon: "🔐"
+    color_scheme: "error"
+    tags:
+      - "iam"
+      - "credentials"
+      - "access-keys"
+      - "threat-detection"
+      - "account-compromise"
+  
+  overview:
+    summary: "GuardDuty IAM findings detect suspicious activity related to IAM entities, access keys, and AWS credentials. These findings use machine learning anomaly detection and threat intelligence to identify credential theft, privilege escalation, defense evasion, root credential misuse, and API calls from malicious sources."
+    when_generated:
+      - "Anomalous API calls for credential access (GetPasswordData, GetSecretValue)"
+      - "Defense evasion tactics (DeleteFlowLogs, DisableAlarmActions, StopLogging)"
+      - "Privilege escalation attempts (AddUserToGroup, PutUserPolicy, AssociateIamInstanceProfile)"
+      - "Root user credential usage (policy violations)"
+      - "API calls from malicious IP addresses or Tor exit nodes"
+      - "Penetration testing tools detected (Kali, Parrot, Pentoo Linux)"
+      - "CloudTrail logging disabled"
+      - "Password policy weakened or deleted"
+      - "Multiple worldwide console logins"
+      - "EC2 instance credential exfiltration"
+      - "Data exfiltration behaviors"
+      - "Persistence mechanisms established"
+    security_relevance: "Critical"
+    compliance_frameworks:
+      - "PCI-DSS 8.2, 10.2"
+      - "HIPAA 164.308(a)(5)"
+      - "SOC 2 CC6.1, CC6.6"
+      - "ISO 27001 A.9.2, A.9.4"
+      - "NIST CSF PR.AC-1, DE.CM-1"
+      - "CIS AWS Foundations 1.1-1.22"
+    frequency_notes: "IAM findings frequency varies by environment. Organizations with active threat hunting see 30-100 findings per hour. Anomalous behavior findings use ML and require training period. Root credential usage should be rare (0-5 per day). Credential exfiltration and privilege escalation are high-severity but lower frequency (5-20 per day). API calls from malicious IPs or Tor nodes indicate active attacks (10-50 per hour during attacks)."
+  
+  fields:
+    - name: "detail.type"
+      type: "String"
+      required: true
+      description: "GuardDuty IAM finding type indicating attack tactic and detection method"
+      example_value: "PrivilegeEscalation:IAMUser/AnomalousBehavior"
+      template_source: "random_choice() of 25 IAM finding types"
+      possible_values:
+        - value: "CredentialAccess:IAMUser/AnomalousBehavior"
+          description: "Anomalous API for credential access (GetPasswordData, GetSecretValue)"
+        - value: "DefenseEvasion:IAMUser/AnomalousBehavior"
+          description: "API to evade detection (DeleteFlowLogs, DisableAlarmActions)"
+        - value: "DefenseEvasion:IAMUser/BedrockLoggingDisabled"
+          description: "Bedrock model invocation logging was disabled"
+        - value: "Discovery:IAMUser/AnomalousBehavior"
+          description: "API for resource discovery (DescribeInstances, ListAccessKeys)"
+        - value: "Exfiltration:IAMUser/AnomalousBehavior"
+          description: "API for data exfiltration (PutBucketReplication, CreateSnapshot)"
+        - value: "Impact:IAMUser/AnomalousBehavior"
+          description: "API to tamper with data (DeleteSecurityGroup, UpdateUser)"
+        - value: "InitialAccess:IAMUser/AnomalousBehavior"
+          description: "API for initial access (StartSession, GetAuthorizationToken)"
+        - value: "Persistence:IAMUser/AnomalousBehavior"
+          description: "API to maintain access (CreateAccessKey, ModifyInstanceAttribute)"
+        - value: "PrivilegeEscalation:IAMUser/AnomalousBehavior"
+          description: "API for privilege escalation (AddUserToGroup, PutUserPolicy)"
+        - value: "Policy:IAMUser/RootCredentialUsage"
+          description: "Root user credentials used (policy violation)"
+        - value: "PenTest:IAMUser/KaliLinux"
+          description: "API invoked from Kali Linux penetration testing tool"
+        - value: "Recon:IAMUser/MaliciousIPCaller"
+          description: "Reconnaissance API from known malicious IP"
+        - value: "Recon:IAMUser/TorIPCaller"
+          description: "Reconnaissance API from Tor exit node"
+        - value: "Stealth:IAMUser/CloudTrailLoggingDisabled"
+          description: "CloudTrail logging was disabled"
+        - value: "Stealth:IAMUser/PasswordPolicyChange"
+          description: "Account password policy was weakened"
+        - value: "UnauthorizedAccess:IAMUser/ConsoleLoginSuccess.B"
+          description: "Multiple worldwide successful console logins"
+        - value: "UnauthorizedAccess:IAMUser/InstanceCredentialExfiltration.OutsideAWS"
+          description: "EC2 instance credentials used from external IP"
+        - value: "UnauthorizedAccess:IAMUser/InstanceCredentialExfiltration.InsideAWS"
+          description: "EC2 instance credentials used from another AWS account"
+        - value: "UnauthorizedAccess:IAMUser/MaliciousIPCaller"
+          description: "API invoked from known malicious IP address"
+        - value: "UnauthorizedAccess:IAMUser/TorIPCaller"
+          description: "API invoked from Tor exit node"
+    
+    - name: "detail.resource.accessKeyDetails.accessKeyId"
+      type: "String"
+      required: true
+      description: "IAM access key ID involved in the finding"
+      example_value: "AKIAIOSFODNN7EXAMPLE"
+      format: "AKIA or ASIA followed by 16 alphanumeric characters"
+      template_source: "random_choice(['AKIA', 'ASIA']) + random_string(16)"
+    
+    - name: "detail.resource.accessKeyDetails.userType"
+      type: "String"
+      required: true
+      description: "Type of IAM principal"
+      example_value: "IAMUser"
+      template_source: "random_choice(['IAMUser', 'AssumedRole', 'Root', 'FederatedUser'])"
+      possible_values:
+        - value: "IAMUser"
+          description: "Standard IAM user"
+        - value: "AssumedRole"
+          description: "Temporary credentials from assumed role"
+        - value: "Root"
+          description: "AWS account root user"
+        - value: "FederatedUser"
+          description: "Federated identity user"
+    
+    - name: "detail.resource.accessKeyDetails.userName"
+      type: "String"
+      required: true
+      description: "Name of the IAM user or role"
+      example_value: "admin-user"
+      template_source: "random_choice() from registry users or common names"
+    
+    - name: "detail.service.action.awsApiCallAction.api"
+      type: "String"
+      required: true
+      description: "AWS API operation that was invoked"
+      example_value: "GetPasswordData"
+      template_source: "random_choice() of common IAM-related APIs"
+    
+    - name: "detail.service.action.awsApiCallAction.serviceName"
+      type: "String"
+      required: true
+      description: "AWS service where API was called"
+      example_value: "iam.amazonaws.com"
+      template_source: "random_choice() of AWS service domains"
+    
+    - name: "detail.service.action.awsApiCallAction.remoteIpDetails.ipAddressV4"
+      type: "String"
+      required: true
+      description: "Source IP address of API call"
+      example_value: "203.0.113.42"
+      format: "IPv4"
+      template_source: "random_public_ip()"
+    
+    - name: "detail.service.action.awsApiCallAction.userAgent"
+      type: "String"
+      required: true
+      description: "User agent string of API caller"
+      example_value: "aws-cli/2.13.5 Python/3.11.4 Linux/5.15.0"
+      template_source: "random_choice() of common user agents"
+    
+    - name: "detail.service.additionalInfo.unusual"
+      type: "Object"
+      required: false
+      description: "ML model analysis of unusual behaviors for anomalous findings"
+      example_value: "{\"userIdentity\": {\"userName\": \"anomalous\"}}"
+      template_source: "Object with unusual behavior flags"
+    
+    - name: "detail.severity"
+      type: "Integer"
+      required: true
+      description: "Finding severity level (0-10)"
+      example_value: "5"
+      template_source: "random_choice([2, 2, 5, 5, 5, 5, 8, 8])"
+      possible_values:
+        - value: "2"
+          description: "Low severity (1.0-3.9)"
+        - value: "5"
+          description: "Medium severity (4.0-6.9)"
+        - value: "8"
+          description: "High severity (7.0-8.9)"
+  
+  resources:
+    documentation:
+      - title: "GuardDuty IAM Finding Types"
+        url: "https://docs.aws.amazon.com/guardduty/latest/ug/guardduty_finding-types-iam.html"
+        type: "official"
+      - title: "Remediating Compromised AWS Credentials"
+        url: "https://docs.aws.amazon.com/guardduty/latest/ug/compromised-creds.html"
+        type: "official"
+      - title: "GuardDuty Anomaly Detection"
+        url: "https://docs.aws.amazon.com/guardduty/latest/ug/guardduty_findings-summary.html#finding-anomalous"
+        type: "official"
+    tools:
+      - name: "AWS IAM Access Analyzer"
+        description: "Analyze IAM policies and external access"
+        url: "https://aws.amazon.com/iam/access-analyzer/"
+      - name: "AWS CloudTrail"
+        description: "View API activity history"
+        url: "https://aws.amazon.com/cloudtrail/"

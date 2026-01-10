@@ -1,0 +1,239 @@
+vendor: aws
+product: guardduty
+data_source: findings
+description: AWS GuardDuty EC2 finding types including backdoor communications, cryptocurrency mining, brute force attacks, port scans, malicious domain queries, Tor network usage, and defense evasion activities
+format: JSON
+frequency: medium
+is_generator: true
+base_frequency: 50
+time_patterns:
+  - business_hours
+  - night_hours
+  - weekend
+business_hours_multiplier: 2.5
+night_hours_multiplier: 2.0
+weekend_multiplier: 1.2
+
+documentation:
+  display:
+    title: "GuardDuty EC2 Finding Types"
+    subtitle: "Threat detection for Amazon EC2 instances"
+    icon: "🖥️"
+    color_scheme: "error"
+    tags:
+      - "ec2"
+      - "threat-detection"
+      - "network-security"
+      - "compute"
+      - "instance-compromise"
+  
+  overview:
+    summary: "GuardDuty generates EC2 findings when it detects suspicious activity on EC2 instances including command-and-control communications, cryptocurrency mining, brute force attacks, port scans, Tor network usage, and various malicious behaviors. These findings are based on VPC Flow Logs and DNS logs analysis."
+    when_generated:
+      - "EC2 instance queries known command-and-control servers"
+      - "Cryptocurrency mining or Bitcoin-related activity detected"
+      - "Brute force SSH or RDP authentication attempts"
+      - "Port scanning or port probe activity detected"
+      - "Communication with Tor network nodes"
+      - "DNS queries for malicious, phishing, or DGA domains"
+      - "Unusual network port or DNS resolver usage"
+      - "Denial of Service (DoS) attack behavior"
+      - "DNS data exfiltration attempts"
+      - "Backdoor or trojan communications"
+    security_relevance: "High"
+    compliance_frameworks:
+      - "PCI-DSS 11.4"
+      - "HIPAA 164.312(b)"
+      - "SOC 2 CC7.2"
+      - "ISO 27001 A.12.4.1"
+      - "NIST CSF PR.DS-5"
+      - "CIS AWS Foundations 4.1-4.16"
+    frequency_notes: "EC2 findings are the most common GuardDuty finding type. Frequency varies based on environment size, threat landscape, and security posture. Production environments typically see 50-200 EC2 findings per hour. Malicious activity often increases during nights and weekends when security monitoring may be reduced. Brute force attacks and port scans are continuous throughout the day."
+  
+  fields:
+    - name: "detail.type"
+      type: "String"
+      required: true
+      description: "GuardDuty EC2 finding type indicating threat category and detection method"
+      example_value: "UnauthorizedAccess:EC2/SSHBruteForce"
+      template_source: "random_choice() of 40 EC2 finding types"
+      possible_values:
+        - value: "Backdoor:EC2/C&CActivity.B"
+          description: "Instance querying IP of known C&C server (VPC Flow Logs)"
+        - value: "Backdoor:EC2/C&CActivity.B!DNS"
+          description: "Instance querying domain of known C&C server (DNS Logs)"
+        - value: "Backdoor:EC2/DenialOfService.Dns"
+          description: "Instance performing DNS-based DoS attack"
+        - value: "Backdoor:EC2/DenialOfService.Tcp"
+          description: "Instance performing TCP-based DoS attack"
+        - value: "Backdoor:EC2/DenialOfService.Udp"
+          description: "Instance performing UDP-based DoS attack"
+        - value: "Backdoor:EC2/Spambot"
+          description: "Instance communicating on port 25 (SMTP) for spam"
+        - value: "Behavior:EC2/NetworkPortUnusual"
+          description: "Instance communicating on unusual port with no prior history"
+        - value: "Behavior:EC2/TrafficVolumeUnusual"
+          description: "Instance generating unusually large traffic volume"
+        - value: "CryptoCurrency:EC2/BitcoinTool.B"
+          description: "Instance querying Bitcoin-related IP addresses"
+        - value: "CryptoCurrency:EC2/BitcoinTool.B!DNS"
+          description: "Instance querying Bitcoin-related domain names"
+        - value: "DefenseEvasion:EC2/UnusualDNSResolver"
+          description: "Instance communicating with unusual public DNS resolver"
+        - value: "DefenseEvasion:EC2/UnusualDoHActivity"
+          description: "Instance performing DNS over HTTPS (DoH) communication"
+        - value: "DefenseEvasion:EC2/UnusualDoTActivity"
+          description: "Instance performing DNS over TLS (DoT) communication"
+        - value: "Impact:EC2/MaliciousDomainRequest.Reputation"
+          description: "Instance querying low reputation malicious domain"
+        - value: "Impact:EC2/PortSweep"
+          description: "Instance probing port on large number of IPs"
+        - value: "Recon:EC2/PortProbeUnprotectedPort"
+          description: "Instance has unprotected port being probed by scanner"
+        - value: "Recon:EC2/Portscan"
+          description: "Instance performing outbound port scan"
+        - value: "Trojan:EC2/DNSDataExfiltration"
+          description: "Instance exfiltrating data through DNS queries"
+        - value: "Trojan:EC2/DGADomainRequest.B"
+          description: "Instance querying algorithmically generated domains"
+        - value: "Trojan:EC2/PhishingDomainRequest!DNS"
+          description: "Instance querying domains involved in phishing"
+        - value: "UnauthorizedAccess:EC2/SSHBruteForce"
+          description: "Instance involved in SSH brute force attack"
+        - value: "UnauthorizedAccess:EC2/RDPBruteForce"
+          description: "Instance involved in RDP brute force attack"
+        - value: "UnauthorizedAccess:EC2/TorClient"
+          description: "Instance making connections to Tor Guard or Authority node"
+        - value: "UnauthorizedAccess:EC2/TorRelay"
+          description: "Instance acting as Tor relay"
+        - value: "UnauthorizedAccess:EC2/MetadataDNSRebind"
+          description: "Instance performing DNS lookups resolving to metadata service"
+    
+    - name: "detail.resource.instanceDetails.instanceId"
+      type: "String"
+      required: true
+      description: "EC2 instance identifier"
+      example_value: "i-1234567890abcdef0"
+      format: "i-{17 hex chars}"
+      template_source: "random_hex(17, 17) with 'i-' prefix"
+    
+    - name: "detail.resource.instanceDetails.instanceType"
+      type: "String"
+      required: true
+      description: "EC2 instance type"
+      example_value: "t3.medium"
+      template_source: "random_choice() of common instance types"
+    
+    - name: "detail.resource.instanceDetails.imageDescription"
+      type: "String"
+      required: true
+      description: "AMI description for the instance"
+      example_value: "Amazon Linux 2023"
+      template_source: "random_choice() of common OS images"
+    
+    - name: "detail.service.action.actionType"
+      type: "String"
+      required: true
+      description: "Type of action that triggered the finding"
+      example_value: "NETWORK_CONNECTION"
+      template_source: "random_choice(['NETWORK_CONNECTION', 'PORT_PROBE', 'DNS_REQUEST'])"
+      possible_values:
+        - value: "NETWORK_CONNECTION"
+          description: "Network traffic exchanged between instance and remote host"
+        - value: "PORT_PROBE"
+          description: "Port on instance being probed by external scanner"
+        - value: "DNS_REQUEST"
+          description: "Instance queried a domain name"
+    
+    - name: "detail.service.action.networkConnectionAction.connectionDirection"
+      type: "String"
+      required: false
+      description: "Direction of network connection"
+      example_value: "OUTBOUND"
+      template_source: "random_choice(['OUTBOUND', 'INBOUND'])"
+      possible_values:
+        - value: "OUTBOUND"
+          description: "Instance initiated connection to remote host"
+        - value: "INBOUND"
+          description: "Remote host initiated connection to instance"
+    
+    - name: "detail.service.action.networkConnectionAction.remoteIpDetails.ipAddressV4"
+      type: "String"
+      required: false
+      description: "Remote IP address involved in the activity"
+      example_value: "203.0.113.42"
+      format: "IPv4"
+      template_source: "random_public_ip()"
+    
+    - name: "detail.service.action.networkConnectionAction.remotePortDetails.port"
+      type: "Integer"
+      required: false
+      description: "Remote port number"
+      example_value: "22"
+      template_source: "random_choice() of common service ports"
+    
+    - name: "detail.service.action.networkConnectionAction.protocol"
+      type: "String"
+      required: false
+      description: "Network protocol used"
+      example_value: "TCP"
+      template_source: "random_choice(['TCP', 'UDP', 'ICMP'])"
+    
+    - name: "detail.service.action.dnsRequestAction.domain"
+      type: "String"
+      required: false
+      description: "Domain name queried by the instance"
+      example_value: "guarddutyc2activityb.com"
+      template_source: "random_choice() of test and malicious domains"
+    
+    - name: "detail.service.resourceRole"
+      type: "String"
+      required: true
+      description: "Role of the resource in the finding"
+      example_value: "TARGET"
+      template_source: "random_choice(['TARGET', 'ACTOR'])"
+      possible_values:
+        - value: "TARGET"
+          description: "Instance was the target of malicious activity"
+        - value: "ACTOR"
+          description: "Instance was performing malicious activity"
+    
+    - name: "detail.service.additionalInfo.threatListName"
+      type: "String"
+      required: false
+      description: "Name of threat intelligence list that matched"
+      example_value: "ProofPoint"
+      template_source: "random_choice() of threat list names"
+    
+    - name: "detail.severity"
+      type: "Integer"
+      required: true
+      description: "Finding severity level (0-10)"
+      example_value: "8"
+      template_source: "random_choice([2, 2, 5, 5, 5, 8, 8])"
+      possible_values:
+        - value: "2"
+          description: "Low severity (1.0-3.9)"
+        - value: "5"
+          description: "Medium severity (4.0-6.9)"
+        - value: "8"
+          description: "High severity (7.0-8.9)"
+  
+  resources:
+    documentation:
+      - title: "GuardDuty EC2 Finding Types"
+        url: "https://docs.aws.amazon.com/guardduty/latest/ug/guardduty_finding-types-ec2.html"
+        type: "official"
+      - title: "Remediating Compromised EC2 Instances"
+        url: "https://docs.aws.amazon.com/guardduty/latest/ug/compromised-ec2.html"
+        type: "official"
+      - title: "GuardDuty Foundational Data Sources"
+        url: "https://docs.aws.amazon.com/guardduty/latest/ug/guardduty_data-sources.html"
+        type: "official"
+    tools:
+      - name: "AWS GuardDuty Console"
+        description: "Web interface for viewing and managing EC2 findings"
+        url: "https://console.aws.amazon.com/guardduty/"
+      - name: "AWS Security Hub"
+        description: "Centralized security findings including GuardDuty EC2 findings"
+        url: "https://aws.amazon.com/security-hub/"

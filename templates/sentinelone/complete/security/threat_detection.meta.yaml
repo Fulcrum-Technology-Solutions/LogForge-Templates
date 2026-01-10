@@ -1,0 +1,12 @@
+vendor: sentinelone
+product: complete
+data_source: security
+description: "SentinelOne threat detection events for the Complete platform"
+format: "JSON"
+frequency: "high"
+is_generator: true
+base_frequency: 200
+time_patterns:
+  - business_hours
+  - night_hours
+  - weekend

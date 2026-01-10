@@ -1,0 +1,49 @@
+name: Update Templates Index
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - 'templates/**/*.j2'
+      - 'templates/**/*.meta.yaml'
+      - 'templates/**/vendor.meta.yaml'
+      - 'templates/**/product.meta.yaml'
+      - 'templates/**/collection.json'
+    paths-ignore:
+      - 'TEMPLATES.yaml'
+  workflow_dispatch:
+
+jobs:
+  update-index:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install pyyaml
+      - name: Update TEMPLATES.yaml
+        run: python .github/scripts/update_templates_index.py
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v5
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          commit-message: "Auto-update TEMPLATES.yaml [skip ci]"
+          title: "Auto-update TEMPLATES.yaml"
+          body: |
+            This PR was automatically created to update the templates index.
+            
+            - [skip ci] tag included to prevent infinite workflow loops
+          branch: auto-update-templates-index
+          delete-branch: true
+          author: GitHub Action <action@github.com>
+          committer: GitHub Action <action@github.com> 

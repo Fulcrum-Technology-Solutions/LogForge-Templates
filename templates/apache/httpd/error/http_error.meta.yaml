@@ -1,0 +1,166 @@
+vendor: apache
+product: httpd
+data_source: error
+description: Apache HTTP Server error log entries recording server errors, warnings, configuration issues, client errors, SSL problems, module failures, and script execution errors
+format: Plain Text
+frequency: medium
+is_generator: true
+base_frequency: 20
+time_patterns:
+  - business_hours
+  - night_hours
+  - weekend
+business_hours_multiplier: 2.0
+night_hours_multiplier: 1.2
+weekend_multiplier: 0.8
+
+documentation:
+  display:
+    title: "Apache HTTP Error Log"
+    subtitle: "Server errors, warnings, and diagnostic messages"
+    icon: "⚠️"
+    color_scheme: "warning"
+    tags:
+      - "error-log"
+      - "http"
+      - "web-server"
+      - "diagnostics"
+      - "troubleshooting"
+
+  overview:
+    summary: "Records error conditions, warnings, configuration issues, and diagnostic information from the Apache HTTP Server. Includes server startup/shutdown events, client connection errors, script failures, SSL/TLS issues, module loading problems, and other operational events."
+    when_generated:
+      - "Server startup, shutdown, or restart events"
+      - "Configuration syntax errors or warnings"
+      - "Client request errors (invalid headers, malformed requests)"
+      - "Backend script failures (PHP, Python, CGI timeouts or errors)"
+      - "SSL/TLS handshake failures or certificate issues"
+      - "Module loading failures or dependency errors"
+      - "File not found errors (404s for non-logged access requests)"
+      - "Resource limit or timeout conditions"
+    security_relevance: "High"
+    compliance_frameworks:
+      - "PCI DSS (Requirement 10.2 - System events and errors)"
+      - "HIPAA (Error logging for security events)"
+      - "SOX (Error audit trails)"
+      - "ISO 27001 (A.12.4.1 - Event logging)"
+      - "NIST SP 800-53 (AU-2, AU-3, SI-4 - Audit and monitoring)"
+    frequency_notes: "Medium-frequency events during business hours (40 events/hour) with some activity during nights (24 events/hour) due to automated processes and maintenance tasks. Weekends see reduced activity (16 events/hour). Error rates vary significantly based on server health, application stability, and configuration quality."
+
+  fields:
+    - name: "timestamp"
+      type: "DateTime"
+      required: true
+      description: "Date and time when the error occurred, including microseconds"
+      example_value: "Fri Dec 20 15:31:09.533710 2025"
+      format: "Day Mon DD HH:MM:SS.microseconds YYYY"
+      template_source: "now() | format_datetime('%a %b %d %H:%M:%S.%f %Y')"
+      
+    - name: "log_level"
+      type: "String"
+      required: true
+      description: "Severity level of the log entry"
+      example_value: "error"
+      format: "Apache log level"
+      template_source: "random_choice(['error', 'warn', 'notice', 'info', 'debug', 'crit', 'alert', 'emerg'])"
+      possible_values:
+        - value: "emerg"
+          description: "Emergency - System is unusable"
+        - value: "alert"
+          description: "Alert - Action must be taken immediately"
+        - value: "crit"
+          description: "Critical - Critical conditions"
+        - value: "error"
+          description: "Error - Error conditions"
+        - value: "warn"
+          description: "Warning - Warning conditions"
+        - value: "notice"
+          description: "Notice - Normal but significant condition"
+        - value: "info"
+          description: "Informational - Informational messages"
+        - value: "debug"
+          description: "Debug - Debug-level messages"
+          
+    - name: "process_id"
+      type: "Integer"
+      required: true
+      description: "Process ID of the Apache worker process that logged the event"
+      example_value: "12345"
+      format: "PID"
+      template_source: "random_int(1000, 99999)"
+      
+    - name: "thread_id"
+      type: "Integer"
+      required: true
+      description: "Thread ID within the worker process"
+      example_value: "139876543210000"
+      format: "Thread ID"
+      template_source: "random_int(100000000, 999999999)"
+      
+    - name: "client_ip"
+      type: "String"
+      required: false
+      description: "IP address of the client that triggered the error (if applicable)"
+      example_value: "10.154.52.51"
+      format: "IPv4 or IPv6"
+      template_source: "random_private_ip()"
+      
+    - name: "client_port"
+      type: "Integer"
+      required: false
+      description: "Source port of the client connection (if applicable)"
+      example_value: "54321"
+      format: "Port number"
+      template_source: "random_port(1024, 65535)"
+      
+    - name: "error_code"
+      type: "String"
+      required: false
+      description: "Apache error code (AHxxxxx format) identifying the specific error type"
+      example_value: "AH01630"
+      format: "AHxxxxx"
+      template_source: "Embedded in error message"
+      
+    - name: "error_message"
+      type: "String"
+      required: true
+      description: "Detailed error message describing the issue"
+      example_value: "client denied by server configuration"
+      format: "Free text"
+      template_source: "random_choice of realistic Apache error messages"
+      
+    - name: "referer"
+      type: "String"
+      required: false
+      description: "Referring URL that led to the error (if applicable)"
+      example_value: "https://apps.example.com/login"
+      format: "URL or absent"
+      template_source: "Optional: random_choice of referer URLs"
+
+  resources:
+    documentation:
+      - title: "Apache HTTP Server Documentation - Error Log"
+        url: "https://httpd.apache.org/docs/current/logs.html#errorlog"
+        type: "official"
+      - title: "Apache Error Messages"
+        url: "https://wiki.apache.org/httpd/ListOfErrors"
+        type: "official"
+      - title: "Apache Log Levels"
+        url: "https://httpd.apache.org/docs/current/mod/core.html#loglevel"
+        type: "official"
+      - title: "Troubleshooting Apache Error Logs"
+        url: "https://httpd.apache.org/docs/current/misc/tutorials.html"
+        type: "reference"
+    tools:
+      - name: "Logwatch"
+        description: "System log analyzer and reporter for Apache error logs"
+        url: "https://sourceforge.net/projects/logwatch/"
+      - name: "Fail2Ban"
+        description: "Intrusion prevention software that uses Apache error logs to ban malicious IPs"
+        url: "https://www.fail2ban.org/"
+      - name: "Splunk"
+        description: "Enterprise log aggregation and analysis platform"
+        url: "https://www.splunk.com/"
+      - name: "ELK Stack"
+        description: "Elasticsearch, Logstash, and Kibana for log analysis and visualization"
+        url: "https://www.elastic.co/elastic-stack"

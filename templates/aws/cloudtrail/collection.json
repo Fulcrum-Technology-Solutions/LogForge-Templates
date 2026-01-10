@@ -1,0 +1,24 @@
+{
+    "name": "aws-cloudtrail",
+    "version": "1.0.0",
+    "description": "AWS CloudTrail event templates for management and data events",
+    "maintainers": [
+      {
+        "name": "LogForge Community",
+        "email": "community@logforge.dev"
+      }
+    ],
+    "tags": [
+      "aws",
+      "cloud",
+      "audit",
+      "compliance",
+      "security",
+      "api-activity"
+    ],
+    "templates": [
+      "management/delete_trail",
+      "management/iam_delete_policy",
+      "management/ec2_create_snapshot"
+    ]
+  }

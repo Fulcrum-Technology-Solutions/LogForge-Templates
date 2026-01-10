@@ -1,0 +1,184 @@
+vendor: aws
+product: cloudtrail
+data_source: management
+description: "AWS IAM DeletePolicy API call event with error handling and identity type variations"
+format: "JSON"
+frequency: "low"
+is_generator: true
+base_frequency: 3
+time_patterns:
+  - business_hours
+  - night_hours
+  - weekend
+business_hours_multiplier: 3.0
+night_hours_multiplier: 0.2
+weekend_multiplier: 0.1
+
+documentation:
+  display:
+    title: "IAM Delete Policy Event"
+    subtitle: "Management API call to delete an IAM policy"
+    icon: "🗑️"
+    color_scheme: "error"
+    tags:
+      - "aws"
+      - "iam"
+      - "policy"
+      - "delete"
+      - "security"
+      - "permissions"
+
+  overview:
+    summary: "Records when an AWS IAM policy is deleted via the DeletePolicy API operation. This is a critical security event as it permanently removes permission definitions that may be attached to users, groups, or roles."
+    when_generated:
+      - "When an administrator deletes an IAM policy via AWS Console"
+      - "When DeletePolicy API is called programmatically (CLI, SDK, Terraform)"
+      - "During automated policy cleanup processes"
+      - "When cleaning up test or temporary policies"
+      - "During security incident response (removing compromised policies)"
+    security_relevance: "Critical"
+    compliance_frameworks:
+      - "SOC 2"
+      - "PCI DSS"
+      - "HIPAA"
+      - "SOX"
+      - "ISO 27001"
+      - "NIST"
+    frequency_notes: "Low frequency event - policy deletions are infrequent but critical administrative actions"
+
+  fields:
+    - name: "eventVersion"
+      type: "String"
+      required: true
+      description: "CloudTrail event format version"
+      example_value: "1.08"
+      template_source: "Random selection from valid CloudTrail versions"
+      possible_values:
+        - value: "1.05"
+          description: "Older CloudTrail format version"
+        - value: "1.08"
+          description: "Current CloudTrail format version"
+        - value: "1.09"
+          description: "Latest CloudTrail format version"
+
+    - name: "userIdentity.type"
+      type: "String"
+      required: true
+      description: "Type of identity that made the API call"
+      example_value: "AssumedRole"
+      template_source: "Random selection between IAMUser and AssumedRole"
+      possible_values:
+        - value: "IAMUser"
+          description: "Direct IAM user authentication"
+        - value: "AssumedRole"
+          description: "Role-based authentication (federated or cross-account)"
+
+    - name: "userIdentity.principalId"
+      type: "String"
+      required: true
+      description: "Unique identifier for the principal"
+      example_value: "AIDACKCEVSQ6C2EXAMPLE"
+      template_source: "Random string with appropriate prefix (AIDA for users, ARO for roles)"
+
+    - name: "eventName"
+      type: "String"
+      required: true
+      description: "The IAM API operation name"
+      example_value: "DeletePolicy"
+      template_source: "Static value"
+
+    - name: "requestParameters.policyArn"
+      type: "String"
+      required: true
+      description: "ARN of the policy being deleted"
+      example_value: "arn:aws:iam::123456789012:policy/AdminPolicy"
+      template_source: "Constructed ARN with account ID and policy name"
+
+    - name: "errorCode"
+      type: "String"
+      required: false
+      description: "Error code if the operation failed"
+      example_value: "DeleteConflictException"
+      template_source: "Random selection when error occurs"
+      possible_values:
+        - value: "NoSuchEntityException"
+          description: "Policy does not exist"
+        - value: "DeleteConflictException"
+          description: "Policy cannot be deleted due to dependencies"
+        - value: "AccessDenied"
+          description: "Insufficient permissions to delete policy"
+
+    - name: "errorMessage"
+      type: "String"
+      required: false
+      description: "Detailed error message when operation fails"
+      example_value: "Cannot delete a policy attached to entities."
+      template_source: "Conditional message based on error code"
+
+    - name: "sourceIPAddress"
+      type: "String"
+      required: true
+      description: "IP address of the API caller"
+      example_value: "203.0.113.42"
+      template_source: "Random mix of private and public IPs"
+
+    - name: "userAgent"
+      type: "String"
+      required: true
+      description: "User agent string indicating the client tool used"
+      example_value: "aws-cli/2.0.62 Python/3.9.2 Darwin/19.6.0"
+      template_source: "Random selection from realistic AWS client user agents"
+      possible_values:
+        - value: "aws-cli/*"
+          description: "AWS Command Line Interface"
+        - value: "console.amazonaws.com"
+          description: "AWS Management Console"
+        - value: "aws-sdk-go/*"
+          description: "AWS SDK for Go (often Terraform)"
+        - value: "aws-sdk-python/*"
+          description: "AWS SDK for Python (boto3)"
+
+    - name: "userIdentity.sessionContext.attributes.mfaAuthenticated"
+      type: "String"
+      required: false
+      description: "Whether the session used multi-factor authentication"
+      example_value: "true"
+      template_source: "Random boolean as string"
+      notes: "Only present for AssumedRole identity types"
+
+    - name: "awsRegion"
+      type: "String"
+      required: true
+      description: "AWS region where the API call was made"
+      example_value: "us-east-1"
+      template_source: "Random selection from common AWS regions"
+
+    - name: "managementEvent"
+      type: "Boolean"
+      required: true
+      description: "Indicates this is a management plane event"
+      example_value: "true"
+      template_source: "Static value (always true for IAM operations)"
+
+  resources:
+    documentation:
+      - title: "AWS IAM DeletePolicy API Reference"
+        url: "https://docs.aws.amazon.com/IAM/latest/APIReference/API_DeletePolicy.html"
+        type: "official"
+      - title: "AWS CloudTrail Event Reference"
+        url: "https://docs.aws.amazon.com/awscloudtrail/latest/userguide/cloudtrail-event-reference.html"
+        type: "official"
+      - title: "IAM Policy Management Best Practices"
+        url: "https://docs.aws.amazon.com/IAM/latest/UserGuide/best-practices.html"
+        type: "official"
+
+    tools:
+      - name: "AWS IAM Console"
+        description: "Web interface for managing IAM policies, users, and roles"
+        url: "https://console.aws.amazon.com/iam/"
+      - name: "AWS CLI IAM Commands"
+        description: "Command-line interface for IAM operations"
+        url: "https://docs.aws.amazon.com/cli/latest/reference/iam/"
+      - name: "IAM Policy Simulator"
+        description: "Tool for testing and validating IAM policies"
+        url: "https://policysim.aws.amazon.com/"

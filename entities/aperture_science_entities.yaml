@@ -1,0 +1,255 @@
+# Entity Registry for Aperture Science - Synthetic Log Generator
+
+# Organization-wide configurations
+organization:
+  name: "Aperture Science"
+  domain: "aperturescience.com"
+  netbios_domain: "APERTURE"
+  timezone: "America/Detroit"
+  industry: "Scientific Research"
+  location:
+    address: "Aperture Science Computer-Aided Enrichment Center"
+    city: "Michigan"
+    state: "Michigan"
+    zip: "00000"
+    country: "USA"
+    lat: 42.3314
+    long: -83.0458
+  contacts:
+    security: "security@aperturescience.com"
+    it_support: "support@aperturescience.com"
+    emergency: "emergency@aperturescience.com"
+  settings:
+    password_expiry_days: 365
+    account_lockout_threshold: 999
+    session_timeout_minutes: 480
+    max_login_attempts: 999
+    min_password_length: 6
+    require_mfa: false
+    cake_dispensing_enabled: true
+
+# Network ranges configuration
+network_ranges:
+  - cidr: "10.0.0.0/16"
+    name: "test_chambers"
+  - cidr: "192.168.1.0/24"
+    name: "administrative"
+  - start_ip: "172.16.0.0"
+    end_ip: "172.16.255.255"
+    name: "underground_facility"
+
+users:
+  - username: "cave.johnson"
+    full_name: "Cave Johnson"
+    email: "cjohnson@aperturescience.com"
+    user_id: "U0001"
+    department: "Executive"
+    title: "CEO and Founder"
+    is_admin: true
+    employee_type: "employee"
+    location:
+      city: "Michigan"
+      state: "Michigan"
+      country: "USA"
+    organization: "Aperture Science"
+    status: "deceased"
+    
+  - username: "glados"
+    full_name: "GLaDOS"
+    email: "glados@aperturescience.com"
+    user_id: "U0002"
+    department: "AI Systems"
+    title: "Genetic Lifeform and Disk Operating System"
+    is_admin: true
+    employee_type: "ai"
+    location:
+      city: "Underground"
+      state: "Michigan"
+      country: "USA"
+    organization: "Central AI Core"
+    morality_core_installed: false
+    cake_recipes_loaded: 1
+    
+  - username: "wheatley"
+    full_name: "Wheatley"
+    email: "wheatley@aperturescience.com"
+    user_id: "U0003"
+    department: "AI Systems"
+    title: "Intelligence Dampening Sphere"
+    is_admin: false
+    employee_type: "ai"
+    location:
+      city: "Space"
+      country: "N/A"
+    organization: "Management Rail System"
+    intelligence_level: "moron"
+    
+  - username: "chell"
+    full_name: "Chell"
+    email: "test.subject.99999@aperturescience.com"
+    user_id: "U0004"
+    department: "Testing"
+    title: "Test Subject"
+    is_admin: false
+    employee_type: "test_subject"
+    location:
+      city: "Test Chambers"
+      state: "Michigan"
+      country: "USA"
+    organization: "Human Test Initiative"
+    portal_gun_certified: true
+    cake_promised: true
+    
+  - username: "doug.rattmann"
+    full_name: "Doug Rattmann"
+    email: "drattmann@aperturescience.com"
+    user_id: "U0005"
+    department: "Research"
+    title: "Scientist"
+    is_admin: false
+    employee_type: "employee"
+    location:
+      city: "Hidden Areas"
+      state: "Michigan"
+      country: "USA"
+    organization: "Research Division"
+    status: "missing"
+    companion_cube_obsession: true
+
+devices:
+  - hostname: "GLADOS-CORE"
+    fqdn: "GLADOS-CORE.aperturescience.com"
+    ip_address: "192.168.1.1"
+    mac_address: "00:CA:KE:IS:A:LIE"
+    device_id: "D0001"
+    os_type: "GLaDOS OS"
+    os_version: "2.0"
+    owner: "glados"
+    device_type: "ai_core"
+    model: "Central AI Housing Unit"
+    department: "AI Systems"
+    status: "active"
+    custom_location: "Central AI Chamber"
+    neurotoxin_capability: true
+    
+  - hostname: "PORTAL-GUN-001"
+    fqdn: "PORTAL-GUN-001.aperturescience.com"
+    ip_address: "10.0.1.100"
+    mac_address: "00:PO:RT:AL:GU:N1"
+    device_id: "D0002"
+    os_type: "Embedded"
+    os_version: "1.0"
+    owner: "chell"
+    device_type: "handheld_portal_device"
+    model: "Aperture Science Handheld Portal Device"
+    department: "Testing"
+    status: "active"
+    custom_location: "Test Chamber 19"
+    portal_capacity: 2
+    
+  - hostname: "TURRET-001"
+    fqdn: "TURRET-001.aperturescience.com"
+    ip_address: "10.0.2.50"
+    mac_address: "00:TU:RR:ET:00:01"
+    device_id: "D0003"
+    os_type: "Turret OS"
+    os_version: "1.5"
+    owner: "glados"
+    device_type: "sentry_turret"
+    model: "Aperture Science Sentry Turret"
+    department: "Security"
+    status: "active"
+    custom_location: "Various Test Chambers"
+    targeting_system: "active"
+    friendliness_level: "hello there"
+    
+  - hostname: "COMPANION-CUBE"
+    fqdn: "COMPANION-CUBE.aperturescience.com"
+    ip_address: "10.0.3.42"
+    mac_address: "00:CU:BE:CO:MP:AN"
+    device_id: "D0004"
+    os_type: "Cube OS"
+    os_version: "Weighted"
+    owner: "chell"
+    device_type: "weighted_storage_cube"
+    model: "Weighted Companion Cube"
+    department: "Testing"
+    status: "incinerated"
+    custom_location: "Emergency Intelligence Incinerator"
+    emotional_attachment_warning: true
+    
+  - hostname: "ELEVATOR-SYS"
+    fqdn: "ELEVATOR-SYS.aperturescience.com"
+    ip_address: "172.16.1.10"
+    mac_address: "00:EL:EV:AT:OR:01"
+    device_id: "D0005"
+    os_type: "Elevator Control"
+    os_version: "Muzak Edition"
+    owner: "glados"
+    device_type: "transport_system"
+    model: "Relaxation Vault Elevator"
+    department: "Transportation"
+    status: "active"
+    custom_location: "Between Test Chambers"
+    muzak_enabled: true
+    
+  # Historical Archives System
+  - hostname: "ARCHIVE-MASTER-001"
+    fqdn: "ARCHIVE-MASTER-001.abstergo.com"
+    ip_address: "10.50.6.200"
+    mac_address: "00:AR:CH:IV:E0:20"
+    device_id: "D1020"
+    os_type: "Archive OS"
+    os_version: "HistoryVault 3.0"
+    owner: "amartinez"
+    device_type: "archive_management_system"
+    model: "Custom Historical Archive Server"
+    department: "Archives"
+    status: "active"
+    custom_location: "Seville Archive Facility, Master Vault"
+    custom_service_tag: "HIST-ARCHIVE-020"
+    templar_historical_records: true
+    piece_of_eden_catalog: true
+    ancient_document_digitization: true
+    climate_controlled_storage: true
+
+services:
+  - name: "Test Chamber Management"
+    port: 443
+    protocol: "HTTPS"
+    service_id: "S0001"
+    description: "Automated test chamber configuration and monitoring"
+    owner: "glados"
+    cake_dispensing: false
+    
+  - name: "Portal Gun Control"
+    port: 8080
+    protocol: "Aperture"
+    service_id: "S0002"
+    description: "Portal device coordination and safety protocols"
+    owner: "glados"
+    safety_protocols: "disabled"
+    
+  - name: "Neurotoxin Distribution"
+    port: 6666
+    protocol: "Toxic"
+    service_id: "S0003"
+    description: "Emergency neurotoxin deployment system"
+    owner: "glados"
+    ethics_enabled: false
+    
+  - name: "Cake Fabrication"
+    port: 3141
+    protocol: "Sweet"
+    service_id: "S0004"
+    description: "Automated cake production and delivery system"
+    owner: "glados"
+    cake_is_real: false
+    
+  - name: "Elevator Muzak"
+    port: 22
+    protocol: "Audio"
+    service_id: "S0005"
+    description: "Relaxing elevator music distribution system"
+    owner: "glados"
+    volume_level: "soothing"

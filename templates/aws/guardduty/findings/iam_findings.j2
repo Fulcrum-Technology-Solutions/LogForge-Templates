@@ -1,0 +1,142 @@
+{
+  "version": "0",
+  "id": "{{ random_guid() }}",
+  "detail-type": "GuardDuty Finding",
+  "source": "aws.guardduty",
+  "account": "{{ registry.get_organization_field('aws_account_id') | default('123456789012', true) }}",
+  "time": "{{ now() | iso8601 }}",
+  "region": "{{ random_choice(['us-east-1', 'us-east-2', 'us-west-1', 'us-west-2', 'eu-west-1', 'eu-central-1', 'ap-southeast-1', 'ap-northeast-1']) }}",
+  "resources": [],
+  "detail": {
+    "schemaVersion": "2.0",
+    "accountId": "{{ registry.get_organization_field('aws_account_id') | default('123456789012', true) }}",
+    "region": "{{ random_choice(['us-east-1', 'us-east-2', 'us-west-1', 'us-west-2', 'eu-west-1', 'eu-central-1']) }}",
+    "partition": "aws",
+    "id": "{{ random_hex(32, 32) }}",
+    "arn": "arn:aws:guardduty:{{ random_choice(['us-east-1', 'us-east-2', 'us-west-1', 'us-west-2']) }}:{{ registry.get_organization_field('aws_account_id') | default('123456789012', true) }}:detector/{{ random_string(12) }}/finding/{{ random_hex(32, 32) }}",
+    "type": "{{ random_choice([
+      'CredentialAccess:IAMUser/AnomalousBehavior',
+      'DefenseEvasion:IAMUser/AnomalousBehavior',
+      'DefenseEvasion:IAMUser/BedrockLoggingDisabled',
+      'Discovery:IAMUser/AnomalousBehavior',
+      'Exfiltration:IAMUser/AnomalousBehavior',
+      'Impact:IAMUser/AnomalousBehavior',
+      'InitialAccess:IAMUser/AnomalousBehavior',
+      'PenTest:IAMUser/KaliLinux',
+      'PenTest:IAMUser/ParrotLinux',
+      'PenTest:IAMUser/PentooLinux',
+      'Persistence:IAMUser/AnomalousBehavior',
+      'Policy:IAMUser/RootCredentialUsage',
+      'Policy:IAMUser/ShortTermRootCredentialUsage',
+      'PrivilegeEscalation:IAMUser/AnomalousBehavior',
+      'Recon:IAMUser/MaliciousIPCaller',
+      'Recon:IAMUser/MaliciousIPCaller.Custom',
+      'Recon:IAMUser/TorIPCaller',
+      'Stealth:IAMUser/CloudTrailLoggingDisabled',
+      'Stealth:IAMUser/PasswordPolicyChange',
+      'UnauthorizedAccess:IAMUser/ConsoleLoginSuccess.B',
+      'UnauthorizedAccess:IAMUser/InstanceCredentialExfiltration.InsideAWS',
+      'UnauthorizedAccess:IAMUser/InstanceCredentialExfiltration.OutsideAWS',
+      'UnauthorizedAccess:IAMUser/MaliciousIPCaller',
+      'UnauthorizedAccess:IAMUser/MaliciousIPCaller.Custom',
+      'UnauthorizedAccess:IAMUser/TorIPCaller'
+    ]) }}",
+    "resource": {
+      "resourceType": "AccessKey",
+      "accessKeyDetails": {
+        "accessKeyId": "{{ random_choice(['AKIA', 'ASIA']) }}{{ random_string(16, 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789') }}",
+        "principalId": "{{ random_choice(['AIDA', 'AROA', 'AGPA']) }}{{ random_string(17, 'ABCDEFGHIJKLMNOPQRSTUVWXYZ234567') }}",
+        "userType": "{{ random_choice(['IAMUser', 'AssumedRole', 'Root', 'FederatedUser']) }}",
+        "userName": "{{ random_choice([registry.get_random_user().username, 'admin', 'developer', 'service-account', 'automation-user', 'root']) }}"
+      }
+    },
+    "service": {
+      "serviceName": "guardduty",
+      "detectorId": "{{ random_hex(32, 32) }}",
+      "action": {
+        "actionType": "AWS_API_CALL",
+        "awsApiCallAction": {
+          "api": "{{ random_choice(['GetPasswordData', 'GetSecretValue', 'DeleteFlowLogs', 'StopLogging', 'DescribeInstances', 'ListAccessKeys', 'PutBucketReplication', 'CreateSnapshot', 'DeleteSecurityGroup', 'UpdateUser', 'StartSession', 'AssociateIamInstanceProfile', 'AddUserToGroup', 'PutUserPolicy', 'CreateAccessKey', 'ModifyInstanceAttribute', 'ConsoleLogin', 'DisableAlarmActions', 'UpdatePasswordPolicy', 'DeleteAccountPasswordPolicy']) }}",
+          "serviceName": "{{ random_choice(['iam.amazonaws.com', 'ec2.amazonaws.com', 's3.amazonaws.com', 'sts.amazonaws.com', 'secretsmanager.amazonaws.com', 'cloudtrail.amazonaws.com', 'signin.aws.amazon.com']) }}",
+          "callerType": "{{ random_choice(['Domain', 'Remote IP']) }}",
+          "remoteIpDetails": {
+            "ipAddressV4": "{{ random_public_ip() }}",
+            "organization": {
+              "asn": {{ random_int(1, 65535) }},
+              "asnOrg": "{{ random_choice(['AS-DIGITALOCEAN', 'AS-LINODE', 'AS-AMAZON', 'AS-GOOGLE', 'AS-TOR', 'AS-UNKNOWN']) }}",
+              "isp": "{{ random_choice(['DigitalOcean LLC', 'Linode LLC', 'Amazon Technologies Inc.', 'Tor Network', 'Unknown ISP']) }}",
+              "org": "{{ random_choice(['DigitalOcean', 'Linode', 'Amazon', 'Tor Exit Node', 'Unknown']) }}"
+            },
+            "country": {
+              "countryName": "{{ random_choice(['United States', 'China', 'Russia', 'Germany', 'United Kingdom', 'Netherlands', 'Ukraine', 'Romania']) }}"
+            },
+            "city": {
+              "cityName": "{{ random_choice(['Unknown', 'Beijing', 'Moscow', 'Amsterdam', 'London', 'Frankfurt', 'Kiev', 'Bucharest']) }}"
+            },
+            "geoLocation": {
+              "lat": {{ random_int(-90, 90) }},
+              "lon": {{ random_int(-180, 180) }}
+            }
+          },
+          "domainDetails": {
+            "domain": "{{ random_choice(['amazonaws.com', 'console.aws.amazon.com']) }}"
+          },
+          "userAgent": "{{ random_choice(['aws-cli/2.13.5 Python/3.11.4 Linux/5.15.0 exe/x86_64.ubuntu.22', 'Boto3/1.26.137 Python/3.9.16 Linux/5.15.0', 'console.amazonaws.com', 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36', 'python-requests/2.28.2']) }}",
+          "affectedResources": {}
+        }
+      },
+      "resourceRole": "TARGET",
+      "additionalInfo": {
+        "threatListName": "{{ random_choice(['ProofPoint', 'Custom Threat List', 'Tor Exit Nodes', 'AWS Threat Intelligence']) }}",
+        "unusual": {
+          "userIdentity": {
+            "userName": "{{ random_choice(['infrequent', 'not historical', 'anomalous']) }}",
+            "userType": "{{ random_choice(['anomalous', 'not historical']) }}",
+            "asnOrg": "{{ random_choice(['not historical', 'anomalous', 'infrequent']) }}",
+            "userAgent": "{{ random_choice(['anomalous', 'not historical']) }}"
+          }
+        },
+        "sample": false
+      },
+      "eventFirstSeen": "{{ (now() | subtract_seconds(random_int(0, 3600))) | iso8601 }}",
+      "eventLastSeen": "{{ now() | iso8601 }}",
+      "archived": false,
+      "count": {{ random_int(1, 50) }}
+    },
+    "severity": {{ random_choice([2, 2, 5, 5, 5, 5, 8, 8]) }},
+    "createdAt": "{{ (now() | subtract_seconds(random_int(0, 7200))) | iso8601 }}",
+    "updatedAt": "{{ now() | iso8601 }}",
+    "title": "{{ random_choice([
+      'Anomalous API call for credential access detected',
+      'Defense evasion behavior detected',
+      'Privilege escalation attempt detected',
+      'Root user credentials usage detected',
+      'API call from known malicious IP',
+      'API call from Tor exit node',
+      'CloudTrail logging disabled',
+      'Password policy weakened',
+      'Multiple worldwide console logins detected',
+      'EC2 instance credentials exfiltrated',
+      'Penetration testing tool detected',
+      'Unauthorized access attempt detected',
+      'Data exfiltration behavior detected',
+      'Persistence mechanism established'
+    ]) }}",
+    "description": "{{ random_choice([
+      'An anomalous API request was observed that is commonly associated with credential access tactics',
+      'An API commonly used to evade defensive measures was invoked in an unusual way',
+      'An API commonly used to gain higher-level permissions was invoked anomalously',
+      'Root user credentials are being used to access AWS services',
+      'An API was invoked from a known malicious IP address',
+      'An API was invoked from a Tor exit node to hide the true identity',
+      'CloudTrail logging was disabled to cover malicious tracks',
+      'Account password policy was weakened, creating a security risk',
+      'Multiple successful console logins from various geographical locations',
+      'EC2 instance credentials are being used from outside the instance',
+      'API calls made from penetration testing Linux distribution',
+      'Unauthorized access to AWS resources detected',
+      'API commonly used to collect data was invoked anomalously',
+      'API commonly used to maintain unauthorized access was invoked'
+    ]) }}"
+  }
+}

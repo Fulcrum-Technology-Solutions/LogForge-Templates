@@ -1,0 +1,6 @@
+vendor: microsoft
+product: windows
+name: "Windows"
+description: "Microsoft Windows Operating System - comprehensive desktop and server platform"
+version: "Multiple versions supported"
+documentation_url: "https://docs.microsoft.com/en-us/windows/"

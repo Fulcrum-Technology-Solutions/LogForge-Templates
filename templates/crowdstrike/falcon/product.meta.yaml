@@ -1,0 +1,6 @@
+vendor: crowdstrike
+product: falcon
+name: "Falcon Platform"
+description: "Cloud-native cybersecurity platform providing endpoint protection, threat intelligence, and incident response"
+version: "1.0"
+documentation_url: "https://falcon.crowdstrike.com/documentation/"

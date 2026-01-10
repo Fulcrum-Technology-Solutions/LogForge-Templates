@@ -1,0 +1,207 @@
+{
+  "id": {{ random_int(1000000, 9999999) }},
+  "type": "SYSTEM_POLICY_VIOLATION",
+  "title": "{{ random_choice(['WorkStation to Workstation SMB Connection', 'Unauthorized Device Access', 'Suspicious Network Activity', 'Device Policy Violation', 'Abnormal Protocol Usage']) }}",
+  "policy": {
+    "actionParams": {
+      "title": "{{ random_choice(['WorkStation to Workstation SMB Connection', 'Unauthorized Device Access', 'Suspicious Network Activity']) }}",
+      "alertDescription": "{{ random_choice(['WorkStation to Workstation SMB Connection', 'Policy violation detected on network', 'Unauthorized device communication']) }}",
+      "alertClassificationId": {{ random_choice([1, 2, 3]) }},
+      "endpoint": "ALL",
+      "timeBack": null,
+      "emailRecipients": ""
+    },
+    "actions": [
+      {
+        "actionParams": {
+          "title": "{{ random_choice(['WorkStation to Workstation SMB Connection', 'Device Access Control', 'Network Policy Enforcement']) }}",
+          "alertDescription": "{{ random_choice(['WorkStation to Workstation SMB Connection', 'Policy violation response', 'Security alert triggered']) }}",
+          "alertClassificationId": {{ random_choice([1, 2, 3]) }},
+          "endpoint": "ALL",
+          "timeBack": null,
+          "emailRecipients": ""
+        },
+        "actionType": "{{ random_choice(['ALERT_HIGH', 'ALERT_MEDIUM', 'ALERT_CRITICAL']) }}",
+        "actionTypeDisplay": "{{ random_choice(['Alert High', 'Alert Medium', 'Alert Critical']) }}"
+      }
+    ],
+    "actionType": "{{ random_choice(['ALERT_HIGH', 'ALERT_MEDIUM', 'ALERT_CRITICAL']) }}",
+    "actionTypeDisplay": "{{ random_choice(['Alert High', 'Alert Medium', 'Alert Critical']) }}",
+    "alertClassificationId": {{ random_choice([1, 2, 3, 4, 5]) }},
+    "timeBack": null,
+    "creationTime": {{ (now() | subtract_seconds(random_int(86400, 31536000))) | unix_timestamp }}000,
+    "description": "{{ random_choice(['WorkStation to Workstation SMB Connection', 'Unauthorized network communication between endpoints', 'Policy violation for device-to-device connection']) }}",
+    "enforcementListId": null,
+    "groupingElement": null,
+    "hourFilter": null,
+    "id": {{ random_int(10000, 99999) }},
+    "isActive": true,
+    "isBoundary": false,
+    "isEditable": {{ random_choice([true, false]) }},
+    "isRepeating": false,
+    "labels": {{ random_choice([['threats', 'value_pack'], ['security', 'network'], ['compliance', 'monitoring'], ['threats']]) | tojson }},
+    "lastActiveChange": null,
+    "mitreAttackLabels": [],
+    "modificationTime": {{ now() | unix_timestamp }}000,
+    "optionsKey": null,
+    "owner": "{{ registry.get_random_user().email }}",
+    "parentId": null,
+    "policyParams": {},
+    "recurringThreshold": null,
+    "repeatingTimeFrame": null,
+    "rootAqlEntity": "{{ random_choice(['IP_CONNECTION', 'DEVICE', 'NETWORK_TRAFFIC']) }}",
+    "rules": {
+      "and": [
+        "endpointA:(device:(type:\"{{ random_choice(['Personal Computers', 'Servers', 'IoT Devices', 'Network Equipment']) }}\")) endpointB:(device:(type:\"{{ random_choice(['Personal Computers', 'Servers', 'IoT Devices']) }}\")) protocol:{{ random_choice(['SMB', 'RDP', 'SSH', 'HTTP', 'FTP']) }}"
+      ]
+    },
+    "sensors": null,
+    "tags": [],
+    "timezone": "{{ registry.get_organization_field('timezone') or 'America/Chicago' }}",
+    "title": "{{ random_choice(['WorkStation to Workstation SMB Connection', 'Unauthorized Device Communication', 'Network Policy Violation']) }}",
+    "weekdayFilter": null
+  },
+  "status": "{{ random_choice(['UNHANDLED', 'IN_PROGRESS', 'RESOLVED', 'SUPPRESSED']) }}",
+  "content": "The Armis security platform has detected a violation of a policy and generated an alert.\n\n**Recommended actions**:\n\n * Find and quarantine the offending device/s if necessary. They are located near the sensor labeled <sensor id=\"{{ random_int(100, 300) }}\">SPAN {{ random_int(8000, 9000) }} ens192 (Armis-{{ random_choice(['Charlotte', 'Atlanta', 'Houston', 'Dallas', 'Phoenix']) }}_Span)</sensor>.\n\n * Look at the timeline of other activities by the same devices, and see if there are any other activities that might be important, and create policies for those or for combinations of them.\n\n * Investigate other activities that would generate this alert and refine the policy if necessary.\n\n",
+  "sources": [
+    {
+      "id": {{ random_int(100000, 999999) }},
+      "ip": "{{ random_private_ip() }}",
+      "ipv6": "{{ fake.ipv6() }}",
+      "name": "{{ registry.get_random_device().hostname }}",
+      "site": {
+        "name": "{{ random_choice(['FS-Charlotte', 'FS-Atlanta', 'FS-Cincinnati', 'FS-Houston', 'FS-Arlington', 'FS-Milwaukee', 'Pennsylvania-PA', 'Northeast-NE', 'New Jersey-WJ']) }}",
+        "location": "{{ random_choice(['Charlotte', 'Atlanta', 'Cincinnati', 'Houston', 'Arlington', 'Milwaukee', 'Pennsylvania', 'New Jersey', '']) }}"
+      },
+      "type": "{{ random_choice(['PERSONAL_COMPUTER', 'SERVER', 'LAPTOP', 'WORKSTATION']) }}",
+      "user": "{{ registry.get_random_user().username or '* * * *' }}",
+      "model": "{{ random_choice(['OptiPlex', 'Latitude', 'ThinkPad', 'ProDesk', 'EliteBook', 'Dell Pro Micro', 'Unknown model']) }}",
+      "sensor": {
+        "name": "SPAN {{ random_int(8000, 9000) }} ens192 (Armis-{{ random_choice(['Charlotte', 'Atlanta', 'Houston', 'Dallas', 'Phoenix', 'Pennsylvania']) }}_Span)",
+        "type": "SPAN"
+      },
+      "category": "COMPUTER",
+      "isSensor": false,
+      "riskLevel": {{ random_int(1, 100) }},
+      "boundaries": [
+        "{{ random_choice(['FS Charlotte - CE', 'GR Pennsylvania - PA', 'HMO Core Network', 'FS Atlanta - GE', 'FS Houston - TX']) }}"
+      ],
+      "identifier": "{{ fake.mac_address() | upper }}",
+      "dataSources": {{ random_choice([
+        ['Active Directory', 'Knowledge Base', 'Microsoft Azure Active Directory', 'CrowdStrike', 'Jira Assets Platform', 'Microsoft Intune', 'Network Mapper', 'Rapid7 InsightVM', 'SentinelOne', 'Traffic Inspection', 'User'],
+        ['Active Directory', 'CrowdStrike', 'Traffic Inspection', 'Knowledge Base'],
+        ['Network Mapper', 'Traffic Inspection', 'Knowledge Base'],
+        ['Microsoft Intune', 'Microsoft Azure Active Directory', 'Traffic Inspection']
+      ]) | tojson }},
+      "isCorporate": {{ random_choice([true, false]) }},
+      "isEncrypted": {{ random_choice([true, false]) }},
+      "displayTitle": "{{ registry.get_random_device().hostname }}",
+      "isAccessPoint": false,
+      "isUnencrypted": {{ random_choice([true, false]) }},
+      "businessImpact": "{{ random_choice(['Unassigned', 'Low', 'Medium', 'High', 'Critical']) }}",
+      "isNetworkBridge": false,
+      "isShadowNetwork": false
+    }
+  ],
+  "severity": "{{ random_choice(['HIGH', 'MEDIUM', 'CRITICAL', 'LOW']) }}",
+  "riskLevel": {{ random_int(1, 10) }},
+  "timestamp": "{{ now() | iso8601 }}",
+  "activities": [
+    {
+      "UUID": "{{ random_guid() | replace('-', '') }}",
+      "type": "NETWORK_POLICY_VIOLATION",
+      "title": "Detected network policy violation from {{ registry.get_random_device().hostname }} to {{ random_private_ip() }} via {{ random_choice(['SMB', 'RDP', 'SSH', 'HTTP']) }} over port {{ random_choice([445, 3389, 22, 80, 443, 21]) }}",
+      "content": "",
+      "timestamp": "{{ now() | iso8601 }}",
+      "decision_data": {
+        "port": {{ random_choice([445, 3389, 22, 80, 443, 21, 53, 389]) }},
+        "protocol": "{{ random_choice(['SMB', 'RDP', 'SSH', 'HTTP', 'HTTPS', 'FTP', 'DNS', 'LDAP']) }}",
+        "server_device_id": {{ random_int(10000, 999999) }},
+        "client_device_id": {{ random_int(10000, 999999) }}
+      }
+    }
+  ],
+  "description": "{{ random_choice(['WorkStation to Workstation SMB Connection', 'Unauthorized device communication detected', 'Network policy violation event', 'Device-to-device connection policy breach']) }}",
+  "destinations": [
+    {
+      "id": {{ random_int(10000, 999999) }},
+      "ip": {{ random_choice(['null', '"' + random_private_ip() + '"']) }},
+      "ipv6": {{ random_choice(['null', '"' + fake.ipv6() + '"']) }},
+      "name": "{{ random_choice([registry.get_random_device().hostname, 'Unknown device', random_hostname()]) }}",
+      "site": {
+        "name": "{{ random_choice(['FS-Charlotte', 'FS-Atlanta', 'Cumberland-MK', 'FS-Houston', 'Pennsylvania-PA', 'Northeast-NE']) }}",
+        "location": "{{ random_choice(['Charlotte', 'Atlanta', 'Houston', 'Pennsylvania', '']) }}"
+      },
+      "type": "{{ random_choice(['PERSONAL_COMPUTER', 'SERVER', 'NETWORK_DEVICE', 'PRINTER', 'IoT_DEVICE']) }}",
+      "user": "{{ random_choice(['* * * *', registry.get_random_user().username]) }}",
+      "model": "{{ random_choice(['Unknown model', 'OptiPlex', 'ThinkPad', 'ProDesk', 'Dell PowerEdge']) }}",
+      "sensor": {
+        "name": "SPAN {{ random_int(8000, 9000) }} ens192 (Armis-{{ random_choice(['Charlotte', 'Ocala', 'Atlanta', 'Houston', 'Pennsylvania']) }}_Span)",
+        "type": "SPAN"
+      },
+      "category": "{{ random_choice(['COMPUTER', 'SERVER', 'NETWORK', 'PRINTER', 'IoT']) }}",
+      "isSensor": false,
+      "riskLevel": {{ random_int(1, 100) }},
+      "boundaries": [
+        "{{ random_choice(['HMO Core Network', 'FS Charlotte - CE', 'GR Pennsylvania - PA', 'FS Atlanta - GE']) }}"
+      ],
+      {% if random_int(1, 10) > 2 %}"identifier": "{{ fake.mac_address() | upper }}",{% else %}"identifier": null,{% endif %}
+      "dataSources": {{ random_choice([
+        ['Knowledge Base', 'Traffic Inspection'],
+        ['Active Directory', 'Traffic Inspection', 'Knowledge Base'],
+        ['Network Mapper', 'Traffic Inspection']
+      ]) | tojson }},
+      "isCorporate": {{ random_choice([true, false]) }},
+      "isEncrypted": {{ random_choice([true, false]) }},
+      "displayTitle": "{{ random_choice(['Personal Computer', 'Network Device', registry.get_random_device().hostname, 'Unknown Device']) }}",
+      "isAccessPoint": false,
+      "isUnencrypted": {{ random_choice([true, false]) }},
+      "businessImpact": "{{ random_choice(['Unassigned', 'Low', 'Medium', 'High']) }}",
+      "isNetworkBridge": false,
+      "isShadowNetwork": false
+    }
+  ],
+  "relatedLinks": [],
+  "classification": "{{ random_choice(['Security - Other', 'Security - Network', 'Security - Device', 'Compliance', 'Threat Detection']) }}",
+  "relatedDevices": [
+    {
+      "id": {{ random_int(10000, 999999) }},
+      "ip": "{{ random_private_ip() }}",
+      "ipv6": "{{ fake.ipv6() }}",
+      "name": "{{ registry.get_random_device().hostname }}",
+      "site": {
+        "name": "{{ random_choice(['FS-Charlotte', 'FS-Atlanta', 'Pennsylvania-PA', 'FS-Houston']) }}",
+        "location": "{{ random_choice(['Charlotte', 'Atlanta', 'Houston', 'Pennsylvania', '']) }}"
+      },
+      "type": "{{ random_choice(['PERSONAL_COMPUTER', 'WORKSTATION', 'LAPTOP']) }}",
+      "user": "{{ registry.get_random_user().username or '* * * *' }}",
+      "model": "{{ random_choice(['OptiPlex', 'Latitude', 'ThinkPad', 'Unknown model']) }}",
+      "sensor": {
+        "name": "SPAN {{ random_int(8000, 9000) }} ens192 (Armis-{{ random_choice(['Charlotte', 'Atlanta', 'Pennsylvania']) }}_Span)",
+        "type": "SPAN"
+      },
+      "category": "COMPUTER",
+      "isSensor": false,
+      "riskLevel": {{ random_int(1, 100) }},
+      "boundaries": [
+        "{{ random_choice(['FS Charlotte - CE', 'GR Pennsylvania - PA', 'HMO Core Network']) }}"
+      ],
+      "identifier": "{{ fake.mac_address() | upper }}",
+      "dataSources": {{ random_choice([
+        ['Active Directory', 'CrowdStrike', 'Traffic Inspection'],
+        ['Network Mapper', 'Knowledge Base'],
+        ['Microsoft Intune', 'Traffic Inspection']
+      ]) | tojson }},
+      "isCorporate": {{ random_choice([true, false]) }},
+      "isEncrypted": {{ random_choice([true, false]) }},
+      "displayTitle": "{{ registry.get_random_device().hostname }}",
+      "isAccessPoint": false,
+      "isUnencrypted": {{ random_choice([true, false]) }},
+      "businessImpact": "{{ random_choice(['Unassigned', 'Low', 'Medium', 'High']) }}",
+      "isNetworkBridge": false,
+      "isShadowNetwork": false
+    }
+  ],
+  "mitreAttackLabels": [],
+  "hostname": "{{ registry.get_organization_field('domain') | replace('.com', '') | replace('.', '') }}"
+}

@@ -1,0 +1,5 @@
+slug: widget
+product: "Widget"
+description: "Acme Widget is a sample product for demonstration purposes."
+version: "All"
+documentation_url: "https://acme.example.com/widget/docs" 

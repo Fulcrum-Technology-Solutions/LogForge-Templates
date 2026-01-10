@@ -1,0 +1,107 @@
+vendor: aws
+product: guardduty
+data_source: findings
+description: AWS GuardDuty Extended Threat Detection attack sequence findings detecting multi-stage attacks across EKS, ECS, EC2, IAM, and S3 resources using proprietary correlation algorithms
+format: JSON
+frequency: critical
+is_generator: true
+base_frequency: 5
+time_patterns:
+  - business_hours
+  - night_hours
+  - weekend
+business_hours_multiplier: 1.5
+night_hours_multiplier: 2.0
+weekend_multiplier: 1.2
+
+documentation:
+  display:
+    title: "GuardDuty Attack Sequence Finding Types"
+    subtitle: "Extended Threat Detection for multi-stage attacks"
+    icon: "⚠️"
+    color_scheme: "error"
+    tags:
+      - "attack-sequence"
+      - "extended-threat-detection"
+      - "multi-stage-attack"
+      - "critical-severity"
+  
+  overview:
+    summary: "GuardDuty Extended Threat Detection automatically identifies multi-stage attacks spanning resources, data sources, and time within 24-hour rolling windows. Uses proprietary correlation algorithms to detect sophisticated attack patterns including credential misuse, data compromise in S3, and container/Kubernetes compromises."
+    when_generated:
+      - "Sequence of suspicious actions by compromised EKS cluster (container exploit, token theft, secret access)"
+      - "Compromised ECS cluster with malicious processes and C2 communication"
+      - "EC2 instance group compromise with malware, suspicious network, credential misuse"
+      - "IAM credentials used for suspicious API sequences impacting multiple resources"
+      - "S3 data compromise attempts including exfiltration or destruction patterns"
+    security_relevance: "Critical"
+    compliance_frameworks:
+      - "PCI-DSS 11.4"
+      - "HIPAA 164.312(b)"
+      - "SOC 2 CC7.2"
+      - "ISO 27001 A.12.4"
+      - "NIST CSF DE.AE-2"
+    frequency_notes: "Attack sequences are rare but critical - expect 2-20 per day in active threat environments. All attack sequences have Critical severity (10/10). Generated when GuardDuty correlates weak signals into high-confidence threat patterns within 24-hour windows."
+  
+  fields:
+    - name: "detail.type"
+      type: "String"
+      required: true
+      description: "Attack sequence finding type"
+      example_value: "AttackSequence:EKS/CompromisedCluster"
+      possible_values:
+        - value: "AttackSequence:EKS/CompromisedCluster"
+          description: "Sequence indicating compromised EKS cluster"
+        - value: "AttackSequence:ECS/CompromisedCluster"
+          description: "Sequence indicating compromised ECS cluster"
+        - value: "AttackSequence:EC2/CompromisedInstanceGroup"
+          description: "Sequence indicating compromised EC2 instance group"
+        - value: "AttackSequence:IAM/CompromisedCredentials"
+          description: "Sequence of API requests using compromised IAM credentials"
+        - value: "AttackSequence:S3/CompromisedData"
+          description: "Sequence indicating S3 data exfiltration or destruction"
+    
+    - name: "detail.service.attackSequence.signals"
+      type: "Array"
+      required: true
+      description: "Timeline of events (findings and API activities) correlated into attack sequence"
+      example_value: "[{uid, type: 'FINDING', name, createdAt, count}]"
+    
+    - name: "detail.service.attackSequence.actors"
+      type: "Array"
+      required: true
+      description: "Actors involved in attack sequence"
+      example_value: "[{id: 'user-name', type: 'AWS_USER'}]"
+    
+    - name: "detail.service.attackSequence.indicators"
+      type: "Array"
+      required: true
+      description: "Indicators explaining why GuardDuty identified suspicious activity"
+      possible_values:
+        - value: "HIGH_RISK_API"
+          description: "Action commonly used by threat actors"
+        - value: "SUSPICIOUS_NETWORK"
+          description: "Communication with suspicious endpoints"
+        - value: "CREDENTIAL_ANOMALY"
+          description: "Unusual credential usage pattern"
+    
+    - name: "detail.service.attackSequence.mitreTactics"
+      type: "Array"
+      required: true
+      description: "MITRE ATT&CK tactics observed in attack sequence"
+      example_value: "[\"InitialAccess\", \"PrivilegeEscalation\", \"Exfiltration\"]"
+    
+    - name: "detail.severity"
+      type: "Integer"
+      required: true
+      description: "Always 10 (Critical) for attack sequences"
+      example_value: "10"
+  
+  resources:
+    documentation:
+      - title: "Attack Sequence Finding Types"
+        url: "https://docs.aws.amazon.com/guardduty/latest/ug/guardduty-attack-sequence-finding-types.html"
+        type: "official"
+      - title: "Extended Threat Detection"
+        url: "https://docs.aws.amazon.com/guardduty/latest/ug/guardduty-extended-threat-detection.html"
+        type: "official"

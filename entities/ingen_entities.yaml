@@ -1,0 +1,615 @@
+# Entity Registry for InGen Corporation - Synthetic Log Generator
+
+# Organization-wide configurations
+# These settings define global properties for the entire environment
+organization:
+  name: "International Genetic Technologies, Inc."
+  domain: "ingen.com"
+  netbios_domain: "INGEN"
+  timezone: "America/Los_Angeles"
+  industry: "Biotechnology & Entertainment"
+  founded: 1975
+  ticker_symbol: "IGEN"
+  motto: "We Make The Future"
+  corporate_status: "genetic_engineering_pioneer"
+  location:
+    address: "1993 InGen Way"
+    city: "Palo Alto"
+    state: "California"
+    zip: "94301"
+    country: "USA"
+    lat: 37.4419
+    long: -122.1430
+  secondary_locations:
+    - name: "Isla Nublar Operations"
+      address: "Jurassic Park Resort"
+      city: "Isla Nublar"
+      state: "N/A"
+      zip: "00000"
+      country: "Costa Rica"
+      purpose: "Dinosaur Theme Park & Research"
+      classification: "restricted"
+    - name: "Site B - Isla Sorna"
+      address: "Production Facility Alpha"
+      city: "Isla Sorna"
+      state: "N/A"
+      zip: "00001"
+      country: "Costa Rica"
+      purpose: "Dinosaur Breeding & Development"
+      classification: "classified"
+    - name: "San Diego Laboratory"
+      address: "4455 Biotech Boulevard"
+      city: "San Diego"
+      state: "California"
+      zip: "92121"
+      country: "USA"
+      purpose: "Mainland Research & Development"
+      classification: "standard"
+    - name: "Lockwood Estate"
+      address: "Private Research Facility"
+      city: "Northern California"
+      state: "California"
+      zip: "95000"
+      country: "USA"
+      purpose: "Private Genetic Research"
+      classification: "classified"
+  contacts:
+    security: "security@ingen.com"
+    it_support: "support@ingen.com"
+    emergency: "emergency@ingen.com"
+    legal: "legal@ingen.com"
+    pr: "publicity@ingen.com"
+    veterinary: "veterinary@ingen.com"
+    park_operations: "operations@jurassicpark.com"
+    asset_containment: "acu@ingen.com"
+  settings:
+    password_expiry_days: 90
+    account_lockout_threshold: 3
+    session_timeout_minutes: 30
+    max_login_attempts: 5
+    min_password_length: 8
+    require_mfa: true
+    biosafety_level: "maximum"
+    dinosaur_containment_protocols: "active"
+    genetic_research_ethics: "flexible"
+    insurance_coverage: "comprehensive"
+    emergency_evacuation_ready: true
+    lysine_dependency_monitoring: true
+
+# Network ranges configuration for internal IP address generation
+network_ranges:
+  # Isla Nublar Networks
+  - cidr: "10.93.0.0/16"
+    name: "jurassic_park"
+    description: "Jurassic Park visitor and operations network"
+    location: "Isla Nublar"
+    security_level: "high"
+    
+  - cidr: "172.16.0.0/16"
+    name: "park_infrastructure"
+    description: "Park systems, fences, and containment networks"
+    location: "Isla Nublar"
+    security_level: "maximum"
+    
+  # Site B Networks
+  - start_ip: "10.87.0.0"
+    end_ip: "10.87.255.255"
+    name: "site_b_operations"
+    description: "Isla Sorna production and breeding operations"
+    location: "Isla Sorna"
+    security_level: "classified"
+    
+  - start_ip: "172.20.0.0"
+    end_ip: "172.20.255.255"
+    name: "breeding_facilities"
+    description: "Dinosaur breeding and development systems"
+    location: "Isla Sorna"
+    security_level: "maximum"
+    
+  # Mainland Networks
+  - cidr: "192.168.0.0/16"
+    name: "corporate_hq"
+    description: "Corporate headquarters and administrative systems"
+    location: "Palo Alto, CA"
+    security_level: "standard"
+    
+  - cidr: "10.121.0.0/16"
+    name: "san_diego_labs"
+    description: "San Diego research and development facility"
+    location: "San Diego, CA"
+    security_level: "high"
+    
+  # Research Networks
+  - start_ip: "172.30.0.0"
+    end_ip: "172.30.255.255"
+    name: "genetic_research"
+    description: "Genetic engineering and cloning systems"
+    location: "Multi-site"
+    security_level: "classified"
+    
+  - cidr: "10.150.0.0/16"
+    name: "amber_mining"
+    description: "Amber extraction and DNA recovery operations"
+    location: "Dominican Republic"
+    security_level: "restricted"
+
+users:
+  # Executive Leadership
+  - username: "jhammond"
+    full_name: "John Hammond"
+    email: "jhammond@ingen.com"
+    user_id: "U0001"
+    department: "Executive"
+    title: "Chairman and CEO"
+    is_admin: true
+    employee_type: "founder"
+    location:
+      city: "Palo Alto"
+      state: "California"
+      country: "USA"
+    organization: "Executive Leadership"
+    security_clearance: "unlimited"
+    park_access_level: "all_areas"
+    dinosaur_enthusiasm: "extreme"
+    safety_concern_level: "minimal"
+    
+  - username: "pludlow"
+    full_name: "Peter Ludlow"
+    email: "pludlow@ingen.com"
+    user_id: "U0002"
+    department: "Executive"
+    title: "CEO (Post-Hammond)"
+    is_admin: true
+    employee_type: "executive"
+    location:
+      city: "San Diego"
+      state: "California"
+      country: "USA"
+    organization: "Executive Leadership"
+    security_clearance: "maximum"
+    business_focus: "profit_maximization"
+    nephew_of_hammond: true
+    
+  # Chief Scientists
+  - username: "hwu"
+    full_name: "Dr. Henry Wu"
+    email: "hwu@ingen.com"
+    user_id: "U0003"
+    department: "Genetics"
+    title: "Chief Geneticist"
+    is_admin: true
+    employee_type: "scientist"
+    location:
+      city: "Isla Nublar"
+      state: "N/A"
+      country: "Costa Rica"
+    organization: "Genetic Research Division"
+    security_clearance: "classified"
+    genetic_engineering_expertise: "world_class"
+    dinosaur_creation_authority: true
+    military_applications_research: true
+    
+  - username: "rmalcom"
+    full_name: "Dr. Ian Malcolm"
+    email: "imalcolm@ingen.com"
+    user_id: "U0004"
+    department: "Consulting"
+    title: "Chaos Theory Mathematician"
+    is_admin: false
+    employee_type: "consultant"
+    location:
+      city: "Austin"
+      state: "Texas"
+      country: "USA"
+    organization: "External Consulting"
+    security_clearance: "restricted"
+    chaos_theory_expertise: true
+    system_failure_prediction: "prophetic"
+    survival_instinct: "high"
+    
+  # Park Operations
+  - username: "rmuldoon"
+    full_name: "Robert Muldoon"
+    email: "rmuldoon@ingen.com"
+    user_id: "U0005"
+    department: "Security"
+    title: "Park Warden"
+    is_admin: false
+    employee_type: "security"
+    location:
+      city: "Isla Nublar"
+      state: "N/A"
+      country: "Costa Rica"
+    organization: "Park Security"
+    security_clearance: "high"
+    big_game_hunter: true
+    raptor_specialist: true
+    weapon_expertise: "tranquilizers_and_firearms"
+    
+  - username: "darnold"
+    full_name: "Ray Arnold"
+    email: "rarnold@ingen.com"
+    user_id: "U0006"
+    department: "IT Systems"
+    title: "Chief Engineer"
+    is_admin: true
+    employee_type: "engineer"
+    location:
+      city: "Isla Nublar"
+      state: "N/A"
+      country: "USA"
+    organization: "Park Systems"
+    security_clearance: "high"
+    system_expertise: "park_automation"
+    chain_smoker: true
+    debugging_philosophy: "hold_onto_your_butts"
+    
+  # Research Staff
+  - username: "agrant"
+    full_name: "Dr. Alan Grant"
+    email: "agrant@ingen.com"
+    user_id: "U0007"
+    department: "Paleontology"
+    title: "Consulting Paleontologist"
+    is_admin: false
+    employee_type: "consultant"
+    location:
+      city: "Montana"
+      state: "Montana"
+      country: "USA"
+    organization: "External Consulting"
+    security_clearance: "restricted"
+    paleontology_expertise: "world_renowned"
+    dinosaur_behavior_specialist: true
+    children_comfort_level: "developing"
+    
+  - username: "esattler"
+    full_name: "Dr. Ellie Sattler"
+    email: "esattler@ingen.com"
+    user_id: "U0008"
+    department: "Paleobotany"
+    title: "Consulting Paleobotanist"
+    is_admin: false
+    employee_type: "consultant"
+    location:
+      city: "Denver"
+      state: "Colorado"
+      country: "USA"
+    organization: "External Consulting"
+    security_clearance: "restricted"
+    paleobotany_expertise: "leading_authority"
+    plant_toxicology_knowledge: true
+    problem_solving_skills: "exceptional"
+    
+  # Veterinary Staff
+  - username: "gharding"
+    full_name: "Dr. Martin Harding"
+    email: "mharding@ingen.com"
+    user_id: "U0009"
+    department: "Veterinary"
+    title: "Chief Veterinarian"
+    is_admin: false
+    employee_type: "veterinarian"
+    location:
+      city: "Isla Nublar"
+      state: "N/A"
+      country: "Costa Rica"
+    organization: "Animal Care Division"
+    security_clearance: "high"
+    large_animal_expertise: true
+    dinosaur_medicine_pioneer: true
+    
+  # IT Security (Saboteur)
+  - username: "dnedry"
+    full_name: "Dennis Nedry"
+    email: "dnedry@ingen.com"
+    user_id: "U0010"
+    department: "IT Systems"
+    title: "Lead Programmer"
+    is_admin: true
+    employee_type: "contractor"
+    location:
+      city: "Isla Nublar"
+      state: "N/A"
+      country: "Costa Rica"
+    organization: "Park Systems"
+    security_clearance: "high"
+    programming_expertise: "systems_architect"
+    financial_motivation: "high"
+    loyalty_level: "compromised"
+    corporate_espionage: true
+    status: "deceased"
+
+devices:
+  # Park Control Systems
+  - hostname: "PARK-MAIN-CONTROL"
+    fqdn: "PARK-MAIN-CONTROL.ingen.com"
+    ip_address: "172.16.1.1"
+    mac_address: "00:IN:GE:N0:PC:01"
+    device_id: "D0001"
+    os_type: "UNIX"
+    os_version: "System V"
+    owner: "darnold"
+    device_type: "control_system"
+    model: "InGen Park Control Computer"
+    department: "IT Systems"
+    status: "active"
+    custom_asset_tag: "PARK-CTRL-001"
+    custom_location: "Isla Nublar, Control Room"
+    fence_control_system: true
+    door_lock_management: true
+    power_grid_control: true
+    security_system_integration: true
+    
+  - hostname: "SECURITY-GRID-001"
+    fqdn: "SECURITY-GRID-001.ingen.com"
+    ip_address: "172.16.2.10"
+    mac_address: "00:SE:CU:RI:TY:02"
+    device_id: "D0002"
+    os_type: "Security OS"
+    os_version: "2.1"
+    owner: "rmuldoon"
+    device_type: "security_control_panel"
+    model: "Park Security Management System"
+    department: "Security"
+    status: "active"
+    custom_asset_tag: "SEC-GRID-002"
+    custom_location: "Isla Nublar, Security Center"
+    motion_sensor_network: true
+    camera_surveillance: true
+    tranquilizer_gun_controls: true
+    emergency_protocols: true
+    
+  # Genetic Engineering Equipment
+  - hostname: "DNA-SEQUENCER-01"
+    fqdn: "DNA-SEQUENCER-01.ingen.com"
+    ip_address: "172.30.1.100"
+    mac_address: "00:DN:A0:SE:QU:03"
+    device_id: "D0003"
+    os_type: "BioLinux"
+    os_version: "3.0"
+    owner: "hwu"
+    device_type: "dna_sequencer"
+    model: "InGen Genetic Analyzer Pro"
+    department: "Genetics"
+    status: "active"
+    custom_asset_tag: "DNA-SEQ-003"
+    custom_location: "Isla Nublar, Genetics Lab"
+    amber_dna_extraction: true
+    gap_filling_algorithms: true
+    frog_dna_integration: true
+    
+  - hostname: "INCUBATION-SYS-01"
+    fqdn: "INCUBATION-SYS-01.ingen.com"
+    ip_address: "172.30.2.50"
+    mac_address: "00:IN:CU:BA:TO:04"
+    device_id: "D0004"
+    os_type: "Embryo OS"
+    os_version: "1.5"
+    owner: "hwu"
+    device_type: "incubation_system"
+    model: "Artificial Egg Incubator Array"
+    department: "Genetics"
+    status: "active"
+    custom_asset_tag: "INCUB-001-004"
+    custom_location: "Isla Nublar, Hatchery"
+    temperature_control: true
+    humidity_regulation: true
+    embryo_monitoring: true
+    hatching_assistance: true
+    
+  # Containment Systems
+  - hostname: "FENCE-GRID-ALPHA"
+    fqdn: "FENCE-GRID-ALPHA.ingen.com"
+    ip_address: "172.16.10.100"
+    mac_address: "00:FE:NC:E0:GR:05"
+    device_id: "D0005"
+    os_type: "Containment OS"
+    os_version: "2.0"
+    owner: "darnold"
+    device_type: "electric_fence_controller"
+    model: "High-Voltage Perimeter Defense"
+    department: "IT Systems"
+    status: "active"
+    custom_asset_tag: "FENCE-ALPHA-005"
+    custom_location: "Isla Nublar, Perimeter Grid"
+    voltage_output: "10000_volts"
+    motion_detection: true
+    breach_alert_system: true
+    
+  - hostname: "RAPTOR-PADDOCK-01"
+    fqdn: "RAPTOR-PADDOCK-01.ingen.com"
+    ip_address: "172.16.15.25"
+    mac_address: "00:RA:PT:OR:PD:06"
+    device_id: "D0006"
+    os_type: "Paddock Control OS"
+    os_version: "3.5"
+    owner: "rmuldoon"
+    device_type: "containment_facility"
+    model: "Maximum Security Paddock System"
+    department: "Security"
+    status: "active"
+    custom_asset_tag: "RAPTOR-PAD-006"
+    custom_location: "Isla Nublar, Raptor Paddock"
+    feeding_system: "automated_cattle_lift"
+    escape_prevention: "triple_redundancy"
+    intelligence_level_monitoring: "extreme"
+    
+  # Site B Equipment
+  - hostname: "BREEDING-LAB-B01"
+    fqdn: "BREEDING-LAB-B01.ingen.com"
+    ip_address: "10.87.1.200"
+    mac_address: "00:BR:EE:DI:NG:07"
+    device_id: "D0007"
+    os_type: "Breeding OS"
+    os_version: "4.0"
+    owner: "hwu"
+    device_type: "breeding_laboratory"
+    model: "Site B Production Facility"
+    department: "Genetics"
+    status: "active"
+    custom_location: "Isla Sorna, Production Complex"
+    custom_service_tag: "SITE-B-BREED-007"
+    mass_production_capable: true
+    natural_breeding_simulation: true
+    lysine_dependency_programming: true
+    
+  # Visitor Systems
+  - hostname: "TOUR-VEHICLE-01"
+    fqdn: "TOUR-VEHICLE-01.ingen.com"
+    ip_address: "10.93.5.101"
+    mac_address: "00:TO:UR:VE:HI:08"
+    device_id: "D0008"
+    os_type: "Vehicle OS"
+    os_version: "1.2"
+    owner: "darnold"
+    device_type: "automated_tour_vehicle"
+    model: "Ford Explorer Tour Car"
+    department: "Park Operations"
+    status: "active"
+    custom_asset_tag: "TOUR-CAR-008"
+    custom_location: "Isla Nublar, Tour Route"
+    gps_navigation: true
+    automated_guidance: true
+    educational_narration: true
+    emergency_override: "manual_only"
+    
+  # Emergency Systems
+  - hostname: "EMERGENCY-BUNKER"
+    fqdn: "EMERGENCY-BUNKER.ingen.com"
+    ip_address: "172.16.99.1"
+    mac_address: "00:EM:ER:GE:NC:09"
+    device_id: "D0009"
+    os_type: "Bunker OS"
+    os_version: "1.0"
+    owner: "rmuldoon"
+    device_type: "emergency_shelter"
+    model: "Reinforced Emergency Bunker"
+    department: "Security"
+    status: "standby"
+    custom_asset_tag: "EMERG-BUNKER-009"
+    custom_location: "Isla Nublar, Emergency Shelter"
+    blast_resistant: true
+    independent_power: true
+    communication_array: true
+    supplies_storage: "30_days"
+    
+  # San Diego Laboratory
+  - hostname: "SD-GENETICS-LAB"
+    fqdn: "SD-GENETICS-LAB.ingen.com"
+    ip_address: "10.121.1.50"
+    mac_address: "00:SD:GE:NE:TI:10"
+    device_id: "D0010"
+    os_type: "Lab OS"
+    os_version: "2.5"
+    owner: "pludlow"
+    device_type: "research_laboratory"
+    model: "Mainland Genetics Research Station"
+    department: "Genetics"
+    status: "active"
+    custom_location: "San Diego, CA, Research Complex"
+    custom_service_tag: "SD-LAB-MAIN-010"
+    dna_analysis_suite: true
+    specimen_storage: true
+    biosafety_level_4: true
+
+services:
+  - name: "Park Control Management"
+    port: 443
+    protocol: "HTTPS"
+    service_id: "S0001"
+    description: "Central park operations and infrastructure control"
+    owner: "darnold"
+    fence_control_integration: true
+    door_lock_management: true
+    power_grid_coordination: true
+    
+  - name: "Genetic Sequencing Database"
+    port: 1433
+    protocol: "SQL"
+    service_id: "S0002"
+    description: "Dinosaur DNA sequences and genetic modification records"
+    owner: "hwu"
+    amber_dna_repository: true
+    gap_filling_algorithms: true
+    species_creation_logs: true
+    
+  - name: "Security Monitoring Network"
+    port: 8080
+    protocol: "TCP"
+    service_id: "S0003"
+    description: "Park-wide security and containment monitoring"
+    owner: "rmuldoon"
+    motion_sensor_integration: true
+    breach_detection_alerts: true
+    containment_status_tracking: true
+    
+  - name: "Animal Tracking System"
+    port: 6000
+    protocol: "UDP"
+    service_id: "S0004"
+    description: "Real-time dinosaur location and health monitoring"
+    owner: "gharding"
+    gps_collar_tracking: true
+    health_vital_monitoring: true
+    feeding_schedule_automation: true
+    
+  - name: "Visitor Experience Platform"
+    port: 80
+    protocol: "HTTP"
+    service_id: "S0005"
+    description: "Tour coordination and visitor information system"
+    owner: "jhammond"
+    tour_vehicle_coordination: true
+    educational_content_delivery: true
+    safety_briefing_management: true
+    
+  - name: "Emergency Response Coordination"
+    port: 9911
+    protocol: "Emergency"
+    service_id: "S0006"
+    description: "Crisis management and evacuation protocols"
+    owner: "rmuldoon"
+    evacuation_route_planning: true
+    emergency_communication: true
+    containment_breach_protocols: true
+    
+  - name: "Breeding Program Management"
+    port: 5432
+    protocol: "PostgreSQL"
+    service_id: "S0007"
+    description: "Site B breeding operations and population control"
+    owner: "hwu"
+    breeding_cycle_tracking: true
+    genetic_diversity_monitoring: true
+    lysine_dependency_maintenance: true
+    
+  - name: "Corporate Data Warehouse"
+    port: 443
+    protocol: "HTTPS"
+    service_id: "S0008"
+    description: "Corporate financial and operational data management"
+    owner: "pludlow"
+    financial_performance_tracking: true
+    investor_reporting: true
+    insurance_claim_management: true
+    
+  - name: "Biosafety Monitoring System"
+    port: 7443
+    protocol: "Secure HTTPS"
+    service_id: "S0009"
+    description: "Laboratory safety and containment monitoring"
+    owner: "hwu"
+    pathogen_detection: true
+    contamination_alerts: true
+    biosafety_protocol_enforcement: true
+    
+  - name: "Amber Mining Operations"
+    port: 8443
+    protocol: "HTTPS"
+    service_id: "S0010"
+    description: "DNA extraction and amber specimen management"
+    owner: "jhammond"
+    amber_specimen_catalog: true
+    dna_quality_assessment: true
+    extraction_yield_optimization: true

@@ -1,0 +1,21 @@
+{
+    "name": "okta-identity-cloud",
+    "version": "1.0.0",
+    "description": "Okta Identity Cloud authentication and access management templates",
+    "maintainers": [
+      {
+        "name": "LogForge Community",
+        "email": "community@logforge.dev"
+      }
+    ],
+    "tags": [
+      "identity",
+      "authentication", 
+      "access-management",
+      "sso",
+      "security"
+    ],
+    "templates": [
+      "authentication/login_failure"
+    ]
+  }

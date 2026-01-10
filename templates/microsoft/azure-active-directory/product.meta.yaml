@@ -1,0 +1,6 @@
+vendor: microsoft
+product: azure-active-directory
+name: "Azure Active Directory"
+description: "Microsoft's cloud-based identity and access management service providing single sign-on, multi-factor authentication, and identity protection"
+version: "Current"
+documentation_url: "https://docs.microsoft.com/en-us/azure/active-directory/"

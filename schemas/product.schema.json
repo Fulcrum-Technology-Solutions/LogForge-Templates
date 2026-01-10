@@ -1,0 +1,55 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "$id": "https://logforge.dev/schemas/product.schema.json",
+    "title": "Product Metadata Schema",
+    "description": "Schema for product.meta.yaml files in template repositories",
+    "type": "object",
+    "required": ["vendor", "product", "name"],
+    "properties": {
+      "vendor": {
+        "type": "string",
+        "description": "Machine-friendly vendor identifier. Must match parent vendor directory name.",
+        "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$",
+        "minLength": 2,
+        "maxLength": 50,
+        "examples": ["paloalto", "microsoft", "cisco"]
+      },
+      "product": {
+        "type": "string",
+        "description": "Machine-friendly product identifier (lowercase, alphanumeric, hyphens only). Must match the product directory name.",
+        "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$",
+        "minLength": 2,
+        "maxLength": 50,
+        "examples": ["wildfire", "windows", "firewall"]
+      },
+      "name": {
+        "type": "string",
+        "description": "Human-friendly product display name",
+        "minLength": 1,
+        "maxLength": 100,
+        "examples": ["WildFire", "Windows Server", "ASA Firewall"]
+      },
+      "description": {
+        "type": "string",
+        "description": "Brief description of the product",
+        "minLength": 10,
+        "maxLength": 500,
+        "examples": ["Palo Alto Networks WildFire Threat Detection and Analysis"]
+      },
+      "version": {
+        "type": "string",
+        "description": "Product version or version range (e.g., '10.0', '2019', 'All')",
+        "minLength": 1,
+        "maxLength": 50,
+        "examples": ["10.0", "2022", "All", "5.x"]
+      },
+      "documentation_url": {
+        "type": "string",
+        "description": "URL to product documentation",
+        "format": "uri",
+        "pattern": "^https?://",
+        "examples": ["https://docs.paloaltonetworks.com/wildfire"]
+      }
+    },
+    "additionalProperties": false
+  }

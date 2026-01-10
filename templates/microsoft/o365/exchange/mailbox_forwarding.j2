@@ -1,0 +1,54 @@
+{
+  "CreationTime": "{{ now() | iso8601 }}",
+  "Id": "{{ random_guid() }}",
+  "Operation": "Set-Mailbox",
+  "OrganizationId": "{{ registry.get_organization_field('domain') | replace('.', '-') }}-org-{{ random_hex(4, 6) }}",
+  "RecordType": 1,
+  "ResultStatus": "{{ random_choice(['Success', 'PartiallySucceeded', 'Failed']) }}",
+  "UserKey": "{{ registry.get_random_user().email }}",
+  "UserType": {{ random_choice([0, 2]) }},
+  "Version": 1,
+  "Workload": "Exchange",
+  "UserId": "{{ registry.get_random_user().email }}",
+  "ClientIP": "{{ random_choice([random_public_ip(), random_private_ip()]) }}:{{ random_port(49152, 65535) }}",
+  "ObjectId": "{{ registry.get_random_user().email }}",
+  "ExternalAccess": {{ random_choice(['true', 'false', 'false', 'false']) }},
+  "OrganizationName": "{{ registry.get_organization_field('domain').split('.')[0] }}.onmicrosoft.com",
+  "OriginatingServer": "{{ random_choice(['BN8PR01MB', 'DM6PR01MB', 'CY4PR01MB', 'AM6PR01MB']) }}{{ random_int(1000, 9999) }} (15.20.{{ random_int(7000, 7999) }}.{{ random_int(10, 99) }})",
+  "Parameters": [
+    {
+      "Name": "Identity",
+      "Value": "{{ registry.get_random_user().email }}"
+    },
+    {
+      "Name": "ForwardingSmtpAddress",
+      "Value": "smtp:{{ random_choice(['external.recipient@gmail.com', 'forward.account@outlook.com', 'data.collection@yahoo.com', 'exfil.target@protonmail.com', 'backup.email@hotmail.com']) }}"
+    },
+    {
+      "Name": "DeliverToMailboxAndForward",
+      "Value": "{{ random_choice(['True', 'True', 'True', 'False']) }}"
+    }
+  ],
+  "SessionId": "{{ random_guid() }}",
+  "AppId": "",
+  "ClientAppId": "",
+  "ClientInfoString": "Client={{ random_choice(['WebServices', 'OWA', 'PowerShell']) }};{{ random_choice(['Mozilla/5.0', 'Version=15.20', '']) }};",
+  "Item": {
+    "Id": "{{ registry.get_random_user().email }}",
+    "ParentFolder": {
+      "Path": ""
+    }
+  },
+  "ModifiedProperties": [
+    {
+      "Name": "ForwardingSmtpAddress",
+      "NewValue": "smtp:{{ random_choice(['external.recipient@gmail.com', 'forward.account@outlook.com', 'data.collection@yahoo.com']) }}",
+      "OldValue": ""
+    },
+    {
+      "Name": "DeliverToMailboxAndForward",
+      "NewValue": "{{ random_choice(['True', 'False']) }}",
+      "OldValue": "{{ random_choice(['False', '']) }}"
+    }
+  ]
+}

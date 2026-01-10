@@ -1,0 +1,25 @@
+{
+    "name": "armis-security-platform",
+    "version": "1.0.0",
+    "description": "LogForge templates for Armis Security Platform alerts including policy violations, threat detections, and device security events",
+    "maintainers": [
+      {
+        "name": "LogForge Community",
+        "email": "community@logforge.dev",
+        "github": "logforge-community"
+      }
+    ],
+    "tags": [
+      "armis",
+      "security",
+      "iot",
+      "device-security",
+      "policy-violation",
+      "threat-detection",
+      "network-security",
+      "compliance"
+    ],
+    "templates": [
+      "policy-violation/system_policy_violation"
+    ]
+  }

@@ -1,0 +1,60 @@
+{%- set user = registry.get_random_user() -%}
+{%- set mail_source = registry.get_random_user() -%}
+{%- set device = registry.get_random_device() -%}
+{%- set mail_server = registry.get_random_device() -%}
+{%- set severity_choices = ['1', '3', '5', '7'] -%}
+{%- set severity_weights = [10, 55, 30, 5] -%}
+{%- set severity = random_weighted(severity_choices, severity_weights) -%}
+{%- set event_types = [
+    'Abnormal mailbox access',
+    'Excessive email access',
+    'Executive mailbox access',
+    'After-hours email access',
+    'Delegated mailbox abuse',
+    'Mass email download'
+] -%}
+{%- set event_weights = [30, 25, 15, 15, 10, 5] -%}
+{%- set event_type = random_weighted(event_types, event_weights) -%}
+{%- set rule_names = [
+    'Abnormal Mailbox Access Pattern',
+    'Excessive Email Access Alert',
+    'Executive Email Monitor',
+    'After Hours Email Access',
+    'Delegated Access Abuse Detection',
+    'Mass Email Export Alert'
+] -%}
+{%- set rule_name = random_choice(rule_names) -%}
+{%- set mail_item_types = ['Email', 'Calendar', 'Contact', 'Task', 'Note'] -%}
+{%- set mail_item_weights = [70, 15, 8, 5, 2] -%}
+{%- set mail_item_type = random_weighted(mail_item_types, mail_item_weights) -%}
+{%- set access_types = ['Owner', 'Delegate', 'Admin', 'SendAs', 'SendOnBehalf'] -%}
+{%- set access_weights = [50, 25, 15, 7, 3] -%}
+{%- set mailbox_access_type = random_weighted(access_types, access_weights) -%}
+{%- set recipients = [] -%}
+{%- for i in range(random_int(1, 5)) -%}
+  {%- set recipient = registry.get_random_user() -%}
+  {%- set _ = recipients.append(recipient.email) -%}
+{%- endfor -%}
+{%- set recipient_list = recipients | join(';') -%}
+{%- set outcomes = ['Success', 'Alerted'] -%}
+{%- set outcome_weights = [80, 20] -%}
+{%- set outcome = random_weighted(outcomes, outcome_weights) -%}
+{%- set alert_time = now() -%}
+{%- set event_time = subtract_seconds(alert_time, random_int(60, 3600)) -%}
+{%- set first_event_time = subtract_seconds(event_time, random_int(300, 7200)) -%}
+{%- set mail_date = subtract_seconds(event_time, random_int(3600, 86400)) -%}
+{%- set alert_id = random_int(100000, 999999) -%}
+{%- set rule_id = random_int(1000, 9999) -%}
+{%- set threshold = random_int(10, 100) -%}
+{%- set version = random_choice(['8.0', '8.5', '9.0', '9.5']) -%}
+{%- set op_code = random_int(3000, 3999) -%}
+{%- set subjects = [
+    'Q4 Financial Results',
+    'Confidential: Merger Discussion',
+    'Executive Compensation Review',
+    'Board Meeting Minutes',
+    'Strategic Planning Document',
+    'Customer Contract - Confidential'
+] -%}
+{%- set attachment = random_choice(subjects) + random_choice(['.pdf', '.docx', '.xlsx']) -%}
+CEF:0|Varonis|DatAdvantage|{{ version }}|{{ op_code }}|{{ event_type }}|{{ severity }}|rt={{ alert_time | format_datetime('%b %d %Y %H:%M:%S GMT') }} cat=Alert cs2={{ rule_name }} cs2Label=RuleName cn1={{ rule_id }} cn1Label=RuleID end={{ event_time | format_datetime('%b %d %Y %H:%M:%S GMT') }} duser={{ user.username }} dhost={{ mail_server.hostname }} filePath={{ mail_source.email }}\Inbox fname={{ random_choice(subjects) }} act={{ event_type }} dvchost={{ device.hostname }} dvc={{ device.ip_address }} outcome={{ outcome }} msg=User {{ user.username }} accessed mailbox {{ mail_source.email }} with {{ mailbox_access_type }} permissions cs3={{ attachment }} cs3Label=AttachmentName cs4=http://{{ random_private_ip() }}/DatAdvantage/#/app/analytics/entity/Alert/{{ alert_id }} cs4Label=AlertURL deviceCustomDate1={{ mail_date | format_datetime('%b %d %Y %H:%M:%S GMT') }} fileType={{ mail_item_type }} cs1={{ recipient_list }} cs1Label=MailRecipient suser={{ mail_source.username }} cs5={{ mailbox_access_type }} cs5Label=MailboxAccessType cnt={{ threshold }} start={{ first_event_time | format_datetime('%b %d %Y %H:%M:%S GMT') }} externalId={{ alert_id }}

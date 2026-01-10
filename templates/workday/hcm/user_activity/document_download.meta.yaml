@@ -1,0 +1,201 @@
+vendor: workday
+product: hcm
+data_source: user_activity
+description: Records document download activities from Workday HCM, including payslips, tax documents, benefits summaries, and other employee-related documents. Captures DOWNLOAD actions with target document information.
+format: JSON
+frequency: medium
+is_generator: true
+base_frequency: 120
+time_patterns:
+  - business_hours
+  - night_hours
+  - weekend
+business_hours_multiplier: 2.5
+night_hours_multiplier: 0.8
+weekend_multiplier: 0.3
+
+documentation:
+  display:
+    title: "Workday HCM Document Download"
+    subtitle: "Employee document access and downloads"
+    icon: "📄"
+    color_scheme: "info"
+    tags:
+      - "download"
+      - "documents"
+      - "payslips"
+      - "compliance"
+      - "audit"
+
+  overview:
+    summary: "Tracks when users download documents from Workday HCM, including payslips, tax forms, benefits documents, performance reviews, and other HR-related files. Provides audit trail for document access and compliance monitoring."
+    when_generated:
+      - "When an employee downloads their payslip or pay statement"
+      - "When a user accesses tax documents (W-2, 1099, etc.)"
+      - "When benefits summaries or enrollment documents are downloaded"
+      - "When performance review documents are accessed"
+      - "When training certificates or compliance documents are retrieved"
+      - "When employment verification letters are generated and downloaded"
+    security_relevance: "High"
+    compliance_frameworks:
+      - "SOC 2"
+      - "GDPR (Article 15 - Right of Access)"
+      - "HIPAA (for healthcare benefits documents)"
+      - "SOX (for financial documents)"
+      - "IRS regulations (tax document retention)"
+    frequency_notes: "Medium frequency with spikes during specific periods. Base rate of 120 events/hour increases during pay periods (2.5x = 300 events/hour), tax season (January-April), and benefits enrollment periods. Lower activity during nights (96 events/hour) and weekends (36 events/hour)."
+
+  fields:
+    - name: "deviceType"
+      type: "String"
+      required: true
+      description: "Type of device used to download the document"
+      example_value: "Phone"
+      template_source: "random_choice(['Phone', 'Desktop', 'Tablet'])"
+      possible_values:
+        - value: "Phone"
+          description: "Mobile smartphone device"
+        - value: "Desktop"
+          description: "Desktop computer or laptop"
+        - value: "Tablet"
+          description: "Tablet device"
+
+    - name: "ipAddress"
+      type: "String"
+      required: true
+      description: "Public IP address of the user's device"
+      example_value: "174.224.1.218"
+      format: "IPv4"
+      template_source: "random_public_ip()"
+
+    - name: "systemAccount"
+      type: "String"
+      required: true
+      description: "Workday internal user identifier (6-digit zero-padded number)"
+      example_value: "000151329"
+      format: "6-digit zero-padded string"
+      template_source: "random_int(10000, 999999) formatted as 6-digit zero-padded string"
+
+    - name: "requestTime"
+      type: "DateTime"
+      required: true
+      description: "Timestamp of the document download request in ISO 8601 format (UTC)"
+      example_value: "2025-12-20T21:53:16.898Z"
+      format: "ISO 8601 with milliseconds and Z suffix"
+      template_source: "now() | iso8601"
+
+    - name: "taskId"
+      type: "String"
+      required: true
+      description: "Unique identifier for the download task (32-character hex string)"
+      example_value: "d3e0b8c631221000109d6a5966062492"
+      format: "32-character hexadecimal (UUID without hyphens)"
+      template_source: "random_guid() with hyphens removed"
+
+    - name: "userAgent"
+      type: "String"
+      required: true
+      description: "User agent string identifying the Workday client application and version"
+      example_value: "Workday/2025.12.1.27340 (iPhone)"
+      template_source: "random_choice() from list of common Workday user agents including mobile and web clients"
+      possible_values:
+        - value: "Workday/2025.12.1.27340 (iPhone)"
+          description: "Workday iOS mobile app"
+        - value: "Workday/2025.12.0.25234 (AndroidNative)"
+          description: "Workday Android mobile app"
+        - value: "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36"
+          description: "Workday web portal via browser"
+
+    - name: "sessionId"
+      type: "String"
+      required: true
+      description: "Short session identifier (6-character hex string)"
+      example_value: "065904"
+      format: "6-character hexadecimal"
+      template_source: "random_string(6, 'abcdef0123456789')"
+
+    - name: "taskDisplayName"
+      type: "String"
+      required: true
+      description: "Human-readable description of the document download task"
+      example_value: "Payslips"
+      template_source: "random_choice() from list of common document download tasks"
+      possible_values:
+        - value: "Payslips"
+          description: "Pay statement or paycheck document"
+        - value: "Tax Documents"
+          description: "Tax forms and statements"
+        - value: "Download W-2"
+          description: "Annual W-2 tax form"
+        - value: "Benefits Summary"
+          description: "Employee benefits overview document"
+        - value: "Performance Review Document"
+          description: "Performance evaluation or review"
+        - value: "Training Certificate"
+          description: "Training completion certificate"
+
+    - name: "activityAction"
+      type: "String"
+      required: true
+      description: "Type of action performed (always DOWNLOAD for this template)"
+      example_value: "DOWNLOAD"
+      template_source: "Fixed value: DOWNLOAD"
+
+    - name: "target"
+      type: "Object"
+      required: true
+      description: "Target document object containing descriptor and unique document ID"
+      example_value: '{"descriptor": "Payslip-11_21_2025.pdf", "id": "18e429dcbd6e10016a067d0ac9b30001"}'
+      template_source: "Object with descriptor (document filename) and id (UUID without hyphens)"
+
+    - name: "target.descriptor"
+      type: "String"
+      required: true
+      description: "Document filename or description"
+      example_value: "Payslip-11_21_2025.pdf"
+      template_source: "random_choice() from list of document filename patterns with dynamic dates"
+
+    - name: "target.id"
+      type: "String"
+      required: true
+      description: "Unique document identifier (32-character hex string)"
+      example_value: "18e429dcbd6e10016a067d0ac9b30001"
+      format: "32-character hexadecimal (UUID without hyphens)"
+      template_source: "random_guid() with hyphens removed"
+
+    - name: "tenantId"
+      type: "String"
+      required: true
+      description: "Workday tenant identifier (organization's unique ID in Workday)"
+      example_value: "acmeco"
+      template_source: "registry.get_organization_field('netbios_domain') | lower, fallback to 'acmecorp'"
+
+    - name: "tenantHost"
+      type: "String"
+      required: true
+      description: "Workday service hostname for the tenant"
+      example_value: "wd5-services1.myworkday.com"
+      format: "Hostname (FQDN)"
+      template_source: "random_choice() from list of Workday service hostnames"
+
+  resources:
+    documentation:
+      - title: "Workday HCM Documentation"
+        url: "https://doc.workday.com"
+        type: "official"
+      - title: "Workday Document Management"
+        url: "https://doc.workday.com/reader/wsiU0cnNjCc_IYsWcL6z6g/fFk6AXlP2xSbMH0NKDKntw"
+        type: "official"
+      - title: "Workday Security and Privacy"
+        url: "https://www.workday.com/en-us/company/trust.html"
+        type: "official"
+      - title: "GDPR Article 15 - Right of Access"
+        url: "https://gdpr-info.eu/art-15-gdpr/"
+        type: "reference"
+    tools:
+      - name: "LogForge CLI"
+        description: "Command-line tool for template validation and log generation"
+        url: "https://github.com/Fulcrum-Technology-Solutions/LogForge"
+      - name: "Workday Studio"
+        description: "Eclipse-based IDE for Workday integrations and custom development"
+        url: "https://doc.workday.com"

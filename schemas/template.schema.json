@@ -1,0 +1,265 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "$id": "https://logforge.dev/schemas/template.schema.json",
+    "title": "Template Metadata Schema",
+    "description": "Schema for template_name.meta.yaml files that describe individual templates",
+    "type": "object",
+    "required": ["vendor", "product", "data_source", "description", "format"],
+    "properties": {
+      "vendor": {
+        "type": "string",
+        "description": "Machine-friendly vendor identifier",
+        "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$",
+        "minLength": 2,
+        "maxLength": 50,
+        "examples": ["paloalto", "microsoft", "cisco"]
+      },
+      "product": {
+        "type": "string",
+        "description": "Machine-friendly product identifier",
+        "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$",
+        "minLength": 2,
+        "maxLength": 50,
+        "examples": ["wildfire", "windows", "firewall"]
+      },
+      "data_source": {
+        "type": "string",
+        "description": "Data source or log type (only required at template level)",
+        "pattern": "^[a-z0-9_-]+$",
+        "minLength": 2,
+        "maxLength": 50,
+        "examples": ["threats", "security", "network", "user_activity"]
+      },
+      "description": {
+        "type": "string",
+        "description": "Clear description of what this template generates",
+        "minLength": 10,
+        "maxLength": 500,
+        "examples": ["Records user login attempts including successful authentications and access failures"]
+      },
+      "format": {
+        "type": "string",
+        "description": "Output format of the generated log",
+        "enum": ["JSON", "XML", "CSV", "Syslog", "CEF", "LEEF", "Plain Text", "Custom"],
+        "examples": ["JSON", "XML", "Syslog"]
+      },
+      "frequency": {
+        "type": "string",
+        "description": "General categorization of event frequency",
+        "enum": ["critical", "high", "medium", "low"],
+        "examples": ["high", "medium"]
+      },
+      "is_generator": {
+        "type": "boolean",
+        "description": "Whether this template is used for log generation",
+        "default": false
+      },
+      "base_frequency": {
+        "type": "number",
+        "description": "Base number of events per hour (before multipliers are applied)",
+        "minimum": 0,
+        "default": 1,
+        "examples": [12, 5, 100]
+      },
+      "time_patterns": {
+        "type": "array",
+        "description": "Time patterns this generator should follow",
+        "items": {
+          "type": "string",
+          "examples": ["business_hours", "night_hours", "weekend"]
+        },
+        "uniqueItems": true
+      },
+      "business_hours_multiplier": {
+        "type": "number",
+        "description": "Multiplier for base_frequency during business hours (Mon-Fri, 9am-5pm)",
+        "minimum": 0,
+        "maximum": 10,
+        "default": 1.0,
+        "examples": [3.0, 2.5, 0.5]
+      },
+      "night_hours_multiplier": {
+        "type": "number",
+        "description": "Multiplier for base_frequency during night hours (Mon-Fri, 5pm-9am)",
+        "minimum": 0,
+        "maximum": 10,
+        "default": 1.0,
+        "examples": [0.4, 0.2, 1.5]
+      },
+      "weekend_multiplier": {
+        "type": "number",
+        "description": "Multiplier for base_frequency during weekends (Sat-Sun)",
+        "minimum": 0,
+        "maximum": 10,
+        "default": 1.0,
+        "examples": [0.6, 0.3, 1.0]
+      },
+      "documentation": {
+        "type": "object",
+        "description": "Detailed documentation for UI rendering and user guidance",
+        "properties": {
+          "display": {
+            "type": "object",
+            "properties": {
+              "title": {
+                "type": "string",
+                "description": "Display title for UI",
+                "examples": ["User Authentication Events"]
+              },
+              "subtitle": {
+                "type": "string",
+                "description": "Brief subtitle",
+                "examples": ["Login attempts and access control"]
+              },
+              "icon": {
+                "type": "string",
+                "description": "Emoji or icon identifier",
+                "examples": ["🔑", "🔒", "🛡️"]
+              },
+              "color_scheme": {
+                "type": "string",
+                "enum": ["success", "warning", "error", "info"],
+                "description": "UI color theme"
+              },
+              "tags": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                },
+                "description": "Searchable/filterable tags"
+              }
+            }
+          },
+          "overview": {
+            "type": "object",
+            "properties": {
+              "summary": {
+                "type": "string",
+                "description": "Brief summary of what the template generates"
+              },
+              "when_generated": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                },
+                "description": "List of scenarios when this event is generated"
+              },
+              "security_relevance": {
+                "type": "string",
+                "enum": ["Critical", "High", "Medium", "Low", "Informational"],
+                "description": "Security relevance level"
+              },
+              "compliance_frameworks": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                },
+                "description": "Relevant compliance frameworks"
+              },
+              "frequency_notes": {
+                "type": "string",
+                "description": "Notes about frequency patterns"
+              }
+            }
+          },
+          "fields": {
+            "type": "array",
+            "description": "Documentation for each field in the template output",
+            "items": {
+              "type": "object",
+              "required": ["name", "type", "description"],
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "description": "Field name"
+                },
+                "type": {
+                  "type": "string",
+                  "description": "Data type of the field",
+                  "examples": ["String", "Integer", "DateTime", "Boolean", "Array", "Object"]
+                },
+                "required": {
+                  "type": "boolean",
+                  "description": "Whether this field is always present"
+                },
+                "description": {
+                  "type": "string",
+                  "description": "Description of what this field represents"
+                },
+                "example_value": {
+                  "type": "string",
+                  "description": "Example value for this field"
+                },
+                "format": {
+                  "type": "string",
+                  "description": "Format specification (e.g., ISO 8601, IPv4)"
+                },
+                "template_source": {
+                  "type": "string",
+                  "description": "How this field is generated in the template"
+                },
+                "possible_values": {
+                  "type": "array",
+                  "description": "List of possible values for enum-like fields",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "value": {
+                        "type": "string"
+                      },
+                      "description": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "resources": {
+            "type": "object",
+            "properties": {
+              "documentation": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "title": {
+                      "type": "string"
+                    },
+                    "url": {
+                      "type": "string",
+                      "format": "uri"
+                    },
+                    "type": {
+                      "type": "string",
+                      "enum": ["official", "reference", "community"]
+                    }
+                  }
+                }
+              },
+              "tools": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string"
+                    },
+                    "description": {
+                      "type": "string"
+                    },
+                    "url": {
+                      "type": "string",
+                      "format": "uri"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "additionalProperties": false
+  }

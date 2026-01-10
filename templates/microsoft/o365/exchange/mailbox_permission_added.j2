@@ -1,0 +1,62 @@
+{
+  "CreationTime": "{{ now() | iso8601 }}",
+  "Id": "{{ random_guid() }}",
+  "Operation": "Add-MailboxPermission",
+  "OrganizationId": "{{ registry.get_organization_field('domain') | replace('.', '-') }}-org-{{ random_hex(4, 6) }}",
+  "RecordType": 1,
+  "ResultStatus": "{{ random_choice(['Success', 'Success', 'Success', 'Failed']) }}",
+  "UserKey": "{{ registry.get_random_user().email }}",
+  "UserType": 2,
+  "Version": 1,
+  "Workload": "Exchange",
+  "UserId": "{{ registry.get_random_user().email }}",
+  "ClientIP": "{{ random_choice([random_private_ip(), random_public_ip()]) }}:{{ random_port(49152, 65535) }}",
+  "ObjectId": "{{ registry.get_random_user().email }}",
+  "ExternalAccess": {{ random_choice(['false', 'false', 'true']) }},
+  "OrganizationName": "{{ registry.get_organization_field('domain').split('.')[0] }}.onmicrosoft.com",
+  "OriginatingServer": "{{ random_choice(['BN8PR01MB', 'DM6PR01MB', 'CY4PR01MB', 'AM6PR01MB']) }}{{ random_int(1000, 9999) }} (15.20.{{ random_int(7000, 7999) }}.{{ random_int(10, 99) }})",
+  "Parameters": [
+    {
+      "Name": "Identity",
+      "Value": "{{ registry.get_random_user().email }}"
+    },
+    {
+      "Name": "User",
+      "Value": "{{ registry.get_random_user().email }}"
+    },
+    {
+      "Name": "AccessRights",
+      "Value": "{{ random_choice(['FullAccess', 'FullAccess', 'FullAccess', 'SendAs', 'SendOnBehalf', 'ReadPermission']) }}"
+    },
+    {
+      "Name": "InheritanceType",
+      "Value": "{{ random_choice(['All', 'Children', 'SelfAndChildren']) }}"
+    },
+    {
+      "Name": "Automapping",
+      "Value": "{{ random_choice(['True', 'True', 'False']) }}"
+    }
+  ],
+  "SessionId": "{{ random_guid() }}",
+  "AppId": "",
+  "ClientAppId": "",
+  "ClientInfoString": "Client={{ random_choice(['PowerShell', 'WebServices', 'EAC']) }};Version={{ random_choice(['15.20', '16.0', '']) }};",
+  "Item": {
+    "Id": "{{ registry.get_random_user().email }}",
+    "ParentFolder": {
+      "Path": ""
+    }
+  },
+  "ModifiedProperties": [
+    {
+      "Name": "AccessRights",
+      "NewValue": "{{ random_choice(['FullAccess', 'SendAs', 'SendOnBehalf', 'ReadPermission']) }}",
+      "OldValue": ""
+    },
+    {
+      "Name": "User",
+      "NewValue": "{{ registry.get_random_user().email }}",
+      "OldValue": ""
+    }
+  ]
+}

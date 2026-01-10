@@ -1,0 +1,150 @@
+vendor: aws
+product: cloudtrail
+data_source: management
+description: "AWS CloudTrail DeleteTrail API call event in OCSF format"
+format: "JSON"
+frequency: "low"
+is_generator: true
+base_frequency: 5
+time_patterns:
+  - business_hours
+  - night_hours
+  - weekend
+business_hours_multiplier: 2.0
+night_hours_multiplier: 0.3
+weekend_multiplier: 0.1
+
+documentation:
+  display:
+    title: "CloudTrail Delete Trail Event"
+    subtitle: "Management API call to delete a CloudTrail trail"
+    icon: "🗑️"
+    color_scheme: "warning"
+    tags:
+      - "aws"
+      - "cloudtrail"
+      - "management"
+      - "delete"
+      - "audit"
+      - "compliance"
+
+  overview:
+    summary: "Records when an AWS CloudTrail trail is deleted via the DeleteTrail API operation. This is a critical management event that should be monitored for compliance and security purposes."
+    when_generated:
+      - "When a user or service deletes a CloudTrail trail via AWS Console"
+      - "When DeleteTrail API is called programmatically"
+      - "During automated cleanup processes"
+      - "When trails are removed due to cost optimization"
+    security_relevance: "High"
+    compliance_frameworks:
+      - "SOC 2"
+      - "PCI DSS"
+      - "HIPAA"
+      - "SOX"
+      - "FedRAMP"
+    frequency_notes: "Low frequency event - trail deletions are typically infrequent administrative actions"
+
+  fields:
+    - name: "metadata.uid"
+      type: "String"
+      required: true
+      description: "Unique identifier for this event record"
+      example_value: "123e4567-e89b-12d3-a456-426614174000"
+      format: "UUID"
+      template_source: "random_guid()"
+
+    - name: "time"
+      type: "Integer"
+      required: true
+      description: "Event timestamp in Unix epoch format"
+      example_value: "1703123456"
+      format: "Unix timestamp"
+      template_source: "current_timestamp()"
+
+    - name: "cloud.region"
+      type: "String"
+      required: true
+      description: "AWS region where the API call was made"
+      example_value: "us-east-1"
+      template_source: "Random selection from common AWS regions"
+      possible_values:
+        - value: "us-east-1"
+          description: "US East (N. Virginia)"
+        - value: "us-west-2"
+          description: "US West (Oregon)"
+        - value: "eu-west-1"
+          description: "Europe (Ireland)"
+
+    - name: "api.operation"
+      type: "String"
+      required: true
+      description: "The CloudTrail API operation being performed"
+      example_value: "DeleteTrail"
+      template_source: "Static value"
+
+    - name: "actor.user.uid"
+      type: "String"
+      required: true
+      description: "ARN of the IAM user or role performing the action"
+      example_value: "arn:aws:sts::123456789012:assumed-role/AdminRole/user@example.com"
+      template_source: "Constructed from random account ID and role"
+
+    - name: "actor.user.account.uid"
+      type: "String"
+      required: true
+      description: "AWS account ID where the action was performed"
+      example_value: "123456789012"
+      template_source: "random_int(100000000000, 999999999999)"
+
+    - name: "src_endpoint.ip"
+      type: "String"
+      required: true
+      description: "Source IP address of the API caller"
+      example_value: "203.0.113.42"
+      template_source: "random_public_ip()"
+
+    - name: "api.request.data"
+      type: "String"
+      required: true
+      description: "JSON string containing the API request parameters"
+      example_value: '{"name":"arn:aws:cloudtrail:us-east-1:123456789012:trail/test"}'
+      template_source: "Constructed trail ARN with random account and trail name"
+
+    - name: "status"
+      type: "String"
+      required: true
+      description: "Success or failure status of the API call"
+      example_value: "Success"
+      template_source: "Random selection weighted toward Success"
+      possible_values:
+        - value: "Success"
+          description: "API call completed successfully"
+        - value: "Failure"
+          description: "API call failed due to permissions or other error"
+
+    - name: "actor.session.is_mfa"
+      type: "Boolean"
+      required: false
+      description: "Whether multi-factor authentication was used for this session"
+      example_value: "true"
+      template_source: "Random boolean value"
+
+  resources:
+    documentation:
+      - title: "AWS CloudTrail API Reference"
+        url: "https://docs.aws.amazon.com/awscloudtrail/latest/APIReference/"
+        type: "official"
+      - title: "CloudTrail DeleteTrail Documentation"
+        url: "https://docs.aws.amazon.com/awscloudtrail/latest/APIReference/API_DeleteTrail.html"
+        type: "official"
+      - title: "OCSF Schema Documentation"
+        url: "https://schema.ocsf.io/"
+        type: "reference"
+
+    tools:
+      - name: "AWS CloudTrail Console"
+        description: "Web interface for managing CloudTrail trails and viewing events"
+        url: "https://console.aws.amazon.com/cloudtrail/"
+      - name: "AWS CLI"
+        description: "Command-line interface for AWS services including CloudTrail"
+        url: "https://aws.amazon.com/cli/"

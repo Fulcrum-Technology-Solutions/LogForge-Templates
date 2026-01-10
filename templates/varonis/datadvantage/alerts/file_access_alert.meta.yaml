@@ -1,0 +1,274 @@
+vendor: varonis
+product: datadvantage
+data_source: alerts
+description: Records file access anomalies and suspicious file activity detected by Varonis DatAdvantage, including excessive access, sensitive file access, and unusual access patterns.
+format: CEF
+frequency: medium
+is_generator: true
+base_frequency: 30
+time_patterns:
+  - business_hours
+  - night_hours
+  - weekend
+business_hours_multiplier: 3.0
+night_hours_multiplier: 0.3
+weekend_multiplier: 0.2
+
+documentation:
+  display:
+    title: "File Access Alert"
+    subtitle: "Anomalous file access detection and monitoring"
+    icon: "📁"
+    color_scheme: "warning"
+    tags:
+      - "file-access"
+      - "data-security"
+      - "anomaly-detection"
+      - "insider-threat"
+
+  overview:
+    summary: "Alert generated when Varonis DatAdvantage detects abnormal or suspicious file access patterns including excessive access, sensitive data access, after-hours activity, or unusual download volumes."
+    when_generated:
+      - "User accesses unusually high number of files"
+      - "Sensitive or confidential files are accessed"
+      - "File access occurs outside normal working hours"
+      - "User accesses files from unusual geographic location"
+      - "Mass file download activity is detected"
+      - "Executive or high-value data is accessed by unauthorized users"
+    security_relevance: "High"
+    compliance_frameworks:
+      - "GDPR - Data Access Monitoring"
+      - "HIPAA - PHI Access Auditing"
+      - "SOX - Financial Data Access Controls"
+      - "PCI DSS - Cardholder Data Protection"
+      - "NIST 800-53 - AC-2, AU-2, AU-6"
+    frequency_notes: "Medium frequency (20-40 alerts per day in typical deployments). Peaks during business hours (3x multiplier) when file access activity is highest. Significantly reduced during nights (0.3x) and weekends (0.2x) in office environments."
+
+  fields:
+    - name: "CEF Version"
+      type: "Integer"
+      required: true
+      description: "CEF format version (always 0)"
+      example_value: "0"
+      template_source: "Static value"
+
+    - name: "Device Vendor"
+      type: "String"
+      required: true
+      description: "Vendor name (Varonis)"
+      example_value: "Varonis"
+      template_source: "Static value"
+
+    - name: "Device Product"
+      type: "String"
+      required: true
+      description: "Product name (DatAdvantage)"
+      example_value: "DatAdvantage"
+      template_source: "Static value"
+
+    - name: "Device Version"
+      type: "String"
+      required: true
+      description: "DatAdvantage version"
+      example_value: "9.5"
+      template_source: "random_choice(['8.0', '8.5', '9.0', '9.5'])"
+
+    - name: "Signature ID"
+      type: "Integer"
+      required: true
+      description: "Event operation code"
+      example_value: "1543"
+      template_source: "random_int(1000, 1999)"
+
+    - name: "Name"
+      type: "String"
+      required: true
+      description: "Event type/alert name"
+      example_value: "Abnormal file access"
+      template_source: "random_weighted event types"
+      possible_values:
+        - value: "Abnormal file access"
+          description: "User accessing files in unusual pattern"
+        - value: "Excessive file access"
+          description: "User accessing more files than normal baseline"
+        - value: "Sensitive file access"
+          description: "Access to classified or sensitive data"
+        - value: "After-hours file access"
+          description: "File access outside business hours"
+        - value: "Unusual location access"
+          description: "Access from unexpected geographic location"
+        - value: "Mass file download"
+          description: "Large volume of files downloaded"
+
+    - name: "Severity"
+      type: "String"
+      required: true
+      description: "Alert severity level (1=Low, 3=Medium, 5=High, 7=Very High)"
+      example_value: "5"
+      template_source: "random_weighted(['1', '3', '5', '7'], [5, 60, 30, 5])"
+      possible_values:
+        - value: "1"
+          description: "Low severity - informational alert"
+        - value: "3"
+          description: "Medium severity - requires review"
+        - value: "5"
+          description: "High severity - requires investigation"
+        - value: "7"
+          description: "Very high severity - immediate action required"
+
+    - name: "rt (Receipt Time)"
+      type: "DateTime"
+      required: true
+      description: "Alert generation timestamp"
+      example_value: "Dec 05 2023 10:30:15 GMT"
+      format: "MMM DD YYYY HH:MM:SS GMT"
+      template_source: "now() | format_datetime"
+
+    - name: "cat (Category)"
+      type: "String"
+      required: true
+      description: "Event category (always 'Alert')"
+      example_value: "Alert"
+      template_source: "Static value"
+
+    - name: "cs2 (Rule Name)"
+      type: "String"
+      required: true
+      description: "Name of the detection rule that triggered the alert"
+      example_value: "Excessive File Access by User"
+      template_source: "random_choice(rule_names)"
+
+    - name: "cn1 (Rule ID)"
+      type: "Integer"
+      required: true
+      description: "Unique identifier for the detection rule"
+      example_value: "3456"
+      template_source: "random_int(1000, 9999)"
+
+    - name: "end (Event Time)"
+      type: "DateTime"
+      required: true
+      description: "Timestamp of the triggering event"
+      example_value: "Dec 05 2023 09:45:30 GMT"
+      format: "MMM DD YYYY HH:MM:SS GMT"
+      template_source: "subtract_seconds(alert_time, random_int(60, 3600))"
+
+    - name: "duser (Destination User)"
+      type: "String"
+      required: true
+      description: "Username of the acting user who triggered the alert"
+      example_value: "jsmith"
+      template_source: "registry.get_random_user().username"
+
+    - name: "dhost (Destination Host)"
+      type: "String"
+      required: true
+      description: "Hostname of the file server where activity occurred"
+      example_value: "FS01"
+      template_source: "registry.get_random_device().hostname"
+
+    - name: "filePath"
+      type: "String"
+      required: true
+      description: "UNC path to the accessed resource"
+      example_value: "\\\\FileServer\\Finance\\Reports"
+      template_source: "random_choice(file_paths)"
+
+    - name: "fname (File Name)"
+      type: "String"
+      required: true
+      description: "Name of the accessed file"
+      example_value: "Q4_Report.xlsx"
+      template_source: "random_string(8) + random_choice(file_extensions)"
+
+    - name: "act (Action)"
+      type: "String"
+      required: true
+      description: "Action type that triggered the alert"
+      example_value: "Abnormal file access"
+      template_source: "Same as event type"
+
+    - name: "dvchost (Device Hostname)"
+      type: "String"
+      required: true
+      description: "Hostname of the user's device"
+      example_value: "WKST-123"
+      template_source: "registry.get_random_device().hostname"
+
+    - name: "dvc (Device Address)"
+      type: "String"
+      required: true
+      description: "IP address of the user's device"
+      example_value: "10.50.20.145"
+      format: "IPv4"
+      template_source: "registry.get_random_device().ip_address"
+
+    - name: "outcome"
+      type: "String"
+      required: true
+      description: "Result of the action (Success, Blocked, Alerted)"
+      example_value: "Success"
+      template_source: "random_weighted(['Success', 'Blocked', 'Alerted'], [70, 20, 10])"
+      possible_values:
+        - value: "Success"
+          description: "Action completed successfully"
+        - value: "Blocked"
+          description: "Action was blocked by policy"
+        - value: "Alerted"
+          description: "Action generated alert but was allowed"
+
+    - name: "msg (Message)"
+      type: "String"
+      required: true
+      description: "Human-readable alert description"
+      example_value: "User jsmith triggered alert: Excessive file access on FS01"
+      template_source: "Dynamic message construction"
+
+    - name: "cs4 (Alert URL)"
+      type: "String"
+      required: true
+      description: "Direct link to alert details in DatAdvantage console"
+      example_value: "http://10.10.10.50/DatAdvantage/#/app/analytics/entity/Alert/123456"
+      format: "URL"
+      template_source: "Constructed URL with random alert ID"
+
+    - name: "cnt (Count)"
+      type: "Integer"
+      required: true
+      description: "Number of events that met the alert threshold"
+      example_value: "25"
+      template_source: "random_int(5, 50)"
+
+    - name: "start (First Event Time)"
+      type: "DateTime"
+      required: true
+      description: "Timestamp of the first event in the alert sequence"
+      example_value: "Dec 05 2023 08:30:15 GMT"
+      format: "MMM DD YYYY HH:MM:SS GMT"
+      template_source: "subtract_seconds(event_time, random_int(300, 7200))"
+
+    - name: "externalId (Alert ID)"
+      type: "Integer"
+      required: true
+      description: "Unique alert identifier"
+      example_value: "123456"
+      template_source: "random_int(100000, 999999)"
+
+  resources:
+    documentation:
+      - title: "Varonis DatAdvantage Documentation"
+        url: "https://www.varonis.com/products/datadvantage"
+        type: "official"
+      - title: "CEF Format Specification"
+        url: "https://www.microfocus.com/documentation/arcsight/arcsight-smartconnectors-8.3/cef-implementation-standard/"
+        type: "reference"
+      - title: "Varonis Alert Configuration Guide"
+        url: "https://support.varonis.com"
+        type: "official"
+    tools:
+      - name: "Varonis DatAdvantage Console"
+        description: "Web-based console for alert management and investigation"
+        url: "https://www.varonis.com"
+      - name: "CEF Format Validator"
+        description: "Tool for validating CEF log format compliance"
+        url: "https://www.microfocus.com"

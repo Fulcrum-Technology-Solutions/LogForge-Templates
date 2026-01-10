@@ -1,0 +1,157 @@
+{
+  "version": "0",
+  "id": "{{ random_guid() }}",
+  "detail-type": "GuardDuty Finding",
+  "source": "aws.guardduty",
+  "account": "{{ registry.get_organization_field('aws_account_id') | default('123456789012', true) }}",
+  "time": "{{ now() | iso8601 }}",
+  "region": "{{ random_choice(['us-east-1', 'us-east-2', 'us-west-1', 'us-west-2', 'eu-west-1', 'eu-central-1', 'ap-southeast-1', 'ap-northeast-1']) }}",
+  "resources": [],
+  "detail": {
+    "schemaVersion": "2.0",
+    "accountId": "{{ registry.get_organization_field('aws_account_id') | default('123456789012', true) }}",
+    "region": "{{ random_choice(['us-east-1', 'us-east-2', 'us-west-1', 'us-west-2', 'eu-west-1', 'eu-central-1']) }}",
+    "partition": "aws",
+    "id": "{{ random_hex(32, 32) }}",
+    "arn": "arn:aws:guardduty:{{ random_choice(['us-east-1', 'us-east-2', 'us-west-1', 'us-west-2']) }}:{{ registry.get_organization_field('aws_account_id') | default('123456789012', true) }}:detector/{{ random_string(12) }}/finding/{{ random_hex(32, 32) }}",
+    "type": "{{ random_choice([
+      'Execution:EKS/MaliciousFileExecution',
+      'DefenseEvasion:EKS/ContainerInfoDiscovery',
+      'Discovery:EKS/ClusterQuery',
+      'InitialAccess:EKS/KubernetesCredentialAccess',
+      'Persistence:EKS/BackdoorContainer',
+      'PrivilegeEscalation:EKS/ClusterAdminAccess',
+      'Impact:EKS/ClusterDelete',
+      'Impact:EKS/NamespaceDelete',
+      'Impact:EKS/WorkloadDelete',
+      'Exfiltration:EKS/DataAccess',
+      'CredentialAccess:EKS/SecretAccess',
+      'Recon:EKS/ClusterQuery',
+      'Recon:EKS/NodeQuery',
+      'LateralMovement:EKS/ContainerEscape',
+      'Stealth:EKS/AuditLoggingDisabled'
+    ]) }}",
+    "resource": {
+      "resourceType": "EKSCluster",
+      "eksClusterDetails": {
+        "name": "{{ random_choice(['production-cluster', 'staging-cluster', 'development-cluster', 'sandbox-cluster', 'test-cluster']) }}-{{ random_int(1000, 9999) }}",
+        "arn": "arn:aws:eks:{{ random_choice(['us-east-1', 'us-east-2', 'us-west-1', 'us-west-2']) }}:{{ registry.get_organization_field('aws_account_id') | default('123456789012', true) }}:cluster/{{ random_choice(['production-cluster', 'staging-cluster', 'development-cluster']) }}-{{ random_int(1000, 9999) }}",
+        "vpcId": "vpc-{{ random_hex(8, 8) }}",
+        "subnetIds": [
+          "subnet-{{ random_hex(8, 8) }}",
+          "subnet-{{ random_hex(8, 8) }}"
+        ],
+        "createdAt": {{ (now() | unix_timestamp) - random_int(2592000, 31536000) }},
+        "status": "{{ random_choice(['ACTIVE', 'CREATING', 'DELETING', 'FAILED', 'UPDATING']) }}",
+        "tags": [
+          {
+            "key": "Environment",
+            "value": "{{ random_choice(['Production', 'Staging', 'Development', 'Test']) }}"
+          },
+          {
+            "key": "ManagedBy",
+            "value": "{{ random_choice(['Terraform', 'CloudFormation', 'Manual', 'CDK']) }}"
+          }
+        ],
+        "kubernetesVersion": "{{ random_choice(['1.28', '1.27', '1.26', '1.25', '1.24']) }}"
+      }
+    },
+    "service": {
+      "serviceName": "guardduty",
+      "detectorId": "{{ random_hex(32, 32) }}",
+      "action": {
+        "actionType": "KUBERNETES_API_CALL",
+        "kubernetesApiCallAction": {
+          "requestUri": "{{ random_choice(['/api/v1/namespaces', '/api/v1/pods', '/api/v1/secrets', '/api/v1/configmaps', '/api/v1/nodes', '/apis/apps/v1/deployments', '/apis/rbac.authorization.k8s.io/v1/roles', '/apis/rbac.authorization.k8s.io/v1/clusterroles', '/api/v1/namespaces/default/secrets', '/apis/apps/v1/namespaces/default/deployments']) }}",
+          "verb": "{{ random_choice(['get', 'list', 'create', 'update', 'patch', 'delete', 'watch', 'exec', 'portforward']) }}",
+          "remoteIpDetails": {
+            "ipAddressV4": "{{ random_public_ip() }}",
+            "organization": {
+              "asn": {{ random_int(1, 65535) }},
+              "asnOrg": "{{ random_choice(['AS-AMAZON', 'AS-GOOGLE', 'AS-MICROSOFT', 'AS-DIGITALOCEAN', 'AS-LINODE', 'AS-UNKNOWN']) }}",
+              "isp": "{{ random_choice(['Amazon Technologies Inc.', 'Google LLC', 'Microsoft Corporation', 'DigitalOcean LLC', 'Linode LLC', 'Unknown ISP']) }}",
+              "org": "{{ random_choice(['Amazon', 'Google Cloud', 'Microsoft Azure', 'DigitalOcean', 'Linode', 'Unknown']) }}"
+            },
+            "country": {
+              "countryName": "{{ random_choice(['United States', 'China', 'Russia', 'Germany', 'United Kingdom', 'Singapore', 'Japan', 'Canada']) }}"
+            },
+            "city": {
+              "cityName": "{{ random_choice(['Unknown', 'Beijing', 'Moscow', 'Frankfurt', 'London', 'Singapore', 'Tokyo', 'Toronto']) }}"
+            },
+            "geoLocation": {
+              "lat": {{ random_int(-90, 90) }},
+              "lon": {{ random_int(-180, 180) }}
+            }
+          },
+          "sourceIps": [
+            "{{ random_private_ip() }}"
+          ],
+          "userAgent": "{{ random_choice(['kubectl/v1.28.0 (linux/amd64) kubernetes/4ce5a88', 'kubectl/v1.27.0 (darwin/arm64) kubernetes/5e58b43', 'kubectl/v1.26.0 (windows/amd64) kubernetes/9e64410', 'curl/7.88.1', 'python-requests/2.28.2', 'Go-http-client/1.1']) }}",
+          "userIdentity": {
+            "principalId": "{{ random_string(20, 'abcdef0123456789') }}",
+            "type": "{{ random_choice(['IAMUser', 'IAMRole', 'ServiceAccount']) }}",
+            "userName": "{{ random_choice([registry.get_random_user().username, 'system:serviceaccount:default:default', 'system:node:ip-{{ random_private_ip() | replace(\".\", \"-\") }}', 'kubernetes-admin']) }}",
+            "arn": "arn:aws:{{ random_choice(['iam', 'eks']) }}:{{ random_choice(['us-east-1', 'us-west-2']) }}:{{ registry.get_organization_field('aws_account_id') | default('123456789012', true) }}:{{ random_choice(['user', 'role', 'cluster']) }}/{{ random_string(16) }}"
+          },
+          "namespace": "{{ random_choice(['default', 'kube-system', 'kube-public', 'kube-node-lease', 'production', 'staging', 'development']) }}",
+          "resource": "{{ random_choice(['pods', 'secrets', 'configmaps', 'deployments', 'services', 'nodes', 'roles', 'clusterroles', 'serviceaccounts']) }}",
+          "subResource": "{{ random_choice(['exec', 'portforward', 'proxy', 'log', 'status', '']) }}",
+          "responseStatusCode": {{ random_choice([200, 201, 403, 404, 500]) }}
+        }
+      },
+      "resourceRole": "TARGET",
+      "eventFirstSeen": "{{ (now() | subtract_seconds(random_int(0, 3600))) | iso8601 }}",
+      "eventLastSeen": "{{ now() | iso8601 }}",
+      "archived": false,
+      "count": {{ random_int(1, 100) }},
+      "additionalInfo": {
+        "threatListName": "{{ random_choice(['AWS Threat Intelligence', 'Custom Threat List', 'Kubernetes Security Best Practices', 'CIS Kubernetes Benchmark']) }}",
+        "unusual": {
+          "kubernetesApiCall": {
+            "verb": "{{ random_choice(['anomalous', 'not historical', 'infrequent']) }}",
+            "resource": "{{ random_choice(['anomalous', 'not historical']) }}",
+            "namespace": "{{ random_choice(['anomalous', 'not historical', 'infrequent']) }}",
+            "userIdentity": "{{ random_choice(['anomalous', 'not historical']) }}"
+          }
+        },
+        "sample": false
+      }
+    },
+    "severity": {{ random_choice([2, 5, 5, 5, 8, 8, 8]) }},
+    "createdAt": "{{ (now() | subtract_seconds(random_int(0, 7200))) | iso8601 }}",
+    "updatedAt": "{{ now() | iso8601 }}",
+    "title": "{{ random_choice([
+      'Malicious file execution detected in EKS cluster',
+      'Container information discovery for defense evasion',
+      'Unauthorized cluster query detected',
+      'Kubernetes credential access attempt',
+      'Backdoor container detected in cluster',
+      'Privilege escalation to cluster admin detected',
+      'EKS cluster deletion attempt detected',
+      'Namespace deletion attempt detected',
+      'Workload deletion detected',
+      'Unauthorized data access from EKS cluster',
+      'Secret access from EKS cluster detected',
+      'Reconnaissance activity against cluster',
+      'Container escape attempt detected',
+      'EKS audit logging disabled'
+    ]) }}",
+    "description": "{{ random_choice([
+      'GuardDuty detected a malicious file execution in your EKS cluster through Kubernetes audit logs',
+      'An anomalous Kubernetes API call was observed that indicates container information discovery for defense evasion',
+      'A suspicious Kubernetes API query was detected indicating unauthorized cluster reconnaissance',
+      'An attempt to access Kubernetes credentials was detected in your EKS cluster',
+      'A backdoor container was detected in your EKS cluster indicating potential persistence mechanism',
+      'An anomalous Kubernetes API call was observed indicating privilege escalation to cluster admin role',
+      'A suspicious API call to delete an EKS cluster was detected',
+      'An anomalous API call to delete a Kubernetes namespace was detected',
+      'A suspicious API call to delete workloads was detected in your EKS cluster',
+      'An anomalous data access pattern was detected from your EKS cluster',
+      'Unauthorized access to Kubernetes secrets was detected in your EKS cluster',
+      'Reconnaissance activity against your EKS cluster was detected through Kubernetes API queries',
+      'A container escape attempt was detected in your EKS cluster',
+      'EKS audit logging was disabled, potentially to evade detection'
+    ]) }}"
+  }
+}
+

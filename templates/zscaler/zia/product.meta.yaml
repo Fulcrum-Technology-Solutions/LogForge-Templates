@@ -1,0 +1,6 @@
+vendor: zscaler
+product: zia
+name: "Zscaler Internet Access"
+description: "Cloud-native secure web gateway and firewall service"
+version: "1.0"
+documentation_url: "https://help.zscaler.com/zia"
