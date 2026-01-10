@@ -1,0 +1,130 @@
+{
+  "version": "0",
+  "id": "{{ random_guid() }}",
+  "detail-type": "GuardDuty Finding",
+  "source": "aws.guardduty",
+  "account": "{{ registry.get_organization_field('aws_account_id') | default('123456789012', true) }}",
+  "time": "{{ now() | iso8601 }}",
+  "region": "{{ random_choice(['us-east-1', 'us-east-2', 'us-west-1', 'us-west-2']) }}",
+  "resources": [],
+  "detail": {
+    "schemaVersion": "2.0",
+    "accountId": "{{ registry.get_organization_field('aws_account_id') | default('123456789012', true) }}",
+    "region": "{{ random_choice(['us-east-1', 'us-east-2', 'us-west-1']) }}",
+    "partition": "aws",
+    "id": "{{ random_hex(32, 32) }}",
+    "arn": "arn:aws:guardduty:us-east-1:{{ registry.get_organization_field('aws_account_id') | default('123456789012', true) }}:detector/{{ random_string(12) }}/finding/{{ random_hex(32, 32) }}",
+    "type": "{{ random_choice([
+      'Discovery:S3/MaliciousIPCaller',
+      'Discovery:S3/MaliciousIPCaller.Custom',
+      'Discovery:S3/TorIPCaller',
+      'Exfiltration:S3/MaliciousIPCaller',
+      'Exfiltration:S3/ObjectRead.Unusual',
+      'Impact:S3/MaliciousIPCaller',
+      'Impact:S3/ObjectDelete.Unusual',
+      'Impact:S3/PermissionsModification.Unusual',
+      'PenTest:S3/KaliLinux',
+      'PenTest:S3/ParrotLinux',
+      'PenTest:S3/PentooLinux',
+      'Policy:S3/AccountBlockPublicAccessDisabled',
+      'Policy:S3/BucketAnonymousAccessGranted',
+      'Policy:S3/BucketBlockPublicAccessDisabled',
+      'Policy:S3/BucketPublicAccessGranted',
+      'Stealth:S3/ServerAccessLoggingDisabled',
+      'UnauthorizedAccess:S3/MaliciousIPCaller.Custom',
+      'UnauthorizedAccess:S3/TorIPCaller'
+    ]) }}",
+    "resource": {
+      "resourceType": "{{ random_choice(['S3Bucket', 'AccessKey']) }}",
+      "s3BucketDetails": [
+        {
+          "name": "{{ random_choice(['data', 'logs', 'backups', 'analytics', 'uploads']) }}-bucket-{{ random_int(100000, 999999) }}",
+          "arn": "arn:aws:s3:::{{ random_choice(['data', 'logs', 'backups']) }}-bucket-{{ random_int(100000, 999999) }}",
+          "type": "{{ random_choice(['Destination', 'Source']) }}",
+          "createdAt": "{{ (now() | subtract_seconds(random_int(864000, 31536000))) | iso8601 }}",
+          "owner": {
+            "id": "{{ random_string(64, 'abcdef0123456789') }}"
+          },
+          "tags": [
+            {
+              "key": "Environment",
+              "value": "{{ random_choice(['Production', 'Development', 'Staging']) }}"
+            }
+          ],
+          "publicAccess": {
+            "permissionConfiguration": {
+              "accountLevelPermissions": {
+                "blockPublicAccess": {
+                  "blockPublicAcls": {{ random_choice(['true', 'false']) }},
+                  "blockPublicPolicy": {{ random_choice(['true', 'false']) }}
+                }
+              }
+            },
+            "effectivePermission": "{{ random_choice(['PUBLIC', 'NOT_PUBLIC']) }}"
+          }
+        }
+      ],
+      "accessKeyDetails": {
+        "accessKeyId": "{{ random_choice(['AKIA', 'ASIA']) }}{{ random_string(16, 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789') }}",
+        "principalId": "{{ random_choice(['AIDA', 'AROA']) }}{{ random_string(17, 'ABCDEFGHIJKLMNOPQRSTUVWXYZ234567') }}",
+        "userType": "{{ random_choice(['IAMUser', 'AssumedRole']) }}",
+        "userName": "{{ random_choice([registry.get_random_user().username, 's3-access-user', 'data-sync-user']) }}"
+      }
+    },
+    "service": {
+      "serviceName": "guardduty",
+      "detectorId": "{{ random_hex(32, 32) }}",
+      "action": {
+        "actionType": "AWS_API_CALL",
+        "awsApiCallAction": {
+          "api": "{{ random_choice(['GetObject', 'ListObjects', 'PutObject', 'DeleteObject', 'GetObjectAcl', 'PutBucketPolicy', 'PutBucketAcl', 'DeleteBucket']) }}",
+          "serviceName": "s3.amazonaws.com",
+          "remoteIpDetails": {
+            "ipAddressV4": "{{ random_public_ip() }}",
+            "organization": {
+              "asn": {{ random_int(1, 65535) }},
+              "asnOrg": "{{ random_choice(['AS-DIGITALOCEAN', 'AS-LINODE', 'AS-TOR', 'AS-MALICIOUS']) }}",
+              "isp": "{{ random_choice(['DigitalOcean LLC', 'Tor Network', 'Unknown ISP']) }}",
+              "org": "{{ random_choice(['DigitalOcean', 'Tor Exit Node', 'Suspicious ISP']) }}"
+            },
+            "country": {
+              "countryName": "{{ random_choice(['United States', 'China', 'Russia', 'Unknown']) }}"
+            },
+            "city": {
+              "cityName": "{{ random_choice(['Unknown', 'Beijing', 'Moscow', 'Amsterdam']) }}"
+            },
+            "geoLocation": {
+              "lat": {{ random_int(-90, 90) }},
+              "lon": {{ random_int(-180, 180) }}
+            }
+          },
+          "userAgent": "{{ random_choice(['aws-cli/2.13.5', 'Boto3/1.26.137', 'Mozilla/5.0', '[S3Console/0.4]']) }}"
+        }
+      },
+      "resourceRole": "TARGET",
+      "eventFirstSeen": "{{ (now() | subtract_seconds(random_int(0, 3600))) | iso8601 }}",
+      "eventLastSeen": "{{ now() | iso8601 }}",
+      "archived": false,
+      "count": {{ random_int(1, 100) }}
+    },
+    "severity": {{ random_choice([2, 5, 5, 5, 8, 8]) }},
+    "createdAt": "{{ (now() | subtract_seconds(random_int(0, 7200))) | iso8601 }}",
+    "updatedAt": "{{ now() | iso8601 }}",
+    "title": "{{ random_choice([
+      'S3 API called from malicious IP address',
+      'Unusual S3 object read detected',
+      'S3 bucket permissions modified unusually',
+      'S3 bucket publicly exposed',
+      'S3 data exfiltration attempt detected',
+      'S3 API called from Tor exit node'
+    ]) }}",
+    "description": "{{ random_choice([
+      'An S3 API operation was invoked from a known malicious IP address',
+      'IAM entity made unusual S3 API calls for data exfiltration',
+      'S3 bucket policy modified to grant public access',
+      'S3 bucket block public access settings disabled',
+      'Unusual S3 object deletion behavior detected',
+      'S3 API invoked from penetration testing tool'
+    ]) }}"
+  }
+}

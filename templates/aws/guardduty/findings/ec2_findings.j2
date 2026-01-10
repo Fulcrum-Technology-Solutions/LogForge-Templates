@@ -1,0 +1,208 @@
+{
+  "version": "0",
+  "id": "{{ random_guid() }}",
+  "detail-type": "GuardDuty Finding",
+  "source": "aws.guardduty",
+  "account": "{{ registry.get_organization_field('aws_account_id') | default('123456789012', true) }}",
+  "time": "{{ now() | iso8601 }}",
+  "region": "{{ random_choice(['us-east-1', 'us-east-2', 'us-west-1', 'us-west-2', 'eu-west-1', 'eu-central-1', 'ap-southeast-1', 'ap-northeast-1']) }}",
+  "resources": [],
+  "detail": {
+    "schemaVersion": "2.0",
+    "accountId": "{{ registry.get_organization_field('aws_account_id') | default('123456789012', true) }}",
+    "region": "{{ random_choice(['us-east-1', 'us-east-2', 'us-west-1', 'us-west-2', 'eu-west-1', 'eu-central-1', 'ap-southeast-1', 'ap-northeast-1']) }}",
+    "partition": "aws",
+    "id": "{{ random_hex(32, 32) }}",
+    "arn": "arn:aws:guardduty:{{ random_choice(['us-east-1', 'us-east-2', 'us-west-1', 'us-west-2']) }}:{{ registry.get_organization_field('aws_account_id') | default('123456789012', true) }}:detector/{{ random_string(12) }}/finding/{{ random_hex(32, 32) }}",
+    "type": "{{ random_choice([
+      'Backdoor:EC2/C&CActivity.B',
+      'Backdoor:EC2/C&CActivity.B!DNS',
+      'Backdoor:EC2/DenialOfService.Dns',
+      'Backdoor:EC2/DenialOfService.Tcp',
+      'Backdoor:EC2/DenialOfService.Udp',
+      'Backdoor:EC2/DenialOfService.UdpOnTcpPorts',
+      'Backdoor:EC2/DenialOfService.UnusualProtocol',
+      'Backdoor:EC2/Spambot',
+      'Behavior:EC2/NetworkPortUnusual',
+      'Behavior:EC2/TrafficVolumeUnusual',
+      'CryptoCurrency:EC2/BitcoinTool.B',
+      'CryptoCurrency:EC2/BitcoinTool.B!DNS',
+      'DefenseEvasion:EC2/UnusualDNSResolver',
+      'DefenseEvasion:EC2/UnusualDoHActivity',
+      'DefenseEvasion:EC2/UnusualDoTActivity',
+      'Impact:EC2/AbusedDomainRequest.Reputation',
+      'Impact:EC2/BitcoinDomainRequest.Reputation',
+      'Impact:EC2/MaliciousDomainRequest.Reputation',
+      'Impact:EC2/MaliciousDomainRequest.Custom',
+      'Impact:EC2/PortSweep',
+      'Impact:EC2/SuspiciousDomainRequest.Reputation',
+      'Impact:EC2/WinRMBruteForce',
+      'Recon:EC2/PortProbeEMRUnprotectedPort',
+      'Recon:EC2/PortProbeUnprotectedPort',
+      'Recon:EC2/Portscan',
+      'Trojan:EC2/BlackholeTraffic',
+      'Trojan:EC2/BlackholeTraffic!DNS',
+      'Trojan:EC2/DGADomainRequest.B',
+      'Trojan:EC2/DGADomainRequest.C!DNS',
+      'Trojan:EC2/DNSDataExfiltration',
+      'Trojan:EC2/DriveBySourceTraffic!DNS',
+      'Trojan:EC2/DropPoint',
+      'Trojan:EC2/DropPoint!DNS',
+      'Trojan:EC2/PhishingDomainRequest!DNS',
+      'UnauthorizedAccess:EC2/MaliciousIPCaller.Custom',
+      'UnauthorizedAccess:EC2/MetadataDNSRebind',
+      'UnauthorizedAccess:EC2/RDPBruteForce',
+      'UnauthorizedAccess:EC2/SSHBruteForce',
+      'UnauthorizedAccess:EC2/TorClient',
+      'UnauthorizedAccess:EC2/TorRelay'
+    ]) }}",
+    "resource": {
+      "resourceType": "Instance",
+      "instanceDetails": {
+        "instanceId": "i-{{ random_hex(17, 17) }}",
+        "instanceType": "{{ random_choice(['t2.micro', 't2.small', 't2.medium', 't3.micro', 't3.small', 't3.medium', 'm5.large', 'm5.xlarge', 'm5.2xlarge', 'c5.large', 'c5.xlarge']) }}",
+        "launchTime": {{ (now() | unix_timestamp) - random_int(3600, 2592000) }}000,
+        "productCodes": [],
+        "networkInterfaces": [{
+          "ipv6Addresses": [],
+          "privateDnsName": "ip-{{ random_private_ip() | replace('.', '-') }}.{{ random_choice(['us-east-1', 'us-west-2', 'eu-west-1']) }}.compute.internal",
+          "privateIpAddress": "{{ random_private_ip() }}",
+          "privateIpAddresses": [{
+            "privateDnsName": "ip-{{ random_private_ip() | replace('.', '-') }}.{{ random_choice(['us-east-1', 'us-west-2']) }}.compute.internal",
+            "privateIpAddress": "{{ random_private_ip() }}"
+          }],
+          "subnetId": "subnet-{{ random_hex(8, 8) }}",
+          "vpcId": "vpc-{{ random_hex(8, 8) }}",
+          "securityGroups": [{
+            "groupName": "{{ random_choice(['default', 'web-servers', 'app-servers', 'database-servers', 'launch-wizard-1', 'ssh-access', 'rdp-access']) }}",
+            "groupId": "sg-{{ random_hex(8, 8) }}"
+          }],
+          "publicDnsName": "ec2-{{ random_public_ip() | replace('.', '-') }}.{{ random_choice(['us-east-1', 'us-west-2', 'eu-west-1']) }}.compute.amazonaws.com",
+          "publicIp": "{{ random_public_ip() }}"
+        }],
+        "tags": [
+          {
+            "key": "Name",
+            "value": "{{ registry.get_random_device().hostname }}"
+          },
+          {
+            "key": "Environment",
+            "value": "{{ random_choice(['production', 'development', 'staging', 'test']) }}"
+          }
+        ],
+        "instanceState": "{{ random_choice(['running', 'stopped']) }}",
+        "availabilityZone": "{{ random_choice(['us-east-1a', 'us-east-1b', 'us-east-1c', 'us-west-2a', 'us-west-2b', 'eu-west-1a', 'eu-west-1b']) }}",
+        "imageId": "ami-{{ random_hex(8, 8) }}",
+        "imageDescription": "{{ random_choice(['Amazon Linux 2023', 'Amazon Linux 2', 'Ubuntu Server 22.04 LTS', 'Ubuntu Server 20.04 LTS', 'Windows Server 2022', 'Windows Server 2019', 'Red Hat Enterprise Linux 9', 'Red Hat Enterprise Linux 8']) }}"
+      }
+    },
+    "service": {
+      "serviceName": "guardduty",
+      "detectorId": "{{ random_hex(32, 32) }}",
+      "action": {
+        "actionType": "{{ random_choice(['NETWORK_CONNECTION', 'PORT_PROBE', 'DNS_REQUEST']) }}",
+        "networkConnectionAction": {
+          "connectionDirection": "{{ random_choice(['OUTBOUND', 'INBOUND']) }}",
+          "remoteIpDetails": {
+            "ipAddressV4": "{{ random_public_ip() }}",
+            "organization": {
+              "asn": {{ random_int(1, 65535) }},
+              "asnOrg": "{{ random_choice(['AS-DIGITALOCEAN', 'AS-LINODE', 'AS-AMAZON', 'AS-GOOGLE', 'AS-MICROSOFT', 'AS-HETZNER', 'AS-OVH']) }}",
+              "isp": "{{ random_choice(['DigitalOcean LLC', 'Linode LLC', 'Amazon Technologies Inc.', 'Google LLC', 'Microsoft Corporation', 'Hetzner Online GmbH', 'OVH SAS']) }}",
+              "org": "{{ random_choice(['DigitalOcean', 'Linode', 'Amazon', 'Google Cloud', 'Microsoft Azure', 'Hetzner', 'OVH']) }}"
+            },
+            "country": {
+              "countryName": "{{ random_choice(['United States', 'China', 'Russia', 'Germany', 'United Kingdom', 'France', 'Netherlands', 'Singapore', 'Japan', 'Canada']) }}"
+            },
+            "city": {
+              "cityName": "{{ random_choice(['Unknown', 'Beijing', 'Moscow', 'Amsterdam', 'London', 'Frankfurt', 'Singapore', 'Tokyo', 'Toronto']) }}"
+            },
+            "geoLocation": {
+              "lat": {{ random_int(-90, 90) }},
+              "lon": {{ random_int(-180, 180) }}
+            }
+          },
+          "remotePortDetails": {
+            "port": {{ random_choice([22, 23, 25, 80, 443, 445, 1433, 3306, 3389, 5432, 6379, 8080, 8088, 9200, 9300, 27017]) }},
+            "portName": "{{ random_choice(['SSH', 'Telnet', 'SMTP', 'HTTP', 'HTTPS', 'SMB', 'MSSQL', 'MySQL', 'RDP', 'PostgreSQL', 'Redis', 'HTTP-Alt', 'YARN', 'Elasticsearch', 'Elasticsearch-Transport', 'MongoDB']) }}"
+          },
+          "localPortDetails": {
+            "port": {{ random_port(1024, 65535) }},
+            "portName": "Unknown"
+          },
+          "protocol": "{{ random_choice(['TCP', 'UDP', 'ICMP']) }}",
+          "blocked": {{ random_choice(['true', 'false']) }}
+        },
+        "dnsRequestAction": {
+          "domain": "{{ random_choice(['guarddutyc2activityb.com', 'malicious-domain.ru', 'bitcoin-pool.com', 'crypto-mine.xyz', 'phishing-site.info', 'dga-generated-12345.com', 'tor-relay-node.onion']) }}",
+          "protocol": "{{ random_choice(['UDP', 'TCP']) }}",
+          "blocked": {{ random_choice(['true', 'false']) }}
+        },
+        "portProbeAction": {
+          "blocked": {{ random_choice(['true', 'false']) }},
+          "portProbeDetails": [
+            {
+              "localPortDetails": {
+                "port": {{ random_choice([22, 3389, 445, 8088, 9200]) }},
+                "portName": "{{ random_choice(['SSH', 'RDP', 'SMB', 'YARN', 'Elasticsearch']) }}"
+              },
+              "remoteIpDetails": {
+                "ipAddressV4": "{{ random_public_ip() }}",
+                "organization": {
+                  "asn": {{ random_int(1, 65535) }},
+                  "asnOrg": "{{ random_choice(['AS-SCANNER', 'AS-MALICIOUS']) }}",
+                  "isp": "Unknown",
+                  "org": "Scanner Network"
+                },
+                "country": {
+                  "countryName": "{{ random_choice(['Unknown', 'China', 'Russia']) }}"
+                }
+              }
+            }
+          ]
+        }
+      },
+      "resourceRole": "{{ random_choice(['TARGET', 'ACTOR']) }}",
+      "additionalInfo": {
+        "threatListName": "{{ random_choice(['ProofPoint', 'Custom Threat List', 'AWS Threat Intelligence', 'Community Threat List', 'Amazon']) }}",
+        "threatName": "{{ random_choice(['C&C Server', 'Bitcoin Mining', 'Tor Network', 'Phishing Domain', 'DGA Domain', 'Log4j Related']) }}",
+        "unusual": {{ random_int(1, 100) }},
+        "unusualProtocol": "{{ random_choice(['UDP', 'ICMP', 'GRE']) }}"
+      },
+      "eventFirstSeen": "{{ (now() | subtract_seconds(random_int(0, 7200))) | iso8601 }}",
+      "eventLastSeen": "{{ now() | iso8601 }}",
+      "archived": false,
+      "count": {{ random_int(1, 100) }}
+    },
+    "severity": {{ random_choice([2, 2, 5, 5, 5, 8, 8]) }},
+    "createdAt": "{{ (now() | subtract_seconds(random_int(0, 14400))) | iso8601 }}",
+    "updatedAt": "{{ now() | iso8601 }}",
+    "title": "{{ random_choice([
+      'EC2 instance querying known C&C server',
+      'EC2 instance performing DDoS attack',
+      'Cryptocurrency mining activity detected',
+      'Suspicious network port usage detected',
+      'Port scan activity detected',
+      'SSH brute force attack detected',
+      'RDP brute force attack detected',
+      'Tor network communication detected',
+      'Phishing domain query detected',
+      'Malicious IP communication detected',
+      'DNS data exfiltration detected',
+      'Unusual DNS resolver usage',
+      'DGA domain query detected'
+    ]) }}",
+    "description": "{{ random_choice([
+      'EC2 instance is performing outbound communication with a remote host on an unusual port',
+      'EC2 instance is communicating with a known malicious IP address',
+      'EC2 instance is being probed by a suspicious IP',
+      'Potential data exfiltration detected via DNS queries',
+      'EC2 instance is querying algorithmically generated domains',
+      'EC2 instance is involved in cryptocurrency mining activity',
+      'EC2 instance is communicating with Tor network nodes',
+      'EC2 instance is querying phishing-related domains',
+      'Brute force authentication attempts detected',
+      'Port scanning activity from EC2 instance detected'
+    ]) }}"
+  }
+}

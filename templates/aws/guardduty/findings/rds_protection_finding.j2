@@ -1,0 +1,128 @@
+{
+  "version": "0",
+  "id": "{{ random_guid() }}",
+  "detail-type": "GuardDuty Finding",
+  "source": "aws.guardduty",
+  "account": "{{ registry.get_organization_field('aws_account_id') | default('123456789012', true) }}",
+  "time": "{{ now() | iso8601 }}",
+  "region": "{{ random_choice(['us-east-1', 'us-east-2', 'us-west-1', 'us-west-2', 'eu-west-1', 'eu-central-1']) }}",
+  "resources": [],
+  "detail": {
+    "schemaVersion": "2.0",
+    "accountId": "{{ registry.get_organization_field('aws_account_id') | default('123456789012', true) }}",
+    "region": "{{ random_choice(['us-east-1', 'us-east-2', 'us-west-1', 'us-west-2', 'eu-west-1']) }}",
+    "partition": "aws",
+    "id": "{{ random_hex(32, 32) }}",
+    "arn": "arn:aws:guardduty:{{ random_choice(['us-east-1', 'us-east-2', 'us-west-1', 'us-west-2']) }}:{{ registry.get_organization_field('aws_account_id') | default('123456789012', true) }}:detector/{{ random_string(12) }}/finding/{{ random_hex(32, 32) }}",
+    "type": "{{ random_choice([
+      'CredentialAccess:RDS/AnomalousBehavior.SuccessfulLogin',
+      'CredentialAccess:RDS/AnomalousBehavior.FailedLogin',
+      'CredentialAccess:RDS/AnomalousBehavior.SuccessfulBruteForce',
+      'CredentialAccess:RDS/MaliciousIPCaller.SuccessfulLogin',
+      'CredentialAccess:RDS/MaliciousIPCaller.FailedLogin',
+      'Discovery:RDS/MaliciousIPCaller',
+      'CredentialAccess:RDS/TorIPCaller.SuccessfulLogin',
+      'CredentialAccess:RDS/TorIPCaller.FailedLogin',
+      'Discovery:RDS/TorIPCaller'
+    ]) }}",
+    "resource": {
+      "resourceType": "{{ random_choice(['RDSDBInstance', 'RDSLimitlessDB']) }}",
+      "rdsDbInstanceDetails": {
+        "dbInstanceIdentifier": "{{ random_choice(['production-db', 'staging-db', 'development-db', 'analytics-db']) }}-{{ random_int(1000, 9999) }}",
+        "engine": "{{ random_choice(['aurora-mysql', 'aurora-postgresql', 'mysql', 'postgres', 'mariadb', 'oracle-ee', 'sqlserver-ee']) }}",
+        "engineVersion": "{{ random_choice(['8.0.mysql_aurora.3.04.0', '13.7', '15.3', '8.0.35', '14.9']) }}",
+        "dbClusterIdentifier": "{{ random_choice(['production-cluster', 'staging-cluster', 'development-cluster']) }}-{{ random_int(1000, 9999) }}",
+        "dbInstanceArn": "arn:aws:rds:{{ random_choice(['us-east-1', 'us-east-2']) }}:{{ registry.get_organization_field('aws_account_id') | default('123456789012', true) }}:db:{{ random_choice(['production-db', 'staging-db']) }}-{{ random_int(1000, 9999) }}",
+        "tags": [
+          {
+            "key": "Environment",
+            "value": "{{ random_choice(['Production', 'Staging', 'Development']) }}"
+          }
+        ]
+      },
+      "rdsDbClusterArn": "arn:aws:rds:{{ random_choice(['us-east-1', 'us-east-2']) }}:{{ registry.get_organization_field('aws_account_id') | default('123456789012', true) }}:cluster:{{ random_choice(['production-cluster', 'staging-cluster']) }}-{{ random_int(1000, 9999) }}",
+      "rdsDbClusterIdentifier": "{{ random_choice(['production-cluster', 'staging-cluster', 'development-cluster']) }}-{{ random_int(1000, 9999) }}"
+    },
+    "service": {
+      "serviceName": "guardduty",
+      "detectorId": "{{ random_hex(32, 32) }}",
+      "action": {
+        "actionType": "RDS_LOGIN_ACTIVITY",
+        "rdsLoginActivity": {
+          "applicationProtocol": "{{ random_choice(['mysql', 'postgresql', 'sqlserver', 'oracle']) }}",
+          "remoteIpDetails": {
+            "ipAddressV4": "{{ random_public_ip() }}",
+            "organization": {
+              "asn": {{ random_int(1, 65535) }},
+              "asnOrg": "{{ random_choice(['AS-AMAZON', 'AS-GOOGLE', 'AS-TOR', 'AS-UNKNOWN']) }}",
+              "isp": "{{ random_choice(['Amazon Technologies Inc.', 'Google LLC', 'Tor Network', 'Unknown ISP']) }}",
+              "org": "{{ random_choice(['Amazon', 'Google Cloud', 'Tor Exit Node', 'Unknown']) }}"
+            },
+            "country": {
+              "countryName": "{{ random_choice(['United States', 'China', 'Russia', 'Germany', 'Netherlands']) }}"
+            },
+            "city": {
+              "cityName": "{{ random_choice(['Unknown', 'Beijing', 'Moscow', 'Frankfurt', 'Amsterdam']) }}"
+            },
+            "geoLocation": {
+              "lat": {{ random_int(-90, 90) }},
+              "lon": {{ random_int(-180, 180) }}
+            }
+          },
+          "localPortDetails": {
+            "port": {{ random_choice([3306, 5432, 1433, 1521, 6379]) }},
+            "portName": "{{ random_choice(['MySQL', 'PostgreSQL', 'MSSQL', 'Oracle', 'Redis']) }}"
+          },
+          "loginAttributes": {
+            "user": "{{ random_choice([registry.get_random_user().username, 'admin', 'root', 'postgres', 'master', 'sa', 'application-user', 'analytics-user']) }}",
+            "applicationName": "{{ random_choice(['psql', 'mysql', 'sqlcmd', 'sqlplus', 'DBeaver', 'DataGrip', 'application']) }}",
+            "database": "{{ random_choice(['production', 'staging', 'development', 'analytics', 'master', 'postgres', 'mysql', 'information_schema']) }}"
+          },
+          "blocked": {{ random_choice(['true', 'false']) }}
+        }
+      },
+      "resourceRole": "TARGET",
+      "eventFirstSeen": "{{ (now() | subtract_seconds(random_int(0, 3600))) | iso8601 }}",
+      "eventLastSeen": "{{ now() | iso8601 }}",
+      "archived": false,
+      "count": {{ random_int(1, 100) }},
+      "additionalInfo": {
+        "threatListName": "{{ random_choice(['ProofPoint', 'Custom Threat List', 'AWS Threat Intelligence', 'Tor Exit Nodes', 'Amazon']) }}",
+        "threatName": "{{ random_choice(['Malicious IP', 'Tor Network', 'Brute Force Attack', 'Database Scanner']) }}",
+        "unusual": {
+          "userIdentity": {
+            "userName": "{{ random_choice(['anomalous', 'not historical', 'infrequent']) }}",
+            "asnOrg": "{{ random_choice(['anomalous', 'not historical']) }}"
+          }
+        },
+        "sample": false
+      }
+    },
+    "severity": {{ random_choice([2, 2, 5, 5, 5, 8, 8]) }},
+    "createdAt": "{{ (now() | subtract_seconds(random_int(0, 7200))) | iso8601 }}",
+    "updatedAt": "{{ now() | iso8601 }}",
+    "title": "{{ random_choice([
+      'Anomalous successful login detected on RDS database',
+      'Anomalous failed login attempts detected on RDS database',
+      'Successful brute force login detected on RDS database',
+      'Successful login from malicious IP address detected on RDS database',
+      'Failed login attempt from malicious IP address detected on RDS database',
+      'Malicious IP address probed RDS database',
+      'Successful login from Tor exit node detected on RDS database',
+      'Failed login attempt from Tor exit node detected on RDS database',
+      'Tor exit node probed RDS database'
+    ]) }}",
+    "description": "{{ random_choice([
+      'GuardDuty detected an anomalous successful login on an RDS database in your AWS environment. This may indicate that a previous unseen user logged into an RDS database for the first time. This successful login was identified as anomalous by the GuardDuty anomaly detection machine learning model.',
+      'GuardDuty detected one or more anomalous failed logins on an RDS database in your AWS environment. Failed login attempts from public IP addresses may indicate that the RDS database has been subject to an attempted brute force attack.',
+      'GuardDuty detected an anomalous login indicative of a successful brute force on an RDS database. Prior to the anomalous successful login, a consistent pattern of unusual failed login attempts was observed. This indicates that the user and password associated with the RDS database may have been compromised.',
+      'GuardDuty detected a successful RDS login activity from an IP address that is associated with known malicious activity. This indicates that the user and password associated with the RDS database may have been compromised, and the database may have been accessed by a potentially malicious actor.',
+      'GuardDuty detected an IP address associated with known malicious activity attempting to log in to an RDS database, but failed to provide the correct user name or password. This indicates that a potentially malicious actor may be attempting to compromise the RDS database.',
+      'GuardDuty detected an IP address associated with known malicious activity probing an RDS database, though no login attempt was made. This may indicate that a potentially malicious actor is attempting to scan for publicly accessible infrastructure.',
+      'GuardDuty detected a user successfully logged in to an RDS database from a Tor exit node IP address. Tor is software for enabling anonymous communication. This can indicate unauthorized access to RDS resources with the intent of hiding the anonymous user\'s true identity.',
+      'GuardDuty detected a Tor exit node IP address attempting to log in to an RDS database, but failed to provide the correct user name or password. This can indicate unauthorized access attempts to RDS resources with the intent of hiding the potentially malicious actor\'s true identity.',
+      'GuardDuty detected a Tor exit node IP address probing an RDS database, though no login attempt was made. This may indicate that a potentially malicious actor is attempting to scan for publicly accessible infrastructure with the intent of hiding their true identity.'
+    ]) }}"
+  }
+}
+
