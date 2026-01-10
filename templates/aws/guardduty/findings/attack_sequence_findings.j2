@@ -1,0 +1,182 @@
+{
+  "version": "0",
+  "id": "{{ random_guid() }}",
+  "detail-type": "GuardDuty Finding",
+  "source": "aws.guardduty",
+  "account": "{{ registry.get_organization_field('aws_account_id') | default('123456789012', true) }}",
+  "time": "{{ now() | iso8601 }}",
+  "region": "{{ random_choice(['us-east-1', 'us-east-2', 'us-west-1', 'us-west-2', 'eu-west-1']) }}",
+  "resources": [],
+  "detail": {
+    "schemaVersion": "2.0",
+    "accountId": "{{ registry.get_organization_field('aws_account_id') | default('123456789012', true) }}",
+    "region": "{{ random_choice(['us-east-1', 'us-east-2', 'us-west-1', 'us-west-2']) }}",
+    "partition": "aws",
+    "id": "{{ random_hex(32, 32) }}",
+    "arn": "arn:aws:guardduty:{{ random_choice(['us-east-1', 'us-east-2']) }}:{{ registry.get_organization_field('aws_account_id') | default('123456789012', true) }}:detector/{{ random_string(12) }}/finding/{{ random_hex(32, 32) }}",
+    "type": "{{ random_choice([
+      'AttackSequence:EKS/CompromisedCluster',
+      'AttackSequence:ECS/CompromisedCluster',
+      'AttackSequence:EC2/CompromisedInstanceGroup',
+      'AttackSequence:IAM/CompromisedCredentials',
+      'AttackSequence:S3/CompromisedData'
+    ]) }}",
+    "service": {
+      "serviceName": "guardduty",
+      "detectorId": "{{ random_hex(32, 32) }}",
+      "attackSequence": {
+        "uid": "{{ random_guid() }}",
+        "signals": [
+          {
+            "uid": "{{ random_guid() }}",
+            "type": "FINDING",
+            "description": "{{ random_choice(['Privilege escalation detected', 'Suspicious API call observed', 'Data exfiltration attempt', 'Credential access behavior', 'Malicious process execution']) }}",
+            "name": "{{ random_choice(['PrivilegeEscalation:IAMUser/AnomalousBehavior', 'Runtime:EKS/MaliciousFileExecution', 'Exfiltration:S3/ObjectRead.Unusual', 'CredentialAccess:IAMUser/AnomalousBehavior']) }}",
+            "createdAt": "{{ (now() | subtract_seconds(random_int(3600, 7200))) | iso8601 }}",
+            "updatedAt": "{{ (now() | subtract_seconds(random_int(0, 3600))) | iso8601 }}",
+            "count": {{ random_int(1, 20) }}
+          }
+        ],
+        "actors": [
+          {
+            "id": "{{ registry.get_random_user().username }}",
+            "type": "{{ random_choice(['AWS_USER', 'AWS_ROLE', 'KUBERNETES_USER']) }}"
+          }
+        ],
+        "endpoints": [
+          {
+            "ip": "{{ random_public_ip() }}",
+            "asn": {{ random_int(1, 65535) }},
+            "domain": "{{ random_choice(['amazonaws.com', 'suspicious-domain.com', 'unknown']) }}",
+            "country": "{{ random_choice(['US', 'CN', 'RU', 'Unknown']) }}"
+          }
+        ],
+        "resources": [
+          {
+            "resourceType": "{{ random_choice(['EKSCluster', 'ECSCluster', 'Instance', 'AccessKey', 'S3Bucket']) }}",
+            "resourceArn": "arn:aws:{{ random_choice(['eks', 'ecs', 'ec2', 'iam', 's3']) }}:us-east-1:{{ registry.get_organization_field('aws_account_id') | default('123456789012', true) }}:{{ random_choice(['cluster', 'task', 'instance', 'user', 'bucket']) }}/{{ random_string(16) }}"
+          }
+        ],
+        "indicators": [
+          {
+            "key": "{{ random_choice(['HIGH_RISK_API', 'SUSPICIOUS_NETWORK', 'CREDENTIAL_ANOMALY', 'PRIVILEGE_ESCALATION', 'DATA_EXFILTRATION']) }}",
+            "values": ["{{ random_choice(['Elevated privileges obtained', 'Unusual API sequence', 'Suspicious endpoint communication', 'Anomalous data access']) }}"]
+          }
+        ],
+        "mitreTactics": {{ random_choice(['["InitialAccess", "Execution", "PrivilegeEscalation"]', '["CredentialAccess", "Discovery", "Exfiltration"]', '["Persistence", "DefenseEvasion", "Impact"]']) | safe }}
+      },
+      "archived": false,
+      "count": {{ random_int(1, 10) }},
+      "eventFirstSeen": "{{ (now() | subtract_seconds(random_int(7200, 14400))) | iso8601 }}",
+      "eventLastSeen": "{{ now() | iso8601 }}",
+      "resourceRole": "TARGET"
+    },
+    "severity": 10,
+    "createdAt": "{{ (now() | subtract_seconds(random_int(3600, 7200))) | iso8601 }}",
+    "updatedAt": "{{ now() | iso8601 }}",
+    "title": "{{ random_choice([
+      'Attack sequence detected indicating potentially compromised EKS cluster',
+      'Multi-stage attack sequence detected on ECS cluster',
+      'Suspicious action sequence detected across EC2 instance group',
+      'Attack sequence detected using compromised IAM credentials',
+      'Attack sequence detected targeting S3 data'
+    ]) }}",
+    "description": "{{ random_choice([
+      'GuardDuty detected a sequence of suspicious actions indicating potential cluster compromise with multiple attack behaviors observed',
+      'Multiple suspicious and anomalous attack behaviors were observed, indicating higher confidence of credential misuse',
+      'A sequence of actions was observed indicating an in-progress or recent security threat to your AWS resources',
+      'GuardDuty identified a pattern of activities consistent with data compromise or exfiltration attempts'
+    ]) }}"
+  }
+}
+{
+  "version": "0",
+  "id": "{{ random_guid() }}",
+  "detail-type": "GuardDuty Finding",
+  "source": "aws.guardduty",
+  "account": "{{ registry.get_organization_field('aws_account_id') | default('123456789012', true) }}",
+  "time": "{{ now() | iso8601 }}",
+  "region": "{{ random_choice(['us-east-1', 'us-east-2', 'us-west-1', 'us-west-2', 'eu-west-1']) }}",
+  "resources": [],
+  "detail": {
+    "schemaVersion": "2.0",
+    "accountId": "{{ registry.get_organization_field('aws_account_id') | default('123456789012', true) }}",
+    "region": "{{ random_choice(['us-east-1', 'us-east-2', 'us-west-1', 'us-west-2']) }}",
+    "partition": "aws",
+    "id": "{{ random_hex(32, 32) }}",
+    "arn": "arn:aws:guardduty:{{ random_choice(['us-east-1', 'us-east-2']) }}:{{ registry.get_organization_field('aws_account_id') | default('123456789012', true) }}:detector/{{ random_string(12) }}/finding/{{ random_hex(32, 32) }}",
+    "type": "{{ random_choice([
+      'AttackSequence:EKS/CompromisedCluster',
+      'AttackSequence:ECS/CompromisedCluster',
+      'AttackSequence:EC2/CompromisedInstanceGroup',
+      'AttackSequence:IAM/CompromisedCredentials',
+      'AttackSequence:S3/CompromisedData'
+    ]) }}",
+    "service": {
+      "serviceName": "guardduty",
+      "detectorId": "{{ random_hex(32, 32) }}",
+      "attackSequence": {
+        "uid": "{{ random_guid() }}",
+        "signals": [
+          {
+            "uid": "{{ random_guid() }}",
+            "type": "FINDING",
+            "description": "{{ random_choice(['Privilege escalation detected', 'Suspicious API call observed', 'Data exfiltration attempt', 'Credential access behavior', 'Malicious process execution']) }}",
+            "name": "{{ random_choice(['PrivilegeEscalation:IAMUser/AnomalousBehavior', 'Runtime:EKS/MaliciousFileExecution', 'Exfiltration:S3/ObjectRead.Unusual', 'CredentialAccess:IAMUser/AnomalousBehavior']) }}",
+            "createdAt": "{{ (now() | subtract_seconds(random_int(3600, 7200))) | iso8601 }}",
+            "updatedAt": "{{ (now() | subtract_seconds(random_int(0, 3600))) | iso8601 }}",
+            "count": {{ random_int(1, 20) }}
+          }
+        ],
+        "actors": [
+          {
+            "id": "{{ registry.get_random_user().username }}",
+            "type": "{{ random_choice(['AWS_USER', 'AWS_ROLE', 'KUBERNETES_USER']) }}"
+          }
+        ],
+        "endpoints": [
+          {
+            "ip": "{{ random_public_ip() }}",
+            "asn": {{ random_int(1, 65535) }},
+            "domain": "{{ random_choice(['amazonaws.com', 'suspicious-domain.com', 'unknown']) }}",
+            "country": "{{ random_choice(['US', 'CN', 'RU', 'Unknown']) }}"
+          }
+        ],
+        "resources": [
+          {
+            "resourceType": "{{ random_choice(['EKSCluster', 'ECSCluster', 'Instance', 'AccessKey', 'S3Bucket']) }}",
+            "resourceArn": "arn:aws:{{ random_choice(['eks', 'ecs', 'ec2', 'iam', 's3']) }}:us-east-1:{{ registry.get_organization_field('aws_account_id') | default('123456789012', true) }}:{{ random_choice(['cluster', 'task', 'instance', 'user', 'bucket']) }}/{{ random_string(16) }}"
+          }
+        ],
+        "indicators": [
+          {
+            "key": "{{ random_choice(['HIGH_RISK_API', 'SUSPICIOUS_NETWORK', 'CREDENTIAL_ANOMALY', 'PRIVILEGE_ESCALATION', 'DATA_EXFILTRATION']) }}",
+            "values": ["{{ random_choice(['Elevated privileges obtained', 'Unusual API sequence', 'Suspicious endpoint communication', 'Anomalous data access']) }}"]
+          }
+        ],
+        "mitreTactics": {{ random_choice(['["InitialAccess", "Execution", "PrivilegeEscalation"]', '["CredentialAccess", "Discovery", "Exfiltration"]', '["Persistence", "DefenseEvasion", "Impact"]']) | safe }}
+      },
+      "archived": false,
+      "count": {{ random_int(1, 10) }},
+      "eventFirstSeen": "{{ (now() | subtract_seconds(random_int(7200, 14400))) | iso8601 }}",
+      "eventLastSeen": "{{ now() | iso8601 }}",
+      "resourceRole": "TARGET"
+    },
+    "severity": 10,
+    "createdAt": "{{ (now() | subtract_seconds(random_int(3600, 7200))) | iso8601 }}",
+    "updatedAt": "{{ now() | iso8601 }}",
+    "title": "{{ random_choice([
+      'Attack sequence detected indicating potentially compromised EKS cluster',
+      'Multi-stage attack sequence detected on ECS cluster',
+      'Suspicious action sequence detected across EC2 instance group',
+      'Attack sequence detected using compromised IAM credentials',
+      'Attack sequence detected targeting S3 data'
+    ]) }}",
+    "description": "{{ random_choice([
+      'GuardDuty detected a sequence of suspicious actions indicating potential cluster compromise with multiple attack behaviors observed',
+      'Multiple suspicious and anomalous attack behaviors were observed, indicating higher confidence of credential misuse',
+      'A sequence of actions was observed indicating an in-progress or recent security threat to your AWS resources',
+      'GuardDuty identified a pattern of activities consistent with data compromise or exfiltration attempts'
+    ]) }}"
+  }
+}

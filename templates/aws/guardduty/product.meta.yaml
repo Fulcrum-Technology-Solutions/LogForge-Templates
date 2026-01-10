@@ -1,0 +1,6 @@
+vendor: aws
+product: guardduty
+name: AWS GuardDuty
+description: Amazon GuardDuty is a threat detection service that continuously monitors for malicious activity and unauthorized behavior to protect AWS accounts, workloads, and data. It analyzes VPC Flow Logs, CloudTrail events, and DNS logs to identify threats.
+version: All
+documentation_url: https://docs.aws.amazon.com/guardduty/

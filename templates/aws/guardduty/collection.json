@@ -1,0 +1,43 @@
+{
+    "name": "aws-guardduty",
+    "version": "1.1.0",
+    "description": "LogForge templates for AWS GuardDuty threat detection findings across EC2, IAM, S3, EKS, Lambda, RDS, Runtime Monitoring, Malware Protection, Attack Sequences, and other AWS services",
+    "maintainers": [
+      {
+        "name": "John Owen",
+        "email": "jowen@ftsc.com",
+        "github": "jowenftsc"
+      }
+    ],
+    "tags": [
+      "aws",
+      "guardduty",
+      "threat-detection",
+      "security",
+      "cloud-security",
+      "findings",
+      "ec2",
+      "iam",
+      "credentials",
+      "s3",
+      "eks",
+      "lambda",
+      "rds",
+      "runtime-monitoring",
+      "malware-protection",
+      "attack-sequences"
+    ],
+    "templates": [
+      "findings/attack_sequence_findings",
+      "findings/ec2_findings",
+      "findings/eks_protection_findings",
+      "findings/iam_findings",
+      "findings/lambda_protection_finding",
+      "findings/malware_protection_backup_finding",
+      "findings/malware_protection_ec2_finding",
+      "findings/malware_protection_s3_finding",
+      "findings/rds_protection_finding",
+      "findings/runtime_monitoring_findings",
+      "findings/s3_protection_findings"
+    ]
+  }

