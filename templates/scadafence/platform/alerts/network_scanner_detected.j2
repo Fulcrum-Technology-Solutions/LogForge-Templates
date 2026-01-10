@@ -1,0 +1,10 @@
+{%- set alert_device = registry.get_random_device() -%}
+{%- set platform_ip = "192.168.1.234" -%}
+{%- set alert_id = random_int(1, 99999) -%}
+{%- set severity = random_weighted([8, 7, 9], [0.6, 0.3, 0.1]) -%}
+{%- set status = random_weighted(["CREATED", "IN_PROGRESS", "RESOLVED", "ACKNOWLEDGED"], [0.4, 0.3, 0.2, 0.1]) -%}
+{%- set site = random_weighted(["N/A", "Plant-A", "Facility-B", "Site-1"], [0.4, 0.2, 0.2, 0.2]) -%}
+{%- set details_text = "Asset " ~ alert_device.ip_address ~ " was identified as a network scanner, sending requests to too many assets/ports" -%}
+{%- set explanation_text = "This asset has been identified as doing scanning activity. It can either be a legitimate scanner (monitoring or management platform), or it can be an infected asset that scans the network with a potentially malicious intent." -%}
+{%- set remediation_text = "Please check the asset. If it is a valid scanner or management system, you can resolve the alert using the don't-show-it-again check box so it will not appear again. If this is not a valid activity, you should start a remediation process for this host, and assume that the network is compromised. If this is a one-time scan by a person, you can resolve the alert and let the alert re-trigger in case there is another scanning activity." -%}
+CEF:0|SCADAfence|SCADAfence Platform|{{ random_weighted(["6.5.1.15", "6.6.0.8", "6.7.2.3"], [0.5, 0.3, 0.2]) }}|1200|Network Scanner was detected|{{ severity }}|alert_ip={{ alert_device.ip_address }} site={{ site }} alert_seq={{ alert_id }} status={{ status }} createdOn={{ (now() | subtract_seconds(random_int(60, 3600))) | format_datetime('%Y-%m-%d %H:%M:%S') }} updatedOn={{ (now() | subtract_seconds(random_int(0, 300))) | format_datetime('%Y-%m-%d %H:%M:%S') }} details={{ details_text | replace(' ', '\\ ') }} explanation={{ explanation_text | replace(' ', '\\ ') }} remediation={{ remediation_text | replace(' ', '\\ ') }} url=https://{{ platform_ip }}/alerts/{{ alert_id }}
