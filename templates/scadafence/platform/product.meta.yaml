@@ -1,0 +1,6 @@
+vendor: scadafence
+product: platform
+name: SCADAfence Platform
+description: Comprehensive OT/ICS security platform providing continuous monitoring, threat detection, and vulnerability management for operational technology networks
+version: 6.5+
+documentation_url: https://www.scadafence.com/resources/documentation/
