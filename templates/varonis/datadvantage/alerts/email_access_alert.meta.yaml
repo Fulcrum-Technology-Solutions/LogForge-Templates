@@ -1,0 +1,328 @@
+vendor: varonis
+product: datadvantage
+data_source: alerts
+description: Records suspicious email and mailbox access patterns detected by Varonis DatAdvantage, including abnormal access, excessive email reads, executive mailbox monitoring, and delegated access abuse.
+format: CEF
+frequency: medium
+is_generator: true
+base_frequency: 20
+time_patterns:
+  - business_hours
+  - night_hours
+  - weekend
+business_hours_multiplier: 3.5
+night_hours_multiplier: 0.4
+weekend_multiplier: 0.2
+
+documentation:
+  display:
+    title: "Email Access Alert"
+    subtitle: "Mailbox access anomaly detection and monitoring"
+    icon: "📧"
+    color_scheme: "warning"
+    tags:
+      - "email-security"
+      - "mailbox-access"
+      - "exchange"
+      - "insider-threat"
+
+  overview:
+    summary: "Alert generated when Varonis DatAdvantage detects abnormal or suspicious mailbox access patterns including excessive email reading, executive mailbox access, delegated access abuse, or mass email downloads from Exchange/Office 365."
+    when_generated:
+      - "User accesses mailboxes in abnormal patterns"
+      - "Excessive email items are accessed or downloaded"
+      - "Executive or sensitive mailboxes are accessed"
+      - "Mailbox access occurs outside normal business hours"
+      - "Delegated access permissions are used abnormally"
+      - "Mass email export or download activity detected"
+      - "User accesses mailboxes they don't normally access"
+    security_relevance: "High"
+    compliance_frameworks:
+      - "GDPR - Email Data Protection"
+      - "HIPAA - ePHI Email Security"
+      - "SOX - Executive Communication Auditing"
+      - "PCI DSS - Cardholder Data via Email"
+      - "NIST 800-53 - AC-2, AU-6"
+      - "SEC Rule 17a-4 - Email Retention"
+    frequency_notes: "Medium frequency (10-30 alerts per day in typical deployments). Higher during business hours (3.5x multiplier) when email activity peaks. Reduced during nights (0.4x) and weekends (0.2x) except for critical executive monitoring."
+
+  fields:
+    - name: "CEF Version"
+      type: "Integer"
+      required: true
+      description: "CEF format version (always 0)"
+      example_value: "0"
+      template_source: "Static value"
+
+    - name: "Device Vendor"
+      type: "String"
+      required: true
+      description: "Vendor name (Varonis)"
+      example_value: "Varonis"
+      template_source: "Static value"
+
+    - name: "Device Product"
+      type: "String"
+      required: true
+      description: "Product name (DatAdvantage)"
+      example_value: "DatAdvantage"
+      template_source: "Static value"
+
+    - name: "Device Version"
+      type: "String"
+      required: true
+      description: "DatAdvantage version"
+      example_value: "9.5"
+      template_source: "random_choice(['8.0', '8.5', '9.0', '9.5'])"
+
+    - name: "Signature ID"
+      type: "Integer"
+      required: true
+      description: "Event operation code for email alerts (3000-3999 range)"
+      example_value: "3543"
+      template_source: "random_int(3000, 3999)"
+
+    - name: "Name"
+      type: "String"
+      required: true
+      description: "Event type/alert name"
+      example_value: "Abnormal mailbox access"
+      template_source: "random_weighted event types"
+      possible_values:
+        - value: "Abnormal mailbox access"
+          description: "User accessing mailbox in unusual pattern"
+        - value: "Excessive email access"
+          description: "User accessing more emails than normal baseline"
+        - value: "Executive mailbox access"
+          description: "Access to executive or VIP mailbox"
+        - value: "After-hours email access"
+          description: "Mailbox access outside business hours"
+        - value: "Delegated mailbox abuse"
+          description: "Abuse of delegated access permissions"
+        - value: "Mass email download"
+          description: "Large volume of emails downloaded or exported"
+
+    - name: "Severity"
+      type: "String"
+      required: true
+      description: "Alert severity level (1=Low, 3=Medium, 5=High, 7=Very High)"
+      example_value: "5"
+      template_source: "random_weighted(['1', '3', '5', '7'], [10, 55, 30, 5])"
+
+    - name: "rt (Receipt Time)"
+      type: "DateTime"
+      required: true
+      description: "Alert generation timestamp"
+      example_value: "Dec 05 2023 10:30:15 GMT"
+      format: "MMM DD YYYY HH:MM:SS GMT"
+      template_source: "now() | format_datetime"
+
+    - name: "cat (Category)"
+      type: "String"
+      required: true
+      description: "Event category (always 'Alert')"
+      example_value: "Alert"
+      template_source: "Static value"
+
+    - name: "cs2 (Rule Name)"
+      type: "String"
+      required: true
+      description: "Name of the detection rule that triggered the alert"
+      example_value: "Abnormal Mailbox Access Pattern"
+      template_source: "random_choice(rule_names)"
+
+    - name: "cn1 (Rule ID)"
+      type: "Integer"
+      required: true
+      description: "Unique identifier for the detection rule"
+      example_value: "3456"
+      template_source: "random_int(1000, 9999)"
+
+    - name: "end (Event Time)"
+      type: "DateTime"
+      required: true
+      description: "Timestamp of the mailbox access event"
+      example_value: "Dec 05 2023 09:45:30 GMT"
+      format: "MMM DD YYYY HH:MM:SS GMT"
+      template_source: "subtract_seconds(alert_time, random_int(60, 3600))"
+
+    - name: "duser (Destination User)"
+      type: "String"
+      required: true
+      description: "Username of the user accessing the mailbox"
+      example_value: "jsmith"
+      template_source: "registry.get_random_user().username"
+
+    - name: "dhost (Destination Host)"
+      type: "String"
+      required: true
+      description: "Hostname of the Exchange/mail server"
+      example_value: "EXCH01"
+      template_source: "registry.get_random_device().hostname"
+
+    - name: "filePath"
+      type: "String"
+      required: true
+      description: "Email address and folder path of accessed mailbox"
+      example_value: "ceo@acme.com\\Inbox"
+      template_source: "mail_source.email + '\\Inbox'"
+
+    - name: "fname (Email Subject)"
+      type: "String"
+      required: true
+      description: "Subject line of accessed email"
+      example_value: "Q4 Financial Results"
+      template_source: "random_choice(subjects)"
+
+    - name: "act (Action)"
+      type: "String"
+      required: true
+      description: "Action type (same as event type)"
+      example_value: "Abnormal mailbox access"
+      template_source: "Same as event type"
+
+    - name: "dvchost (Device Hostname)"
+      type: "String"
+      required: true
+      description: "Hostname of the user's device"
+      example_value: "WKST-123"
+      template_source: "registry.get_random_device().hostname"
+
+    - name: "dvc (Device Address)"
+      type: "String"
+      required: true
+      description: "IP address of the user's device"
+      example_value: "10.50.20.145"
+      format: "IPv4"
+      template_source: "registry.get_random_device().ip_address"
+
+    - name: "outcome"
+      type: "String"
+      required: true
+      description: "Result of the mailbox access"
+      example_value: "Success"
+      template_source: "random_weighted(['Success', 'Alerted'], [80, 20])"
+
+    - name: "msg (Message)"
+      type: "String"
+      required: true
+      description: "Human-readable alert description"
+      example_value: "User jsmith accessed mailbox ceo@acme.com with Delegate permissions"
+      template_source: "Dynamic message construction"
+
+    - name: "cs3 (Attachment Name)"
+      type: "String"
+      required: true
+      description: "Name of email attachment (if present)"
+      example_value: "Q4_Financial_Results.pdf"
+      template_source: "random_choice(subjects) + file extension"
+
+    - name: "cs4 (Alert URL)"
+      type: "String"
+      required: true
+      description: "Direct link to alert details in DatAdvantage console"
+      example_value: "http://10.10.10.50/DatAdvantage/#/app/analytics/entity/Alert/123456"
+      format: "URL"
+      template_source: "Constructed URL with random alert ID"
+
+    - name: "deviceCustomDate1 (Mail Date)"
+      type: "DateTime"
+      required: true
+      description: "Original send/receive date of the email"
+      example_value: "Dec 04 2023 14:30:00 GMT"
+      format: "MMM DD YYYY HH:MM:SS GMT"
+      template_source: "subtract_seconds(event_time, random_int(3600, 86400))"
+
+    - name: "fileType (Mail Item Type)"
+      type: "String"
+      required: true
+      description: "Type of mailbox item accessed"
+      example_value: "Email"
+      template_source: "random_weighted(['Email', 'Calendar', 'Contact', 'Task', 'Note'], [70, 15, 8, 5, 2])"
+      possible_values:
+        - value: "Email"
+          description: "Standard email message"
+        - value: "Calendar"
+          description: "Calendar appointment or meeting"
+        - value: "Contact"
+          description: "Contact list entry"
+        - value: "Task"
+          description: "Task or to-do item"
+        - value: "Note"
+          description: "Note or memo"
+
+    - name: "cs1 (Mail Recipients)"
+      type: "String"
+      required: true
+      description: "Semicolon-separated list of email recipients"
+      example_value: "user1@acme.com;user2@acme.com"
+      template_source: "Generated list of random user emails"
+
+    - name: "suser (Source User)"
+      type: "String"
+      required: true
+      description: "Username of the mailbox owner"
+      example_value: "ceo"
+      template_source: "registry.get_random_user().username"
+
+    - name: "cs5 (Mailbox Access Type)"
+      type: "String"
+      required: true
+      description: "Type of access permission used"
+      example_value: "Delegate"
+      template_source: "random_weighted(['Owner', 'Delegate', 'Admin', 'SendAs', 'SendOnBehalf'], [50, 25, 15, 7, 3])"
+      possible_values:
+        - value: "Owner"
+          description: "User accessing their own mailbox"
+        - value: "Delegate"
+          description: "Delegated access permission"
+        - value: "Admin"
+          description: "Administrative access (Exchange admin)"
+        - value: "SendAs"
+          description: "Send As permission"
+        - value: "SendOnBehalf"
+          description: "Send On Behalf permission"
+
+    - name: "cnt (Count)"
+      type: "Integer"
+      required: true
+      description: "Number of mailbox items accessed that triggered threshold"
+      example_value: "45"
+      template_source: "random_int(10, 100)"
+
+    - name: "start (First Event Time)"
+      type: "DateTime"
+      required: true
+      description: "Timestamp of the first mailbox access in sequence"
+      example_value: "Dec 05 2023 08:30:15 GMT"
+      format: "MMM DD YYYY HH:MM:SS GMT"
+      template_source: "subtract_seconds(event_time, random_int(300, 7200))"
+
+    - name: "externalId (Alert ID)"
+      type: "Integer"
+      required: true
+      description: "Unique alert identifier"
+      example_value: "123456"
+      template_source: "random_int(100000, 999999)"
+
+  resources:
+    documentation:
+      - title: "Varonis DatAdvantage for Exchange Documentation"
+        url: "https://www.varonis.com/products/datadvantage"
+        type: "official"
+      - title: "CEF Format Specification"
+        url: "https://www.microfocus.com/documentation/arcsight/arcsight-smartconnectors-8.3/cef-implementation-standard/"
+        type: "reference"
+      - title: "Exchange Mailbox Permissions"
+        url: "https://docs.microsoft.com/en-us/exchange/recipients/mailbox-permissions"
+        type: "reference"
+      - title: "Office 365 Security Best Practices"
+        url: "https://docs.microsoft.com/en-us/microsoft-365/security/"
+        type: "reference"
+    tools:
+      - name: "Varonis DatAdvantage Console"
+        description: "Web-based console for alert management and investigation"
+        url: "https://www.varonis.com"
+      - name: "Exchange Admin Center"
+        description: "Microsoft Exchange management console"
+        url: "https://admin.exchange.microsoft.com"

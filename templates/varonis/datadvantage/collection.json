@@ -1,0 +1,27 @@
+{
+    "name": "varonis-datadvantage",
+    "version": "1.0.0",
+    "description": "LogForge templates for Varonis DatAdvantage security alerts including file access anomalies, permission changes, and email activity monitoring",
+    "maintainers": [
+      {
+        "name": "John Owen",
+        "email": "jowen@ftsc.com",
+        "github": "jowen-ftsc"
+      }
+    ],
+    "tags": [
+      "varonis",
+      "datadvantage",
+      "data-security",
+      "file-access",
+      "permissions",
+      "email-security",
+      "insider-threat",
+      "dlp"
+    ],
+    "templates": [
+      "alerts/file_access_alert",
+      "alerts/permission_change_alert",
+      "alerts/email_access_alert"
+    ]
+  }

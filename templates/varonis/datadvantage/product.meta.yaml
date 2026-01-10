@@ -1,0 +1,6 @@
+vendor: varonis
+product: datadvantage
+name: DatAdvantage
+description: Varonis DatAdvantage provides comprehensive data governance and security analytics for unstructured data across file systems, SharePoint, Exchange, and other enterprise data stores.
+version: All
+documentation_url: https://www.varonis.com/products/datadvantage
