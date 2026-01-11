@@ -1,0 +1,40 @@
+{
+  "name": "organizations/{{ registry.get_organization_field('domain').split('.')[0] | default('123456789') }}/sources/{{ random_int(1000000000000000000, 9999999999999999999) }}/locations/global/findings/{{ random_guid() }}",
+  "parent": "organizations/{{ registry.get_organization_field('domain').split('.')[0] | default('123456789') }}/sources/{{ random_int(1000000000000000000, 9999999999999999999) }}/locations/global",
+  "resourceName": "//compute.googleapis.com/projects/{{ registry.get_organization_field('domain').split('.')[0] | default('my-project') }}/zones/{{ random_choice(['us-central1-a', 'us-east1-b', 'us-west1-c', 'europe-west1-d', 'asia-east1-a']) }}/instances/{{ registry.get_random_device().hostname | default(random_hostname()) }}",
+  "state": "{{ random_weighted(['ACTIVE', 'INACTIVE'], [90, 10]) }}",
+  "category": "{{ random_weighted(['Malware: Cryptomining Bad Domain', 'Brute Force: SSH', 'Malware: Bad Domain', 'Credential Access: External Member Added To Privileged Group', 'Exfiltration: CloudSQL Data Exfiltration', 'Initial Access: Account Disabled Hijacked', 'Persistence: IAM Anomalous Grant', 'Lateral Movement: Compute Engine Anomalous SSH'], [25, 20, 15, 12, 10, 8, 6, 4]) }}",
+  "externalUri": "https://console.cloud.google.com/security/command-center/findings?organizationId={{ registry.get_organization_field('domain').split('.')[0] | default('123456789') }}",
+  "sourceProperties": {
+    "detectionCategory": {
+      "technique": "{{ random_choice(['T1496', 'T1110', 'T1071', 'T1078', 'T1567', 'T1098', 'T1021']) }}",
+      "indicator": "{% set cat = random_choice(['crypto', 'malware', 'suspicious']) %}{% if cat == 'crypto' %}{{ random_choice(['xmr-pool.mining.com', 'cryptonight-hub.io', 'monero-mine.net']) }}{% elif cat == 'malware' %}{{ random_choice(['malicious-c2.xyz', 'bad-actor-domain.com', 'evil-server.net']) }}{% else %}{{ random_private_ip() }}{% endif %}",
+      "ruleName": "{{ random_choice(['event_threat_detection_malware', 'event_threat_detection_brute_force', 'event_threat_detection_exfiltration']) }}"
+    },
+    "evidence": [
+      {
+        "sourceLogId": {
+          "projectId": "{{ registry.get_organization_field('domain').split('.')[0] | default('my-project') }}",
+          "resourceContainer": "projects/{{ registry.get_organization_field('domain').split('.')[0] | default('my-project') }}",
+          "timestamp": "{{ now() | iso8601 }}"
+        },
+        "sourceIp": "{{ random_choice([random_public_ip(), random_private_ip()]) }}",
+        "userAgent": "{{ fake.user_agent() }}",
+        "principalEmail": "{{ registry.get_random_user().email | default(fake.email()) }}"
+      }
+    ],
+    "properties": {
+      "detectionPriority": "{{ random_weighted(['HIGH', 'MEDIUM', 'LOW'], [40, 45, 15]) }}",
+      "firstObservedTime": "{{ now() | iso8601 }}",
+      "lastObservedTime": "{{ now() | iso8601 }}",
+      "occurrenceCount": {{ random_int(1, 50) }}
+    }
+  },
+  "severity": "{{ random_weighted(['CRITICAL', 'HIGH', 'MEDIUM', 'LOW'], [15, 35, 40, 10]) }}",
+  "findingClass": "THREAT",
+  "eventTime": "{{ now() | iso8601 }}",
+  "createTime": "{{ now() | iso8601 }}",
+  "canonicalName": "projects/{{ registry.get_organization_field('domain').split('.')[0] | default('123456789') }}/sources/{{ random_int(1000000000000000000, 9999999999999999999) }}/findings/{{ random_guid() }}",
+  "mute": "{{ random_weighted(['UNMUTED', 'MUTED', 'UNDEFINED'], [85, 10, 5]) }}",
+  "parentDisplayName": "Event Threat Detection"
+}

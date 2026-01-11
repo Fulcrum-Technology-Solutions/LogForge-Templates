@@ -1,0 +1,154 @@
+vendor: google
+product: security-command-center
+data_source: findings
+description: SCC Error findings from Google Cloud Security Command Center, identifying problems in the configuration of Security Command Center or one of its services that prevent Security Command Center from detecting security issues.
+format: JSON
+frequency: low
+is_generator: true
+base_frequency: 2
+time_patterns:
+  - business_hours
+  - night_hours
+  - weekend
+business_hours_multiplier: 1.0
+night_hours_multiplier: 1.0
+weekend_multiplier: 1.0
+
+documentation:
+  display:
+    title: "SCC Error Findings"
+    subtitle: "Security Command Center configuration errors"
+    icon: "❌"
+    color_scheme: "error"
+    tags:
+      - "error"
+      - "configuration"
+      - "scanner-error"
+      - "scc"
+      - "gcp"
+
+  overview:
+    summary: "SCC Error findings identify problems in the configuration of Security Command Center or one of its services that prevent Security Command Center from detecting security issues in your Google Cloud environment. These errors must be resolved to ensure proper security monitoring."
+    when_generated:
+      - "Security scanner fails to access resources due to insufficient permissions"
+      - "API authentication fails when attempting to scan resources"
+      - "Resource is deleted or moved during scan operation"
+      - "Scan operation exceeds time limit"
+      - "Organization quota for security scans has been exceeded"
+      - "Invalid scanner configuration is detected"
+    security_relevance: "High"
+    compliance_frameworks:
+      - "NIST 800-53 (SI-4)"
+      - "ISO 27001 (A.12.4.1)"
+      - "SOC 2 (CC7.2)"
+      - "CIS GCP Foundation 2.0"
+    frequency_notes: "SCC Error findings are generated when Security Command Center services encounter configuration or operational issues. Frequency is typically low but can spike during misconfigurations or when service quotas are exceeded. These errors should be resolved promptly to restore security monitoring capabilities."
+
+  fields:
+    - name: "name"
+      type: "String"
+      required: true
+      description: "Full resource name of the SCC error finding"
+      example_value: "organizations/123456789/sources/9732761411165682985/locations/global/findings/error-abc123..."
+      format: "organizations/{org_id}/sources/{source_id}/locations/global/findings/error-{finding_id}"
+      template_source: "Constructed with 'error-' prefix"
+
+    - name: "category"
+      type: "String"
+      required: true
+      description: "SCC error category"
+      example_value: "SCANNER_ERROR"
+      possible_values:
+        - value: "SCANNER_ERROR"
+          description: "Security scanner encountered an error"
+        - value: "API_ERROR"
+          description: "API call failed"
+        - value: "CONFIGURATION_ERROR"
+          description: "Invalid configuration detected"
+        - value: "PERMISSION_ERROR"
+          description: "Insufficient permissions for operation"
+        - value: "RESOURCE_ERROR"
+          description: "Resource access or availability error"
+
+    - name: "sourceProperties.error"
+      type: "Object"
+      required: true
+      description: "Error details"
+      template_source: "Object with errorType, errorCode, errorMessage, affectedService, errorTime, retryCount, and lastRetryTime"
+
+    - name: "sourceProperties.error.errorType"
+      type: "String"
+      required: true
+      description: "Type of error encountered"
+      example_value: "SCANNER_FAILURE"
+      possible_values:
+        - value: "SCANNER_FAILURE"
+          description: "Security scanner failed to complete scan"
+        - value: "API_AUTHENTICATION_FAILURE"
+          description: "API authentication failed"
+        - value: "RESOURCE_ACCESS_DENIED"
+          description: "Access to resource was denied"
+        - value: "CONFIGURATION_MISMATCH"
+          description: "Configuration mismatch detected"
+        - value: "TIMEOUT"
+          description: "Operation timed out"
+        - value: "QUOTA_EXCEEDED"
+          description: "Service quota exceeded"
+
+    - name: "sourceProperties.error.errorCode"
+      type: "String"
+      required: true
+      description: "Specific error code"
+      example_value: "ERROR_SCANNER_DISABLED"
+      possible_values:
+        - value: "ERROR_SCANNER_DISABLED"
+          description: "Scanner is disabled"
+        - value: "ERROR_PERMISSION_DENIED"
+          description: "Permission denied"
+        - value: "ERROR_RESOURCE_NOT_FOUND"
+          description: "Resource not found"
+        - value: "ERROR_QUOTA_EXCEEDED"
+          description: "Quota exceeded"
+        - value: "ERROR_TIMEOUT"
+          description: "Operation timeout"
+        - value: "ERROR_INVALID_CONFIGURATION"
+          description: "Invalid configuration"
+
+    - name: "severity"
+      type: "String"
+      required: true
+      description: "SCC error severity level"
+      example_value: "MEDIUM"
+      possible_values:
+        - value: "CRITICAL"
+          description: "Critical error preventing security monitoring"
+        - value: "HIGH"
+          description: "High severity error"
+        - value: "MEDIUM"
+          description: "Medium severity error"
+        - value: "LOW"
+          description: "Low severity error"
+      template_source: "random_weighted favoring MEDIUM (50%)"
+
+    - name: "findingClass"
+      type: "String"
+      required: true
+      description: "Finding class identifier"
+      example_value: "SCC_ERROR"
+      template_source: "Static 'SCC_ERROR'"
+
+  resources:
+    documentation:
+      - title: "Finding Classes - SCC Error"
+        url: "https://cloud.google.com/security-command-center/docs/finding-classes#scc-error"
+        type: "official"
+      - title: "Overview of Security Command Center Errors"
+        url: "https://cloud.google.com/security-command-center/docs/overview-of-security-command-center-errors"
+        type: "official"
+      - title: "Configuration Error Findings"
+        url: "https://cloud.google.com/security-command-center/docs/configuration-error-findings"
+        type: "official"
+      - title: "Remediate Configuration Error Findings"
+        url: "https://cloud.google.com/security-command-center/docs/how-to-remediate-configuration-error-findings"
+        type: "official"
+

@@ -1,0 +1,5 @@
+vendor: google
+name: Google Cloud Platform
+website: https://cloud.google.com
+description: Google Cloud Platform provides cloud computing services including compute, storage, networking, big data, machine learning, and security solutions for enterprises and developers.
+logo: google-cloud-logo.png

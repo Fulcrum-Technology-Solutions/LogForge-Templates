@@ -1,0 +1,61 @@
+{
+  "timestamp": "{{ now() | iso8601 }}",
+  "product": "GOOGLE_SECURITY_COMMAND_CENTER_V2",
+  "type": "Security Graph",
+  "severity": "{{ random_choice(['Critical', 'High', 'Medium', 'Low']) }}",
+  "title": "{{ random_choice(['Custom Threat', 'Suspicious Activity', 'Anomalous Behavior', 'Policy Violation']) }}",
+  "source_json": {
+    "finding": {
+      "canonicalName": "projects/{{ random_int(100000000000, 999999999999) }}/sources/{{ random_int(1000000000000000000, 9999999999999999999) }}/locations/global/findings/{{ random_hex(32) }}",
+      "category": "{{ random_choice(['Custom Threat', 'Malware', 'Data Exfiltration', 'Unauthorized Access', 'Privilege Escalation']) }}",
+      "createTime": "{{ now() | iso8601 }}",
+      "eventTime": "{{ now().subtract(seconds=random_int(1, 300)) | iso8601 }}",
+      "externalUri": "https://console.cloud.google.com/security/command-center/findings?organizationId={{ registry.get_organization_field('gcp_organization_id') or random_int(100000000000, 999999999999) }}",
+      "mute": "{{ random_choice(['UNDEFINED', 'MUTED', 'UNMUTED']) }}",
+      "muteInfo": {
+        "staticMute": {
+          "applyTime": "{{ now().subtract(seconds=random_int(3600, 86400)) | iso8601 }}",
+          "state": "{{ random_choice(['UNDEFINED', 'MUTED', 'UNMUTED']) }}"
+        }
+      },
+      "muteUpdateTime": "{{ now().subtract(seconds=random_int(60, 3600)) | iso8601 }}",
+      "name": "organizations/{{ registry.get_organization_field('gcp_organization_id') or random_int(100000000000, 999999999999) }}/sources/{{ random_int(1000000000000000000, 9999999999999999999) }}/locations/global/findings/{{ random_hex(32) }}",
+      "parent": "organizations/{{ registry.get_organization_field('gcp_organization_id') or random_int(100000000000, 999999999999) }}/sources/{{ random_int(1000000000000000000, 9999999999999999999) }}/locations/global",
+      "parentDisplayName": "Security Graph",
+      "resourceName": "//cloudresourcemanager.googleapis.com/projects/{{ random_int(100000000000, 999999999999) }}",
+      "securityMarks": {
+        "name": "organizations/{{ registry.get_organization_field('gcp_organization_id') or random_int(100000000000, 999999999999) }}/sources/{{ random_int(1000000000000000000, 9999999999999999999) }}/locations/global/findings/{{ random_hex(32) }}/securityMarks"
+      },
+      "severity": "{{ random_choice(['CRITICAL', 'HIGH', 'MEDIUM', 'LOW']) }}",
+      "state": "{{ random_choice(['ACTIVE', 'INACTIVE']) }}"
+    },
+    "resource": {
+      "cloudProvider": "GOOGLE_CLOUD_PLATFORM",
+      "displayName": "{{ registry.get_organization_field('gcp_project_name') or random_string(12, 'abcdefghijklmnopqrstuvwxyz0123456789-') }}",
+      "gcpMetadata": {
+        "organization": "organizations/{{ registry.get_organization_field('gcp_organization_id') or random_int(100000000000, 999999999999) }}",
+        "parent": "//cloudresourcemanager.googleapis.com/organizations/{{ registry.get_organization_field('gcp_organization_id') or random_int(100000000000, 999999999999) }}",
+        "parentDisplayName": "{{ registry.get_organization().name }}",
+        "project": "//cloudresourcemanager.googleapis.com/projects/{{ random_int(100000000000, 999999999999) }}",
+        "projectDisplayName": "{{ registry.get_organization_field('gcp_project_name') or random_string(12, 'abcdefghijklmnopqrstuvwxyz0123456789-') }}"
+      },
+      "name": "//cloudresourcemanager.googleapis.com/projects/{{ random_int(100000000000, 999999999999) }}",
+      "resourcePath": {
+        "nodes": [
+          {
+            "displayName": "{{ registry.get_organization_field('gcp_project_name') or random_string(12, 'abcdefghijklmnopqrstuvwxyz0123456789-') }}",
+            "id": "projects/{{ random_int(100000000000, 999999999999) }}",
+            "nodeType": "GCP_PROJECT"
+          },
+          {
+            "id": "organizations/{{ registry.get_organization_field('gcp_organization_id') or random_int(100000000000, 999999999999) }}",
+            "nodeType": "GCP_ORGANIZATION"
+          }
+        ]
+      },
+      "resourcePathString": "organizations/{{ registry.get_organization_field('gcp_organization_id') or random_int(100000000000, 999999999999) }}/projects/{{ random_int(100000000000, 999999999999) }}",
+      "service": "{{ random_choice(['cloudresourcemanager.googleapis.com', 'compute.googleapis.com', 'storage.googleapis.com', 'iam.googleapis.com']) }}",
+      "type": "{{ random_choice(['google.cloud.resourcemanager.Project', 'google.compute.Instance', 'google.storage.Bucket', 'google.iam.ServiceAccount']) }}"
+    }
+  }
+}
