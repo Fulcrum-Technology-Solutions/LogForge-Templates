@@ -67,12 +67,12 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: write
-      pull-requests: write
     steps:
       - uses: actions/checkout@v4
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           ref: main
+          fetch-depth: 0
       
       - name: Set up Python
         uses: actions/setup-python@v4
@@ -96,21 +96,14 @@ jobs:
             echo "changed=true" >> $GITHUB_OUTPUT
           fi
       
-      - name: Create Pull Request
+      - name: Commit TEMPLATES.yaml changes
         if: steps.check_index.outputs.changed == 'true'
-        uses: peter-evans/create-pull-request@v5
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          commit-message: "Auto-update TEMPLATES.yaml [skip ci]"
-          title: "Auto-update TEMPLATES.yaml"
-          body: |
-            This PR was automatically created to update the templates index.
-            
-            - [skip ci] tag included to prevent infinite workflow loops
-          branch: auto-update-templates-index
-          delete-branch: true
-          author: GitHub Action <action@github.com>
-          committer: GitHub Action <action@github.com>
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add TEMPLATES.yaml
+          git commit -m "Auto-update TEMPLATES.yaml [skip ci]" || exit 0
+          git push || exit 0
 
   create-release:
     needs: [auto-version, update-index]
@@ -124,6 +117,12 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           ref: main
           fetch-depth: 0
+      
+      - name: Wait for commits to propagate
+        run: sleep 2
+      
+      - name: Fetch latest
+        run: git fetch --all
       
       - name: Get changed products and versions
         id: products
