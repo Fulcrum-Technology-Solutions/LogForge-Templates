@@ -1,0 +1,149 @@
+vendor: apache
+product: httpd
+data_source: forensic
+description: Apache HTTP Server forensic logs from mod_log_forensic, providing detailed request/response logging with unique request IDs for security analysis and debugging. Forensic logs contain two log lines per request (before and after processing) with strict formatting.
+format: Plain Text
+frequency: medium
+is_generator: true
+base_frequency: 150
+time_patterns:
+  - business_hours
+  - night_hours
+  - weekend
+business_hours_multiplier: 2.5
+night_hours_multiplier: 0.5
+weekend_multiplier: 0.4
+
+documentation:
+  display:
+    title: "Apache Forensic Log"
+    subtitle: "Detailed request/response logging for security analysis"
+    icon: "🔍"
+    color_scheme: "warning"
+    tags:
+      - "forensic"
+      - "security"
+      - "debugging"
+      - "request-logging"
+      - "mod_log_forensic"
+
+  overview:
+    summary: "Apache forensic logs from mod_log_forensic module provide detailed request and response logging with unique request IDs. Each request generates two log entries: one before processing (marked with '+') and one after processing (marked with '-'), enabling correlation and security analysis."
+    when_generated:
+      - "When mod_log_forensic module is enabled in Apache configuration"
+      - "For every HTTP request processed by the server"
+      - "Before and after request processing for debugging and security analysis"
+    security_relevance: "High"
+    compliance_frameworks:
+      - "NIST 800-53 (AU-2, AU-6)"
+      - "ISO 27001 (A.12.4.1)"
+      - "PCI-DSS (10.2)"
+      - "SOC 2 (CC7.2)"
+    frequency_notes: "Forensic logs generate two entries per request (before and after processing), effectively doubling the log volume compared to standard access logs. Typically enabled for security-sensitive environments or during troubleshooting. Frequency matches HTTP request patterns with higher volume during business hours."
+
+  fields:
+    - name: "Request ID"
+      type: "String"
+      required: true
+      description: "Unique identifier for correlating request/response pairs"
+      example_value: "a1b2c3d4e5f6g7h8"
+      format: "Hexadecimal string (16 characters)"
+      template_source: "random_hex(16)"
+
+    - name: "Client IP"
+      type: "String"
+      required: true
+      description: "IP address of the client making the request"
+      example_value: "192.168.1.100"
+      format: "IPv4 address"
+      template_source: "random_private_ip()"
+
+    - name: "Timestamp"
+      type: "DateTime"
+      required: true
+      description: "Timestamp when the request was logged"
+      example_value: "2025-01-15 14:23:45"
+      format: "YYYY-MM-DD HH:MM:SS"
+      template_source: "now() | format_datetime('%Y-%m-%d %H:%M:%S')"
+
+    - name: "HTTP Method"
+      type: "String"
+      required: true
+      description: "HTTP request method"
+      example_value: "GET"
+      possible_values:
+        - value: "GET"
+        - value: "POST"
+        - value: "PUT"
+        - value: "DELETE"
+        - value: "HEAD"
+        - value: "OPTIONS"
+
+    - name: "Request URI"
+      type: "String"
+      required: true
+      description: "Requested URI path"
+      example_value: "/api/users"
+      template_source: "random_choice of common paths"
+
+    - name: "HTTP Version"
+      type: "String"
+      required: true
+      description: "HTTP protocol version"
+      example_value: "HTTP/1.1"
+      possible_values:
+        - value: "HTTP/1.1"
+        - value: "HTTP/2.0"
+
+    - name: "Status Code"
+      type: "Integer"
+      required: true
+      description: "HTTP response status code"
+      example_value: "200"
+      template_source: "random_choice of common status codes"
+
+    - name: "Response Size"
+      type: "Integer"
+      required: true
+      description: "Size of response in bytes"
+      example_value: "12345"
+      template_source: "random_int(0, 500000)"
+
+    - name: "User Agent"
+      type: "String"
+      required: true
+      description: "Client user agent string"
+      example_value: "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36"
+      template_source: "random_choice of common user agents"
+
+    - name: "Server IP"
+      type: "String"
+      required: true
+      description: "IP address of the server handling the request"
+      example_value: "10.0.0.1"
+      format: "IPv4 address"
+      template_source: "random_private_ip()"
+
+    - name: "Server Port"
+      type: "Integer"
+      required: true
+      description: "Port number the server is listening on"
+      example_value: "443"
+      possible_values:
+        - value: "80"
+        - value: "443"
+        - value: "8080"
+        - value: "8443"
+
+  resources:
+    documentation:
+      - title: "Apache Forensic Logging"
+        url: "https://httpd.apache.org/docs/2.4/logs.html#forensic"
+        type: "official"
+      - title: "mod_log_forensic Documentation"
+        url: "https://httpd.apache.org/docs/2.4/mod/mod_log_forensic.html"
+        type: "official"
+      - title: "Apache Log Files Overview"
+        url: "https://httpd.apache.org/docs/2.4/logs.html"
+        type: "official"
+
