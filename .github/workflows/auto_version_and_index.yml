@@ -52,6 +52,15 @@ jobs:
           git add templates/**/collection.json
           git commit -m "Auto-bump template versions [skip ci]" || exit 0
           git push || exit 0
+      
+      - name: Set job output
+        id: job_output
+        run: |
+          if [ "${{ steps.check.outputs.changed }}" == "true" ]; then
+            echo "changed=true" >> $GITHUB_OUTPUT
+          else
+            echo "changed=false" >> $GITHUB_OUTPUT
+          fi
 
   update-index:
     needs: auto-version
@@ -102,4 +111,101 @@ jobs:
           delete-branch: true
           author: GitHub Action <action@github.com>
           committer: GitHub Action <action@github.com>
+
+  create-release:
+    needs: [auto-version, update-index]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    if: needs.auto-version.outputs.changed == 'true'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          ref: main
+          fetch-depth: 0
+      
+      - name: Get changed products and versions
+        id: products
+        run: |
+          python3 << 'EOF'
+          import json
+          import subprocess
+          import os
+          
+          # Get changed collection.json files from the last commit
+          try:
+              result = subprocess.run(['git', 'diff', '--name-only', 'HEAD~1', 'HEAD'], 
+                                     capture_output=True, text=True, check=True)
+              changed_files = [f.strip() for f in result.stdout.split('\n') if 'collection.json' in f and f.strip()]
+          except subprocess.CalledProcessError:
+              # If HEAD~1 doesn't exist, check all collection.json files
+              changed_files = []
+          
+          changed_products = []
+          for file in changed_files:
+              if file and os.path.exists(file):
+                  try:
+                      with open(file) as f:
+                          data = json.load(f)
+                      parts = file.split('/')
+                      if len(parts) >= 3:
+                          vendor = parts[1]
+                          product = parts[2]
+                          changed_products.append({
+                              'vendor': vendor,
+                              'product': product,
+                              'name': data.get('name', f'{vendor}-{product}'),
+                              'version': data.get('version', '1.0.0')
+                          })
+                  except (json.JSONDecodeError, FileNotFoundError):
+                      continue
+          
+          # Output as JSON using GITHUB_OUTPUT
+          products_json = json.dumps(changed_products)
+          with open(os.environ['GITHUB_OUTPUT'], 'a') as f:
+              f.write(f"products={products_json}\n")
+          
+          print(f"Found {len(changed_products)} updated product(s)")
+          for p in changed_products:
+              print(f"  - {p['name']} v{p['version']}")
+          EOF
+      
+      - name: Generate release notes
+        id: release_notes
+        run: |
+          python3 << 'EOF'
+          import json
+          import os
+          
+          products_json = os.environ.get('PRODUCTS_JSON', '[]')
+          products = json.loads(products_json) if products_json else []
+          
+          if not products:
+              notes = "No product updates detected."
+          else:
+              notes = "## Updated Template Collections\n\n"
+              for p in products:
+                  notes += f"- **{p['name']}** → v{p['version']}\n"
+              notes += "\nThis release was automatically created when template versions were updated."
+          
+          # Write to GITHUB_OUTPUT
+          with open(os.environ['GITHUB_OUTPUT'], 'a') as f:
+              f.write(f"body<<EOF\n{notes}\nEOF\n")
+          EOF
+        env:
+          PRODUCTS_JSON: ${{ steps.products.outputs.products }}
+      
+      - name: Create Release
+        if: steps.products.outputs.products != '[]'
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: "v$(date +%Y%m%d-%H%M%S)"
+          name: "Template Updates - $(date +%Y-%m-%d)"
+          body: ${{ steps.release_notes.outputs.body }}
+          draft: false
+          prerelease: false
+          generate_release_notes: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
