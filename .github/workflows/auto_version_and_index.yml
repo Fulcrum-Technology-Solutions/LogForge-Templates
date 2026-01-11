@@ -67,12 +67,12 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: write
-      pull-requests: write
     steps:
       - uses: actions/checkout@v4
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           ref: main
+          fetch-depth: 0
       
       - name: Set up Python
         uses: actions/setup-python@v4
@@ -96,21 +96,131 @@ jobs:
             echo "changed=true" >> $GITHUB_OUTPUT
           fi
       
-      - name: Create Pull Request
+      - name: Commit TEMPLATES.yaml changes
         if: steps.check_index.outputs.changed == 'true'
-        uses: peter-evans/create-pull-request@v5
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add TEMPLATES.yaml
+          git commit -m "Auto-update TEMPLATES.yaml [skip ci]" || exit 0
+          git push || exit 0
+
+  create-release:
+    needs: [auto-version, update-index]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    if: needs.auto-version.outputs.changed == 'true'
+    steps:
+      - uses: actions/checkout@v4
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          commit-message: "Auto-update TEMPLATES.yaml [skip ci]"
-          title: "Auto-update TEMPLATES.yaml"
-          body: |
-            This PR was automatically created to update the templates index.
-            
-            - [skip ci] tag included to prevent infinite workflow loops
-          branch: auto-update-templates-index
-          delete-branch: true
-          author: GitHub Action <action@github.com>
-          committer: GitHub Action <action@github.com>
+          ref: main
+          fetch-depth: 0
+      
+      - name: Wait for commits to propagate
+        run: sleep 2
+      
+      - name: Fetch latest
+        run: git fetch --all
+      
+      - name: Get changed products and versions
+        id: products
+        run: |
+          python3 << 'EOF'
+          import json
+          import subprocess
+          import os
+          
+          # Look for the auto-version commit first (most recent commit with "Auto-bump" in message)
+          try:
+              result = subprocess.run(['git', 'log', '--oneline', '-10', '--grep=Auto-bump'], 
+                                     capture_output=True, text=True)
+              if result.returncode == 0 and result.stdout.strip():
+                  # Get the commit hash (first word of first line)
+                  commit_hash = result.stdout.split('\n')[0].split()[0]
+                  # Get files changed in that commit
+                  diff_result = subprocess.run(['git', 'diff', '--name-only', f'{commit_hash}~1', commit_hash],
+                                              capture_output=True, text=True, check=True)
+                  changed_files = [f.strip() for f in diff_result.stdout.split('\n') if 'collection.json' in f and f.strip()]
+                  print(f"Found auto-version commit: {commit_hash}")
+              else:
+                  # Fallback: check last commit
+                  result = subprocess.run(['git', 'diff', '--name-only', 'HEAD~1', 'HEAD'], 
+                                         capture_output=True, text=True, check=True)
+                  changed_files = [f.strip() for f in result.stdout.split('\n') if 'collection.json' in f and f.strip()]
+                  print("Using last commit as fallback")
+          except subprocess.CalledProcessError:
+              # If HEAD~1 doesn't exist, check all collection.json files
+              changed_files = []
+              print("No previous commit found")
+          
+          changed_products = []
+          for file in changed_files:
+              if file and os.path.exists(file):
+                  try:
+                      with open(file) as f:
+                          data = json.load(f)
+                      parts = file.split('/')
+                      if len(parts) >= 3:
+                          vendor = parts[1]
+                          product = parts[2]
+                          changed_products.append({
+                              'vendor': vendor,
+                              'product': product,
+                              'name': data.get('name', f'{vendor}-{product}'),
+                              'version': data.get('version', '1.0.0')
+                          })
+                  except (json.JSONDecodeError, FileNotFoundError):
+                      continue
+          
+          # Output as JSON using GITHUB_OUTPUT
+          products_json = json.dumps(changed_products)
+          with open(os.environ['GITHUB_OUTPUT'], 'a') as f:
+              f.write(f"products={products_json}\n")
+          
+          print(f"Found {len(changed_products)} updated product(s)")
+          for p in changed_products:
+              print(f"  - {p['name']} v{p['version']}")
+          EOF
+      
+      - name: Generate release notes
+        id: release_notes
+        run: |
+          python3 << 'EOF'
+          import json
+          import os
+          
+          products_json = os.environ.get('PRODUCTS_JSON', '[]')
+          products = json.loads(products_json) if products_json else []
+          
+          if not products:
+              notes = "No product updates detected."
+          else:
+              notes = "## Updated Template Collections\n\n"
+              for p in products:
+                  notes += f"- **{p['name']}** → v{p['version']}\n"
+              notes += "\nThis release was automatically created when template versions were updated."
+          
+          # Write to GITHUB_OUTPUT
+          with open(os.environ['GITHUB_OUTPUT'], 'a') as f:
+              f.write(f"body<<EOF\n{notes}\nEOF\n")
+          EOF
+        env:
+          PRODUCTS_JSON: ${{ steps.products.outputs.products }}
+      
+      - name: Create Release
+        if: steps.products.outputs.products != '[]'
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: "v$(date +%Y%m%d-%H%M%S)"
+          name: "Template Updates - $(date +%Y-%m-%d)"
+          body: ${{ steps.release_notes.outputs.body }}
+          draft: false
+          prerelease: false
+          generate_release_notes: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
   create-release:
     needs: [auto-version, update-index]
