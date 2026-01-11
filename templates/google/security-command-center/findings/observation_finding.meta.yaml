@@ -1,0 +1,138 @@
+vendor: google
+product: security-command-center
+data_source: findings
+description: Observation findings from Google Cloud Security Command Center, describing events, configuration details, or issues that may not be problems themselves but could be concerning if the environment were compromised.
+format: JSON
+frequency: medium
+is_generator: true
+base_frequency: 15
+time_patterns:
+  - business_hours
+  - night_hours
+  - weekend
+business_hours_multiplier: 1.8
+night_hours_multiplier: 0.8
+weekend_multiplier: 0.5
+
+documentation:
+  display:
+    title: "SCC Observation Findings"
+    subtitle: "Security-relevant observations"
+    icon: "👁️"
+    color_scheme: "info"
+    tags:
+      - "observation"
+      - "monitoring"
+      - "behavioral-analysis"
+      - "security-awareness"
+      - "gcp"
+
+  overview:
+    summary: "Observation findings describe events, configuration details, or other issues in your environment that might not be problems in themselves, but could be concerning if your environment were to be compromised. These findings provide context for security monitoring."
+    when_generated:
+      - "Sensitive Data Protection detects sensitive data in resources"
+      - "Sensitive Actions Service detects privileged operations"
+      - "Unusual API call patterns are observed"
+      - "Anomalous network traffic volume is detected"
+      - "Unexpected authentication attempts from new locations"
+      - "Configuration changes occur outside maintenance windows"
+      - "Data access from unusual times or locations"
+    security_relevance: "Medium"
+    compliance_frameworks:
+      - "NIST 800-53 (AU-2, AU-6)"
+      - "ISO 27001 (A.12.4.1)"
+      - "SOC 2 (CC7.2)"
+      - "CIS GCP Foundation 2.0"
+    frequency_notes: "Observation findings are generated continuously as Security Command Center monitors resource activity and configurations. Frequency is highest during business hours when user activity and resource changes are most common. These findings provide contextual information for security teams."
+
+  fields:
+    - name: "name"
+      type: "String"
+      required: true
+      description: "Full resource name of the observation finding"
+      example_value: "organizations/123456789/sources/9732761411165682985/locations/global/findings/obs-abc123..."
+      format: "organizations/{org_id}/sources/{source_id}/locations/global/findings/obs-{finding_id}"
+      template_source: "Constructed with 'obs-' prefix"
+
+    - name: "category"
+      type: "String"
+      required: true
+      description: "Observation category"
+      example_value: "RESOURCE_ACCESS_PATTERN"
+      possible_values:
+        - value: "RESOURCE_ACCESS_PATTERN"
+          description: "Unusual resource access pattern observed"
+        - value: "API_ACTIVITY"
+          description: "Notable API activity observed"
+        - value: "NETWORK_TRAFFIC"
+          description: "Anomalous network traffic observed"
+        - value: "AUTHENTICATION_EVENT"
+          description: "Unusual authentication event observed"
+        - value: "CONFIGURATION_CHANGE"
+          description: "Configuration change observed"
+        - value: "DATA_ACCESS"
+          description: "Data access pattern observed"
+
+    - name: "sourceProperties.observation"
+      type: "Object"
+      required: true
+      description: "Observation details"
+      template_source: "Object with description, observedAt, observedBy, observationType, and resourceContext"
+
+    - name: "sourceProperties.properties.occurrenceCount"
+      type: "Integer"
+      required: false
+      description: "Number of times this observation has occurred"
+      example_value: "15"
+      template_source: "random_int(1, 100)"
+
+    - name: "sourceProperties.properties.observationFrequency"
+      type: "String"
+      required: false
+      description: "Frequency classification of the observation"
+      example_value: "OCCASIONAL"
+      possible_values:
+        - value: "ONCE"
+          description: "Observed once"
+        - value: "OCCASIONAL"
+          description: "Observed occasionally"
+        - value: "FREQUENT"
+          description: "Observed frequently"
+        - value: "CONTINUOUS"
+          description: "Observed continuously"
+
+    - name: "severity"
+      type: "String"
+      required: true
+      description: "Observation severity level"
+      example_value: "MEDIUM"
+      possible_values:
+        - value: "CRITICAL"
+          description: "Critical observation requiring attention"
+        - value: "HIGH"
+          description: "High severity observation"
+        - value: "MEDIUM"
+          description: "Medium severity observation"
+        - value: "LOW"
+          description: "Low severity observation"
+      template_source: "random_weighted favoring MEDIUM (50%)"
+
+    - name: "findingClass"
+      type: "String"
+      required: true
+      description: "Finding class identifier"
+      example_value: "OBSERVATION"
+      template_source: "Static 'OBSERVATION'"
+
+  resources:
+    documentation:
+      - title: "Finding Classes - Observation"
+        url: "https://cloud.google.com/security-command-center/docs/finding-classes#observation"
+        type: "official"
+      - title: "Sensitive Data Protection"
+        url: "https://cloud.google.com/security-command-center/docs/sensitive-data-protection"
+        type: "official"
+      - title: "Sensitive Actions Service"
+        url: "https://cloud.google.com/security-command-center/docs/sensitive-actions-service"
+        type: "official"
+

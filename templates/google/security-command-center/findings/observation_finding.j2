@@ -1,0 +1,35 @@
+{
+  "name": "organizations/{{ registry.get_organization_field('domain').split('.')[0] | default('123456789') }}/sources/{{ random_int(1000000000000000000, 9999999999999999999) }}/locations/global/findings/obs-{{ random_guid() }}",
+  "parent": "organizations/{{ registry.get_organization_field('domain').split('.')[0] | default('123456789') }}/sources/{{ random_int(1000000000000000000, 9999999999999999999) }}/locations/global",
+  "resourceName": "{% set resource_type = random_weighted(['compute', 'storage', 'iam', 'network', 'container'], [30, 25, 20, 15, 10]) %}{% if resource_type == 'compute' %}//compute.googleapis.com/projects/{{ registry.get_organization_field('domain').split('.')[0] | default('my-project') }}/zones/{{ random_choice(['us-central1-a', 'us-east1-b', 'us-west1-c']) }}/instances/{{ registry.get_random_device().hostname | default(random_hostname()) }}{% elif resource_type == 'storage' %}//storage.googleapis.com/projects/_/buckets/{{ random_choice(['app-data', 'user-uploads', 'backups', 'logs']) }}-{{ random_string(8) }}{% elif resource_type == 'iam' %}//iam.googleapis.com/projects/{{ registry.get_organization_field('domain').split('.')[0] | default('my-project') }}/serviceAccounts/{{ random_choice(['compute', 'app-engine', 'cloud-run']) }}@{{ registry.get_organization_field('domain').split('.')[0] | default('my-project') }}.iam.gserviceaccount.com{% elif resource_type == 'network' %}//compute.googleapis.com/projects/{{ registry.get_organization_field('domain').split('.')[0] | default('my-project') }}/global/networks/{{ random_choice(['default', 'prod-vpc', 'staging-vpc', 'dev-vpc']) }}{% else %}//container.googleapis.com/projects/{{ registry.get_organization_field('domain').split('.')[0] | default('my-project') }}/zones/{{ random_choice(['us-central1-a', 'us-east1-b']) }}/clusters/{{ random_choice(['prod', 'staging', 'dev']) }}-cluster{% endif %}",
+  "state": "{{ random_weighted(['ACTIVE', 'INACTIVE'], [60, 40]) }}",
+  "category": "{{ random_weighted(['RESOURCE_ACCESS_PATTERN', 'API_ACTIVITY', 'NETWORK_TRAFFIC', 'AUTHENTICATION_EVENT', 'CONFIGURATION_CHANGE', 'DATA_ACCESS'], [25, 20, 18, 15, 12, 10]) }}",
+  "externalUri": "https://console.cloud.google.com/security/command-center/findings?organizationId={{ registry.get_organization_field('domain').split('.')[0] | default('123456789') }}",
+  "sourceProperties": {
+    "observation": {
+      "description": "{{ random_choice(['Unusual API call pattern detected', 'Anomalous network traffic volume', 'Unexpected authentication attempt from new location', 'Configuration change outside maintenance window', 'Data access from unusual time or location', 'Service account key creation observed']) }}",
+      "observedAt": "{{ now() | iso8601 }}",
+      "observedBy": "{{ random_weighted(['Event Threat Detection', 'Security Health Analytics', 'Container Threat Detection', 'VM Threat Detection'], [35, 30, 20, 15]) }}",
+      "observationType": "{{ random_choice(['BEHAVIORAL', 'CONFIGURATION', 'NETWORK', 'ACCESS']) }}",
+      "resourceContext": {
+        "projectId": "{{ registry.get_organization_field('domain').split('.')[0] | default('my-project') }}",
+        "zone": "{{ random_choice(['us-central1-a', 'us-east1-b', 'us-west1-c', 'europe-west1-d']) }}",
+        "region": "{{ random_choice(['us-central1', 'us-east1', 'us-west1', 'europe-west1', 'asia-east1']) }}"
+      }
+    },
+    "properties": {
+      "firstObservedTime": "{{ now().subtract(hours=random_int(1, 72)) | iso8601 }}",
+      "lastObservedTime": "{{ now() | iso8601 }}",
+      "occurrenceCount": {{ random_int(1, 100) }},
+      "observationFrequency": "{{ random_choice(['ONCE', 'OCCASIONAL', 'FREQUENT', 'CONTINUOUS']) }}"
+    }
+  },
+  "severity": "{{ random_weighted(['CRITICAL', 'HIGH', 'MEDIUM', 'LOW'], [5, 15, 50, 30]) }}",
+  "findingClass": "OBSERVATION",
+  "eventTime": "{{ now() | iso8601 }}",
+  "createTime": "{{ now() | iso8601 }}",
+  "canonicalName": "projects/{{ registry.get_organization_field('domain').split('.')[0] | default('123456789') }}/sources/{{ random_int(1000000000000000000, 9999999999999999999) }}/findings/obs-{{ random_guid() }}",
+  "mute": "{{ random_weighted(['UNMUTED', 'MUTED', 'UNDEFINED'], [80, 15, 5]) }}",
+  "parentDisplayName": "{{ random_weighted(['Event Threat Detection', 'Security Health Analytics', 'Container Threat Detection', 'VM Threat Detection'], [35, 30, 20, 15]) }}"
+}
+

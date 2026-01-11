@@ -1,0 +1,141 @@
+vendor: google
+product: security-command-center
+data_source: findings
+description: Misconfiguration findings from Google Cloud Security Command Center Security Health Analytics, identifying incorrect or suboptimal configurations of GCP resources that create security vulnerabilities.
+format: JSON
+frequency: medium
+is_generator: true
+base_frequency: 25
+time_patterns:
+  - business_hours
+  - night_hours
+  - weekend
+business_hours_multiplier: 1.4
+night_hours_multiplier: 0.9
+weekend_multiplier: 0.6
+
+documentation:
+  display:
+    title: "SCC Misconfiguration Findings"
+    subtitle: "Security configuration issues"
+    icon: "⚙️"
+    color_scheme: "warning"
+    tags:
+      - "misconfiguration"
+      - "compliance"
+      - "security-posture"
+      - "configuration"
+      - "gcp"
+
+  overview:
+    summary: "Misconfiguration findings identify vulnerabilities caused by incorrect or suboptimal configuration of GCP resources. These findings can typically be fixed by updating the resource configuration to follow security best practices."
+    when_generated:
+      - "Cloud Storage buckets have public access enabled"
+      - "Service accounts have overly permissive IAM roles"
+      - "Firewall rules allow unrestricted access (0.0.0.0/0)"
+      - "Compute instances use legacy networks"
+      - "SSL/TLS policies use weak ciphers"
+      - "Audit logging is disabled for critical services"
+      - "Resources have public IP addresses unnecessarily"
+    security_relevance: "High"
+    compliance_frameworks:
+      - "CIS GCP Foundation 2.0"
+      - "NIST 800-53 (CM-6, AC-3)"
+      - "ISO 27001 (A.9.1.2)"
+      - "PCI-DSS (1.2, 2.1)"
+      - "SOC 2 (CC6.1)"
+    frequency_notes: "Misconfiguration findings are generated during continuous security posture assessments. Frequency increases during business hours when resources are actively being created or modified. Findings may reactivate if configurations are reverted to insecure states."
+
+  fields:
+    - name: "name"
+      type: "String"
+      required: true
+      description: "Full resource name of the misconfiguration finding"
+      example_value: "organizations/123456789/sources/9732761411165682985/locations/global/findings/misconfig-abc123..."
+      format: "organizations/{org_id}/sources/{source_id}/locations/global/findings/misconfig-{finding_id}"
+      template_source: "Constructed with 'misconfig-' prefix"
+
+    - name: "category"
+      type: "String"
+      required: true
+      description: "Misconfiguration category"
+      example_value: "PUBLIC_BUCKET_ACL"
+      possible_values:
+        - value: "PUBLIC_BUCKET_ACL"
+          description: "Cloud Storage bucket with public access"
+        - value: "ADMIN_SERVICE_ACCOUNT"
+          description: "Service account with admin privileges"
+        - value: "OPEN_FIREWALL"
+          description: "Firewall rule allowing unrestricted access"
+        - value: "OPEN_SSH_PORT"
+          description: "SSH port open to public internet"
+        - value: "LEGACY_NETWORK"
+          description: "Resource using legacy network"
+        - value: "WEAK_SSL_POLICY"
+          description: "Weak SSL/TLS cipher configuration"
+        - value: "PUBLIC_IP_ADDRESS"
+          description: "Unnecessary public IP address"
+        - value: "LOGGING_DISABLED"
+          description: "Audit logging disabled"
+
+    - name: "sourceProperties.Recommendation"
+      type: "String"
+      required: true
+      description: "Remediation recommendation for the misconfiguration"
+      example_value: "Remove public access from Cloud Storage bucket and implement authenticated access controls"
+      template_source: "Context-specific recommendation based on category"
+
+    - name: "sourceProperties.compliance"
+      type: "Object"
+      required: false
+      description: "Compliance standard and control information"
+      template_source: "Compliance object with standard, version, and control"
+
+    - name: "sourceProperties.violationDetails"
+      type: "Object"
+      required: true
+      description: "Details of the configuration violation"
+      template_source: "Object with observedValue, expectedValue, and assessmentTime"
+
+    - name: "sourceProperties.ReactivationCount"
+      type: "Integer"
+      required: false
+      description: "Number of times this finding has been reactivated"
+      example_value: "2"
+      template_source: "random_int(0, 5)"
+
+    - name: "severity"
+      type: "String"
+      required: true
+      description: "Misconfiguration severity level"
+      example_value: "MEDIUM"
+      possible_values:
+        - value: "CRITICAL"
+          description: "Critical misconfiguration requiring immediate fix"
+        - value: "HIGH"
+          description: "High severity misconfiguration"
+        - value: "MEDIUM"
+          description: "Medium severity misconfiguration"
+        - value: "LOW"
+          description: "Low severity misconfiguration"
+      template_source: "random_weighted favoring MEDIUM (50%)"
+
+    - name: "findingClass"
+      type: "String"
+      required: true
+      description: "Finding class identifier"
+      example_value: "MISCONFIGURATION"
+      template_source: "Static 'MISCONFIGURATION'"
+
+  resources:
+    documentation:
+      - title: "Security Health Analytics"
+        url: "https://cloud.google.com/security-command-center/docs/security-health-analytics"
+        type: "official"
+      - title: "Vulnerability Findings (includes misconfigurations)"
+        url: "https://cloud.google.com/security-command-center/docs/vulnerabilities-finding-reference"
+        type: "official"
+      - title: "Remediate Configuration Error Findings"
+        url: "https://cloud.google.com/security-command-center/docs/how-to-remediate-configuration-error-findings"
+        type: "official"
+

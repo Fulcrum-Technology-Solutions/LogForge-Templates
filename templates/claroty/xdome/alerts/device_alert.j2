@@ -1,0 +1,146 @@
+{
+  "alert_assignees": {{ random_choice([[], ['Admin'], ['Security Team'], ['Admin', 'OT Engineer']]) | tojson }},
+  "alert_category": "{{ random_choice(['Risk', 'Threat', 'Vulnerability', 'Policy Violation', 'Anomaly']) }}",
+  "alert_class": "{{ random_choice(['predefined', 'custom', 'user_defined']) }}",
+  "alert_description": "{{ random_choice([
+    'Outdated firmware detected on',
+    'Unauthorized network communication from',
+    'Critical vulnerability detected on',
+    'Suspicious protocol activity on',
+    'Configuration change detected on',
+    'Baseline deviation detected on',
+    'Unauthorized access attempt to',
+    'Network segmentation violation by'
+  ]) }} {{ random_int(1, 10) }} {{ random_choice(['OT', 'IoT', 'ICS', 'Medical', 'BMS']) }} devices",
+  "alert_id": {{ random_int(1, 100000) }},
+  "alert_labels": {{ random_choice([
+    [],
+    ['Top Priority'],
+    ['Critical'],
+    ['High Priority'],
+    ['Compliance'],
+    ['Top Priority', 'Compliance'],
+    ['Production Impact']
+  ]) | tojson }},
+  "alert_type_name": "{{ random_choice([
+    'Outdated Firmware',
+    'Unauthorized Communication',
+    'Critical Vulnerability',
+    'Protocol Anomaly',
+    'Configuration Change',
+    'Baseline Deviation',
+    'Unauthorized Access',
+    'Segmentation Violation',
+    'Malware Detection',
+    'Password Policy Violation'
+  ]) }}",
+  "device_alert_detected_time": "{{ now() | iso8601 }}",
+  "device_alert_status": "{{ random_choice(['Unresolved', 'In Progress', 'Resolved', 'Acknowledged', 'False Positive']) }}",
+  "device_alert_updated_time": "{{ now() | iso8601 }}",
+  "device_assignees": {{ random_choice([
+    [],
+    ['Admin'],
+    ['Security Team'],
+    ['OT Engineer'],
+    ['Admin', 'Security Team']
+  ]) | tojson }},
+  "device_category": "{{ random_choice([
+    'Medical',
+    'Manufacturing',
+    'Energy',
+    'Building Automation',
+    'Transportation',
+    'Critical Infrastructure',
+    'Process Control'
+  ]) }}",
+  "device_first_seen_list": [
+    "{{ now() | subtract_seconds(random_int(86400, 2592000)) | iso8601 }}"
+  ],
+  "device_ip_list": [
+    "{{ random_private_ip() }}"
+  ],
+  "device_labels": {{ random_choice([
+    [],
+    ['Critical Asset'],
+    ['Production'],
+    ['Maintenance Required'],
+    ['EOL Device'],
+    ['Critical Asset', 'Production']
+  ]) | tojson }},
+  "device_last_seen_list": [
+    "{{ now() | subtract_seconds(random_int(0, 3600)) | iso8601 }}"
+  ],
+  "device_mac_list": [
+    "{{ fake.mac_address() }}"
+  ],
+  "device_network_list": [
+    "{{ random_choice(['Corporate', 'Production', 'OT Network', 'DMZ', 'Manufacturing', 'Control Network', 'Management']) }}"
+  ],
+  "device_purdue_level": "{{ random_choice(['Level 0', 'Level 1', 'Level 2', 'Level 3', 'Level 4', 'Level 5']) }}",
+  "device_retired": {{ random_choice(['false', 'false', 'false', 'true']) }},
+  "device_risk_score": "{{ random_choice(['Very Low', 'Low', 'Medium', 'High', 'Critical']) }}",
+  "device_site_name": "{{ random_choice([
+    'New York General Hospital',
+    'Manufacturing Plant A',
+    'Houston Refinery',
+    'Chicago Distribution Center',
+    'Seattle Data Center',
+    'Phoenix Manufacturing',
+    'Boston Medical Center'
+  ]) }}",
+  "device_subcategory": "{{ random_choice([
+    'Patient Devices',
+    'PLCs',
+    'HMIs',
+    'RTUs',
+    'SCADA Systems',
+    'Building Controls',
+    'Safety Systems',
+    'Analyzers',
+    'Infusion Pumps'
+  ]) }}",
+  "device_type": "{{ random_choice([
+    'Patient Monitor',
+    'PLC',
+    'HMI',
+    'RTU',
+    'Engineering Workstation',
+    'HVAC Controller',
+    'Safety PLC',
+    'Infusion Pump',
+    'Analyzer'
+  ]) }}",
+  "device_uid": "{{ random_guid() }}",
+  "mitre_technique_enterprise_ids": {{ random_choice([
+    [],
+    ['T1190'],
+    ['T1078'],
+    ['T1548'],
+    ['T1190', 'T1133'],
+    ['T1078', 'T1021']
+  ]) | tojson }},
+  "mitre_technique_enterprise_names": {{ random_choice([
+    [],
+    ['Exploit Public-Facing Application'],
+    ['Valid Accounts'],
+    ['Abuse Elevation Control Mechanism'],
+    ['Exploit Public-Facing Application', 'External Remote Services'],
+    ['Valid Accounts', 'Remote Services']
+  ]) | tojson }},
+  "mitre_technique_ics_ids": {{ random_choice([
+    [],
+    ['T0883'],
+    ['T0800'],
+    ['T0886'],
+    ['T0883', 'T0885'],
+    ['T0800', 'T0868']
+  ]) | tojson }},
+  "mitre_technique_ics_names": {{ random_choice([
+    [],
+    ['Internet Accessible Device'],
+    ['Activate Firmware Update Mode'],
+    ['Remote Services'],
+    ['Internet Accessible Device', 'Commonly Used Port'],
+    ['Activate Firmware Update Mode', 'Detect Operating Mode']
+  ]) | tojson }}
+}

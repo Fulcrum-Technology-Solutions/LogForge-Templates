@@ -1,0 +1,29 @@
+{
+    "name": "google-security-command-center",
+    "version": "1.0.0",
+    "description": "LogForge templates for Google Cloud Security Command Center security findings and alerts",
+    "maintainers": [
+      {
+        "name": "John Owen",
+        "email": "jowen@ftsc.com",
+        "github": "jowen-ftsc"
+      }
+    ],
+    "tags": [
+      "google-cloud",
+      "security",
+      "threat-detection",
+      "compliance",
+      "gcp"
+    ],
+    "templates": [
+      "findings/threat_detection",
+      "findings/vulnerability_finding",
+      "findings/misconfiguration_finding",
+      "findings/observation_finding",
+      "findings/posture_violation",
+      "findings/toxic_combination",
+      "findings/chokepoint_finding",
+      "findings/scc_error"
+    ]
+  }

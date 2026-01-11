@@ -1,0 +1,36 @@
+{
+  "name": "organizations/{{ registry.get_organization_field('domain').split('.')[0] | default('123456789') }}/sources/{{ random_int(1000000000000000000, 9999999999999999999) }}/locations/global/findings/misconfig-{{ random_guid() }}",
+  "parent": "organizations/{{ registry.get_organization_field('domain').split('.')[0] | default('123456789') }}/sources/{{ random_int(1000000000000000000, 9999999999999999999) }}/locations/global",
+  "resourceName": "{% set resource_type = random_weighted(['storage', 'iam', 'compute', 'network', 'logging'], [30, 25, 20, 15, 10]) %}{% if resource_type == 'storage' %}//storage.googleapis.com/projects/_/buckets/{{ random_choice(['app-data', 'user-uploads', 'backups', 'logs', 'public-assets']) }}-{{ random_string(8) }}{% elif resource_type == 'iam' %}//iam.googleapis.com/projects/{{ registry.get_organization_field('domain').split('.')[0] | default('my-project') }}/serviceAccounts/{{ random_choice(['compute', 'app-engine', 'cloud-run']) }}@{{ registry.get_organization_field('domain').split('.')[0] | default('my-project') }}.iam.gserviceaccount.com{% elif resource_type == 'compute' %}//compute.googleapis.com/projects/{{ registry.get_organization_field('domain').split('.')[0] | default('my-project') }}/zones/{{ random_choice(['us-central1-a', 'us-east1-b']) }}/instances/{{ registry.get_random_device().hostname | default(random_hostname()) }}{% elif resource_type == 'network' %}//compute.googleapis.com/projects/{{ registry.get_organization_field('domain').split('.')[0] | default('my-project') }}/global/firewalls/{{ random_choice(['default-allow-ssh', 'default-allow-rdp', 'allow-internal', 'web-server']) }}{% else %}//logging.googleapis.com/projects/{{ registry.get_organization_field('domain').split('.')[0] | default('my-project') }}/logs/{{ random_choice(['cloudaudit.googleapis.com', 'compute.googleapis.com', 'cloudsql.googleapis.com']) }}{% endif %}",
+  "state": "{{ random_weighted(['ACTIVE', 'INACTIVE'], [75, 25]) }}",
+  "category": "{{ random_weighted(['PUBLIC_BUCKET_ACL', 'ADMIN_SERVICE_ACCOUNT', 'OPEN_FIREWALL', 'OPEN_SSH_PORT', 'LEGACY_NETWORK', 'WEAK_SSL_POLICY', 'PUBLIC_IP_ADDRESS', 'LOGGING_DISABLED'], [20, 18, 15, 12, 10, 10, 8, 7]) }}",
+  "externalUri": "https://console.cloud.google.com/security/command-center/findings?organizationId={{ registry.get_organization_field('domain').split('.')[0] | default('123456789') }}",
+  "sourceProperties": {
+    "ReactivationCount": {{ random_int(0, 5) }},
+    "ExceptionInstructions": "Review configuration and apply recommended changes. Consult security team if exception needed.",
+    "Recommendation": "{% set cat = random_choice(['bucket', 'iam', 'firewall', 'network', 'logging']) %}{% if cat == 'bucket' %}Remove public access from Cloud Storage bucket and implement authenticated access controls{% elif cat == 'iam' %}Remove overly permissive roles from service account and follow principle of least privilege{% elif cat == 'firewall' %}Restrict firewall rule to specific IP ranges instead of 0.0.0.0/0{% elif cat == 'network' %}Migrate from legacy network to VPC network with proper subnet isolation{% else %}Enable audit logging for security-critical resources and API calls{% endif %}",
+    "ScannerName": "Security Health Analytics",
+    "ResourcePath": [
+      "organizations/{{ registry.get_organization_field('domain').split('.')[0] | default('123456789') }}",
+      "folders/{{ random_int(100000000000, 999999999999) }}",
+      "projects/{{ registry.get_organization_field('domain').split('.')[0] | default('my-project') }}"
+    ],
+    "compliance": {
+      "standard": "{{ random_choice(['CIS GCP Foundation 1.3.0', 'PCI-DSS v3.2.1', 'NIST 800-53', 'ISO 27001']) }}",
+      "version": "{{ random_choice(['1.3.0', '3.2.1', 'Rev 5', '2013']) }}",
+      "control": "{{ random_choice(['1.1', '1.15', '2.1', '3.4', '4.2', '6.1', '7.1', 'AC-3', 'AC-6', 'AU-2']) }}"
+    },
+    "violationDetails": {
+      "observedValue": "{{ random_choice(['0.0.0.0/0', 'allUsers', 'allAuthenticatedUsers', 'roles/editor', 'disabled', 'legacy']) }}",
+      "expectedValue": "{{ random_choice(['specific IP ranges', 'authenticated principals only', 'roles/viewer', 'enabled', 'VPC network']) }}",
+      "assessmentTime": "{{ now() | iso8601 }}"
+    }
+  },
+  "severity": "{{ random_weighted(['CRITICAL', 'HIGH', 'MEDIUM', 'LOW'], [5, 25, 50, 20]) }}",
+  "findingClass": "MISCONFIGURATION",
+  "eventTime": "{{ now() | iso8601 }}",
+  "createTime": "{{ now() | iso8601 }}",
+  "canonicalName": "projects/{{ registry.get_organization_field('domain').split('.')[0] | default('123456789') }}/sources/{{ random_int(1000000000000000000, 9999999999999999999) }}/findings/misconfig-{{ random_guid() }}",
+  "mute": "{{ random_weighted(['UNMUTED', 'MUTED', 'UNDEFINED'], [65, 30, 5]) }}",
+  "parentDisplayName": "Security Health Analytics"
+}

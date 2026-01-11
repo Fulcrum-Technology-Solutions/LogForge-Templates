@@ -1,0 +1,6 @@
+vendor: google
+product: security-command-center
+name: Security Command Center
+description: Google Cloud Security Command Center (SCC) is a centralized security and risk management platform for Google Cloud that provides visibility into security threats, misconfigurations, and compliance violations across GCP resources.
+version: v2
+documentation_url: https://cloud.google.com/security-command-center/docs

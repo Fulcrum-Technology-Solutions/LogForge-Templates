@@ -1,0 +1,25 @@
+{
+    "name": "claroty-xdome",
+    "version": "1.0.0",
+    "description": "LogForge templates for Claroty xDome security alerts and events",
+    "maintainers": [
+      {
+        "name": "LogForge Templates",
+        "email": "templates@logforge.dev"
+      }
+    ],
+    "tags": [
+      "claroty",
+      "xdome",
+      "ot-security",
+      "ics",
+      "industrial",
+      "iot",
+      "medical-devices",
+      "scada",
+      "alerts"
+    ],
+    "templates": [
+      "alerts/device_alert"
+    ]
+  }

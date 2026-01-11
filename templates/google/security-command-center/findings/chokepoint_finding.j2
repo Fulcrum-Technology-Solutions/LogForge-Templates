@@ -1,0 +1,44 @@
+{
+  "name": "organizations/{{ registry.get_organization_field('domain').split('.')[0] | default('123456789') }}/sources/{{ random_int(1000000000000000000, 9999999999999999999) }}/locations/global/findings/chokepoint-{{ random_guid() }}",
+  "parent": "organizations/{{ registry.get_organization_field('domain').split('.')[0] | default('123456789') }}/sources/{{ random_int(1000000000000000000, 9999999999999999999) }}/locations/global",
+  "resourceName": "{% set resource_type = random_weighted(['network', 'iam', 'storage', 'compute'], [40, 30, 20, 10]) %}{% if resource_type == 'network' %}//compute.googleapis.com/projects/{{ registry.get_organization_field('domain').split('.')[0] | default('my-project') }}/global/networks/{{ random_choice(['default', 'prod-vpc', 'staging-vpc']) }}{% elif resource_type == 'iam' %}//iam.googleapis.com/projects/{{ registry.get_organization_field('domain').split('.')[0] | default('my-project') }}/serviceAccounts/{{ random_choice(['compute', 'app-engine', 'cloud-run']) }}@{{ registry.get_organization_field('domain').split('.')[0] | default('my-project') }}.iam.gserviceaccount.com{% elif resource_type == 'storage' %}//storage.googleapis.com/projects/_/buckets/{{ random_choice(['app-data', 'user-uploads', 'backups']) }}-{{ random_string(8) }}{% else %}//compute.googleapis.com/projects/{{ registry.get_organization_field('domain').split('.')[0] | default('my-project') }}/zones/{{ random_choice(['us-central1-a', 'us-east1-b']) }}/instances/{{ registry.get_random_device().hostname | default(random_hostname()) }}{% endif %}",
+  "state": "{{ random_weighted(['ACTIVE', 'INACTIVE'], [95, 5]) }}",
+  "category": "{{ random_weighted(['NETWORK_CHOKEPOINT', 'IAM_CHOKEPOINT', 'DATA_ACCESS_CHOKEPOINT', 'SERVICE_CHOKEPOINT'], [35, 30, 20, 15]) }}",
+  "externalUri": "https://console.cloud.google.com/security/command-center/findings?organizationId={{ registry.get_organization_field('domain').split('.')[0] | default('123456789') }}",
+  "sourceProperties": {
+    "chokepoint": {
+      "description": "{{ random_choice(['Single network path provides access to multiple high-value resources', 'Service account acts as gateway to multiple sensitive data sources', 'Firewall rule creates single point of access for critical systems', 'IAM role grants access to multiple critical resources through one principal', 'Load balancer routes traffic to all backend services without segmentation']) }}",
+      "chokepointType": "{{ random_choice(['NETWORK', 'IAM', 'DATA_ACCESS', 'SERVICE']) }}",
+      "criticality": "{{ random_weighted(['CRITICAL', 'HIGH', 'MEDIUM'], [50, 40, 10]) }}",
+      "affectedResources": [
+        {
+          "resourceName": "//compute.googleapis.com/projects/{{ registry.get_organization_field('domain').split('.')[0] | default('my-project') }}/zones/{{ random_choice(['us-central1-a', 'us-east1-b']) }}/instances/{{ registry.get_random_device().hostname | default(random_hostname()) }}",
+          "resourceType": "{{ random_choice(['google.compute.Instance', 'google.storage.Bucket', 'google.cloudsql.Instance', 'google.bigquery.Dataset']) }}",
+          "sensitivity": "{{ random_choice(['HIGH', 'CRITICAL', 'MEDIUM']) }}"
+        },
+        {
+          "resourceName": "//storage.googleapis.com/projects/_/buckets/{{ random_choice(['app-data', 'user-uploads', 'backups']) }}-{{ random_string(8) }}",
+          "resourceType": "{{ random_choice(['google.compute.Instance', 'google.storage.Bucket', 'google.cloudsql.Instance', 'google.bigquery.Dataset']) }}",
+          "sensitivity": "{{ random_choice(['HIGH', 'CRITICAL', 'MEDIUM']) }}"
+        }
+      ],
+      "attackExposureScore": {{ random_choice([8, 9, 10]) }},
+      "remediationGuidance": "{{ random_choice(['Implement network segmentation to reduce chokepoint exposure', 'Apply principle of least privilege to IAM bindings', 'Deploy multiple access paths to eliminate single points of failure', 'Enable additional authentication factors for chokepoint resources']) }}"
+    },
+    "ResourcePath": [
+      "organizations/{{ registry.get_organization_field('domain').split('.')[0] | default('123456789') }}",
+      "folders/{{ random_int(100000000000, 999999999999) }}",
+      "projects/{{ registry.get_organization_field('domain').split('.')[0] | default('my-project') }}"
+    ],
+    "ScannerName": "Security Graph",
+    "assessmentTime": "{{ now() | iso8601 }}"
+  },
+  "severity": "{{ random_weighted(['CRITICAL', 'HIGH', 'MEDIUM'], [60, 35, 5]) }}",
+  "findingClass": "CHOKEPOINT",
+  "eventTime": "{{ now() | iso8601 }}",
+  "createTime": "{{ now() | iso8601 }}",
+  "canonicalName": "projects/{{ registry.get_organization_field('domain').split('.')[0] | default('123456789') }}/sources/{{ random_int(1000000000000000000, 9999999999999999999) }}/findings/chokepoint-{{ random_guid() }}",
+  "mute": "{{ random_weighted(['UNMUTED', 'MUTED', 'UNDEFINED'], [80, 15, 5]) }}",
+  "parentDisplayName": "Security Graph"
+}
+

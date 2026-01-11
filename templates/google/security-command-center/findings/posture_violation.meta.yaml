@@ -1,0 +1,140 @@
+vendor: google
+product: security-command-center
+data_source: findings
+description: Posture violation findings from Google Cloud Security Command Center, identifying resource configurations that don't align with your organization's security posture or Compliance Manager cloud controls.
+format: JSON
+frequency: medium
+is_generator: true
+base_frequency: 20
+time_patterns:
+  - business_hours
+  - night_hours
+  - weekend
+business_hours_multiplier: 1.6
+night_hours_multiplier: 0.7
+weekend_multiplier: 0.4
+
+documentation:
+  display:
+    title: "SCC Posture Violation Findings"
+    subtitle: "Security posture and compliance violations"
+    icon: "📋"
+    color_scheme: "warning"
+    tags:
+      - "posture"
+      - "compliance"
+      - "security-baseline"
+      - "policy-violation"
+      - "gcp"
+
+  overview:
+    summary: "Posture violation findings describe resource configurations that don't align with your organization's security posture templates or Compliance Manager cloud controls. These findings help maintain consistent security standards across GCP resources."
+    when_generated:
+      - "Resources don't meet Secure by Default posture template requirements"
+      - "Compliance standard controls are violated (CIS, NIST, PCI-DSS, ISO 27001)"
+      - "Organization security policies are not followed"
+      - "Custom posture constraints are violated"
+      - "Security baseline requirements are not met"
+    security_relevance: "High"
+    compliance_frameworks:
+      - "CIS GCP Foundation 2.0"
+      - "NIST 800-53"
+      - "PCI DSS"
+      - "ISO 27001"
+      - "SOC 2"
+    frequency_notes: "Posture violation findings are generated during security posture assessments. Frequency increases when new resources are created or existing resources are modified. Business hours typically see more violations as development and deployment activities occur."
+
+  fields:
+    - name: "name"
+      type: "String"
+      required: true
+      description: "Full resource name of the posture violation finding"
+      example_value: "organizations/123456789/sources/9732761411165682985/locations/global/findings/posture-abc123..."
+      format: "organizations/{org_id}/sources/{source_id}/locations/global/findings/posture-{finding_id}"
+      template_source: "Constructed with 'posture-' prefix"
+
+    - name: "category"
+      type: "String"
+      required: true
+      description: "Posture violation category"
+      example_value: "POSTURE_BASELINE_VIOLATION"
+      possible_values:
+        - value: "POSTURE_BASELINE_VIOLATION"
+          description: "Violation of security baseline requirements"
+        - value: "COMPLIANCE_STANDARD_VIOLATION"
+          description: "Violation of compliance standard control"
+        - value: "SECURITY_POLICY_VIOLATION"
+          description: "Violation of organization security policy"
+        - value: "ORGANIZATION_POLICY_VIOLATION"
+          description: "Violation of organization policy constraint"
+
+    - name: "sourceProperties.postureViolation.postureTemplate"
+      type: "String"
+      required: true
+      description: "Posture template that was violated"
+      example_value: "Secure by Default - Essentials"
+      possible_values:
+        - value: "Secure by Default - Essentials"
+          description: "Essential secure by default requirements"
+        - value: "Secure by Default - Extended"
+          description: "Extended secure by default requirements"
+        - value: "CIS GCP Foundation 2.0"
+          description: "CIS benchmark requirements"
+        - value: "NIST 800-53"
+          description: "NIST security controls"
+        - value: "PCI DSS"
+          description: "PCI DSS requirements"
+        - value: "ISO 27001"
+          description: "ISO 27001 requirements"
+
+    - name: "sourceProperties.compliance"
+      type: "Object"
+      required: false
+      description: "Compliance standard and control information"
+      template_source: "Object with standard, version, control, and controlDescription"
+
+    - name: "sourceProperties.postureViolation.remediationGuidance"
+      type: "String"
+      required: true
+      description: "Guidance for remediating the posture violation"
+      example_value: "Apply Secure by Default posture template"
+      template_source: "Context-specific remediation guidance"
+
+    - name: "severity"
+      type: "String"
+      required: true
+      description: "Posture violation severity level"
+      example_value: "HIGH"
+      possible_values:
+        - value: "CRITICAL"
+          description: "Critical posture violation"
+        - value: "HIGH"
+          description: "High severity posture violation"
+        - value: "MEDIUM"
+          description: "Medium severity posture violation"
+        - value: "LOW"
+          description: "Low severity posture violation"
+      template_source: "random_weighted favoring MEDIUM (45%)"
+
+    - name: "findingClass"
+      type: "String"
+      required: true
+      description: "Finding class identifier"
+      example_value: "POSTURE_VIOLATION"
+      template_source: "Static 'POSTURE_VIOLATION'"
+
+  resources:
+    documentation:
+      - title: "Finding Classes - Posture Violation"
+        url: "https://cloud.google.com/security-command-center/docs/finding-classes#posture-violation"
+        type: "official"
+      - title: "Security Posture Overview"
+        url: "https://cloud.google.com/security-command-center/docs/security-posture-overview"
+        type: "official"
+      - title: "Compliance Manager"
+        url: "https://cloud.google.com/security-command-center/docs/compliance-manager-overview"
+        type: "official"
+      - title: "Posture Templates"
+        url: "https://cloud.google.com/security-command-center/docs/posture-templates"
+        type: "official"
+
