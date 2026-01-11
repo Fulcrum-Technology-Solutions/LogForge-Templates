@@ -1,0 +1,93 @@
+name: Quarterly Major Release
+
+on:
+  schedule:
+    # Run on the 1st day of each quarter at 00:00 UTC
+    # Q1: Jan 1, Q2: Apr 1, Q3: Jul 1, Q4: Oct 1
+    - cron: '0 0 1 1,4,7,10 *'
+  workflow_dispatch:  # Allow manual trigger
+
+jobs:
+  quarterly-major-release:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+          token: ${{ secrets.GITHUB_TOKEN }}
+      
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+      
+      - name: Get current quarter
+        id: quarter
+        run: |
+          MONTH=$(date +%m)
+          if [ "$MONTH" -ge 1 ] && [ "$MONTH" -le 3 ]; then
+            QUARTER="Q1"
+            YEAR=$(date +%Y)
+          elif [ "$MONTH" -ge 4 ] && [ "$MONTH" -le 6 ]; then
+            QUARTER="Q2"
+            YEAR=$(date +%Y)
+          elif [ "$MONTH" -ge 7 ] && [ "$MONTH" -le 9 ]; then
+            QUARTER="Q3"
+            YEAR=$(date +%Y)
+          else
+            QUARTER="Q4"
+            YEAR=$(date +%Y)
+          fi
+          echo "quarter=$QUARTER" >> $GITHUB_OUTPUT
+          echo "year=$YEAR" >> $GITHUB_OUTPUT
+          echo "Quarter: $YEAR $QUARTER"
+      
+      - name: Force major version bumps
+        run: |
+          FORCE_MAJOR_RELEASE=true python .github/scripts/auto_version.py
+      
+      - name: Check for version changes
+        id: check
+        run: |
+          if git diff --quiet HEAD -- 'templates/**/collection.json'; then
+            echo "changed=false" >> $GITHUB_OUTPUT
+          else
+            echo "changed=true" >> $GITHUB_OUTPUT
+          fi
+      
+      - name: Commit major version bumps
+        if: steps.check.outputs.changed == 'true'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add templates/**/collection.json
+          git commit -m "Quarterly major release: ${{ steps.quarter.outputs.year }} ${{ steps.quarter.outputs.quarter }} [skip ci]"
+          git push
+      
+      - name: Update TEMPLATES.yaml
+        if: steps.check.outputs.changed == 'true'
+        run: |
+          python -m pip install --upgrade pip
+          pip install pyyaml
+          python .github/scripts/update_templates_index.py
+          git add TEMPLATES.yaml
+          git commit -m "Update TEMPLATES.yaml for quarterly release [skip ci]" || exit 0
+          git push || exit 0
+      
+      - name: Create Release
+        if: steps.check.outputs.changed == 'true'
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: "v${{ steps.quarter.outputs.year }}-${{ steps.quarter.outputs.quarter }}"
+          name: "Quarterly Major Release - ${{ steps.quarter.outputs.year }} ${{ steps.quarter.outputs.quarter }}"
+          body: |
+            Quarterly major release for ${{ steps.quarter.outputs.year }} ${{ steps.quarter.outputs.quarter }}.
+            
+            All template collections have been bumped to major versions as part of the quarterly release cycle.
+          draft: false
+          prerelease: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+

@@ -1,0 +1,105 @@
+name: Auto Version and Update Index
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - 'templates/**/*.j2'
+      - 'templates/**/*.meta.yaml'
+      - 'templates/**/vendor.meta.yaml'
+      - 'templates/**/product.meta.yaml'
+      - 'templates/**/collection.json'
+    paths-ignore:
+      - 'TEMPLATES.yaml'
+  workflow_dispatch:
+
+jobs:
+  auto-version:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 2  # Need previous commit for comparison
+          token: ${{ secrets.GITHUB_TOKEN }}
+      
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+      
+      - name: Auto-version collections
+        id: version
+        run: |
+          python .github/scripts/auto_version.py
+        continue-on-error: true
+      
+      - name: Check for version changes
+        id: check
+        run: |
+          if git diff --quiet HEAD -- 'templates/**/collection.json'; then
+            echo "changed=false" >> $GITHUB_OUTPUT
+          else
+            echo "changed=true" >> $GITHUB_OUTPUT
+          fi
+      
+      - name: Commit version changes
+        if: steps.check.outputs.changed == 'true'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add templates/**/collection.json
+          git commit -m "Auto-bump template versions [skip ci]" || exit 0
+          git push || exit 0
+
+  update-index:
+    needs: auto-version
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          ref: main
+      
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+      
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install pyyaml
+      
+      - name: Update TEMPLATES.yaml
+        run: python .github/scripts/update_templates_index.py
+      
+      - name: Check for TEMPLATES.yaml changes
+        id: check_index
+        run: |
+          if git diff --quiet HEAD -- TEMPLATES.yaml; then
+            echo "changed=false" >> $GITHUB_OUTPUT
+          else
+            echo "changed=true" >> $GITHUB_OUTPUT
+          fi
+      
+      - name: Create Pull Request
+        if: steps.check_index.outputs.changed == 'true'
+        uses: peter-evans/create-pull-request@v5
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          commit-message: "Auto-update TEMPLATES.yaml [skip ci]"
+          title: "Auto-update TEMPLATES.yaml"
+          body: |
+            This PR was automatically created to update the templates index.
+            
+            - [skip ci] tag included to prevent infinite workflow loops
+          branch: auto-update-templates-index
+          delete-branch: true
+          author: GitHub Action <action@github.com>
+          committer: GitHub Action <action@github.com>
+
