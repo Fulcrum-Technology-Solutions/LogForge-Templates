@@ -1,17 +1,10 @@
-name: Update Templates Index
+name: Update Templates Index (DEPRECATED)
+
+# This workflow has been replaced by auto_version_and_index.yml
+# Kept for reference but disabled
 
 on:
-  push:
-    branches: [ main ]
-    paths:
-      - 'templates/**/*.j2'
-      - 'templates/**/*.meta.yaml'
-      - 'templates/**/vendor.meta.yaml'
-      - 'templates/**/product.meta.yaml'
-      - 'templates/**/collection.json'
-    paths-ignore:
-      - 'TEMPLATES.yaml'
-  workflow_dispatch:
+  workflow_dispatch:  # Only allow manual trigger for legacy support
 
 jobs:
   update-index:
