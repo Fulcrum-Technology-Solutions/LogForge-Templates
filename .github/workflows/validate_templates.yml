@@ -9,10 +9,6 @@ on:
       - 'templates/**/vendor.meta.yaml'
       - 'templates/**/product.meta.yaml'
       - 'templates/**/collection.json'
-    paths-ignore:
-      - 'archive/**'
-      - 'examples/**'
-      - 'TEMPLATES.yaml'
   pull_request:
     branches: [ main ]
     paths:
@@ -21,10 +17,6 @@ on:
       - 'templates/**/vendor.meta.yaml'
       - 'templates/**/product.meta.yaml'
       - 'templates/**/collection.json'
-    paths-ignore:
-      - 'archive/**'
-      - 'examples/**'
-      - 'TEMPLATES.yaml'
 
 jobs:
   validate:
