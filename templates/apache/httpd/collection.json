@@ -23,6 +23,7 @@
       "access/common_log_format",
       "error/http_error",
       "plugin/websphere_error",
-      "application/oracle_xdo_error"
+      "application/oracle_xdo_error",
+      "forensic/forensic_log"
     ]
   }
