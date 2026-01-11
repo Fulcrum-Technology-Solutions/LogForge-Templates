@@ -1,0 +1,37 @@
+{
+  "name": "organizations/{{ registry.get_organization_field('domain').split('.')[0] | default('123456789') }}/sources/{{ random_int(1000000000000000000, 9999999999999999999) }}/locations/global/findings/posture-{{ random_guid() }}",
+  "parent": "organizations/{{ registry.get_organization_field('domain').split('.')[0] | default('123456789') }}/sources/{{ random_int(1000000000000000000, 9999999999999999999) }}/locations/global",
+  "resourceName": "//cloudresourcemanager.googleapis.com/projects/{{ registry.get_organization_field('domain').split('.')[0] | default('my-project') }}",
+  "state": "{{ random_weighted(['ACTIVE', 'INACTIVE'], [85, 15]) }}",
+  "category": "{{ random_weighted(['POSTURE_BASELINE_VIOLATION', 'COMPLIANCE_STANDARD_VIOLATION', 'SECURITY_POLICY_VIOLATION', 'ORGANIZATION_POLICY_VIOLATION'], [40, 30, 20, 10]) }}",
+  "externalUri": "https://console.cloud.google.com/security/command-center/posture?organizationId={{ registry.get_organization_field('domain').split('.')[0] | default('123456789') }}",
+  "sourceProperties": {
+    "postureViolation": {
+      "postureTemplate": "{{ random_choice(['Secure by Default - Essentials', 'Secure by Default - Extended', 'CIS GCP Foundation 2.0', 'NIST 800-53', 'PCI DSS', 'ISO 27001']) }}",
+      "violationType": "{{ random_choice(['BASELINE', 'COMPLIANCE', 'POLICY', 'CUSTOM']) }}",
+      "violationDescription": "{{ random_choice(['Project does not meet secure baseline requirements', 'Resource configuration violates compliance standard', 'IAM policy violates organization security policy', 'Network configuration does not follow security best practices']) }}",
+      "remediationGuidance": "{{ random_choice(['Apply Secure by Default posture template', 'Review and update IAM bindings to follow least privilege', 'Enable required security controls and logging', 'Migrate resources to compliant configuration']) }}"
+    },
+    "compliance": {
+      "standard": "{{ random_choice(['CIS GCP Foundation 2.0', 'NIST 800-53', 'PCI DSS v3.2.1', 'ISO 27001:2013']) }}",
+      "version": "{{ random_choice(['2.0', 'Rev 5', '3.2.1', '2013']) }}",
+      "control": "{{ random_choice(['1.1', '1.15', '2.1', '3.4', '4.2', '6.1', '7.1', 'AC-3', 'AC-6', 'AU-2', 'SC-7']) }}",
+      "controlDescription": "{{ random_choice(['Ensure that Cloud Asset Inventory is enabled', 'Ensure that VPC Flow Logs are enabled for subnetworks', 'Ensure that Cloud SQL database instances require SSL', 'Ensure that IAM users are not assigned Service Account User role']) }}"
+    },
+    "ResourcePath": [
+      "organizations/{{ registry.get_organization_field('domain').split('.')[0] | default('123456789') }}",
+      "folders/{{ random_int(100000000000, 999999999999) }}",
+      "projects/{{ registry.get_organization_field('domain').split('.')[0] | default('my-project') }}"
+    ],
+    "ScannerName": "Security Health Analytics",
+    "assessmentTime": "{{ now() | iso8601 }}"
+  },
+  "severity": "{{ random_weighted(['CRITICAL', 'HIGH', 'MEDIUM', 'LOW'], [10, 30, 45, 15]) }}",
+  "findingClass": "POSTURE_VIOLATION",
+  "eventTime": "{{ now() | iso8601 }}",
+  "createTime": "{{ now() | iso8601 }}",
+  "canonicalName": "projects/{{ registry.get_organization_field('domain').split('.')[0] | default('123456789') }}/sources/{{ random_int(1000000000000000000, 9999999999999999999) }}/findings/posture-{{ random_guid() }}",
+  "mute": "{{ random_weighted(['UNMUTED', 'MUTED', 'UNDEFINED'], [60, 35, 5]) }}",
+  "parentDisplayName": "Security Health Analytics"
+}
+

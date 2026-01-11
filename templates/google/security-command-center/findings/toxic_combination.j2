@@ -1,0 +1,42 @@
+{
+  "name": "organizations/{{ registry.get_organization_field('domain').split('.')[0] | default('123456789') }}/sources/{{ random_int(1000000000000000000, 9999999999999999999) }}/locations/global/findings/toxic-{{ random_guid() }}",
+  "parent": "organizations/{{ registry.get_organization_field('domain').split('.')[0] | default('123456789') }}/sources/{{ random_int(1000000000000000000, 9999999999999999999) }}/locations/global",
+  "resourceName": "//cloudresourcemanager.googleapis.com/projects/{{ registry.get_organization_field('domain').split('.')[0] | default('my-project') }}",
+  "state": "{{ random_weighted(['ACTIVE', 'INACTIVE'], [90, 10]) }}",
+  "category": "{{ random_weighted(['TOXIC_IAM_COMBINATION', 'TOXIC_NETWORK_COMBINATION', 'TOXIC_STORAGE_COMBINATION', 'TOXIC_COMPUTE_COMBINATION'], [35, 30, 20, 15]) }}",
+  "externalUri": "https://console.cloud.google.com/security/command-center/findings?organizationId={{ registry.get_organization_field('domain').split('.')[0] | default('123456789') }}",
+  "sourceProperties": {
+    "toxicCombination": {
+      "description": "{{ random_choice(['Service account with Owner role has public IP access', 'Bucket with public read access contains sensitive data classification', 'Compute instance with external IP has overly permissive firewall rules', 'IAM binding grants multiple high-privilege roles to same principal', 'Network allows unrestricted egress with sensitive data access']) }}",
+      "combinationType": "{{ random_choice(['IAM_AND_NETWORK', 'STORAGE_AND_ACCESS', 'COMPUTE_AND_PERMISSIONS', 'NETWORK_AND_DATA']) }}",
+      "riskScore": {{ random_choice([7, 8, 9, 10]) }},
+      "components": [
+        {
+          "type": "{{ random_choice(['IAM_BINDING', 'FIREWALL_RULE', 'STORAGE_ACL', 'NETWORK_CONFIG']) }}",
+          "resource": "{% if random_choice([true, false]) %}//iam.googleapis.com/projects/{{ registry.get_organization_field('domain').split('.')[0] | default('my-project') }}/serviceAccounts/{{ random_choice(['compute', 'app-engine']) }}@{{ registry.get_organization_field('domain').split('.')[0] | default('my-project') }}.iam.gserviceaccount.com{% elif random_choice([true, false]) %}//compute.googleapis.com/projects/{{ registry.get_organization_field('domain').split('.')[0] | default('my-project') }}/global/firewalls/{{ random_choice(['default-allow-ssh', 'allow-internal']) }}{% else %}//storage.googleapis.com/projects/_/buckets/{{ random_choice(['app-data', 'user-uploads']) }}-{{ random_string(8) }}{% endif %}",
+          "finding": "organizations/{{ registry.get_organization_field('domain').split('.')[0] | default('123456789') }}/sources/{{ random_int(1000000000000000000, 9999999999999999999) }}/locations/global/findings/{{ random_guid() }}"
+        },
+        {
+          "type": "{{ random_choice(['IAM_BINDING', 'FIREWALL_RULE', 'STORAGE_ACL', 'NETWORK_CONFIG']) }}",
+          "resource": "{% if random_choice([true, false]) %}//iam.googleapis.com/projects/{{ registry.get_organization_field('domain').split('.')[0] | default('my-project') }}/serviceAccounts/{{ random_choice(['compute', 'app-engine']) }}@{{ registry.get_organization_field('domain').split('.')[0] | default('my-project') }}.iam.gserviceaccount.com{% elif random_choice([true, false]) %}//compute.googleapis.com/projects/{{ registry.get_organization_field('domain').split('.')[0] | default('my-project') }}/global/firewalls/{{ random_choice(['default-allow-ssh', 'allow-internal']) }}{% else %}//storage.googleapis.com/projects/_/buckets/{{ random_choice(['app-data', 'user-uploads']) }}-{{ random_string(8) }}{% endif %}",
+          "finding": "organizations/{{ registry.get_organization_field('domain').split('.')[0] | default('123456789') }}/sources/{{ random_int(1000000000000000000, 9999999999999999999) }}/locations/global/findings/{{ random_guid() }}"
+        }
+      ]
+    },
+    "ResourcePath": [
+      "organizations/{{ registry.get_organization_field('domain').split('.')[0] | default('123456789') }}",
+      "folders/{{ random_int(100000000000, 999999999999) }}",
+      "projects/{{ registry.get_organization_field('domain').split('.')[0] | default('my-project') }}"
+    ],
+    "ScannerName": "Security Graph",
+    "assessmentTime": "{{ now() | iso8601 }}"
+  },
+  "severity": "{{ random_weighted(['CRITICAL', 'HIGH', 'MEDIUM'], [40, 50, 10]) }}",
+  "findingClass": "TOXIC_COMBINATION",
+  "eventTime": "{{ now() | iso8601 }}",
+  "createTime": "{{ now() | iso8601 }}",
+  "canonicalName": "projects/{{ registry.get_organization_field('domain').split('.')[0] | default('123456789') }}/sources/{{ random_int(1000000000000000000, 9999999999999999999) }}/findings/toxic-{{ random_guid() }}",
+  "mute": "{{ random_weighted(['UNMUTED', 'MUTED', 'UNDEFINED'], [75, 20, 5]) }}",
+  "parentDisplayName": "Security Graph"
+}
+

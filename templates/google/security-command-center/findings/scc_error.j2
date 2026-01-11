@@ -1,0 +1,34 @@
+{
+  "name": "organizations/{{ registry.get_organization_field('domain').split('.')[0] | default('123456789') }}/sources/{{ random_int(1000000000000000000, 9999999999999999999) }}/locations/global/findings/error-{{ random_guid() }}",
+  "parent": "organizations/{{ registry.get_organization_field('domain').split('.')[0] | default('123456789') }}/sources/{{ random_int(1000000000000000000, 9999999999999999999) }}/locations/global",
+  "resourceName": "//cloudresourcemanager.googleapis.com/projects/{{ registry.get_organization_field('domain').split('.')[0] | default('my-project') }}",
+  "state": "{{ random_weighted(['ACTIVE', 'INACTIVE'], [70, 30]) }}",
+  "category": "{{ random_weighted(['SCANNER_ERROR', 'API_ERROR', 'CONFIGURATION_ERROR', 'PERMISSION_ERROR', 'RESOURCE_ERROR'], [30, 25, 20, 15, 10]) }}",
+  "externalUri": "https://console.cloud.google.com/security/command-center/findings?organizationId={{ registry.get_organization_field('domain').split('.')[0] | default('123456789') }}",
+  "sourceProperties": {
+    "error": {
+      "errorType": "{{ random_choice(['SCANNER_FAILURE', 'API_AUTHENTICATION_FAILURE', 'RESOURCE_ACCESS_DENIED', 'CONFIGURATION_MISMATCH', 'TIMEOUT', 'QUOTA_EXCEEDED']) }}",
+      "errorCode": "{{ random_choice(['ERROR_SCANNER_DISABLED', 'ERROR_PERMISSION_DENIED', 'ERROR_RESOURCE_NOT_FOUND', 'ERROR_QUOTA_EXCEEDED', 'ERROR_TIMEOUT', 'ERROR_INVALID_CONFIGURATION']) }}",
+      "errorMessage": "{{ random_choice(['Security scanner failed to access resource due to insufficient permissions', 'API authentication failed when attempting to scan resource', 'Resource was deleted or moved during scan operation', 'Scan operation exceeded time limit', 'Organization quota for security scans has been exceeded', 'Invalid scanner configuration detected']) }}",
+      "affectedService": "{{ random_weighted(['Security Health Analytics', 'Container Threat Detection', 'VM Threat Detection', 'Event Threat Detection', 'Web Security Scanner'], [30, 25, 20, 15, 10]) }}",
+      "errorTime": "{{ now() | iso8601 }}",
+      "retryCount": {{ random_int(0, 5) }},
+      "lastRetryTime": "{% if random_choice([true, false]) %}{{ now().subtract(minutes=random_int(1, 60)) | iso8601 }}{% else %}null{% endif %}"
+    },
+    "ResourcePath": [
+      "organizations/{{ registry.get_organization_field('domain').split('.')[0] | default('123456789') }}",
+      "folders/{{ random_int(100000000000, 999999999999) }}",
+      "projects/{{ registry.get_organization_field('domain').split('.')[0] | default('my-project') }}"
+    ],
+    "ScannerName": "{{ random_weighted(['Security Health Analytics', 'Container Threat Detection', 'VM Threat Detection', 'Event Threat Detection'], [35, 30, 20, 15]) }}",
+    "assessmentTime": "{{ now() | iso8601 }}"
+  },
+  "severity": "{{ random_weighted(['CRITICAL', 'HIGH', 'MEDIUM', 'LOW'], [10, 20, 50, 20]) }}",
+  "findingClass": "SCC_ERROR",
+  "eventTime": "{{ now() | iso8601 }}",
+  "createTime": "{{ now() | iso8601 }}",
+  "canonicalName": "projects/{{ registry.get_organization_field('domain').split('.')[0] | default('123456789') }}/sources/{{ random_int(1000000000000000000, 9999999999999999999) }}/findings/error-{{ random_guid() }}",
+  "mute": "{{ random_weighted(['UNMUTED', 'MUTED', 'UNDEFINED'], [85, 10, 5]) }}",
+  "parentDisplayName": "{{ random_weighted(['Security Health Analytics', 'Container Threat Detection', 'VM Threat Detection', 'Event Threat Detection'], [35, 30, 20, 15]) }}"
+}
+

@@ -1,0 +1,167 @@
+vendor: google
+product: security-command-center
+data_source: findings
+description: Threat findings from Google Cloud Security Command Center Event Threat Detection, identifying active attacks, malware, brute force attempts, data exfiltration, and other malicious activities detected in GCP resources.
+format: JSON
+frequency: medium
+is_generator: true
+base_frequency: 20
+time_patterns:
+  - business_hours
+  - night_hours
+  - weekend
+business_hours_multiplier: 1.5
+night_hours_multiplier: 1.2
+weekend_multiplier: 0.8
+
+documentation:
+  display:
+    title: "SCC Threat Detection Findings"
+    subtitle: "Active threats and malicious activity"
+    icon: "🚨"
+    color_scheme: "error"
+    tags:
+      - "threat-detection"
+      - "malware"
+      - "attack"
+      - "security-incident"
+      - "gcp"
+
+  overview:
+    summary: "Threat findings identify potential active attacks or malicious activity detected by Google Cloud Security Command Center Event Threat Detection. These findings require immediate investigation as they indicate ongoing security incidents."
+    when_generated:
+      - "Malware or cryptomining activity detected on compute instances"
+      - "Brute force authentication attempts (SSH, RDP)"
+      - "Data exfiltration attempts via Cloud SQL or other services"
+      - "Unauthorized access or account hijacking detected"
+      - "Privilege escalation or IAM anomalous grants"
+      - "Lateral movement or suspicious SSH activity"
+      - "Command and control (C2) communications detected"
+    security_relevance: "Critical"
+    compliance_frameworks:
+      - "NIST 800-53 (SI-4, AU-6)"
+      - "ISO 27001 (A.12.4.1)"
+      - "PCI-DSS (11.4)"
+      - "SOC 2 (CC7.2)"
+      - "CIS GCP Foundation 2.0"
+    frequency_notes: "Threat findings are generated in real-time when Event Threat Detection identifies malicious patterns. Frequency depends on actual threat activity in the environment. Most threats occur during business hours when systems are actively used, but some attacks (like cryptomining) run continuously."
+
+  fields:
+    - name: "name"
+      type: "String"
+      required: true
+      description: "Full resource name of the finding in organizations scope"
+      example_value: "organizations/123456789/sources/9732761411165682985/locations/global/findings/abc123..."
+      format: "organizations/{org_id}/sources/{source_id}/locations/global/findings/{finding_id}"
+      template_source: "Constructed from organization ID, source ID, and random GUID"
+
+    - name: "category"
+      type: "String"
+      required: true
+      description: "Threat category classification"
+      example_value: "Malware: Cryptomining Bad Domain"
+      possible_values:
+        - value: "Malware: Cryptomining Bad Domain"
+          description: "Cryptocurrency mining activity detected"
+        - value: "Brute Force: SSH"
+          description: "SSH brute force attack detected"
+        - value: "Malware: Bad Domain"
+          description: "Communication with known malicious domain"
+        - value: "Credential Access: External Member Added To Privileged Group"
+          description: "Unauthorized privilege escalation"
+        - value: "Exfiltration: CloudSQL Data Exfiltration"
+          description: "Suspicious data transfer from Cloud SQL"
+        - value: "Initial Access: Account Disabled Hijacked"
+          description: "Compromised account activity"
+        - value: "Persistence: IAM Anomalous Grant"
+          description: "Suspicious IAM permission changes"
+        - value: "Lateral Movement: Compute Engine Anomalous SSH"
+          description: "Unusual SSH access patterns"
+
+    - name: "sourceProperties.detectionCategory.technique"
+      type: "String"
+      required: true
+      description: "MITRE ATT&CK technique identifier"
+      example_value: "T1496"
+      template_source: "random_choice of MITRE ATT&CK techniques"
+      possible_values:
+        - value: "T1496"
+          description: "Resource Hijacking"
+        - value: "T1110"
+          description: "Brute Force"
+        - value: "T1071"
+          description: "Application Layer Protocol"
+        - value: "T1078"
+          description: "Valid Accounts"
+        - value: "T1567"
+          description: "Exfiltration to Cloud Storage"
+        - value: "T1098"
+          description: "Account Manipulation"
+        - value: "T1021"
+          description: "Remote Services"
+
+    - name: "sourceProperties.detectionCategory.indicator"
+      type: "String"
+      required: true
+      description: "Threat indicator (domain, IP, or other identifier)"
+      example_value: "xmr-pool.mining.com"
+      template_source: "random_choice of malicious domains, IPs, or patterns"
+
+    - name: "sourceProperties.evidence"
+      type: "Array"
+      required: true
+      description: "Evidence logs and artifacts supporting the threat detection"
+      template_source: "Array of evidence objects with source logs, IPs, user agents"
+
+    - name: "severity"
+      type: "String"
+      required: true
+      description: "Threat severity level"
+      example_value: "HIGH"
+      possible_values:
+        - value: "CRITICAL"
+          description: "Critical threat requiring immediate response"
+        - value: "HIGH"
+          description: "High severity threat"
+        - value: "MEDIUM"
+          description: "Medium severity threat"
+        - value: "LOW"
+          description: "Low severity threat"
+      template_source: "random_weighted favoring HIGH (35%)"
+
+    - name: "findingClass"
+      type: "String"
+      required: true
+      description: "Finding class identifier"
+      example_value: "THREAT"
+      template_source: "Static 'THREAT'"
+
+    - name: "state"
+      type: "String"
+      required: true
+      description: "Current state of the threat finding"
+      example_value: "ACTIVE"
+      possible_values:
+        - value: "ACTIVE"
+          description: "Threat is currently active"
+        - value: "INACTIVE"
+          description: "Threat has been resolved or is no longer active"
+      template_source: "random_weighted favoring ACTIVE (90%)"
+
+  resources:
+    documentation:
+      - title: "Event Threat Detection Overview"
+        url: "https://cloud.google.com/security-command-center/docs/how-to-use-event-threat-detection"
+        type: "official"
+      - title: "Threat Findings Reference"
+        url: "https://cloud.google.com/security-command-center/docs/threat-findings-reference"
+        type: "official"
+      - title: "Remediating Threats"
+        url: "https://cloud.google.com/security-command-center/docs/how-to-remediate-threats"
+        type: "official"
+    
+    tools:
+      - name: "Google Cloud Console - Security Command Center"
+        description: "Web interface for viewing and managing threat findings"
+        url: "https://console.cloud.google.com/security/command-center"
+
