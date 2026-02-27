@@ -3,7 +3,7 @@ product: wildfire
 data_source: threats
 description: "WildFire threat detection events including malware analysis results, threat classification, and file reputation"
 format: "CSV"
-frequency: "medium"
+frequency: "high"
 is_generator: true
 base_frequency: 25
 time_patterns:
