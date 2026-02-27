@@ -40,43 +40,88 @@ documentation:
       - "SOC 2"
     frequency_notes: "High frequency during business hours when remote workers connect. Lower frequency during off-hours and weekends."
   fields:
-    - name: "timestamp"
+    # ── F01 ─────────────────────────────────────────────────────────────────
+    - name: "future_use"
+      field_number: 1
+      type: "String"
+      required: false
+      description: "Reserved field — always empty per PAN-OS spec"
+      example_value: ""
+      template_source: "Static: empty (leading comma)"
+
+    # ── F02 ─────────────────────────────────────────────────────────────────
+    - name: "receive_time"
+      field_number: 2
       type: "DateTime"
       required: true
-      description: "Event timestamp in YYYY/MM/DD HH:MM:SS format"
+      description: "Time the log was received at the management plane"
       example_value: "2025/01/15 09:30:45"
       format: "YYYY/MM/DD HH:MM:SS"
       template_source: "current_timestamp() | format_timestamp('%Y/%m/%d %H:%M:%S')"
-    - name: "device_serial"
+
+    # ── F03 ─────────────────────────────────────────────────────────────────
+    - name: "serial_number"
+      field_number: 3
       type: "String"
       required: true
-      description: "Palo Alto firewall device serial number"
-      example_value: "PA-1234567890"
+      description: "Palo Alto firewall serial number (F03). Separate from the client device serial at F21."
+      example_value: "PA-A1B2C3D4E5"
       template_source: "PA-{{ random_string(10, '0123456789ABCDEF') }}"
+
+    # ── F04 ─────────────────────────────────────────────────────────────────
     - name: "log_type"
+      field_number: 4
       type: "String"
       required: true
-      description: "Log type identifier for GlobalProtect events"
+      description: "Log type identifier — always GLOBALPROTECT for this log type"
       example_value: "GLOBALPROTECT"
       template_source: "Static: GLOBALPROTECT"
+
+    # ── F05 ─────────────────────────────────────────────────────────────────
     - name: "log_subtype"
+      field_number: 5
       type: "String"
       required: true
-      description: "GlobalProtect log subtype"
+      description: "GlobalProtect log subtype — always portal-auth for authentication events"
       example_value: "portal-auth"
       template_source: "Static: portal-auth"
+
+    # ── F06 ─────────────────────────────────────────────────────────────────
+    - name: "future_use_2"
+      field_number: 6
+      type: "String"
+      required: false
+      description: "Reserved field — always empty per PAN-OS spec"
+      example_value: ""
+      template_source: "Static: empty"
+
+    # ── F07 ─────────────────────────────────────────────────────────────────
+    - name: "generated_time"
+      field_number: 7
+      type: "DateTime"
+      required: true
+      description: "Time the log was generated on the dataplane"
+      example_value: "2025/01/15 09:30:45"
+      format: "YYYY/MM/DD HH:MM:SS"
+      template_source: "current_timestamp() | format_timestamp('%Y/%m/%d %H:%M:%S')"
+
+    # ── F08 ─────────────────────────────────────────────────────────────────
     - name: "vsys"
+      field_number: 8
       type: "String"
       required: true
-      description: "Virtual system identifier"
+      description: "Virtual system associated with the session"
       example_value: "vsys1"
-      template_source: "Static: vsys1"
+      template_source: "vsys{{ random_int(1, 5) }}"
+
+    # ── F09 ─────────────────────────────────────────────────────────────────
     - name: "event_id"
+      field_number: 9
       type: "String"
       required: true
       description: "GlobalProtect event type identifier"
       example_value: "gateway-connected"
-      template_source: "Random selection from predefined event types"
+      template_source: "Random selection from event_types array"
       possible_values:
         - value: "gateway-connected"
           description: "Client successfully connected to gateway"
@@ -88,10 +133,13 @@ documentation:
           description: "Portal login event"
         - value: "gateway-login"
           description: "Gateway login event"
+
+    # ── F10 ─────────────────────────────────────────────────────────────────
     - name: "stage"
+      field_number: 10
       type: "String"
       required: true
-      description: "Authentication stage"
+      description: "Authentication/connection stage"
       example_value: "login"
       template_source: "Random selection from stages array"
       possible_values:
@@ -101,11 +149,14 @@ documentation:
           description: "Login authentication stage"
         - value: "tunnel"
           description: "Post-authentication tunnel stage"
+
+    # ── F11 ─────────────────────────────────────────────────────────────────
     - name: "auth_method"
+      field_number: 11
       type: "String"
       required: true
       description: "Authentication method used"
-      example_value: "LDAP"
+      example_value: "RADIUS"
       template_source: "Random selection from auth_methods array"
       possible_values:
         - value: "LDAP"
@@ -118,135 +169,279 @@ documentation:
           description: "Kerberos authentication"
         - value: "Local"
           description: "Local firewall authentication"
+
+    # ── F12 ─────────────────────────────────────────────────────────────────
     - name: "tunnel_type"
+      field_number: 12
       type: "String"
       required: true
-      description: "VPN tunnel type"
-      example_value: "SSLVPN"
+      description: "VPN tunnel type — must be SSLVPN or IPSec (string values per PAN-OS GlobalProtect spec)"
+      example_value: "IPSec"
       template_source: "Random selection from tunnel_types array"
       possible_values:
         - value: "SSLVPN"
           description: "SSL VPN tunnel"
         - value: "IPSec"
           description: "IPSec VPN tunnel"
-    - name: "user_id"
+
+    # ── F13 ─────────────────────────────────────────────────────────────────
+    - name: "source_user"
+      field_number: 13
       type: "String"
       required: true
-      description: "Username of connecting user"
-      example_value: "john.doe"
+      description: "Username of the connecting user"
+      example_value: "jsmith"
       template_source: "registry.get_random_user().user_id"
-    - name: "country"
+
+    # ── F14 ─────────────────────────────────────────────────────────────────
+    - name: "source_region"
+      field_number: 14
       type: "String"
       required: true
-      description: "Country code of client connection"
+      description: "Country/region code of the client connection"
       example_value: "US"
       template_source: "Static: US"
-    - name: "hostname"
+
+    # ── F15 ─────────────────────────────────────────────────────────────────
+    - name: "machine_name"
+      field_number: 15
       type: "String"
       required: true
       description: "Client device hostname"
       example_value: "LAPTOP-ABC123"
       template_source: "registry.get_random_device().hostname"
+
+    # ── F16 ─────────────────────────────────────────────────────────────────
     - name: "public_ip"
+      field_number: 16
       type: "String"
       required: true
-      description: "Client public IP address"
+      description: "Client public (NAT) IP address"
       example_value: "203.0.113.45"
       template_source: "random_public_ip()"
+
+    # ── F17 ─────────────────────────────────────────────────────────────────
+    - name: "public_ipv6"
+      field_number: 17
+      type: "String"
+      required: false
+      description: "Client public IPv6 address — empty when not applicable"
+      example_value: ""
+      template_source: "Static: empty"
+
+    # ── F18 ─────────────────────────────────────────────────────────────────
     - name: "private_ip"
+      field_number: 18
       type: "String"
       required: true
       description: "Client private IP address"
       example_value: "192.168.1.100"
       template_source: "registry.get_random_device().ip_address"
-    - name: "session_id"
-      type: "String"
-      required: true
-      description: "GlobalProtect session identifier"
-      example_value: "a1b2c3d4-e5f6-7890-abcd-ef1234567890"
-      template_source: "random_guid()"
-    - name: "client_version"
-      type: "String"
-      required: true
-      description: "GlobalProtect client version"
-      example_value: "5.3.8"
-      template_source: "5.3.{{ random_int(0, 9) }}"
-    - name: "client_os"
-      type: "String"
-      required: true
-      description: "Client operating system"
-      example_value: "Windows"
-      template_source: "Random selection from client_os_types array"
-    - name: "client_os_version"
-      type: "String"
-      required: true
-      description: "Client operating system version"
-      example_value: "10.0.19045"
-      template_source: "Random selection based on OS type"
-    - name: "error_message"
+
+    # ── F19 ─────────────────────────────────────────────────────────────────
+    - name: "private_ipv6"
+      field_number: 19
       type: "String"
       required: false
-      description: "Error message for failed events"
+      description: "Client private IPv6 address — empty when not applicable"
+      example_value: ""
+      template_source: "Static: empty"
+
+    # ── F20 ─────────────────────────────────────────────────────────────────
+    - name: "host_id"
+      field_number: 20
+      type: "String"
+      required: true
+      description: "Unique ID that GlobalProtect assigns to identify the host (GUID format)"
+      example_value: "a1b2c3d4-e5f6-7890-abcd-ef1234567890"
+      template_source: "random_guid()"
+
+    # ── F21 ─────────────────────────────────────────────────────────────────
+    - name: "device_serial"
+      field_number: 21
+      type: "String"
+      required: true
+      description: "Serial number of the client device (distinct from firewall serial at F03)"
+      example_value: "S0QHYHTQTP"
+      template_source: "random_string(10, '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ')"
+
+    # ── F22 ─────────────────────────────────────────────────────────────────
+    - name: "client_version"
+      field_number: 22
+      type: "String"
+      required: true
+      description: "GlobalProtect client app version"
+      example_value: "5.3.7"
+      template_source: "5.3.{{ random_int(0, 9) }}"
+
+    # ── F23 ─────────────────────────────────────────────────────────────────
+    - name: "client_os"
+      field_number: 23
+      type: "String"
+      required: true
+      description: "Client operating system type"
+      example_value: "Windows"
+      template_source: "Random selection from client_os_types array"
+      possible_values:
+        - value: "Windows"
+        - value: "macOS"
+        - value: "Linux"
+        - value: "iOS"
+        - value: "Android"
+
+    # ── F24 ─────────────────────────────────────────────────────────────────
+    - name: "client_os_version"
+      field_number: 24
+      type: "String"
+      required: true
+      description: "Client operating system version — selected from OS-specific version list"
+      example_value: "10.0.19045"
+      template_source: "Random selection from client_os_versions[client_os] array"
+      possible_values:
+        - value: "10.0.19045 / 10.0.22631 / 11.0.22631"
+          description: "Windows versions"
+        - value: "13.6.1 / 14.0 / 14.4.1"
+          description: "macOS versions"
+        - value: "5.15.0 / 6.1.0"
+          description: "Linux kernel versions"
+        - value: "16.7.5 / 17.0 / 17.4.1"
+          description: "iOS versions"
+        - value: "13 / 14"
+          description: "Android versions"
+
+    # ── F25 ─────────────────────────────────────────────────────────────────
+    - name: "repeat_count"
+      field_number: 25
+      type: "Integer"
+      required: true
+      description: "Number of sessions with same source/dest/app detected within last 5 seconds"
+      example_value: "1"
+      template_source: "Static: 1"
+
+    # ── F26 ─────────────────────────────────────────────────────────────────
+    - name: "reason"
+      field_number: 26
+      type: "String"
+      required: false
+      description: "Reason for quarantine — empty for non-quarantine events"
+      example_value: ""
+      template_source: "Static: empty"
+
+    # ── F27 ─────────────────────────────────────────────────────────────────
+    - name: "error"
+      field_number: 27
+      type: "String"
+      required: false
+      description: "Error string for failed events — empty on success"
       example_value: "Authentication failed"
-      template_source: "Conditional based on status"
-    - name: "event_description"
+      template_source: "Conditional: 'Authentication failed' if status == failure, else empty"
+
+    # ── F28 ─────────────────────────────────────────────────────────────────
+    - name: "description"
+      field_number: 28
       type: "String"
       required: true
-      description: "Human-readable event description"
-      example_value: "GlobalProtect gateway-connected success"
-      template_source: "GlobalProtect {{ event_id }} {{ status }}"
+      description: "Human-readable event description (maps to panw.panos.description)"
+      example_value: "GlobalProtect portal-login failure"
+      template_source: "'GlobalProtect ' + event_id + ' ' + status"
+
+    # ── F29 ─────────────────────────────────────────────────────────────────
     - name: "status"
+      field_number: 29
       type: "String"
       required: true
-      description: "Event status (success/failure)"
+      description: "Event outcome — drives event.outcome in ECS"
       example_value: "success"
       template_source: "Random selection from statuses array"
       possible_values:
         - value: "success"
           description: "Event completed successfully"
         - value: "failure"
-          description: "Event failed"
-    - name: "connection_method"
+          description: "Event failed — also sets error (F27) and error_code (F33)"
+
+    # ── F30 ─────────────────────────────────────────────────────────────────
+    - name: "location"
+      field_number: 30
       type: "String"
       required: true
-      description: "Connection method type"
+      description: "Administrator-defined location of the GlobalProtect portal or gateway"
       example_value: "remote"
       template_source: "Static: remote"
-    - name: "response_time"
+
+    # ── F31 ─────────────────────────────────────────────────────────────────
+    - name: "login_duration"
+      field_number: 31
       type: "Integer"
       required: true
-      description: "Response time in seconds"
+      description: "Length of time in seconds the user is connected to the GlobalProtect gateway"
       example_value: "1250"
       template_source: "random_int(0, 3600)"
+
+    # ── F32 ─────────────────────────────────────────────────────────────────
     - name: "connect_method"
+      field_number: 32
       type: "String"
       required: true
-      description: "Connection trigger method"
+      description: "How the GlobalProtect app connects to the gateway"
       example_value: "on-demand"
       template_source: "Static: on-demand"
+
+    # ── F33 ─────────────────────────────────────────────────────────────────
     - name: "error_code"
-      type: "String"
+      field_number: 33
+      type: "Integer"
       required: false
-      description: "HTTP error code for failures"
+      description: "Integer error code for failed events — empty on success"
       example_value: "401"
-      template_source: "Conditional: 401 for failures"
-    - name: "portal_name"
+      template_source: "Conditional: 401 if status == failure, else empty"
+
+    # ── F34 ─────────────────────────────────────────────────────────────────
+    - name: "portal"
+      field_number: 34
       type: "String"
       required: true
-      description: "GlobalProtect portal identifier"
-      example_value: "gp-portal-123"
+      description: "GlobalProtect portal name"
+      example_value: "gp-portal-158"
       template_source: "gp-portal-{{ random_string(3, '0123456789') }}"
-    - name: "gateway_name"
+
+    # ── F35 ─────────────────────────────────────────────────────────────────
+    - name: "sequence_number"
+      field_number: 35
+      type: "Integer"
+      required: true
+      description: "64-bit log entry identifier incremented sequentially per log type"
+      example_value: "1946589"
+      template_source: "random_int(1000000, 9999999)"
+
+    # ── F36 ─────────────────────────────────────────────────────────────────
+    - name: "action_flags"
+      field_number: 36
       type: "String"
       required: true
-      description: "GlobalProtect gateway identifier"
-      example_value: "gp-gateway-456"
-      template_source: "gp-gateway-{{ random_string(3, '0123456789') }}"
+      description: "Bit field indicating if the log was forwarded to Panorama"
+      example_value: "0x0"
+      template_source: "Static: 0x0"
+
+    # ── F37 ─────────────────────────────────────────────────────────────────
+    - name: "high_res_timestamp"
+      field_number: 37
+      type: "DateTime"
+      required: true
+      description: >
+        High resolution timestamp. Fractional seconds MUST appear before the timezone offset.
+        Correct format: YYYY-MM-DD HH:MM:SS.ffffff-HH:MM
+        Incorrect format: YYYY-MM-DD HH:MM:SS-HH:MM.ffffff (causes pipeline parse error)
+      example_value: "2026-02-19 15:15:30.274238-06:00"
+      format: "YYYY-MM-DD HH:MM:SS.ffffff-HH:MM"
+      template_source: "timestamp | format_timestamp('%Y-%m-%d %H:%M:%S') + '.' + random_int(100000, 999999) + '-06:00'"
+
+    # ── F38 ─────────────────────────────────────────────────────────────────
     - name: "selection_type"
+      field_number: 38
       type: "String"
       required: true
-      description: "Gateway selection method"
-      example_value: "auto"
+      description: "Gateway selection method used by the GlobalProtect app"
+      example_value: "manual"
       template_source: "Random selection from selection_types array"
       possible_values:
         - value: "manual"
@@ -254,34 +449,144 @@ documentation:
         - value: "preferred"
           description: "Preferred gateway selection"
         - value: "auto"
-          description: "Automatic gateway selection"
-    - name: "priority"
+          description: "Automatic best-available gateway selection"
+
+    # ── F39 ─────────────────────────────────────────────────────────────────
+    - name: "response_time"
+      field_number: 39
       type: "Integer"
       required: true
-      description: "Gateway priority value"
-      example_value: "3"
-      template_source: "Random selection from priorities array (1-5)"
-    - name: "virtual_system"
+      description: "SSL response time of the selected gateway measured in milliseconds on the endpoint during tunnel setup"
+      example_value: "460"
+      template_source: "random_int(10, 500)"
+
+    # ── F40 ─────────────────────────────────────────────────────────────────
+    - name: "priority"
+      field_number: 40
+      type: "Integer"
+      required: true
+      description: "Gateway priority — 1 (highest) through 5 (lowest)"
+      example_value: "2"
+      template_source: "random_int(1, 5)"
+      possible_values:
+        - value: "1"
+          description: "Highest priority"
+        - value: "2"
+          description: "High priority"
+        - value: "3"
+          description: "Medium priority"
+        - value: "4"
+          description: "Low priority"
+        - value: "5"
+          description: "Lowest priority"
+
+    # ── F41 ─────────────────────────────────────────────────────────────────
+    - name: "attempted_gateways"
+      field_number: 41
       type: "String"
       required: true
-      description: "Virtual system identifier"
-      example_value: "VS-5"
-      template_source: "VS-{{ random_int(1, 10) }}"
+      description: >
+        Gateway connection attempts. Single gateway format: gateway-name.
+        Multiple gateway format: gateway-name,response_ms,priority;gateway-name2,response_ms,priority
+        Maps to panw.panos.attempted_gateways in ECS.
+      example_value: "gp-gateway-105"
+      template_source: "gateway_name (same variable as F42)"
+
+    # ── F42 ─────────────────────────────────────────────────────────────────
+    - name: "gateway"
+      field_number: 42
+      type: "String"
+      required: true
+      description: >
+        Name of the selected gateway — MUST be a name string, not a number.
+        Maps to panw.panos.gateway in ECS.
+      example_value: "gp-gateway-105"
+      template_source: "gateway_name — same variable as F41, reused intentionally"
+
+    # ── F43-F46 ─────────────────────────────────────────────────────────────
+    - name: "dg_hierarchy_level_1"
+      field_number: 43
+      type: "Integer"
+      required: true
+      description: "Device group hierarchy level 1 — numeric ID only"
+      example_value: "123"
+      template_source: "random_int(100, 999)"
+
+    - name: "dg_hierarchy_level_2"
+      field_number: 44
+      type: "Integer"
+      required: true
+      description: "Device group hierarchy level 2 — numeric ID only"
+      example_value: "4"
+      template_source: "random_int(1, 9)"
+
+    - name: "dg_hierarchy_level_3"
+      field_number: 45
+      type: "Integer"
+      required: true
+      description: "Device group hierarchy level 3 — numeric ID only"
+      example_value: "5"
+      template_source: "random_int(1, 9)"
+
+    - name: "dg_hierarchy_level_4"
+      field_number: 46
+      type: "Integer"
+      required: true
+      description: "Device group hierarchy level 4 — numeric ID only"
+      example_value: "410"
+      template_source: "random_int(100, 999)"
+
+    # ── F47 ─────────────────────────────────────────────────────────────────
+    - name: "vsys_name"
+      field_number: 47
+      type: "String"
+      required: true
+      description: "Virtual system name — must match vsys at F08"
+      example_value: "vsys1"
+      template_source: "vsys{{ vsys_num }} — same vsys_num variable as F08"
+
+    # ── F48 ─────────────────────────────────────────────────────────────────
+    - name: "device_name"
+      field_number: 48
+      type: "String"
+      required: true
+      description: "Hostname of the firewall on which the session was logged"
+      example_value: "INITECH-SIEM01"
+      template_source: "registry.get_random_device().hostname"
+
+    # ── F49 ─────────────────────────────────────────────────────────────────
+    - name: "vsys_id"
+      field_number: 49
+      type: "Integer"
+      required: true
+      description: "Unique numeric identifier for the virtual system"
+      example_value: "226"
+      template_source: "random_int(100, 999)"
+
+    # ── F50 ─────────────────────────────────────────────────────────────────
+    - name: "cluster_name"
+      field_number: 50
+      type: "String"
+      required: false
+      description: "CN-Series firewall cluster name (PAN-OS 11.1+) — empty for standard deployments"
+      example_value: ""
+      template_source: "Static: empty (trailing comma)"
+
   resources:
     documentation:
+      - title: "GlobalProtect Log Fields — Official PAN-OS Spec"
+        url: "https://docs.paloaltonetworks.com/ngfw/administration/monitoring/use-syslog-for-monitoring/syslog-field-descriptions/globalprotect-log-fields"
+        type: "official"
       - title: "GlobalProtect Administrator's Guide"
         url: "https://docs.paloaltonetworks.com/globalprotect"
         type: "official"
-      - title: "GlobalProtect Log Reference"
-        url: "https://docs.paloaltonetworks.com/pan-os/10-2/pan-os-admin/monitoring/use-syslog-for-monitoring/syslog-field-descriptions/globalprotect-log-fields"
-        type: "official"
-      - title: "PAN-OS System Logs"
-        url: "https://docs.paloaltonetworks.com/pan-os/10-2/pan-os-admin/monitoring/use-syslog-for-monitoring"
+      - title: "Elastic PANW Integration — Pipeline Reference"
+        url: "https://docs.elastic.co/integrations/panw"
         type: "official"
     tools:
+      - name: "Ingest Pipeline Simulate API"
+        description: "Validate log parsing against the live pipeline before sending production data"
+        usage: "POST _ingest/pipeline/logs-panw.panos-5-4-1/_simulate"
       - name: "PAN-OS CLI Reference"
         description: "Command-line interface reference for PAN-OS"
         url: "https://docs.paloaltonetworks.com/pan-os/10-2/pan-os-cli-quick-start"
-      - name: "GlobalProtect Cloud Service"
-        description: "Cloud-based GlobalProtect management portal"
-        url: "https://docs.paloaltonetworks.com/globalprotect/globalprotect-cloud-service"
