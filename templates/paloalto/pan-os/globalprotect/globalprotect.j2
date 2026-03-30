@@ -1,31 +1,110 @@
+{#-- Core context --#}
 {%- set user = registry.get_random_user() -%}
 {%- set device = registry.get_random_device() -%}
 {%- set timestamp = current_timestamp() -%}
-{%- set gateway_name = "gp-gateway-" + random_string(3, "0123456789") -%}
+
+{#-- Event metadata --#}
 {%- set event_types = ["gateway-connected", "portal-prelogin", "gateway-prelogin", "portal-login", "gateway-login"] -%}
 {%- set event_id = event_types | random -%}
+{%- set statuses = ["success", "failure"] -%}
+{%- set status = statuses | random -%}
+
+{#-- Auth and tunnel --#}
 {%- set auth_methods = ["LDAP", "RADIUS", "SAML", "Kerberos", "Local"] -%}
 {%- set auth_method = auth_methods | random -%}
 {%- set stages = ["before-login", "login", "tunnel"] -%}
 {%- set stage = stages | random -%}
 {%- set tunnel_types = ["SSLVPN", "IPSec"] -%}
 {%- set tunnel_type = tunnel_types | random -%}
+
+{#-- Client OS --#}
 {%- set client_os_types = ["Windows", "macOS", "Linux", "iOS", "Android"] -%}
 {%- set client_os = client_os_types | random -%}
 {%- set client_os_versions = {
     "Windows": ["10.0.19045", "10.0.22631", "11.0.22631"],
-    "macOS": ["13.6.1", "14.0", "14.4.1"],
-    "Linux": ["5.15.0", "6.1.0"],
-    "iOS": ["16.7.5", "17.0", "17.4.1"],
+    "macOS":   ["13.6.1", "14.0", "14.4.1"],
+    "Linux":   ["5.15.0", "6.1.0"],
+    "iOS":     ["16.7.5", "17.0", "17.4.1"],
     "Android": ["13", "14"]
 } -%}
 {%- set client_os_ver = client_os_versions[client_os] | random -%}
-{%- set statuses = ["success", "failure"] -%}
-{%- set status = statuses | random -%}
+
+{#-- Gateway and portal --#}
+{%- set gateway_name = "gp-gateway-" + random_string(3, "0123456789") -%}
 {%- set portal = "gp-portal-" + random_string(3, "0123456789") -%}
 {%- set selection_types = ["manual", "preferred", "auto"] -%}
 {%- set selection_type = selection_types | random -%}
-{%- set priorities = [1, 2, 3, 4, 5] -%}
-{%- set priority = priorities | random -%}
- 
-,{{ timestamp | format_timestamp('%Y/%m/%d %H:%M:%S') }},PA-{{ random_string(10, "0123456789ABCDEF") }},GLOBALPROTECT,portal-auth,,{{ timestamp | format_timestamp('%Y/%m/%d %H:%M:%S') }},vsys1,{{ event_id }},{{ stage }},{{ auth_method }},{{ tunnel_type }},{{ user.user_id }},US,{{ device.hostname }},{{ random_public_ip() }},,{{ device.ip_address }},,{{ random_guid() }},{{ random_string(10, "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ") }},5.3.{{ random_int(0, 9) }},{{ client_os }},{{ client_os_ver }},1,,{% if status == "failure" %}Authentication failed{% endif %},GlobalProtect {{ event_id }} {{ status }},{{ status }},remote,{{ random_int(0, 3600) }},on-demand,{% if status == "failure" %}401{% endif %},{{ portal }},{{ random_int(1000000, 9999999) }},0x0,{{ timestamp }}.{{ random_int(100000, 999999) }},{{ selection_type }},{{ random_int(10, 500) }},{{ priority }},{{ gateway_name }},{{ random_int(1, 100) }},{{ random_int(10, 500) }},{{ priority }},{{ gateway_name }},{{ random_int(1, 1000) }},{{ random_int(1, 1000) }},{{ random_int(1, 1000) }},{{ random_int(1, 1000) }},VS-{{ random_int(1, 10) }},PA-{{ random_string(5, "0123456789") }},{{ random_int(1, 100) }}
+{%- set priority = random_int(1, 5) -%}
+{%- set response_time = random_int(10, 500) -%}
+
+{#-- Device identifiers --#}
+{%- set serial_number = "PA-" + random_string(10, "0123456789ABCDEF") -%}
+{%- set device_serial = random_string(10, "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ") -%}
+
+{#-- Virtual system --#}
+{%- set vsys_num = random_int(1, 5) -%}
+{%- set vsys_id = random_int(100, 999) -%}
+
+{#-- Device Group Hierarchy (all numeric per spec) --#}
+{%- set dg1 = random_int(100, 999) -%}
+{%- set dg2 = random_int(1, 9) -%}
+{%- set dg3 = random_int(1, 9) -%}
+{%- set dg4 = random_int(100, 999) -%}
+
+{#-- Device name (hostname string) --#}
+{%- set device_name = device.hostname -%}
+
+{#
+  === FIELD MAP (50 fields) ===
+  F01  FUTURE_USE          → empty (leading comma)
+  F02  Receive Time        → timestamp YY/MM/DD HH:MM:SS
+  F03  Serial Number       → firewall serial
+  F04  Type                → GLOBALPROTECT
+  F05  Subtype             → portal-auth
+  F06  FUTURE_USE          → empty
+  F07  Generated Time      → timestamp YY/MM/DD HH:MM:SS
+  F08  Virtual System      → vsys<n>
+  F09  Event ID            → event_id
+  F10  Stage               → stage
+  F11  Auth Method         → auth_method
+  F12  Tunnel Type         → tunnel_type
+  F13  Source User         → user.user_id
+  F14  Source Region       → US
+  F15  Machine Name        → device.hostname
+  F16  Public IP           → random_public_ip()
+  F17  Public IPv6         → empty
+  F18  Private IP          → device.ip_address
+  F19  Private IPv6        → empty
+  F20  Host ID             → random_guid()
+  F21  Device Serial       → device_serial
+  F22  Client Version      → 5.3.x
+  F23  Client OS           → client_os
+  F24  Client OS Version   → client_os_ver
+  F25  Repeat Count        → 1
+  F26  Reason              → empty
+  F27  Error               → "Authentication failed" if failure, empty if success
+  F28  Description         → "GlobalProtect <event_id> <status>"
+  F29  Status              → success | failure
+  F30  Location            → remote
+  F31  Login Duration      → random seconds
+  F32  Connect Method      → on-demand
+  F33  Error Code          → 401 if failure, empty if success
+  F34  Portal              → portal name
+  F35  Sequence Number     → random 7-digit int
+  F36  Action Flags        → 0x0
+  F37  High Res Timestamp  → YYYY-MM-DD HH:MM:SS.ffffff-HH:MM  ← fractional BEFORE tz offset
+  F38  Selection Type      → manual | preferred | auto
+  F39  Response Time       → ms integer
+  F40  Priority            → 1-5
+  F41  Attempted Gateways  → gateway_name (single gateway; use semicolon for multiples)
+  F42  Gateway             → gateway_name  ← must be a NAME string, not a number
+  F43  DG Hierarchy L1     → numeric
+  F44  DG Hierarchy L2     → numeric
+  F45  DG Hierarchy L3     → numeric
+  F46  DG Hierarchy L4     → numeric
+  F47  Virtual System Name → vsys<n>
+  F48  Device Name         → hostname string
+  F49  Virtual System ID   → numeric
+  F50  Cluster Name        → empty (not CN-Series)
+#}
+,{{ timestamp | format_timestamp('%Y/%m/%d %H:%M:%S') }},{{ serial_number }},GLOBALPROTECT,portal-auth,,{{ timestamp | format_timestamp('%Y/%m/%d %H:%M:%S') }},vsys{{ vsys_num }},{{ event_id }},{{ stage }},{{ auth_method }},{{ tunnel_type }},{{ user.user_id }},US,{{ device.hostname }},{{ random_public_ip() }},,{{ device.ip_address }},,{{ random_guid() }},{{ device_serial }},5.3.{{ random_int(0, 9) }},{{ client_os }},{{ client_os_ver }},1,,{% if status == "failure" %}Authentication failed{% endif %},GlobalProtect {{ event_id }} {{ status }},{{ status }},remote,{{ random_int(0, 3600) }},on-demand,{% if status == "failure" %}401{% endif %},{{ portal }},{{ random_int(1000000, 9999999) }},0x0,{{ timestamp | format_timestamp('%Y-%m-%dT%H:%M:%S') }}.{{ random_int(100000, 999999) }}-06:00,{{ selection_type }},{{ response_time }},{{ priority }},{{ gateway_name }},{{ gateway_name }},{{ dg1 }},{{ dg2 }},{{ dg3 }},{{ dg4 }},vsys{{ vsys_num }},{{ device_name }},{{ vsys_id }},
