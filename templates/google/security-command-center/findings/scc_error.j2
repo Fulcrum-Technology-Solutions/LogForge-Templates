@@ -13,7 +13,7 @@
       "affectedService": "{{ random_weighted(['Security Health Analytics', 'Container Threat Detection', 'VM Threat Detection', 'Event Threat Detection', 'Web Security Scanner'], [30, 25, 20, 15, 10]) }}",
       "errorTime": "{{ now() | iso8601 }}",
       "retryCount": {{ random_int(0, 5) }},
-      "lastRetryTime": "{% if random_choice([true, false]) %}{{ now().subtract(minutes=random_int(1, 60)) | iso8601 }}{% else %}null{% endif %}"
+      "lastRetryTime": "{% if random_choice([true, false]) %}{{ (now() | subtract_seconds(random_int(60, 3600))) | iso8601 }}{% else %}null{% endif %}"
     },
     "ResourcePath": [
       "organizations/{{ registry.get_organization_field('domain').split('.')[0] | default('123456789') }}",

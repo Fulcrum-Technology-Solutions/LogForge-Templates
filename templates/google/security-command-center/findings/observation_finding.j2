@@ -18,7 +18,7 @@
       }
     },
     "properties": {
-      "firstObservedTime": "{{ now().subtract(hours=random_int(1, 72)) | iso8601 }}",
+      "firstObservedTime": "{{ (now() | subtract_seconds(random_int(3600, 259200))) | iso8601 }}",
       "lastObservedTime": "{{ now() | iso8601 }}",
       "occurrenceCount": {{ random_int(1, 100) }},
       "observationFrequency": "{{ random_choice(['ONCE', 'OCCASIONAL', 'FREQUENT', 'CONTINUOUS']) }}"
