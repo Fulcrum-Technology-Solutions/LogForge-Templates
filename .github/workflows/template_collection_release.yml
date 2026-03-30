@@ -1,0 +1,145 @@
+# Create a GitHub Release when collection versions land on main (e.g. after merging the bot PR from auto_version_and_index.yml).
+name: Template collection release
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - 'templates/**/collection.json'
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Get changed products and versions
+        id: products
+        run: |
+          python3 << 'EOF'
+          import json
+          import subprocess
+          import os
+
+          def add_products_from_files(changed_files):
+              products = []
+              seen = set()
+              for file in changed_files:
+                  if not file or file in seen:
+                      continue
+                  seen.add(file)
+                  if not file.startswith('templates/') or 'collection.json' not in file:
+                      continue
+                  if not os.path.exists(file):
+                      continue
+                  try:
+                      with open(file) as f:
+                          data = json.load(f)
+                      parts = file.split('/')
+                      if len(parts) >= 3:
+                          vendor = parts[1]
+                          product = parts[2]
+                          products.append({
+                              'vendor': vendor,
+                              'product': product,
+                              'name': data.get('name', f'{vendor}-{product}'),
+                              'version': data.get('version', '1.0.0')
+                          })
+                  except (json.JSONDecodeError, FileNotFoundError):
+                      continue
+              return products
+
+          changed_files = []
+          try:
+              diff_result = subprocess.run(
+                  ['git', 'diff', '--name-only', 'HEAD~1', 'HEAD'],
+                  capture_output=True, text=True, check=True
+              )
+              changed_files = [
+                  f.strip() for f in diff_result.stdout.split('\n')
+                  if f.strip() and 'collection.json' in f
+              ]
+              print(f"From HEAD~1..HEAD: {changed_files}")
+          except subprocess.CalledProcessError:
+              print("No previous commit or diff failed")
+
+          changed_products = add_products_from_files(changed_files)
+
+          # Legacy: commits that still use "Auto-bump" message on main
+          if not changed_products:
+              try:
+                  result = subprocess.run(
+                      ['git', 'log', '--oneline', '-10', '--grep=Auto-bump'],
+                      capture_output=True, text=True
+                  )
+                  if result.returncode == 0 and result.stdout.strip():
+                      commit_hash = result.stdout.split('\n')[0].split()[0]
+                      diff_result = subprocess.run(
+                          ['git', 'diff', '--name-only', f'{commit_hash}~1', commit_hash],
+                          capture_output=True, text=True, check=True
+                      )
+                      legacy_files = [
+                          f.strip() for f in diff_result.stdout.split('\n')
+                          if f.strip() and 'collection.json' in f
+                      ]
+                      changed_products = add_products_from_files(legacy_files)
+                      print(f"Legacy Auto-bump commit {commit_hash}: {legacy_files}")
+              except subprocess.CalledProcessError:
+                  pass
+
+          products_json = json.dumps(changed_products)
+          with open(os.environ['GITHUB_OUTPUT'], 'a') as f:
+              f.write(f"products={products_json}\n")
+
+          print(f"Found {len(changed_products)} updated product(s)")
+          for p in changed_products:
+              print(f"  - {p['name']} v{p['version']}")
+          EOF
+
+      - name: Generate release notes
+        id: release_notes
+        run: |
+          python3 << 'EOF'
+          import json
+          import os
+
+          products_json = os.environ.get('PRODUCTS_JSON', '[]')
+          products = json.loads(products_json) if products_json else []
+
+          if not products:
+              notes = "No product updates detected."
+          else:
+              notes = "## Updated Template Collections\n\n"
+              for p in products:
+                  notes += f"- **{p['name']}** → v{p['version']}\n"
+              notes += "\nReleased when template collection versions were updated on `main`."
+
+          with open(os.environ['GITHUB_OUTPUT'], 'a') as f:
+              f.write(f"body<<EOF\n{notes}\nEOF\n")
+          EOF
+        env:
+          PRODUCTS_JSON: ${{ steps.products.outputs.products }}
+
+      - name: Set release tag
+        id: reltag
+        if: steps.products.outputs.products != '[]'
+        run: echo "tag=v$(date -u +%Y%m%d-%H%M%S)" >> $GITHUB_OUTPUT
+
+      - name: Create Release
+        if: steps.products.outputs.products != '[]'
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: ${{ steps.reltag.outputs.tag }}
+          name: "Template Updates - ${{ steps.reltag.outputs.tag }}"
+          body: ${{ steps.release_notes.outputs.body }}
+          draft: false
+          prerelease: false
+          generate_release_notes: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

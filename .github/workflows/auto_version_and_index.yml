@@ -1,3 +1,6 @@
+# Sync collection.json versions and TEMPLATES.yaml after template edits.
+# Opens a PR instead of pushing to main (satisfies rulesets that require pull requests).
+# GitHub Releases run separately when bumped collection.json lands on main — see template_collection_release.yml.
 name: Auto Version and Update Index
 
 on:
@@ -11,213 +14,57 @@ on:
       - 'templates/**/collection.json'
   workflow_dispatch:
 
-jobs:
-  auto-version:
-    runs-on: ubuntu-latest
-    permissions:
-      contents: write
-    outputs:
-      changed: ${{ steps.job_output.outputs.changed }}
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          fetch-depth: 2  # Need previous commit for comparison
-          token: ${{ secrets.GITHUB_TOKEN }}
-      
-      - name: Set up Python
-        uses: actions/setup-python@v4
-        with:
-          python-version: '3.10'
-      
-      - name: Auto-version collections
-        id: version
-        run: |
-          python .github/scripts/auto_version.py
-        continue-on-error: true
-      
-      - name: Check for version changes
-        id: check
-        run: |
-          if git diff --quiet HEAD -- 'templates/**/collection.json'; then
-            echo "changed=false" >> $GITHUB_OUTPUT
-          else
-            echo "changed=true" >> $GITHUB_OUTPUT
-          fi
-      
-      - name: Commit version changes
-        if: steps.check.outputs.changed == 'true'
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add templates/**/collection.json
-          git commit -m "Auto-bump template versions [skip ci]" || exit 0
-          git push || exit 0
-      
-      - name: Set job output
-        id: job_output
-        run: |
-          if [ "${{ steps.check.outputs.changed }}" == "true" ]; then
-            echo "changed=true" >> $GITHUB_OUTPUT
-          else
-            echo "changed=false" >> $GITHUB_OUTPUT
-          fi
+concurrency:
+  group: template-auto-sync-pr
+  cancel-in-progress: false
 
-  update-index:
-    needs: auto-version
+jobs:
+  sync-versions-and-index:
+    if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     permissions:
       contents: write
+      pull-requests: write
     steps:
       - uses: actions/checkout@v4
         with:
+          fetch-depth: 2  # auto_version.py compares HEAD~1..HEAD
           token: ${{ secrets.GITHUB_TOKEN }}
-          ref: main
-          fetch-depth: 0
-      
+
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
           python-version: '3.10'
-      
-      - name: Install dependencies
+
+      # Bump templates/**/collection.json when .j2 / meta / etc. changed on this push.
+      - name: Auto-version collections
+        run: python .github/scripts/auto_version.py
+        continue-on-error: true
+
+      - name: Install dependencies for index
         run: |
           python -m pip install --upgrade pip
           pip install pyyaml
-      
+
       - name: Update TEMPLATES.yaml
         run: python .github/scripts/update_templates_index.py
-      
-      - name: Check for TEMPLATES.yaml changes
-        id: check_index
-        run: |
-          if git diff --quiet HEAD -- TEMPLATES.yaml; then
-            echo "changed=false" >> $GITHUB_OUTPUT
-          else
-            echo "changed=true" >> $GITHUB_OUTPUT
-          fi
-      
-      - name: Commit TEMPLATES.yaml changes
-        if: steps.check_index.outputs.changed == 'true'
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add TEMPLATES.yaml
-          git commit -m "Auto-update TEMPLATES.yaml [skip ci]" || exit 0
-          git push || exit 0
 
-  create-release:
-    needs: [auto-version, update-index]
-    runs-on: ubuntu-latest
-    permissions:
-      contents: write
-    if: needs.auto-version.outputs.changed == 'true'
-    steps:
-      - uses: actions/checkout@v4
+      # Post-merge of this bot PR, this workflow may run again with only collection.json
+      # changes; auto_version usually no-ops and there is no PR to open — no harm.
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v6
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          ref: main
-          fetch-depth: 0
-      
-      - name: Wait for commits to propagate
-        run: sleep 2
-      
-      - name: Fetch latest
-        run: git fetch --all
-      
-      - name: Get changed products and versions
-        id: products
-        run: |
-          python3 << 'EOF'
-          import json
-          import subprocess
-          import os
-          
-          # Look for the auto-version commit first (most recent commit with "Auto-bump" in message)
-          try:
-              result = subprocess.run(['git', 'log', '--oneline', '-10', '--grep=Auto-bump'], 
-                                     capture_output=True, text=True)
-              if result.returncode == 0 and result.stdout.strip():
-                  # Get the commit hash (first word of first line)
-                  commit_hash = result.stdout.split('\n')[0].split()[0]
-                  # Get files changed in that commit
-                  diff_result = subprocess.run(['git', 'diff', '--name-only', f'{commit_hash}~1', commit_hash],
-                                              capture_output=True, text=True, check=True)
-                  changed_files = [f.strip() for f in diff_result.stdout.split('\n') if 'collection.json' in f and f.strip()]
-                  print(f"Found auto-version commit: {commit_hash}")
-              else:
-                  # Fallback: check last commit
-                  result = subprocess.run(['git', 'diff', '--name-only', 'HEAD~1', 'HEAD'], 
-                                         capture_output=True, text=True, check=True)
-                  changed_files = [f.strip() for f in result.stdout.split('\n') if 'collection.json' in f and f.strip()]
-                  print("Using last commit as fallback")
-          except subprocess.CalledProcessError:
-              # If HEAD~1 doesn't exist, check all collection.json files
-              changed_files = []
-              print("No previous commit found")
-          
-          changed_products = []
-          for file in changed_files:
-              if file and os.path.exists(file):
-                  try:
-                      with open(file) as f:
-                          data = json.load(f)
-                      parts = file.split('/')
-                      if len(parts) >= 3:
-                          vendor = parts[1]
-                          product = parts[2]
-                          changed_products.append({
-                              'vendor': vendor,
-                              'product': product,
-                              'name': data.get('name', f'{vendor}-{product}'),
-                              'version': data.get('version', '1.0.0')
-                          })
-                  except (json.JSONDecodeError, FileNotFoundError):
-                      continue
-          
-          # Output as JSON using GITHUB_OUTPUT
-          products_json = json.dumps(changed_products)
-          with open(os.environ['GITHUB_OUTPUT'], 'a') as f:
-              f.write(f"products={products_json}\n")
-          
-          print(f"Found {len(changed_products)} updated product(s)")
-          for p in changed_products:
-              print(f"  - {p['name']} v{p['version']}")
-          EOF
-      
-      - name: Generate release notes
-        id: release_notes
-        run: |
-          python3 << 'EOF'
-          import json
-          import os
-          
-          products_json = os.environ.get('PRODUCTS_JSON', '[]')
-          products = json.loads(products_json) if products_json else []
-          
-          if not products:
-              notes = "No product updates detected."
-          else:
-              notes = "## Updated Template Collections\n\n"
-              for p in products:
-                  notes += f"- **{p['name']}** → v{p['version']}\n"
-              notes += "\nThis release was automatically created when template versions were updated."
-          
-          # Write to GITHUB_OUTPUT
-          with open(os.environ['GITHUB_OUTPUT'], 'a') as f:
-              f.write(f"body<<EOF\n{notes}\nEOF\n")
-          EOF
-        env:
-          PRODUCTS_JSON: ${{ steps.products.outputs.products }}
-      
-      - name: Create Release
-        if: steps.products.outputs.products != '[]'
-        uses: softprops/action-gh-release@v1
-        with:
-          tag_name: "v$(date +%Y%m%d-%H%M%S)"
-          name: "Template Updates - $(date +%Y-%m-%d)"
-          body: ${{ steps.release_notes.outputs.body }}
-          draft: false
-          prerelease: false
-          generate_release_notes: false
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          commit-message: "chore: sync collection versions and TEMPLATES index"
+          title: "chore: sync collection versions and TEMPLATES index"
+          body: |
+            Automated sync after template changes on `main`.
+
+            - `auto_version.py` may bump `templates/**/collection.json`
+            - `update_templates_index.py` refreshes `TEMPLATES.yaml`
+
+            Merge when checks pass.
+          branch: bot/auto-sync-templates
+          delete-branch: false
+          committer: github-actions[bot] <41898282+github-actions[bot]@users.noreply.github.com>
+          author: github-actions[bot] <41898282+github-actions[bot]@users.noreply.github.com>
