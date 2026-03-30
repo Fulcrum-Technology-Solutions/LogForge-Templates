@@ -129,7 +129,7 @@ documentation:
       description: "Timestamp when the security event occurred"
       example_value: "2025-08-22T15:17:34.570Z"
       format: "ISO 8601"
-      template_source: "now().subtract(seconds=random_int(1, 300)) | iso8601"
+      template_source: "(now() | subtract_seconds(random_int(1, 300))) | iso8601"
     
     - name: "source_json.finding.externalUri"
       type: "String"
