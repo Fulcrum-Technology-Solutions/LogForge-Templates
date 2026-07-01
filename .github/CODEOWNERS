@@ -1,0 +1,4 @@
+# Default owners for everything in this repo.
+# CODEOWNERS auto-requests review; it only *enforces* once branch protection
+# is active (GitHub Team or higher). Update when ownership changes.
+* @jowenftsc
