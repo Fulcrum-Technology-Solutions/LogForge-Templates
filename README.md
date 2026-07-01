@@ -474,6 +474,18 @@ We welcome contributions! Please see [CONTRIBUTING.md](CONTRIBUTING.md) for guid
 - Follow the structure and metadata requirements in the `examples/` and `schemas/` directories.
 - Validate your files before submitting a pull request.
 
+### Security (local pre-commit)
+
+After cloning, run once to enable secret scanning on commit:
+
+```bash
+git config core.hooksPath .githooks
+chmod +x .githooks/pre-commit
+brew install gitleaks   # if not installed
+```
+
+CI runs TruffleHog via `.github/workflows/security-checks.yml` on push and pull request.
+
 ## License
 
 This project is licensed under the MIT License - see the LICENSE file for details.

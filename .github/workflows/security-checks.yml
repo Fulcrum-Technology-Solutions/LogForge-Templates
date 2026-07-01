@@ -1,0 +1,16 @@
+name: Security Checks
+
+# Non-JS variant (no npm/build/lint/semgrep). Covers repos like firmware (C),
+# Splunk TAs, or scripts. Only secret scanning applies in CI; dependency and
+# SAST jobs are intentionally omitted because they target the JS toolchain.
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  secrets-scan:
+    uses: Fulcrum-Technology-Solutions/.github/.github/workflows/secrets-scan.yml@main

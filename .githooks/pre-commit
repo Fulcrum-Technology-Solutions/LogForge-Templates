@@ -1,0 +1,20 @@
+# Non-JS repo: no husky/npm. Commit this to .githooks/pre-commit and run once:
+#   git config core.hooksPath .githooks && chmod +x .githooks/pre-commit
+
+# 1) Secret scan of staged changes
+if ! command -v gitleaks >/dev/null 2>&1; then
+  echo "❌ gitleaks not installed. Install it: brew install gitleaks"
+  exit 1
+fi
+gitleaks git --staged --redact . || {
+  echo "❌ Commit blocked: gitleaks found a secret in staged changes."
+  exit 1
+}
+
+# 2) Block committing real .env / secret files (allow .example / .template)
+if git diff --cached --name-only \
+   | grep -E '(^|/)(\.env(\..*)?|\.dev\.vars|secrets?\..*)$' \
+   | grep -vE '\.(example|template)$' >/dev/null; then
+  echo "❌ Commit blocked: a secret file is staged. Unstage it: git reset HEAD <file>"
+  exit 1
+fi
