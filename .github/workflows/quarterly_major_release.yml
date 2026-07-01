@@ -78,7 +78,7 @@ jobs:
       
       - name: Create Release
         if: steps.check.outputs.changed == 'true'
-        uses: softprops/action-gh-release@v1
+        uses: softprops/action-gh-release@v3
         with:
           tag_name: "v${{ steps.quarter.outputs.year }}-${{ steps.quarter.outputs.quarter }}"
           name: "Quarterly Major Release - ${{ steps.quarter.outputs.year }} ${{ steps.quarter.outputs.quarter }}"
