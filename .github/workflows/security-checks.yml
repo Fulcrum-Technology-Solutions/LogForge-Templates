@@ -8,6 +8,9 @@ on:
   push:
   pull_request:
 
+permissions:
+  contents: read
+
 jobs:
   secrets-scan:
     uses: Fulcrum-Technology-Solutions/.github/.github/workflows/secrets-scan.yml@main
