@@ -52,7 +52,7 @@ jobs:
       # Post-merge of this bot PR, this workflow may run again with only collection.json
       # changes; auto_version usually no-ops and there is no PR to open — no harm.
       - name: Create Pull Request
-        uses: peter-evans/create-pull-request@v6
+        uses: peter-evans/create-pull-request@v8
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           commit-message: "chore: sync collection versions and TEMPLATES index"
