@@ -4,6 +4,7 @@ updates:
     directory: "/"
     schedule:
       interval: "weekly"
+    target-branch: "main"
   # If this is a Python repo with a requirements.txt / pyproject.toml, add:
   # - package-ecosystem: "pip"
   #   directory: "/"
