@@ -1,0 +1,7 @@
+1,{{ now() | strftime('%Y/%m/%d %H:%M:%S') }},{{ random_string(12, '0123456789') }},SYSTEM,general,{{ random_choice([2817, 2818, 2820, 2825, 2830]) }},{{ now() | strftime('%Y/%m/%d %H:%M:%S') }},,general,,0,0,general,{{ random_weighted(['informational', 'low', 'medium', 'high', 'critical'], [70, 15, 8, 5, 2]) }},{{ random_choice([
+  "Failed to connect to address: " ~ random_public_ip() ~ " port: " ~ random_port(1024, 65535) ~ ", conn id: " ~ random_string(6, 'abcdefghijklmnopqrstuvwxyz') ~ random_string(2, '0123456789') ~ "-" ~ random_public_ip() ~ "-" ~ random_int(1, 9) ~ "-" ~ random_choice(['abc', 'def', 'ghi', 'xyz']),
+  "counter flow_tcp_non_syn_drop=" ~ random_int(100000, 999999) ~ ".Packet info: len " ~ random_int(40, 1500) ~ " port " ~ random_port(1, 1023) ~ " tag " ~ random_int(1000, 9999) ~ " interface " ~ random_int(1000, 9999) ~ ".IP:     " ~ random_private_ip() ~ "->" ~ random_private_ip() ~ ", protocol " ~ random_choice([6, 17]) ~ ".        version 4, ihl 5, tos 0x00, len",
+  "System resource utilization: cpu=" ~ random_int(1, 99) ~ "% mem=" ~ random_int(1, 99) ~ "%",
+  "Session table utilization at " ~ random_int(50, 95) ~ "% of maximum capacity",
+  "Configuration committed successfully by admin " ~ registry.get_random_user().username
+]) }},{{ random_int(1000000000000000000, 9999999999999999999) }},0x8000000000000000,0,0,0,0,,{{ registry.get_random_device().hostname }},0,0,{{ now() | iso8601_utc(include_microseconds=True) | replace('+00:00', '') }}+00:00

@@ -1,0 +1,218 @@
+vendor: paloalto
+product: pan-os
+data_source: system
+description: >
+  PAN-OS general system events including TCP connection failures, packet drop
+  counters, resource utilization alerts, session table warnings, and
+  administrative configuration events.
+format: CSV
+frequency: high
+is_generator: true
+base_frequency: 120
+time_patterns:
+  - business_hours
+  - night_hours
+  - weekend
+business_hours_multiplier: 1.5
+night_hours_multiplier: 0.8
+weekend_multiplier: 0.5
+
+documentation:
+  display:
+    title: "PAN-OS General System Events"
+    subtitle: "Connectivity failures, counter drops, and system health"
+    icon: "⚙️"
+    color_scheme: "warning"
+    tags:
+      - "paloalto"
+      - "pan-os"
+      - "system"
+      - "general"
+      - "firewall"
+      - "connectivity"
+      - "counters"
+
+  overview:
+    summary: >
+      PAN-OS SYSTEM/general logs capture a broad range of operational and
+      health-related events on Palo Alto Networks firewalls and appliances.
+      Common events include TCP connection failures to management or update
+      servers, TCP non-SYN drop counters (indicating asymmetric routing or
+      attack traffic), resource utilization thresholds, and session table
+      capacity warnings.
+    when_generated:
+      - "TCP connection to an external address fails (e.g., licensing, update servers)"
+      - "Packet drop counters exceed reporting threshold (flow_tcp_non_syn_drop)"
+      - "System CPU or memory utilization crosses configured alert thresholds"
+      - "Session table approaches maximum capacity"
+      - "Administrator commits a configuration change"
+      - "Scheduled jobs or maintenance tasks complete or fail"
+    security_relevance: "Medium"
+    compliance_frameworks:
+      - "PCI-DSS"
+      - "NIST SP 800-53"
+      - "CIS Controls"
+    frequency_notes: >
+      General system events are continuous and moderately frequent on active
+      firewalls. Drop counter events (non-SYN drops) can spike significantly
+      during SYN flood attacks or asymmetric routing conditions. Connectivity
+      failures may burst during licensing renewal windows or when update
+      servers are unreachable.
+
+  fields:
+    - name: "future_use"
+      type: "Integer"
+      required: true
+      description: "Reserved field, always 1 in PAN-OS SYSTEM logs."
+      example_value: "1"
+      template_source: "Hardcoded: 1"
+
+    - name: "receive_time"
+      type: "DateTime"
+      required: true
+      description: "Time the log was received by the management plane."
+      example_value: "2026/07/23 22:08:13"
+      format: "YYYY/MM/DD HH:MM:SS"
+      template_source: "now() | strftime('%Y/%m/%d %H:%M:%S')"
+
+    - name: "serial"
+      type: "String"
+      required: true
+      description: "Serial number of the firewall appliance."
+      example_value: "023201213272"
+      template_source: "random_string(12, '0123456789')"
+
+    - name: "type"
+      type: "String"
+      required: true
+      description: "Log type identifier. Always SYSTEM for this template."
+      example_value: "SYSTEM"
+      template_source: "Hardcoded: SYSTEM"
+
+    - name: "subtype"
+      type: "String"
+      required: true
+      description: "Log subtype. Always 'general' for this template."
+      example_value: "general"
+      template_source: "Hardcoded: general"
+
+    - name: "event_id"
+      type: "Integer"
+      required: true
+      description: "Numeric PAN-OS system event identifier."
+      example_value: "2817"
+      template_source: "random_choice([2817, 2818, 2820, 2825, 2830])"
+      possible_values:
+        - value: "2817"
+          description: "General connectivity or counter event"
+        - value: "2818"
+          description: "System resource threshold event"
+        - value: "2820"
+          description: "Session table utilization event"
+        - value: "2825"
+          description: "Configuration or admin action event"
+        - value: "2830"
+          description: "Scheduled job status event"
+
+    - name: "generated_time"
+      type: "DateTime"
+      required: true
+      description: "Time the event was generated on the data plane."
+      example_value: "2026/07/23 22:08:13"
+      format: "YYYY/MM/DD HH:MM:SS"
+      template_source: "now() | strftime('%Y/%m/%d %H:%M:%S')"
+
+    - name: "vsys"
+      type: "String"
+      required: false
+      description: "Virtual system identifier. Empty for single-vsys deployments."
+      example_value: ""
+      template_source: "Hardcoded: empty"
+
+    - name: "eventid_name"
+      type: "String"
+      required: true
+      description: "Human-readable event ID name. Always 'general' for this subtype."
+      example_value: "general"
+      template_source: "Hardcoded: general"
+
+    - name: "object"
+      type: "String"
+      required: false
+      description: "Object associated with the event (interface, zone, etc.)."
+      example_value: ""
+      template_source: "Hardcoded: empty"
+
+    - name: "module"
+      type: "String"
+      required: true
+      description: "PAN-OS module that generated the event."
+      example_value: "general"
+      template_source: "Hardcoded: general"
+
+    - name: "severity"
+      type: "String"
+      required: true
+      description: "Event severity level."
+      example_value: "informational"
+      template_source: "random_weighted(['informational','low','medium','high','critical'], [70,15,8,5,2])"
+      possible_values:
+        - value: "informational"
+          description: "Normal operational event, no action required"
+        - value: "low"
+          description: "Minor issue, worth monitoring"
+        - value: "medium"
+          description: "Moderate issue, may require investigation"
+        - value: "high"
+          description: "Significant issue, action recommended"
+        - value: "critical"
+          description: "Severe issue, immediate action required"
+
+    - name: "opaque"
+      type: "String"
+      required: true
+      description: "Human-readable event description message."
+      example_value: "Failed to connect to address: 33.34.25.173 port: 6978, conn id: triallr-33.69.79.29-4-def"
+      template_source: "random_choice([...]) — weighted selection of realistic message templates"
+
+    - name: "seqno"
+      type: "Integer"
+      required: true
+      description: "Unique 64-bit sequence number for log ordering."
+      example_value: "2222447230026900034"
+      template_source: "random_int(1000000000000000000, 9999999999999999999)"
+
+    - name: "actionflags"
+      type: "String"
+      required: true
+      description: "Bitmask of action flags. 0x8000000000000000 indicates log forwarding."
+      example_value: "0x8000000000000000"
+      template_source: "Hardcoded: 0x8000000000000000"
+
+    - name: "device_name"
+      type: "String"
+      required: true
+      description: "Hostname of the firewall that generated the log."
+      example_value: "fw01"
+      template_source: "registry.get_random_device().hostname"
+
+    - name: "high_res_timestamp"
+      type: "DateTime"
+      required: true
+      description: "High-resolution ISO 8601 timestamp with millisecond precision and UTC offset."
+      example_value: "2026-07-23T22:08:13.942+00:00"
+      format: "ISO 8601 with milliseconds"
+      template_source: "now() | iso8601_utc(include_microseconds=True)"
+
+  resources:
+    documentation:
+      - title: "PAN-OS System Log Fields"
+        url: "https://docs.paloaltonetworks.com/pan-os/11-0/pan-os-admin/monitoring/use-syslog-for-monitoring/syslog-field-descriptions/system-log-fields"
+        type: "official"
+      - title: "PAN-OS Log Forwarding"
+        url: "https://docs.paloaltonetworks.com/pan-os/11-0/pan-os-admin/monitoring/configure-log-forwarding"
+        type: "official"
+    tools:
+      - name: "PAN-OS Log Viewer"
+        description: "Built-in log viewer in the PAN-OS web UI under Monitor > Logs > System"
+        url: "https://docs.paloaltonetworks.com/pan-os/11-0/pan-os-admin/monitoring"

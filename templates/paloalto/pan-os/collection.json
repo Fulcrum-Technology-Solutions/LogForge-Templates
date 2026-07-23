@@ -17,6 +17,8 @@
   ],
   "templates": [
     "globalprotect/globalprotect",
-    "firewall/traffic"
+    "firewall/traffic",
+    "system/system_general",
+    "bfd/session_state_change"
   ]
 }
