@@ -1,0 +1,175 @@
+vendor: paloalto
+product: pan-os
+data_source: bfd
+description: >
+  PAN-OS BFD (Bidirectional Forwarding Detection) session state change events,
+  indicating transitions between BFD states (Init, Up, Down, AdminDown) for
+  routing protocol neighbors including BGP, OSPF, IS-IS, and Static routes.
+format: CSV
+frequency: low
+is_generator: true
+base_frequency: 4
+time_patterns:
+  - business_hours
+  - night_hours
+  - weekend
+business_hours_multiplier: 1.2
+night_hours_multiplier: 1.0
+weekend_multiplier: 0.8
+
+documentation:
+  display:
+    title: "PAN-OS BFD Session State Change"
+    subtitle: "Routing protocol neighbor liveness detection events"
+    icon: "🔗"
+    color_scheme: "warning"
+    tags:
+      - "paloalto"
+      - "pan-os"
+      - "bfd"
+      - "bgp"
+      - "routing"
+      - "network"
+      - "high-availability"
+
+  overview:
+    summary: >
+      BFD (Bidirectional Forwarding Detection) is a rapid failure-detection
+      protocol used by PAN-OS to monitor the liveness of routing protocol
+      neighbors (BGP, OSPF, IS-IS) and static route next-hops. These logs
+      record every BFD session state transition, enabling rapid detection of
+      link or peer failures that would otherwise take minutes to detect via
+      routing protocol timers alone.
+    when_generated:
+      - "BGP peer session goes down due to link failure or peer restart"
+      - "BFD session establishes (transitions to Up) after peer comes online"
+      - "BFD session moves to Init during initial handshake with new neighbor"
+      - "Administrator disables BFD session (AdminDown state)"
+      - "Network path flap causes rapid Up/Down transitions"
+      - "ISP or upstream provider link failure detected via BFD"
+    security_relevance: "Medium"
+    compliance_frameworks:
+      - "NIST SP 800-53"
+      - "CIS Controls"
+    frequency_notes: >
+      BFD state change events are inherently low-frequency on stable networks —
+      a healthy network may generate only a handful per day. However, during
+      network instability, link flapping, or BGP route storms, event rates can
+      spike dramatically (hundreds per hour). The base frequency of 4/hour
+      accounts for normal maintenance windows and minor instability. Security
+      teams should alert on sustained Down or repeated Init/Up oscillation
+      patterns, which may indicate BGP hijacking attempts or upstream link
+      issues.
+
+  fields:
+    - name: "future_use"
+      type: "Integer"
+      required: true
+      description: "Reserved field, always 1 in PAN-OS SYSTEM logs."
+      example_value: "1"
+      template_source: "Hardcoded: 1"
+
+    - name: "receive_time"
+      type: "DateTime"
+      required: true
+      description: "Time the log was received by the management plane."
+      example_value: "2026/07/23 22:08:13"
+      format: "YYYY/MM/DD HH:MM:SS"
+      template_source: "now() | strftime('%Y/%m/%d %H:%M:%S')"
+
+    - name: "serial"
+      type: "String"
+      required: true
+      description: "Serial number of the PAN-OS appliance."
+      example_value: "050999999994"
+      template_source: "random_string(12, '0123456789')"
+
+    - name: "type"
+      type: "String"
+      required: true
+      description: "Log type. Always SYSTEM for BFD events."
+      example_value: "SYSTEM"
+      template_source: "Hardcoded: SYSTEM"
+
+    - name: "subtype"
+      type: "String"
+      required: true
+      description: "Log subtype. Always 'bfd' for BFD session events."
+      example_value: "bfd"
+      template_source: "Hardcoded: bfd"
+
+    - name: "event_id"
+      type: "Integer"
+      required: true
+      description: "PAN-OS system event identifier for BFD session state change."
+      example_value: "7"
+      template_source: "Hardcoded: 7"
+
+    - name: "eventid_name"
+      type: "String"
+      required: true
+      description: "Event ID name. Always 'session-state-change' for this template."
+      example_value: "session-state-change"
+      template_source: "Hardcoded: session-state-change"
+
+    - name: "object"
+      type: "String"
+      required: true
+      description: "The interface and subinterface on which the BFD session is configured."
+      example_value: "ae2.3705"
+      format: "interface.vlan-id"
+      template_source: "random_choice(['ae1','ae2','ae3','ethernet1/1'...]).random_int(100,4094)"
+
+    - name: "severity"
+      type: "String"
+      required: true
+      description: "Event severity. BFD state changes are always informational in PAN-OS."
+      example_value: "informational"
+      template_source: "Hardcoded: informational"
+
+    - name: "opaque"
+      type: "String"
+      required: true
+      description: "Human-readable BFD state change message including session ID, neighbor IP, interface, and routing protocol."
+      example_value: "BFD state changed to Init for BFD session 36 to neighbor 2607:a1b2:Z013:hh:ii:bb on interface ae2.3705. Protocol: BGP"
+      template_source: "Composite message using random_weighted state, random session ID, random neighbor IP, interface, and protocol"
+      possible_values:
+        - value: "Init"
+          description: "BFD session is initializing — handshake in progress"
+        - value: "Up"
+          description: "BFD session is established and neighbor is reachable (most common)"
+        - value: "Down"
+          description: "BFD session failed — neighbor unreachable, routing reconvergence likely"
+        - value: "AdminDown"
+          description: "BFD session administratively disabled"
+
+    - name: "device_name"
+      type: "String"
+      required: true
+      description: "Hostname of the PAN-OS device (typically a firewall or SD-WAN appliance)."
+      example_value: "dev02"
+      template_source: "registry.get_random_device().hostname"
+
+    - name: "high_res_timestamp"
+      type: "DateTime"
+      required: true
+      description: "High-resolution ISO 8601 timestamp with millisecond precision and UTC offset."
+      example_value: "2026-07-23T22:08:13.879+00:00"
+      format: "ISO 8601 with milliseconds"
+      template_source: "now() | iso8601_utc(include_microseconds=True)"
+
+  resources:
+    documentation:
+      - title: "PAN-OS BFD Overview"
+        url: "https://docs.paloaltonetworks.com/pan-os/11-0/pan-os-networking-admin/bfd"
+        type: "official"
+      - title: "PAN-OS System Log Fields"
+        url: "https://docs.paloaltonetworks.com/pan-os/11-0/pan-os-admin/monitoring/use-syslog-for-monitoring/syslog-field-descriptions/system-log-fields"
+        type: "official"
+      - title: "RFC 5880 - BFD Specification"
+        url: "https://www.rfc-editor.org/rfc/rfc5880"
+        type: "reference"
+    tools:
+      - name: "PAN-OS Log Viewer"
+        description: "Monitor > Logs > System filtered by subtype=bfd"
+        url: "https://docs.paloaltonetworks.com/pan-os/11-0/pan-os-admin/monitoring"
