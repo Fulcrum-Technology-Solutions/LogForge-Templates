@@ -13,13 +13,13 @@ jobs:
     permissions:
       contents: write
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
           fetch-depth: 2
           token: ${{ secrets.GITHUB_TOKEN }}
       
       - name: Set up Python
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v6
         with:
           python-version: '3.10'
       
@@ -78,7 +78,7 @@ jobs:
       
       - name: Create Release
         if: steps.check.outputs.changed == 'true'
-        uses: softprops/action-gh-release@v1
+        uses: softprops/action-gh-release@v3
         with:
           tag_name: "v${{ steps.quarter.outputs.year }}-${{ steps.quarter.outputs.quarter }}"
           name: "Quarterly Major Release - ${{ steps.quarter.outputs.year }} ${{ steps.quarter.outputs.quarter }}"

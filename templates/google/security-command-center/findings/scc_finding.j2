@@ -3,22 +3,22 @@
   "product": "GOOGLE_SECURITY_COMMAND_CENTER_V2",
   "type": "Security Graph",
   "severity": "{{ random_choice(['Critical', 'High', 'Medium', 'Low']) }}",
-  "title": "{{ random_choice(['Custom Threat', 'Suspicious Activity', 'Anomalous Behavior', 'Policy Violation']) }}",
+  "title": "{{ random_choice(['Custom Threat', 'Suspicious Activity', 'Anomalous Behavior', 'Policy violation']) }}",
   "source_json": {
     "finding": {
       "canonicalName": "projects/{{ random_int(100000000000, 999999999999) }}/sources/{{ random_int(1000000000000000000, 9999999999999999999) }}/locations/global/findings/{{ random_hex(32) }}",
       "category": "{{ random_choice(['Custom Threat', 'Malware', 'Data Exfiltration', 'Unauthorized Access', 'Privilege Escalation']) }}",
       "createTime": "{{ now() | iso8601 }}",
-      "eventTime": "{{ now().subtract(seconds=random_int(1, 300)) | iso8601 }}",
+      "eventTime": "{{ (now() | subtract_seconds(random_int(1, 300))) | iso8601 }}",
       "externalUri": "https://console.cloud.google.com/security/command-center/findings?organizationId={{ registry.get_organization_field('gcp_organization_id') or random_int(100000000000, 999999999999) }}",
       "mute": "{{ random_choice(['UNDEFINED', 'MUTED', 'UNMUTED']) }}",
       "muteInfo": {
         "staticMute": {
-          "applyTime": "{{ now().subtract(seconds=random_int(3600, 86400)) | iso8601 }}",
+          "applyTime": "{{ (now() | subtract_seconds(random_int(3600, 86400))) | iso8601 }}",
           "state": "{{ random_choice(['UNDEFINED', 'MUTED', 'UNMUTED']) }}"
         }
       },
-      "muteUpdateTime": "{{ now().subtract(seconds=random_int(60, 3600)) | iso8601 }}",
+      "muteUpdateTime": "{{ (now() | subtract_seconds(random_int(60, 3600))) | iso8601 }}",
       "name": "organizations/{{ registry.get_organization_field('gcp_organization_id') or random_int(100000000000, 999999999999) }}/sources/{{ random_int(1000000000000000000, 9999999999999999999) }}/locations/global/findings/{{ random_hex(32) }}",
       "parent": "organizations/{{ registry.get_organization_field('gcp_organization_id') or random_int(100000000000, 999999999999) }}/sources/{{ random_int(1000000000000000000, 9999999999999999999) }}/locations/global",
       "parentDisplayName": "Security Graph",

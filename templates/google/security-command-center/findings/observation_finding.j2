@@ -7,7 +7,7 @@
   "externalUri": "https://console.cloud.google.com/security/command-center/findings?organizationId={{ registry.get_organization_field('domain').split('.')[0] | default('123456789') }}",
   "sourceProperties": {
     "observation": {
-      "description": "{{ random_choice(['Unusual API call pattern detected', 'Anomalous network traffic volume', 'Unexpected authentication attempt from new location', 'Configuration change outside maintenance window', 'Data access from unusual time or location', 'Service account key creation observed']) }}",
+      "description": "{{ random_choice(['Unusual API call pattern detected', 'Anomalous network traffic volume', 'Unexpected authentication attempt from new location', 'Configuration change outside the maintenance window', 'Data access from unusual time or location', 'Service account key creation observed']) }}",
       "observedAt": "{{ now() | iso8601 }}",
       "observedBy": "{{ random_weighted(['Event Threat Detection', 'Security Health Analytics', 'Container Threat Detection', 'VM Threat Detection'], [35, 30, 20, 15]) }}",
       "observationType": "{{ random_choice(['BEHAVIORAL', 'CONFIGURATION', 'NETWORK', 'ACCESS']) }}",
@@ -18,7 +18,7 @@
       }
     },
     "properties": {
-      "firstObservedTime": "{{ now().subtract(hours=random_int(1, 72)) | iso8601 }}",
+      "firstObservedTime": "{{ (now() | subtract_seconds(random_int(3600, 259200))) | iso8601 }}",
       "lastObservedTime": "{{ now() | iso8601 }}",
       "occurrenceCount": {{ random_int(1, 100) }},
       "observationFrequency": "{{ random_choice(['ONCE', 'OCCASIONAL', 'FREQUENT', 'CONTINUOUS']) }}"
